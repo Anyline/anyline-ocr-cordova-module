@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.anyline.examples.cordova" version="3.8.1"
+	xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+	<name>Anyline Cordova Example</name>
+
+
+	<content src="index.html" />
+	<access origin="*" />
+
+	<icon src="www/img/ic_launcher.png" />
+
+</widget>

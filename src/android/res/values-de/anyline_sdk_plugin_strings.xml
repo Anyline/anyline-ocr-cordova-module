@@ -1,0 +1,32 @@
+<resources>
+    <string name="error_unkown_scan_mode">Unbekannter Scan Modus:</string>
+    <string name="error_invalid_json_data">Konfigurations JSON ist ungültig.</string>
+    <string name="error_invalid_segment_config">Segment Konfiguration ungültig. Anzahl der Titel und Modi muss gleich sein.</string>
+    <string name="error_accessing_camera">Fehler beim Zugriff auf die Kamera.</string>
+    <string name="error_licence_invalid">Fehler: Anyline Lizenz ungültig.</string>
+    <string name="error_occured">Ein Fehler ist aufgetreten.</string>
+
+    <string name="document_advanced_outline_detection">Erweiterte Umrisserkennung</string>
+
+    <string name="document_error_glare_detected">Bitte Reflexionen vermeiden</string>
+    <string name="document_error_not_sharp">Dokument nicht scharf. Bitte die Kamera still halten und schauen dass das Dokument im Fokus ist.</string>
+    <string name="document_error_outline_not_found">Die Umrisse des Dokuments konnten nicht gefunden werden</string>
+    <string name="document_error_skew_too_high">Das Dokument ist zu verzerrt. Bitte Kamera direkt über das Dokument halten.</string>
+    <string name="document_error_too_dark">Das Bild ist zu dunkel. Bitte für hellere Verhältnisse sorgen.</string>
+    <string name="document_error_unknown">Unbekannter Fehler</string>
+    <string name="document_fast_outline_detection">Schnelle Umrisserkennung</string>
+    <string name="document_picture_error">Fehler beim scannen des vollwertigen Dokumentes:\n</string>
+    <string name="document_picture_success">Dokument erfolgreich gescannt</string>
+    <string name="document_preview_success">Vollwertiges Dokument wird gescannt. Bitte still halten.</string>
+    <string name="document_using_advanced_mode">Zu erweitertem Erkennungsmodus gewechselt</string>
+    <string name="document_using_fast_mode">Zu schnellem Erkennungsmodus gewechselt</string>
+    <string name="document_processing_picture_header">Verarbeitung</string>
+    <string name="document_processing_picture">Bild wird verarbeitet, bitte warten</string>
+    <string name="document_error_shake">Wackeln erfasst</string>
+    <string name="document_error_closer">Bitte näher kommen</string>
+    <string name="document_error_format">Nicht erfasstes Format</string>
+    <string name="document_image_saved_to">Bild speichern zu</string>
+
+    <string name="document_processing">Verarbeitung</string>
+    <string name="document_processing_picture_please_wait">Bild wird verarbeitet, bitte warten.</string>
+</resources>

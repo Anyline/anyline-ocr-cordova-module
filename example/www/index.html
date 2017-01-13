@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+ Anyline Cordova Plugin
+ indext.html
+
+ Copyright (c) 2016 Anyline GmbH
+ -->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1,
+                    width=device-width, height=device-height">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/anyline.css">
+    <title>Anyline Cordova Example</title>
+
+</head>
+
+<body>
+<h1>Anyline Cordova</h1>
+
+<div id="navigation">
+    <details id="details_scan_modes" open>
+        <summary class="summary1">
+            Scan Modes
+        </summary>
+        <h3> Energy </h3>
+        <p>
+            <input type="button" value="Analog Meter" onclick="anyline.energy.scan('ANALOG_METER')"/>
+            <br/>
+            <input type="button" value="Digital Meter" onclick="anyline.energy.scan('DIGITAL_METER')"/>
+            <br/>
+            <input type="button" value="Heat Meter" onclick="anyline.energy.scanHeatMeterWithSegment()"/>
+            <br/>
+            <input type="button" value="Electric Meter" onclick="anyline.energy.scanElectricDigitalSegment()"/>
+            <br/>
+        <hr>
+        <h2>Anyline OCR</h2>
+        <p>
+            <input type="button" value="IBAN" onclick="anyline.ocr.scanIban()"/>
+            <br/>
+            <input type="button" value="Anyline Voucher Codes" onclick="anyline.ocr.scanAnylineVoucherCodes()"/>
+        </p>
+        <hr>
+        <h2> Others </h2>
+        <p>
+            <input type="button" value="Barcode" onclick="anyline.barcode.scan()"/>
+            <br/>
+            <input type="button" value="MRZ of Passport or ID" onclick="anyline.mrz.scan()"/>
+            <br/>
+            <input type="button" value="Document" onclick="anyline.document.scan()"/>
+            <br/>
+        </p>
+    </details>
+
+
+    <hr>
+    <details id="details_results">
+        <summary class="summary1">
+            Results
+        </summary>
+        <p>
+        <div id="results">
+
+        </div>
+        </p>
+    </details>
+
+
+</div>
+
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/anyline.barcode.js"></script>
+<script type="text/javascript" src="js/anyline.energy.js"></script>
+<script type="text/javascript" src="js/anyline.mrz.js"></script>
+<script type="text/javascript" src="js/anyline.ocr.js"></script>
+<script type="text/javascript" src="js/anyline.document.js"></script>
+</body>
+
+</html>

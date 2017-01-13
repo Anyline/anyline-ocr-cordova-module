@@ -1,0 +1,26 @@
+/*
+ * Anyline Cordova Plugin
+ * anyline.css
+ *
+ * Copyright (c) 2016 Anyline GmbH
+ */
+.summary1 {
+    font-size: 2.8em;
+}
+
+.details2 {
+    margin-left: 10px;
+}
+
+.summary2  {
+    font-size: 2.2em;
+}
+
+.details3 {
+    margin-left: 20px;
+}
+
+.summary3  {
+    color: #777777;
+    font-size: 2.2em;
+}
