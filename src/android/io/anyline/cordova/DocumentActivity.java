@@ -62,7 +62,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
                     errorMessage.setText("");
                 } else if(!errorMessageAnimator.isRunning()){
                     errorMessageAnimator = ObjectAnimator.ofFloat(errorMessage, "alpha", errorMessage.getAlpha(), 0f);
-                    errorMessageAnimator.setDuration(getResources().getInteger(getResources().getIdentifier("error_message_delay", "id", getPackageName())));
+                    errorMessageAnimator.setDuration(getResources().getInteger(R.integer.error_message_delay));
                     errorMessageAnimator.setInterpolator(new AccelerateInterpolator());
                     errorMessageAnimator.start();
                 }
