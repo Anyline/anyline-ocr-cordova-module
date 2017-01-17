@@ -8,6 +8,7 @@
             android:id="@+id/document_scan_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:api_2_enabled="false"
     />
 
     <ImageView
@@ -33,7 +34,6 @@
             android:layout_alignParentTop="true"
             android:visibility="gone"
             tools:visibility="visible"
-            app:api_2_enabled="false"
     >
 
         <TextView
