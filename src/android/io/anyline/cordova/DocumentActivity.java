@@ -30,7 +30,6 @@ import at.nineyards.anyline.camera.CameraOpenListener;
 import at.nineyards.anyline.models.AnylineImage;
 import at.nineyards.anyline.modules.document.DocumentResultListener;
 import at.nineyards.anyline.modules.document.DocumentScanView;
-import io.anyline.examples.cordova.R;
 
 /**
  * Example activity for the Anyline-Document-Detection-Module
@@ -51,23 +50,23 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     private android.os.Handler handler = new android.os.Handler();
 
     // takes care of fading the error message out after some time with no error reported from the SDK
-    private Runnable errorMessageCleanup = new Runnable(){
+    private Runnable errorMessageCleanup = new Runnable() {
         @Override
         public void run() {
-            if( System.currentTimeMillis() > lastErrorRecieved + getApplication().getResources().getInteger(R.integer.error_message_delay)) {
-                if(errorMessage == null || errorMessageAnimator == null){
+            if (System.currentTimeMillis() > lastErrorRecieved + getApplication().getResources().getIdentifier("error_message_delay", "integer", getPackageName())) {
+                if (errorMessage == null || errorMessageAnimator == null) {
                     return;
                 }
-                if(errorMessage.getAlpha() == 0f){
+                if (errorMessage.getAlpha() == 0f) {
                     errorMessage.setText("");
-                } else if(!errorMessageAnimator.isRunning()){
+                } else if (!errorMessageAnimator.isRunning()) {
                     errorMessageAnimator = ObjectAnimator.ofFloat(errorMessage, "alpha", errorMessage.getAlpha(), 0f);
-                    errorMessageAnimator.setDuration(getResources().getInteger(R.integer.error_message_delay));
+                    errorMessageAnimator.setDuration(getResources().getIdentifier("error_message_delay", "integer", getPackageName()));
                     errorMessageAnimator.setInterpolator(new AccelerateInterpolator());
                     errorMessageAnimator.start();
                 }
             }
-            handler.postDelayed(errorMessageCleanup, getResources().getInteger(R.integer.error_message_delay));
+            handler.postDelayed(errorMessageCleanup, getResources().getIdentifier("error_message_delay", "integer", getPackageName()));
 
         }
     };
@@ -80,11 +79,10 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         imageViewResult = (ImageView) findViewById(getResources().getIdentifier("image_result", "id", getPackageName()));
-        errorMessageLayout = (FrameLayout) findViewById(R.id.error_message_layout);
         errorMessageLayout = (FrameLayout) findViewById(getResources().getIdentifier("error_message_layout", "id", getPackageName()));
-        errorMessage = (TextView) findViewById(R.id.error_message);
+        errorMessage = (TextView) findViewById(getResources().getIdentifier("error_message", "id", getPackageName()));
 
-        documentScanView = (DocumentScanView) findViewById(R.id.document_scan_view);
+        documentScanView = (DocumentScanView) findViewById(getResources().getIdentifier("document_scan_view", "id", getPackageName()));
         // add a camera open listener that will be called when the camera is opened or an error occurred
         //  this is optional (if not set a RuntimeException will be thrown if an error occurs)
         documentScanView.setCameraOpenListener(this);
@@ -140,7 +138,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
                     // Bitmap bmp = transformedImage.getBitmap();
                     // save the image with quality 100 (only used for jpeg, ignored for png)
                     transformedImage.save(outFile, 100);
-                    showToast(getString(R.string.document_image_saved_to) +" " + outFile.getAbsolutePath());
+                    showToast(getString(getResources().getIdentifier("document_image_saved_to", "string", getPackageName())) + " " + outFile.getAbsolutePath());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -148,6 +146,36 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
                 // release the images
                 transformedImage.release();
                 fullFrame.release();
+
+
+                JSONObject jsonResult = new JSONObject();
+                try {
+                    jsonResult.put("imagePath", outFile.getAbsolutePath());
+                } catch (Exception jsonException) {
+                    //should not be possible
+                    Log.e(TAG, "Error while putting image path to json.", jsonException);
+                }
+
+                Boolean cancelOnResult = true;
+
+                JSONObject jsonObject;
+                try {
+                    jsonObject = new JSONObject(configJson);
+                    cancelOnResult = jsonObject.getBoolean("cancelOnResult");
+                }catch(Exception e){
+                    
+                }
+
+                if (cancelOnResult) {
+                    ResultReporter.onResult(jsonResult, true);
+                    setResult(AnylinePlugin.RESULT_OK);
+                    finish();
+                } else {
+                    ResultReporter.onResult(jsonResult, false);
+                }
+
+
+
             }
 
 
@@ -169,8 +197,8 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             @Override
             public void onPictureProcessingFailure(DocumentScanView.DocumentError documentError) {
 
-                showErrorMessageFor(documentError,true);
-                if(progressDialog != null && progressDialog.isShowing()){
+                showErrorMessageFor(documentError, true);
+                if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
 
@@ -203,10 +231,8 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             @Override
             public void onTakePictureSuccess() {
                 // this is called after the image has been captured from the camera and is about to be processed
-                progressDialog = ProgressDialog.show(DocumentActivity.this, getString(R.string
-                                .document_processing_picture_header), getString(R
-                                .string
-                                .document_processing_picture),
+                progressDialog = ProgressDialog.show(DocumentActivity.this, getString(getResources().getIdentifier("document_processing_picture_header", "string", getPackageName())),
+                        getString(getResources().getIdentifier("document_processing_picture", "string", getPackageName())),
                         true);
 
                 if (errorMessageAnimator != null && errorMessageAnimator.isRunning()) {
@@ -231,56 +257,58 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
         });
 
+
+
         // optionally stop the scan once a valid result was returned
-        // documentScanView.cancelOnResult(true);
+//        documentScanView.setCancelOnResult(cancelOnResult);
 
     }
 
 
-    private void showErrorMessageFor(DocumentScanView.DocumentError documentError){
-        showErrorMessageFor(documentError,false);
+    private void showErrorMessageFor(DocumentScanView.DocumentError documentError) {
+        showErrorMessageFor(documentError, false);
     }
+
     private void showErrorMessageFor(DocumentScanView.DocumentError documentError, boolean highlight) {
-        String text = getString(R.string.document_picture_error);
+        String text = getString(getResources().getIdentifier("document_picture_error", "string", getPackageName()));
         switch (documentError) {
             case DOCUMENT_NOT_SHARP:
-                text += getString(R.string.document_error_not_sharp);
+                text += getString(getResources().getIdentifier("document_error_not_sharp", "string", getPackageName()));
                 break;
             case DOCUMENT_SKEW_TOO_HIGH:
-                text += getString(R.string.document_error_skew_too_high);
+                text += getString(getResources().getIdentifier("document_error_skew_too_high", "string", getPackageName()));
                 break;
             case DOCUMENT_OUTLINE_NOT_FOUND:
                 //text += getString(R.string.document_error_outline_not_found);
                 return; // exit and show no error message for now!
             case IMAGE_TOO_DARK:
-                text += getString(R.string.document_error_too_dark);
+                text += getString(getResources().getIdentifier("document_error_too_dark", "string", getPackageName()));
                 break;
             case SHAKE_DETECTED:
-                text += getString(R.string.document_error_shake);
+                text += getString(getResources().getIdentifier("document_error_shake", "string", getPackageName()));
                 break;
             case DOCUMENT_BOUNDS_OUTSIDE_OF_TOLERANCE:
-                text += getString(R.string.document_error_closer);
+                text += getString(getResources().getIdentifier("document_error_closer", "string", getPackageName()));
                 break;
             case DOCUMENT_RATIO_OUTSIDE_OF_TOLERANCE:
-                text += getString(R.string.document_error_format);
+                text += getString(getResources().getIdentifier("document_error_format", "string", getPackageName()));
                 break;
             case UNKNOWN:
                 break;
             default:
-                text += getString(R.string.document_error_unknown);
+                text += getString(getResources().getIdentifier("document_error_unknown", "string", getPackageName()));
                 return; // exit and show no error message for now!
         }
 
-        if(highlight) {
+        if (highlight) {
             showHighlightErrorMessageUiAnimated(text);
-        }
-        else {
+        } else {
             showErrorMessageUiAnimated(text);
         }
     }
 
     private void showErrorMessageUiAnimated(String message) {
-        if(lastErrorRecieved == 0) {
+        if (lastErrorRecieved == 0) {
             // the cleanup takes care of removing the message after some time if the error did not show up again
             handler.post(errorMessageCleanup);
         }
@@ -291,27 +319,28 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         }
 
         errorMessageLayout.setVisibility(View.VISIBLE);
-        errorMessage.setBackgroundColor(ContextCompat.getColor(this, R.color.anyline_blue_darker));
+        errorMessage.setBackgroundColor(ContextCompat.getColor(this, getResources().getIdentifier("anyline_blue_darker", "color", getPackageName())));
         errorMessage.setAlpha(0f);
         errorMessage.setText(message);
         errorMessageAnimator = ObjectAnimator.ofFloat(errorMessage, "alpha", 0f, 1f);
-        errorMessageAnimator.setDuration(getResources().getInteger(R.integer.error_message_delay));
+        errorMessageAnimator.setDuration(getResources().getInteger(getResources().getIdentifier("error_message_delay", "integer", getPackageName())));
         errorMessageAnimator.setInterpolator(new DecelerateInterpolator());
         errorMessageAnimator.start();
     }
-    private void showHighlightErrorMessageUiAnimated(String message){
+
+    private void showHighlightErrorMessageUiAnimated(String message) {
         lastErrorRecieved = System.currentTimeMillis();
         errorMessageLayout.setVisibility(View.VISIBLE);
-        errorMessage.setBackgroundColor(ContextCompat.getColor(this,R.color.anyline_red));
+        errorMessage.setBackgroundColor(ContextCompat.getColor(this, getResources().getIdentifier("anyline_red", "color", getPackageName())));
         errorMessage.setAlpha(0f);
         errorMessage.setText(message);
 
-        if(errorMessageAnimator != null && errorMessageAnimator.isRunning()){
+        if (errorMessageAnimator != null && errorMessageAnimator.isRunning()) {
             errorMessageAnimator.cancel();
         }
 
         errorMessageAnimator = ObjectAnimator.ofFloat(errorMessage, "alpha", 0f, 1f);
-        errorMessageAnimator.setDuration(getResources().getInteger(R.integer.error_message_delay));
+        errorMessageAnimator.setDuration(getResources().getInteger(getResources().getIdentifier("error_message_delay", "integer", getPackageName())));
         errorMessageAnimator.setInterpolator(new DecelerateInterpolator());
         errorMessageAnimator.setRepeatMode(ValueAnimator.REVERSE);
         errorMessageAnimator.setRepeatCount(1);
