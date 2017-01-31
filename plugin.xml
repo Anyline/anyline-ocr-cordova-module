@@ -6,6 +6,7 @@
     version="3.8.1">
 
   <name>AnylineSDK</name>
+
   <platform name="ios">
     <hook type="after_plugin_install" src="hooks/AfterPluginInstall.js" />
     <plugins-plist  key="AnylineSDK" string="AnylineSDKPlugin"/>
@@ -18,7 +19,6 @@
     <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
         <string>Yes we scan!</string>
     </config-file>
-    <resource-file  src="src/ios/anyline_sdk/AnylineResources.bundle"/>
 
 <!-- Anyline SDK Cordova Plugin Source for iOS -->
     <header-file  src="src/ios/AnylineSDKPlugin.h"/>
@@ -39,21 +39,8 @@
     <source-file  src="src/ios/ALRoundedView.m"/>
     <header-file  src="src/ios/ALCordovaUIConfiguration.h"/>
     <source-file  src="src/ios/ALCordovaUIConfiguration.m"/>
-<!-- Frameworks needed by Anyline SDK for iOS -->
-    <framework  src="ImageIO.framework"/>
-    <framework  custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>
-    <framework  src="libstdc++.6.0.9.tbd"/>
-    <framework  src="libiconv.tbd"/>
-    <framework  src="libz.tbd"/>
-    <framework  src="libc++.tbd"/>
-    <framework  src="AssetsLibrary.framework"/>
-    <framework  src="Accelerate.framework"/>
-    <framework  src="AudioToolbox.framework"/>
-    <framework  src="AVFoundation.framework"/>
-    <framework  src="CoreGraphics.framework"/>
-    <framework  src="CoreMedia.framework"/>
-    <framework  src="CoreVideo.framework"/>
-    <framework  src="QuartzCore.framework"/>
+<!-- Add Anyline Framework via CocoaPods -->
+    <framework src="Anyline" type="podspec" spec="~> 3.8" />
 
   </platform>
   <platform name="android">
