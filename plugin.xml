@@ -3,7 +3,7 @@
     xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="io-anyline-cordova"
-    version="3.8.1">
+    version="3.9.0">
 
   <name>AnylineSDK</name>
 
@@ -39,8 +39,14 @@
     <source-file  src="src/ios/ALRoundedView.m"/>
     <header-file  src="src/ios/ALCordovaUIConfiguration.h"/>
     <source-file  src="src/ios/ALCordovaUIConfiguration.m"/>
-<!-- Add Anyline Framework via CocoaPods -->
-    <framework src="Anyline" type="podspec" spec="~> 3.8" />
+<!-- Anyline Framework & Resource Bundle -->
+    <framework  custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>
+    <resource-file  src="src/ios/anyline_sdk/AnylineResources.bundle"/>
+<!-- Frameworks needed by Anyline SDK for iOS -->
+    <framework  src="libz.tbd"/>
+    <framework  src="libc++.tbd"/>
+    <framework  src="AssetsLibrary.framework"/>
+    <framework  src="Accelerate.framework"/>
 
   </platform>
   <platform name="android">
