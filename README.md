@@ -15,7 +15,7 @@ Anyline provides an easy-to-use SDK for applications to enable Optical Character
 - decent camera functionality (recommended: 720p and adequate auto focus)
 
 #### iOS
-- minimum iOS 7.0
+- minimum iOS 8.2
 - minimum iPhone4s
 
 
