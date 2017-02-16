@@ -10,6 +10,8 @@
 package io.anyline.cordova;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
@@ -48,12 +50,55 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     public static final int ANALOG_METER = 7;
 
     private CallbackContext mCallbackContext;
+    private String mAction;
+    private JSONArray mArgs;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
         mCallbackContext = callbackContext;
+        mAction = action;
+        mArgs = args;
         Log.d(TAG, "Starting action: " + action);
 
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                try {
+                    checkPermission();
+                } catch (Exception e) {
+                    mCallbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, "Camera permission denied"));
+                }
+            }
+        });
+
+        return true;
+    }
+
+    private void checkPermission() {
+        int MyVersion = Build.VERSION.SDK_INT;
+        if (MyVersion <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            startScanning(mAction, mArgs);
+        }
+        boolean result = cordova.hasPermission("android.permission.CAMERA");
+        if (result) {
+            startScanning(mAction, mArgs);
+        } else {
+            cordova.requestPermission(this, 55433, "android.permission.CAMERA");
+        }
+    }
+
+    public void onRequestPermissionResult(int requestCode, String[] permissions,
+                                          int[] grantResults) throws JSONException
+    {
+        for(int r:grantResults) {
+            if (r == PackageManager.PERMISSION_DENIED) {
+                this.mCallbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, "Camera permission denied"));
+                return;
+            }
+        }
+        startScanning(mAction, mArgs);
+    }
+
+    private void startScanning(String action, JSONArray args) {
         switch (action) {
             case "DIGITAL_METER":
                 scanEnergy(args, EnergyScanView.ScanMode.DIGITAL_METER);
@@ -120,11 +165,9 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
                 scan(AnylineOcrActivity.class, REQUEST_ANYLINE_OCR, args);
                 break;
             default:
-                callbackContext.error(Resources.getString(cordova.getActivity(),
+                mCallbackContext.error(Resources.getString(cordova.getActivity(),
                         "error_unkown_scan_mode") + " " + action);
-                return false;
         }
-        return true;
     }
 
     private void scan(Class<?> activityToStart, int requestCode, JSONArray data) {
