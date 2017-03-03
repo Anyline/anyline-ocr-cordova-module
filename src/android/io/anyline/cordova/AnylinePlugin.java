@@ -74,10 +74,6 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     }
 
     private void checkPermission() {
-        int MyVersion = Build.VERSION.SDK_INT;
-        if (MyVersion <= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            startScanning(mAction, mArgs);
-        }
         boolean result = cordova.hasPermission("android.permission.CAMERA");
         if (result) {
             startScanning(mAction, mArgs);
