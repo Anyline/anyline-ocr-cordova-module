@@ -53,6 +53,9 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     private Runnable errorMessageCleanup = new Runnable() {
         @Override
         public void run() {
+            if (DocumentActivity.this.isFinishing()) {
+                return;
+            }
             if (System.currentTimeMillis() > lastErrorRecieved + getApplication().getResources().getIdentifier("error_message_delay", "integer", getPackageName())) {
                 if (errorMessage == null || errorMessageAnimator == null) {
                     return;
@@ -371,6 +374,14 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         //release the camera (must be called in onPause, because there are situations where
         // it cannot be auto-detected that the camera should be released)
         documentScanView.releaseCameraInBackground();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacks(errorMessageCleanup);
+        errorMessageCleanup = null;
+        handler = null;
     }
 
     @Override
