@@ -66,6 +66,7 @@
     
     [dictResult setValue:imagePath forKey:@"imagePath"];
     
+
     [self.delegate anylineBaseScanViewController:self didScan:dictResult continueScanning:!self.moduleView.cancelOnResult];
     
     if (self.moduleView.cancelOnResult) {

@@ -9,7 +9,7 @@ if (anyline === undefined) {
     var anyline = {};
 }
 anyline.mrz = {
-    onResult: function(result) {
+    onResult: function (result) {
         //this is called for every mrz scan result
         //the result is a json-object containing all the scaned values and check-digits
 
@@ -18,15 +18,20 @@ anyline.mrz = {
 
         div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
             "<b>Name:</b> " + result.surNames + " " + result.givenNames + "<br/>" + "<b>Type:</b> " + result.documentType +
-            " <b>Number:</b> " + result.documentNumber + " <b>Country:</b> " + result.nationalityCountryCode +
-            " [" + result.issuingCountryCode + "]" + "<br/>" + "<b>Day of Birth:</b> " + result.dayOfBirth +
-            " <b>Expiration:</b> " + result.expirationDate + "</p>" + div.innerHTML;
+            "<br/><b>Number:</b> " + result.documentNumber + " <b>" +
+            "<br/>Country:</b> " + result.nationalityCountryCode + "[" + result.issuingCountryCode + "]" +
+            "<br/><b>Day of Birth:</b> " + result.dayOfBirth +
+            "<br/><b>Expiration:</b> " + result.expirationDate + +"<br/>" +
+            "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
+            "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
+            "</p>" + div.innerHTML;
 
         document.getElementById("details_scan_modes").removeAttribute("open");
         document.getElementById("details_results").setAttribute("open", "");
+        window.scrollTo(0, 0);
     },
 
-    onError: function(error) {
+    onError: function (error) {
         //called if an error occurred or the user canceled the scanning
         if (error == "Canceled") {
             //do stuff when user has canceled
@@ -38,7 +43,7 @@ anyline.mrz = {
         alert(error);
     },
 
-    scan: function() {
+    scan: function () {
         // start the MRZ scanning
         // pass the success and error callbacks, as well as the license key and the config to the plugin
         // see http://documentation.anyline.io/#anyline-config for config details

@@ -21,10 +21,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import at.nineyards.anyline.AnylineDebugListener;
+import at.nineyards.anyline.core.RunFailure;
+import at.nineyards.anyline.core.Vector_Contour;
+import at.nineyards.anyline.modules.ocr.AnylineOcrResultListener;
+
+
 import at.nineyards.anyline.camera.AnylineViewConfig;
 import at.nineyards.anyline.modules.ocr.AnylineOcrConfig;
-import at.nineyards.anyline.modules.ocr.AnylineOcrError;
-import at.nineyards.anyline.modules.ocr.AnylineOcrListener;
 import at.nineyards.anyline.modules.ocr.AnylineOcrResult;
 import at.nineyards.anyline.modules.ocr.AnylineOcrScanView;
 import at.nineyards.anyline.util.AssetUtil;
@@ -94,6 +98,7 @@ public class AnylineOcrActivity extends AnylineBaseActivity {
 
         setContentView(anylineOcrScanView);
 
+        setDebugListener();
         initAnyline();
     }
 
@@ -111,18 +116,38 @@ public class AnylineOcrActivity extends AnylineBaseActivity {
         anylineOcrScanView.releaseCameraInBackground();
     }
 
+
+
+    private void setDebugListener() {
+        anylineOcrScanView.setDebugListener(new AnylineDebugListener() {
+            @Override
+            public void onDebug(String name, Object value) {
+
+                if(name.equals(AnylineDebugListener.BRIGHTNESS_VARIABLE_NAME) && value.getClass().equals
+                        (AnylineDebugListener.BRIGHTNESS_VARIABLE_CLASS)){
+                    Double val = AnylineDebugListener.BRIGHTNESS_VARIABLE_CLASS.cast(value);
+
+                    Log.d(TAG, name +": " +val.doubleValue());
+                }
+                if(name.equals(CONTOURS_VARIABLE_NAME) && value.getClass().equals(CONTOURS_VARIABLE_CLASS)){
+                    Vector_Contour contour = CONTOURS_VARIABLE_CLASS.cast(value);
+                    Log.d(TAG, name +": " +contour.toString());
+                }
+
+            }
+
+            @Override
+            public void onRunSkipped(RunFailure runFailure) {
+                Log.w(TAG, "run skipped: " +runFailure);
+            }
+        });
+    }
+
+
     private void initAnyline() {
         anylineOcrScanView.setCameraOpenListener(this);
 
-        anylineOcrScanView.initAnyline(licenseKey, new AnylineOcrListener() {
-            @Override
-            public void onReport(String identifier, Object value) {
-            }
-
-            @Override
-            public boolean onTextOutlineDetected(List<PointF> list) {
-                return !drawTextOutline;
-            }
+        anylineOcrScanView.initAnyline(licenseKey, new AnylineOcrResultListener() {
 
             @Override
             public void onResult(AnylineOcrResult result) {
@@ -130,11 +155,15 @@ public class AnylineOcrActivity extends AnylineBaseActivity {
                 JSONObject jsonResult = new JSONObject();
 
                 try {
-                    jsonResult.put("text", result.getText().trim());
+                    jsonResult.put("text", result.getResult().trim());
+
+                    jsonResult.put("outline", jsonForOutline(result.getOutline()));
+                    jsonResult.put("confidence", result.getConfidence());
+
 
                     File imageFile = TempFileUtil.createTempFileCheckCache(AnylineOcrActivity.this,
                             UUID.randomUUID().toString(), ".jpg");
-                    result.getImage().save(imageFile, 90);
+                    result.getCutoutImage().save(imageFile, 90);
                     jsonResult.put("imagePath", imageFile.getAbsolutePath());
 
                 } catch (IOException e) {
@@ -154,9 +183,6 @@ public class AnylineOcrActivity extends AnylineBaseActivity {
                 }
             }
 
-            @Override
-            public void onAbortRun(AnylineOcrError code, String message) {
-            }
         });
 
         anylineOcrScanView.getAnylineController().setWorkerThreadUncaughtExceptionHandler(this);

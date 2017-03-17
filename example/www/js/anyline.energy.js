@@ -31,11 +31,14 @@ anyline.energy = {
             + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
             + "<b>" + result.meterType + ":</b> " + result.reading
             + (detailsBarcodes ? "<br/><i><b>Detected Barcodes:</b> " + detailsBarcodes + "</i>" : "")
+            + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
+            + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>"
             + "</p>"
             + div.innerHTML;
 
         document.getElementById("details_scan_modes").removeAttribute("open");
         document.getElementById("details_results").setAttribute("open", "");
+        window.scrollTo(0, 0);
     },
 
     onError: function (error) {
@@ -124,7 +127,7 @@ anyline.energy = {
             },
             "flash": {
                 "mode": "manual",
-                "alignment": "top_left"
+                "alignment": "bottom_right"
             },
             "beepOnResult": true,
             "vibrateOnResult": true,
@@ -137,7 +140,7 @@ anyline.energy = {
                 "tintColor": "CCCCCC",
                 "offset": {
                     "x": 0,
-                    "y": 600
+                    "y": 400
                 }
             }
         },
@@ -175,7 +178,7 @@ anyline.energy = {
             },
             "flash": {
                 "mode": "manual",
-                "alignment": "top_left"
+                "alignment": "bottom_right"
             },
             "beepOnResult": true,
             "vibrateOnResult": true,
@@ -188,7 +191,7 @@ anyline.energy = {
                 "tintColor": "CCCCCC",
                 "offset": {
                     "x": 0,
-                    "y": 600
+                    "y": 400
                 }
             }
         },

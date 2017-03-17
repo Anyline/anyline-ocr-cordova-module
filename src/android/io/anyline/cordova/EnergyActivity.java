@@ -35,11 +35,13 @@ import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.models.AnylineImage;
 import at.nineyards.anyline.modules.energy.EnergyResultListener;
 import at.nineyards.anyline.modules.energy.EnergyScanView;
+import at.nineyards.anyline.modules.energy.EnergyResult;
 import at.nineyards.anyline.util.TempFileUtil;
 import at.nineyards.anyline.modules.barcode.NativeBarcodeResultListener;
 import at.nineyards.anyline.modules.barcode.BarcodeScanView;
 
 import android.util.SparseArray;
+
 import com.google.android.gms.vision.barcode.Barcode;
 
 
@@ -52,7 +54,7 @@ public class EnergyActivity extends AnylineBaseActivity {
     private boolean nativeBarcodeEnabled;
     private List<String> barcodeList;
     private JSONArray jsonArray;
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class EnergyActivity extends AnylineBaseActivity {
 
         String scanModeString = getIntent().getStringExtra(AnylinePlugin.EXTRA_SCAN_MODE);
         nativeBarcodeEnabled = getIntent().getBooleanExtra(AnylinePlugin.EXTRA_SCAN_NATIVE_BARCODE, false);
-        
+
         energyScanView = new EnergyScanView(this, null);
 
         JSONObject jsonObject;
@@ -167,7 +169,7 @@ public class EnergyActivity extends AnylineBaseActivity {
             public void run() {
                 if (radioGroup != null) {
                     Rect rect = energyScanView.getCutoutRect();
-                    
+
                     RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) radioGroup.getLayoutParams();
                     lp.setMargins(rect.left + cordovaUiConfig.getOffsetX(), rect.top + cordovaUiConfig.getOffsetY(), 0, 0);
                     radioGroup.setLayoutParams(lp);
@@ -178,18 +180,26 @@ public class EnergyActivity extends AnylineBaseActivity {
         });
     }
 
+    @Override
+    public void onCameraError(Exception e) {
+        //This is called if the camera could not be opened.
+        // (e.g. If there is no camera or the permission is denied)
+        // This is useful to present an alternative way to enter the required data if no camera exists.
+        throw new RuntimeException(e);
+    }
+
     private void initAnyline() {
-        
-        if(nativeBarcodeEnabled){
+
+        if (nativeBarcodeEnabled) {
             barcodeList = new ArrayList<String>();
             jsonArray = new JSONArray();
-            
+
             energyScanView.enableBarcodeDetection(true, new NativeBarcodeResultListener() {
                 @Override
-                public void onBarcodesReceived(SparseArray<Barcode> barcodes){
-                    if(barcodes.size() > 0) {
-                        for(int i = 0; i < barcodes.size(); i++){
-                            if(! barcodeList.contains(barcodes.valueAt(i).rawValue)){
+                public void onBarcodesReceived(SparseArray<Barcode> barcodes) {
+                    if (barcodes.size() > 0) {
+                        for (int i = 0; i < barcodes.size(); i++) {
+                            if (!barcodeList.contains(barcodes.valueAt(i).rawValue)) {
                                 barcodeList.add(barcodes.valueAt(i).rawValue);
                                 jsonArray.put(wrapBarcodeInJson(barcodes.valueAt(i)));
                             }
@@ -199,18 +209,16 @@ public class EnergyActivity extends AnylineBaseActivity {
                 }
             });
         }
-        
-        
+
+
         energyScanView.setCameraOpenListener(this);
 
         energyScanView.initAnyline(licenseKey, new EnergyResultListener() {
 
             @Override
-            public void onResult(EnergyScanView.ScanMode scanMode, String result,
-                                 AnylineImage resultImage, AnylineImage fullImage) {
-
+            public void onResult(EnergyResult energyResult) {
                 JSONObject jsonResult = new JSONObject();
-
+                EnergyScanView.ScanMode scanMode = energyResult.getScanMode();
 
                 try {
                     switch (scanMode) {
@@ -238,21 +246,25 @@ public class EnergyActivity extends AnylineBaseActivity {
                     }
 
                     jsonResult.put("scanMode", scanMode.toString());
-                    jsonResult.put("reading", result);
+                    jsonResult.put("reading", energyResult.getResult());
+
+                    jsonResult.put("outline", jsonForOutline(energyResult.getOutline()));
+                    jsonResult.put("confidence", energyResult.getConfidence());
+
 
                     File imageFile = TempFileUtil.createTempFileCheckCache(EnergyActivity.this,
                             UUID.randomUUID().toString(), ".jpg");
 
-                    resultImage.save(imageFile, 90);
+                    energyResult.getCutoutImage().save(imageFile, 90);
                     jsonResult.put("imagePath", imageFile.getAbsolutePath());
 
-                    if (fullImage != null) {
+                    if (energyResult.getFullImage() != null) {
                         imageFile = TempFileUtil.createTempFileCheckCache(EnergyActivity.this,
                                 UUID.randomUUID().toString(), ".jpg");
-                        fullImage.save(imageFile, 90);
+                        energyResult.getFullImage().save(imageFile, 90);
                         jsonResult.put("fullImagePath", imageFile.getAbsolutePath());
                     }
-                    if(jsonArray != null){
+                    if (jsonArray != null) {
                         jsonResult.put("detectedBarcodes", jsonArray);
                     }
 
@@ -276,11 +288,11 @@ public class EnergyActivity extends AnylineBaseActivity {
         });
         energyScanView.getAnylineController().setWorkerThreadUncaughtExceptionHandler(this);
     }
-    
-    private JSONObject wrapBarcodeInJson(Barcode b){
+
+    private JSONObject wrapBarcodeInJson(Barcode b) {
         JSONObject json = new JSONObject();
 
-        try{
+        try {
             json.put("value", b.rawValue);
             json.put("format", findValidFormatForReference(b.format));
         } catch (JSONException jsonException) {
@@ -290,50 +302,50 @@ public class EnergyActivity extends AnylineBaseActivity {
         return json;
     }
 
-    private String findValidFormatForReference(int format){
-        if(format == Barcode.AZTEC){
+    private String findValidFormatForReference(int format) {
+        if (format == Barcode.AZTEC) {
             return BarcodeScanView.BarcodeFormat.AZTEC.toString();
         }
-        if(format == Barcode.CODABAR){
+        if (format == Barcode.CODABAR) {
             return BarcodeScanView.BarcodeFormat.CODABAR.toString();
         }
-        if(format == Barcode.CODE_39){
+        if (format == Barcode.CODE_39) {
             return BarcodeScanView.BarcodeFormat.CODE_39.toString();
         }
-        if(format == Barcode.CODE_93){
+        if (format == Barcode.CODE_93) {
             return BarcodeScanView.BarcodeFormat.CODE_93.toString();
         }
-        if(format == Barcode.CODE_128){
+        if (format == Barcode.CODE_128) {
             return BarcodeScanView.BarcodeFormat.CODE_128.toString();
         }
-        if(format == Barcode.DATA_MATRIX){
+        if (format == Barcode.DATA_MATRIX) {
             return BarcodeScanView.BarcodeFormat.DATA_MATRIX.toString();
         }
-        if(format == Barcode.EAN_8){
+        if (format == Barcode.EAN_8) {
             return BarcodeScanView.BarcodeFormat.EAN_8.toString();
         }
-        if(format == Barcode.EAN_13){
+        if (format == Barcode.EAN_13) {
             return BarcodeScanView.BarcodeFormat.EAN_13.toString();
         }
-        if(format == Barcode.ITF){
+        if (format == Barcode.ITF) {
             return BarcodeScanView.BarcodeFormat.ITF.toString();
         }
-        if(format == Barcode.PDF417){
+        if (format == Barcode.PDF417) {
             return BarcodeScanView.BarcodeFormat.PDF_417.toString();
         }
-        if(format == Barcode.QR_CODE){
+        if (format == Barcode.QR_CODE) {
             return BarcodeScanView.BarcodeFormat.QR_CODE.toString();
         }
-        if(format == Barcode.UPC_A){
+        if (format == Barcode.UPC_A) {
             return BarcodeScanView.BarcodeFormat.UPC_A.toString();
         }
-        if(format == Barcode.UPC_E){
+        if (format == Barcode.UPC_E) {
             return BarcodeScanView.BarcodeFormat.UPC_E.toString();
         }
-        
+
         //others are currently not supported by the native scanner (RSS_14, RSS_EXPANDED, UPC_EAN_EXTENSION)
         return BarcodeScanView.BarcodeFormat.UNKNOWN.toString();
-        
+
     }
 
 }

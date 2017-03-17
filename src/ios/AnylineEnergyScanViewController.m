@@ -19,10 +19,10 @@
         
         NSError *error = nil;
         [energyModuleView setupWithLicenseKey:self.key delegate:self error:&error];
-//        if(!success) {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Setup failed:" message:error.debugDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-//            [alert show];
-//        }
+        //        if(!success) {
+        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Setup failed:" message:error.debugDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        //            [alert show];
+        //        }
         
         energyModuleView.scanMode = self.scanMode;
         energyModuleView.currentConfiguration = self.conf;
@@ -66,16 +66,17 @@
 
 #pragma mark - AnylineEnergyModuleDelegate method
 
-- (void)anylineEnergyModuleView:(AnylineEnergyModuleView *)anylineEnergyModuleView
-              didFindScanResult:(NSString *)scanResult
-                      cropImage:(UIImage *)image
-                      fullImage:(UIImage *)fullImage
-                         inMode:(ALScanMode)scanMode {
-    self.scannedLabel.text = scanResult;
+- (void)anylineEnergyModuleView:(AnylineEnergyModuleView *)anylineEnergyModuleView didFindResult:(ALEnergyResult *)scanResult {
+    /*
+     To present the scanned result to the user we use a custom view controller.
+     */
+    self.scannedLabel.text = (NSString *)scanResult.result;
+    
+    
     
     NSMutableDictionary *dictResult = [NSMutableDictionary dictionaryWithCapacity:4];
     
-    switch (scanMode) {
+    switch (scanResult.scanMode) {
         case ALGasMeter:
             [dictResult setObject:@"Gas Meter" forKey:@"meterType"];
             break;
@@ -99,19 +100,23 @@
             break;
     }
     
-    [dictResult setObject:[self stringFromScanMode:scanMode] forKey:@"scanMode"];
+    [dictResult setObject:[self stringFromScanMode:scanResult.scanMode] forKey:@"scanMode"];
     
-    [dictResult setObject:scanResult forKey:@"reading"];
+    [dictResult setObject:scanResult.result forKey:@"reading"];
     
-    NSString *imagePath = [self saveImageToFileSystem:image];
+    NSString *imagePath = [self saveImageToFileSystem:scanResult.image];
     
     [dictResult setValue:imagePath forKey:@"imagePath"];
     
-    NSString *fullImagePath = [self saveImageToFileSystem:fullImage];
+    NSString *fullImagePath = [self saveImageToFileSystem:scanResult.fullImage];
     
     [dictResult setValue:fullImagePath forKey:@"fullImagePath"];
     
     [dictResult setObject:self.detectedBarcodes forKey:@"detectedBarcodes"];
+    
+    [dictResult setValue:@(scanResult.confidence) forKey:@"confidence"];
+    [dictResult setValue:[self stringForOutline:scanResult.outline] forKey:@"outline"];
+    
     
     [self.delegate anylineBaseScanViewController:self didScan:dictResult continueScanning:!self.moduleView.cancelOnResult];
     
@@ -139,9 +144,9 @@
     
     [self.detectedBarcodes addObject:barcode];
 }
-    
+
 #pragma mark - IBActions
-    
+
 - (IBAction)segmentChange:(id)sender {
     NSString *modeString = self.cordovaConfig.segmentModes[((UISegmentedControl *)sender).selectedSegmentIndex];
     ALScanMode scanMode = [self scanModeFromString:modeString];
@@ -149,7 +154,7 @@
     
     self.moduleView.currentConfiguration = self.conf;
 }
-    
+
 #pragma mark - Private Methods
 
 - (NSString *)barcodeFormatForNativeString:(NSString *)barcodeType {
@@ -219,7 +224,7 @@
                       
                       };
     });
-
+    
     return scanModes;
 }
 

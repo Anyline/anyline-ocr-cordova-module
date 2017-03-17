@@ -23,6 +23,7 @@ import at.nineyards.anyline.models.AnylineImage;
 import at.nineyards.anyline.modules.mrz.Identification;
 import at.nineyards.anyline.modules.mrz.MrzResultListener;
 import at.nineyards.anyline.modules.mrz.MrzScanView;
+import at.nineyards.anyline.modules.mrz.MrzResult;
 import at.nineyards.anyline.util.TempFileUtil;
 
 public class MrzActivity extends AnylineBaseActivity {
@@ -68,15 +69,18 @@ public class MrzActivity extends AnylineBaseActivity {
         mrzScanView.initAnyline(licenseKey, new MrzResultListener() {
 
             @Override
-            public void onResult(Identification mrzResult, AnylineImage anylineImage) {
+            public void onResult(MrzResult mrzResult) {
 
-                JSONObject jsonResult = mrzResult.toJSONObject();
+                JSONObject jsonResult = mrzResult.getResult().toJSONObject();
 
                 try {
                     File imageFile = TempFileUtil.createTempFileCheckCache(MrzActivity.this,
                             UUID.randomUUID().toString(), ".jpg");
-                    anylineImage.save(imageFile, 90);
+                    mrzResult.getCutoutImage().save(imageFile, 90);
                     jsonResult.put("imagePath", imageFile.getAbsolutePath());
+
+                    jsonResult.put("outline", jsonForOutline(mrzResult.getOutline()));
+                    jsonResult.put("confidence", mrzResult.getConfidence());
 
                 } catch (IOException e) {
                     Log.e(TAG, "Image file could not be saved.", e);

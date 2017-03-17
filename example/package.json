@@ -1,0 +1,13 @@
+{
+  "name": "anyline-cordova-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "reinstall" : "cordova platform remove android && cordova plugin remove io-anyline-cordova && cordova platform add android && cordova plugin add ../",
+    "reinstall-ios" : "cordova platform remove ios && cordova plugin remove io-anyline-cordova && cordova platform add ios && cordova plugin add ../"
+  },
+  "author": "",
+  "license": "ISC"
+}

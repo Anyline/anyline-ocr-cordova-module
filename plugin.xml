@@ -74,7 +74,6 @@
       <activity  android:name="io.anyline.cordova.MrzActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
       <activity  android:name="io.anyline.cordova.EnergyActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
       <activity  android:name="io.anyline.cordova.AnylineOcrActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
-      <activity  android:name="io.anyline.cordova.DebitCardActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
       <activity  android:name="io.anyline.cordova.DocumentActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
     </config-file>
 
@@ -85,7 +84,6 @@
     <source-file  src="src/android/io/anyline/cordova/BarcodeActivity.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/MrzActivity.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/EnergyActivity.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/DebitCardActivity.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/DocumentActivity.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/CordovaUIConfig.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/ResultReporter.java" target-dir="src/io/anyline/cordova"/>

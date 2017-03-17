@@ -22,6 +22,7 @@
 
 - (void)flashResultFor:(NSTimeInterval) duration;
 
+- (NSString *)stringForOutline:(ALSquare *)square;
 
 @end
 

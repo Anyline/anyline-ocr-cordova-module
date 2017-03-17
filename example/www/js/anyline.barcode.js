@@ -10,7 +10,7 @@ if (anyline === undefined) {
 }
 anyline.barcode = {
 
-    onResult: function(result) {
+    onResult: function (result) {
         //this is called with result of the barcode module
         //the result is a string containing the barcode
 
@@ -18,15 +18,19 @@ anyline.barcode = {
         console.log("Barcode result: " + JSON.stringify(result));
 
 
-        div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-            "<b>Barcode:</b> " + result.value + "</br>" + "<b>Format </b> " + result.format + "</p>" +
+        div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" + +"<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
+            + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>"
+            + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
+            + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>"
+            + "<b>Barcode:</b> " + result.value + "</br>" + "<b>Format </b> " + result.format + "</p>" +
             div.innerHTML;
 
         document.getElementById("details_scan_modes").removeAttribute("open");
         document.getElementById("details_results").setAttribute("open", "");
+        window.scrollTo(0, 0);
     },
 
-    onError: function(error) {
+    onError: function (error) {
         //called if an error occurred or the user canceled the scanning
         if (error == "Canceled") {
             //when user has canceled
@@ -38,7 +42,7 @@ anyline.barcode = {
         alert(error);
     },
 
-    scan: function() {
+    scan: function () {
         // start the barcode scanning
         // pass the success and error callbacks, as well as the license key and the config to the plugin
         // see http://documentation.anyline.io/#anyline-config for config details

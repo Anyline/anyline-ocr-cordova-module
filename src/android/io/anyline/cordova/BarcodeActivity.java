@@ -19,12 +19,16 @@ import java.io.IOException;
 import java.util.UUID;
 
 import at.nineyards.anyline.camera.AnylineViewConfig;
+import at.nineyards.anyline.camera.CameraController;
+import at.nineyards.anyline.camera.CameraOpenListener;
+
 import at.nineyards.anyline.models.AnylineImage;
+import at.nineyards.anyline.modules.barcode.BarcodeResult;
 import at.nineyards.anyline.modules.barcode.BarcodeResultListener;
 import at.nineyards.anyline.modules.barcode.BarcodeScanView;
 import at.nineyards.anyline.util.TempFileUtil;
 
-public class BarcodeActivity extends AnylineBaseActivity {
+public class BarcodeActivity extends AnylineBaseActivity implements CameraOpenListener{
     private static final String TAG = BarcodeActivity.class.getSimpleName();
 
     private BarcodeScanView barcodeScanView;
@@ -42,6 +46,9 @@ public class BarcodeActivity extends AnylineBaseActivity {
             finishWithError(Resources.getString(this, "error_invalid_json_data") + "\n" + e.getLocalizedMessage());
             return;
         }
+
+        barcodeScanView.setCameraOpenListener(this);
+
         setContentView(barcodeScanView);
 
         initAnyline();
@@ -60,23 +67,40 @@ public class BarcodeActivity extends AnylineBaseActivity {
         barcodeScanView.releaseCameraInBackground();
     }
 
+    @Override
+    public void onCameraOpened(CameraController cameraController, int width, int height) {
+        //the camera is opened async and this is called when the opening is finished
+        Log.d(TAG, "Camera opened successfully. Frame resolution " + width + " x " + height);
+    }
+
+    @Override
+    public void onCameraError(Exception e) {
+        //This is called if the camera could not be opened.
+        // (e.g. If there is no camera or the permission is denied)
+        // This is useful to present an alternative way to enter the required data if no camera exists.
+        throw new RuntimeException(e);
+    }
+
     private void initAnyline() {
         barcodeScanView.setCameraOpenListener(this);
 
         barcodeScanView.initAnyline(licenseKey, new BarcodeResultListener() {
             @Override
-            public void onResult(String result, BarcodeScanView.BarcodeFormat format, AnylineImage resultImage) {
+            public void onResult(BarcodeResult result) {
 
                 JSONObject jsonResult = new JSONObject();
                 try {
 
-                    jsonResult.put("value", result);
-                    jsonResult.put("format", format.toString());
+                    jsonResult.put("value", result.getResult());
+                    jsonResult.put("format", result.getBarcodeFormat());
+
+                    jsonResult.put("outline", jsonForOutline(result.getOutline()));
+                    jsonResult.put("confidence", result.getConfidence());
 
                     File imageFile = TempFileUtil.createTempFileCheckCache(BarcodeActivity.this,
                             UUID.randomUUID().toString(), ".jpg");
 
-                    resultImage.save(imageFile, 90);
+                    result.getCutoutImage().save(imageFile, 90);
                     jsonResult.put("imagePath", imageFile.getAbsolutePath());
 
                 } catch (IOException e) {

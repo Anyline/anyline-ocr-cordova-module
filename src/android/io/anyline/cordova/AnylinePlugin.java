@@ -110,9 +110,6 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             case "MRZ":
                 scan(MrzActivity.class, REQUEST_MRZ, args);
                 break;
-            case "DEBIT_CARD":
-                scan(DebitCardActivity.class, REQUEST_DEBIT_CARD, args);
-                break;
             case "DOCUMENT":
                 scan(DocumentActivity.class, REQUEST_DOCUMENT, args);
                 break;
@@ -176,6 +173,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
 
     private void scan(Class<?> activityToStart, int requestCode, JSONArray data, String mode) {
         Intent intent = new Intent(cordova.getActivity(), activityToStart);
+
         try {
             intent.putExtra(EXTRA_LICENSE_KEY, data.getString(0));
             if (data.length() > 1) {
