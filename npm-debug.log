@@ -39,7 +39,7 @@
 21 silly publish   gitHead: 'c21c5b4004f8c58a749fab56040d603de53f3bd9',
 21 silly publish   _id: 'io-anyline-cordova@3.9.0-2',
 21 silly publish   scripts: {},
-21 silly publish   _shasum: 'f516b79962a02f691e982c69fa28e9c436961c39',
+21 silly publish   _shasum: 'be7496e1c479317720c0f47c3be47ede798e414a',
 21 silly publish   _from: '.' }
 22 verbose getPublishConfig undefined
 23 silly mapToRegistry name io-anyline-cordova
@@ -56,23 +56,47 @@
 27 silly mapToRegistry uri https://registry.npmjs.org/io-anyline-cordova
 28 verbose publish registryBase https://registry.npmjs.org/
 29 silly publish uploading /Users/jonesBoi/.npm/io-anyline-cordova/3.9.0-2/package.tgz
-30 verbose stack Error: "toString()" failed
-30 verbose stack     at Buffer.toString (buffer.js:503:11)
-30 verbose stack     at CachingRegistryClient.putFirst (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/publish.js:97:23)
-30 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/publish.js:54:14
-30 verbose stack     at ConcatStream.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/node_modules/concat-stream/index.js:36:43)
-30 verbose stack     at emitNone (events.js:91:20)
-30 verbose stack     at ConcatStream.emit (events.js:185:7)
-30 verbose stack     at finishMaybe (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/node_modules/concat-stream/node_modules/readable-stream/lib/_stream_writable.js:475:14)
-30 verbose stack     at endWritable (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/node_modules/concat-stream/node_modules/readable-stream/lib/_stream_writable.js:485:3)
-30 verbose stack     at ConcatStream.Writable.end (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/node_modules/concat-stream/node_modules/readable-stream/lib/_stream_writable.js:455:41)
-30 verbose stack     at ReadStream.onend (_stream_readable.js:511:10)
-31 verbose cwd /Users/jonesBoi/Anyline/NewStuff/anyline-ocr-cordova-module
-32 error Darwin 15.6.0
-33 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
-34 error node v7.2.1
-35 error npm  v3.10.10
-36 error "toString()" failed
-37 error If you need help, you may report this error at:
-37 error     <https://github.com/npm/npm/issues>
-38 verbose exit [ 1, true ]
+30 verbose request uri https://registry.npmjs.org/io-anyline-cordova
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 18:34:24
+33 verbose request using bearer token for auth
+34 verbose request id 328391df7810e28e
+35 http request PUT https://registry.npmjs.org/io-anyline-cordova
+36 http 403 https://registry.npmjs.org/io-anyline-cordova
+37 verbose headers { 'content-type': 'application/json',
+37 verbose headers   'cache-control': 'max-age=300',
+37 verbose headers   'content-length': '97',
+37 verbose headers   'accept-ranges': 'bytes',
+37 verbose headers   date: 'Fri, 17 Mar 2017 17:35:35 GMT',
+37 verbose headers   via: '1.1 varnish',
+37 verbose headers   connection: 'keep-alive',
+37 verbose headers   'x-served-by': 'cache-fra1220-FRA',
+37 verbose headers   'x-cache': 'MISS',
+37 verbose headers   'x-cache-hits': '0',
+37 verbose headers   'x-timer': 'S1489772065.177959,VS0,VE70667',
+37 verbose headers   vary: 'Accept-Encoding' }
+38 verbose request invalidating /Users/jonesBoi/.npm/registry.npmjs.org/io-anyline-cordova on PUT
+39 error publish Failed PUT 403
+40 verbose stack Error: "You cannot publish over the previously published version 3.9.0-2." : io-anyline-cordova
+40 verbose stack     at makeError (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+40 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:290:14)
+40 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+40 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:187:22)
+40 verbose stack     at emitTwo (events.js:106:13)
+40 verbose stack     at Request.emit (events.js:191:7)
+40 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1048:10)
+40 verbose stack     at emitOne (events.js:96:13)
+40 verbose stack     at Request.emit (events.js:188:7)
+40 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:969:12)
+41 verbose statusCode 403
+42 verbose pkgid io-anyline-cordova
+43 verbose cwd /Users/jonesBoi/Anyline/NewStuff/anyline-ocr-cordova-module
+44 error Darwin 15.6.0
+45 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+46 error node v7.2.1
+47 error npm  v3.10.10
+48 error code E403
+49 error "You cannot publish over the previously published version 3.9.0-2." : io-anyline-cordova
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]
