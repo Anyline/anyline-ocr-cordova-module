@@ -1,27 +1,78 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/local/bin/node',
-1 verbose cli   '/usr/local/bin/npm',
-1 verbose cli   'run',
-1 verbose cli   'reinstall' ]
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
 2 info using npm@3.10.10
 3 info using node@v7.2.1
-4 verbose stack Error: missing script: reinstall
-4 verbose stack     at run (/usr/local/lib/node_modules/npm/lib/run-script.js:151:19)
-4 verbose stack     at /usr/local/lib/node_modules/npm/lib/run-script.js:61:5
-4 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:356:5
-4 verbose stack     at checkBinReferences_ (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:320:45)
-4 verbose stack     at final (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:354:3)
-4 verbose stack     at then (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:124:5)
-4 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:311:12
-4 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:78:16
-4 verbose stack     at tryToString (fs.js:425:3)
-4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:412:12)
-5 verbose cwd /Users/jonesBoi/Anyline/NewStuff/anyline-ocr-cordova-module
-6 error Darwin 15.5.0
-7 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "reinstall"
-8 error node v7.2.1
-9 error npm  v3.10.10
-10 error missing script: reinstall
-11 error If you need help, you may report this error at:
-11 error     <https://github.com/npm/npm/issues>
-12 verbose exit [ 1, true ]
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/jonesBoi/Anyline/NewStuff/anyline-ocr-cordova-module',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/jonesBoi/.npm/io-anyline-cordova/3.9.0-2/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/jonesBoi/.npm correctMkdir not in flight; initializing
+10 info lifecycle io-anyline-cordova@3.9.0-2~prepublish: io-anyline-cordova@3.9.0-2
+11 silly lifecycle io-anyline-cordova@3.9.0-2~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/Users/jonesBoi/.npm/io-anyline-cordova/3.9.0-2/package.tgz',
+12 verbose tar pack   '/Users/jonesBoi/Anyline/NewStuff/anyline-ocr-cordova-module' ]
+13 verbose tarball /Users/jonesBoi/.npm/io-anyline-cordova/3.9.0-2/package.tgz
+14 verbose folder /Users/jonesBoi/Anyline/NewStuff/anyline-ocr-cordova-module
+15 verbose addLocalTarball adding from inside cache /Users/jonesBoi/.npm/io-anyline-cordova/3.9.0-2/package.tgz
+16 verbose correctMkdir /Users/jonesBoi/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd io-anyline-cordova@3.9.0-2
+18 verbose afterAdd /Users/jonesBoi/.npm/io-anyline-cordova/3.9.0-2/package/package.json not in flight; writing
+19 verbose correctMkdir /Users/jonesBoi/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /Users/jonesBoi/.npm/io-anyline-cordova/3.9.0-2/package/package.json written
+21 silly publish { name: 'io-anyline-cordova',
+21 silly publish   version: '3.9.0-2',
+21 silly publish   description: 'The cordova plugin for the Anyline SDK',
+21 silly publish   cordova: { id: 'io-anyline-cordova', platforms: [ 'ios', 'android' ] },
+21 silly publish   keywords: [ 'ecosystem:cordova', 'cordova-ios', 'cordova-android' ],
+21 silly publish   author: { name: 'Anyline GmbH' },
+21 silly publish   license: 'SEE LICENSE IN LICENSE',
+21 silly publish   readme: '## Anyline SDK Cordova Plugin ##\n\nAnyline provides an easy-to-use SDK for applications to enable Optical Character Recognition (OCR) on mobile devices.\n\n### Available Modules\n- [**Barcode:**](https://documentation.anyline.io/#modules)  Scan 23 types of international barcode & QR code formats.\n- [**Energy:**](https://documentation.anyline.io/#energy) Scan meter readings of various electric, gas, and water meters.\n- [**MRZ:**](https://documentation.anyline.io/#mrz)  Reliable scanning of data from passports\' and IDs\' machine readable zones (MRZ)\n- [**Anyline OCR:**](https://documentation.anyline.io/#anyline-ocr) Create a custom use case with LINE or GRID recognition\n\n### Requirements\n\n#### Android\n- Android device with SDK >= 15\n- decent camera functionality (recommended: 720p and adequate auto focus)\n\n#### iOS\n- minimum iOS 8.2\n- minimum iPhone4s\n\n\n### Quick Start - Setup\nThis is just a simple setup guide to integrate the anylinesdk-plugin in an existing Cordova project.<br/>\nFor more information about Cordova, how to use plugins, etc. see <a target="_blank" href="https://cordova.apache.org/">https://cordova.apache.org/</a>.\n\n###### 1. Add the anylinesdk-plugin to your existing cordova project\n```\ncordova plugin add io-anyline-cordova\n```\n\nOr use plugman. E.g. for android:  \n\n```\nplugman install --platform android --project platforms/android --plugin io-anyline-cordova\n```\n\nIf you\'d like to clone the repository you will have to use git-lfs. Use the following commands to install git-lfs.\n```\nbrew install git-lfs\ngit lfs install\n```\nIf you prefer downloading a package, use the provided `zip` package on the [releases page](https://github.com/Anyline/anyline-ocr-cordova-module/releases). Be aware that the github download zip button does not work for projects with git-lfs.\n\n\n\n\n###### 2. Plugin Usage\n\n```javaScript\ncordova.exec(onResult, onError, "AnylineSDK", scanMode, config);\n```\n\n- <b>onResult</b>: a function that is called on a scan result\n- <b>onError</b>: a function that is called on error or when the user canceled the scanning\n- <b>AnylineSDK</b>: add this *string* to make sure the anyline-sdk plugin is called\n- <b>scanMode</b>: "<i>MRZ</i>", "<i>BARCODE</i>", "<i>ANYLINE_OCR</i>", "<i>ELECTRIC_METER</i>", "<i>GAS_METER</i>" (more Energy modes can be found [here](https://documentation.anyline.io/#energy))\n- <b>config</b>: an array\n    * <b>config[0]</b>: the license key\n    * <b>config[1]</b>: the [view config](https://documentation.anyline.io/#anyline-config)\n    * <b>config[2]</b>: the [ocr config](https://documentation.anyline.io/#anyline-ocr) (only uses with mode ANYLINE_OCR)\n\n\n> Example for **config** from MRZ:\n\n```json\n[\n    "YOUR_LICENSE_KEY",\n    {\n        "captureResolution": "1080p",\n        "cutout": {\n            "style": "rect",\n            "maxWidthPercent": "90%",\n            "maxHeightPercent": "90%",\n            "alignment": "top_half",\n            "strokeWidth": 2,\n            "cornerRadius": 4,\n            "strokeColor": "FFFFFF",\n            "outerColor": "000000",\n            "outerAlpha": 0.3\n        },\n        "flash": {\n            "mode": "manual",\n            "alignment": "bottom_right"\n        },\n        "beepOnResult": true,\n        "vibrateOnResult": true,\n        "blinkAnimationOnResult": true,\n        "cancelOnResult": true\n    }\n]\n```\n\n\n###### 3. Run your cordova project: Enjoy scanning and have fun :)\n\nCheckout our <a href="https://documentation.anyline.io/">online documentation</a>  for more details.\n\n\n## License\n\nSee LICENSE file.\n',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: 'c21c5b4004f8c58a749fab56040d603de53f3bd9',
+21 silly publish   _id: 'io-anyline-cordova@3.9.0-2',
+21 silly publish   scripts: {},
+21 silly publish   _shasum: 'f516b79962a02f691e982c69fa28e9c436961c39',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name io-anyline-cordova
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'io-anyline-cordova',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   escapedName: 'io-anyline-cordova',
+26 silly mapToRegistry   name: 'io-anyline-cordova',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/io-anyline-cordova
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /Users/jonesBoi/.npm/io-anyline-cordova/3.9.0-2/package.tgz
+30 verbose stack Error: "toString()" failed
+30 verbose stack     at Buffer.toString (buffer.js:503:11)
+30 verbose stack     at CachingRegistryClient.putFirst (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/publish.js:97:23)
+30 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/publish.js:54:14
+30 verbose stack     at ConcatStream.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/node_modules/concat-stream/index.js:36:43)
+30 verbose stack     at emitNone (events.js:91:20)
+30 verbose stack     at ConcatStream.emit (events.js:185:7)
+30 verbose stack     at finishMaybe (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/node_modules/concat-stream/node_modules/readable-stream/lib/_stream_writable.js:475:14)
+30 verbose stack     at endWritable (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/node_modules/concat-stream/node_modules/readable-stream/lib/_stream_writable.js:485:3)
+30 verbose stack     at ConcatStream.Writable.end (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/node_modules/concat-stream/node_modules/readable-stream/lib/_stream_writable.js:455:41)
+30 verbose stack     at ReadStream.onend (_stream_readable.js:511:10)
+31 verbose cwd /Users/jonesBoi/Anyline/NewStuff/anyline-ocr-cordova-module
+32 error Darwin 15.6.0
+33 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+34 error node v7.2.1
+35 error npm  v3.10.10
+36 error "toString()" failed
+37 error If you need help, you may report this error at:
+37 error     <https://github.com/npm/npm/issues>
+38 verbose exit [ 1, true ]
