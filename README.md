@@ -34,6 +34,16 @@ Or use plugman. E.g. for android:
 plugman install --platform android --project platforms/android --plugin io-anyline-cordova
 ```
 
+If you'd like to clone the repository you will have to use git-lfs. Use the following commands to install git-lfs.
+```
+brew install git-lfs
+git lfs install
+```
+If you prefer downloading a package, use the provided `zip` package on the [releases page](https://github.com/Anyline/anyline-ocr-cordova-module/releases). Be aware that the github download zip button does not work for projects with git-lfs.
+
+
+
+
 ###### 2. Plugin Usage
 
 ```javaScript
