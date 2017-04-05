@@ -12,6 +12,9 @@ android {
 
   defaultConfig {
     minSdkVersion 15
+    ndk { 
+      abiFilters "armeabi-v7a", "x86" 
+    } 
   }
 
   compileOptions {
