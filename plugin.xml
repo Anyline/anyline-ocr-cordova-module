@@ -3,7 +3,7 @@
     xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="io-anyline-cordova"
-    version="3.9.0.2">
+    version="3.10.0.1">
 
   <name>AnylineSDK</name>
 
@@ -90,9 +90,7 @@
     <source-file  src="src/android/io/anyline/cordova/Resources.java" target-dir="src/io/anyline/cordova"/>
 
     <resource-file src="src/android/res/values/anyline_sdk_plugin_strings.xml" target="res/values/anyline_sdk_plugin_strings.xml"/>
-    <resource-file src="src/android/res/values/colors.xml" target="res/values/colors.xml"/>
-    <resource-file src="src/android/res/values/integers.xml" target="res/values/integers.xml"/>
-    <resource-file src="src/android/res/values/strings.xml" target="res/values/strings.xml"/>
+    <resource-file src="src/android/res/values/anyline_sdk_plugin_colors.xml" target="res/values/anyline_sdk_plugin_colors.xml"/>
     <resource-file src="src/android/res/values-de/anyline_sdk_plugin_strings.xml" target="res/values-de/anyline_sdk_plugin_strings.xml"/>
     <resource-file src="src/android/res/layout/activity_scan_document.xml" target="res/layout/activity_scan_document.xml"/>
 

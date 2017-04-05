@@ -37,6 +37,7 @@ import at.nineyards.anyline.modules.document.DocumentScanView;
  */
 public class DocumentActivity extends AnylineBaseActivity implements CameraOpenListener {
 
+    private static final long ERROR_MESSAGE_DELAY = 2000;
     private static final String TAG = DocumentActivity.class.getSimpleName();
     private DocumentScanView documentScanView;
     private Toast notificationToast;
@@ -57,7 +58,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             if (DocumentActivity.this.isFinishing()) {
                 return;
             }
-            if (System.currentTimeMillis() > lastErrorRecieved + getApplication().getResources().getIdentifier("error_message_delay", "integer", getPackageName())) {
+            if (System.currentTimeMillis() > lastErrorRecieved + ERROR_MESSAGE_DELAY) {
                 if (errorMessage == null || errorMessageAnimator == null) {
                     return;
                 }
@@ -65,12 +66,12 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
                     errorMessage.setText("");
                 } else if (!errorMessageAnimator.isRunning()) {
                     errorMessageAnimator = ObjectAnimator.ofFloat(errorMessage, "alpha", errorMessage.getAlpha(), 0f);
-                    errorMessageAnimator.setDuration(getResources().getIdentifier("error_message_delay", "integer", getPackageName()));
+                    errorMessageAnimator.setDuration(ERROR_MESSAGE_DELAY);
                     errorMessageAnimator.setInterpolator(new AccelerateInterpolator());
                     errorMessageAnimator.start();
                 }
             }
-            handler.postDelayed(errorMessageCleanup, getResources().getIdentifier("error_message_delay", "integer", getPackageName()));
+            handler.postDelayed(errorMessageCleanup, ERROR_MESSAGE_DELAY);
 
         }
     };
@@ -334,7 +335,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         errorMessage.setAlpha(0f);
         errorMessage.setText(message);
         errorMessageAnimator = ObjectAnimator.ofFloat(errorMessage, "alpha", 0f, 1f);
-        errorMessageAnimator.setDuration(getResources().getInteger(getResources().getIdentifier("error_message_delay", "integer", getPackageName())));
+        errorMessageAnimator.setDuration(ERROR_MESSAGE_DELAY);
         errorMessageAnimator.setInterpolator(new DecelerateInterpolator());
         errorMessageAnimator.start();
     }
@@ -351,7 +352,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         }
 
         errorMessageAnimator = ObjectAnimator.ofFloat(errorMessage, "alpha", 0f, 1f);
-        errorMessageAnimator.setDuration(getResources().getInteger(getResources().getIdentifier("error_message_delay", "integer", getPackageName())));
+        errorMessageAnimator.setDuration(ERROR_MESSAGE_DELAY);
         errorMessageAnimator.setInterpolator(new DecelerateInterpolator());
         errorMessageAnimator.setRepeatMode(ValueAnimator.REVERSE);
         errorMessageAnimator.setRepeatCount(1);
