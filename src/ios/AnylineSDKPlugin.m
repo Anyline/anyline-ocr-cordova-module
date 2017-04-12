@@ -25,6 +25,10 @@
 @implementation AnylineSDKPlugin
 
 
+- (void)AUTO_ANALOG_DIGITAL_METER:(CDVInvokedUrlCommand *)command {
+    [self processMeterCommand:command withScanMode:ALAutoAnalogDigitalMeter];
+}
+
 - (void)ANALOG_METER:(CDVInvokedUrlCommand *)command {
     [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }

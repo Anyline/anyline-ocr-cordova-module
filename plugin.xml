@@ -3,7 +3,7 @@
     xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="io-anyline-cordova"
-    version="3.10.0.1">
+    version="3.11.0">
 
   <name>AnylineSDK</name>
 

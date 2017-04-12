@@ -96,6 +96,10 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
 
     private void startScanning(String action, JSONArray args) {
         switch (action) {
+            case "AUTO_ANALOG_DIGITAL_METER":
+                scanEnergy(args, EnergyScanView.ScanMode.AUTO_ANALOG_DIGITAL_METER);
+                break;
+
             case "DIGITAL_METER":
                 scanEnergy(args, EnergyScanView.ScanMode.DIGITAL_METER);
                 break;

@@ -204,6 +204,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         scanModes = @{
+                      @"AUTO_ANALOG_DIGITAL_METER" : @(ALAutoAnalogDigitalMeter),
                       @"ELECTRIC_METER" : @(ALElectricMeter),
                       @"ELECTRIC_METER_5_1" : @(ALElectricMeter5_1),
                       @"ELECTRIC_METER_6_1" : @(ALElectricMeter6_1),

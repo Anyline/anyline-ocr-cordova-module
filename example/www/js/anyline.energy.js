@@ -168,7 +168,7 @@ anyline.energy = {
                 "alignment": "top",
                 "offset": {
                     "x": 0,
-                    "y": 120
+                    "y": 150
                 },
                 "strokeWidth": 2,
                 "cornerRadius": 4,
