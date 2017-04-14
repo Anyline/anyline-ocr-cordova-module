@@ -82,6 +82,11 @@ anyline.mrz = {
                 "mode": "manual",
                 "alignment": "bottom_right"
             },
+            "visualFeedback": {
+                "style": "rect",
+                "strokeColor": "0099FF",
+                "strokeWidth": 2
+            },
             "beepOnResult": true,
             "vibrateOnResult": true,
             "blinkAnimationOnResult": true,

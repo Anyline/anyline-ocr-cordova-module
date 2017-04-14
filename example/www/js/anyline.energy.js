@@ -86,6 +86,11 @@ anyline.energy = {
                 "mode": "manual",
                 "alignment": "bottom_right"
             },
+            "visualFeedback": {
+                "style": "CONTOUR_RECT",
+                "strokeColor": "0099FF",
+                "fillColor": "220099FF"
+            },
             "beepOnResult": true,
             "vibrateOnResult": true,
             "blinkAnimationOnResult": true,
@@ -128,6 +133,11 @@ anyline.energy = {
             "flash": {
                 "mode": "manual",
                 "alignment": "bottom_right"
+            },
+            "visualFeedback": {
+                "style": "CONTOUR_RECT",
+                "strokeColor": "0099FF",
+                "fillColor": "220099FF"
             },
             "beepOnResult": true,
             "vibrateOnResult": true,
@@ -179,6 +189,11 @@ anyline.energy = {
             "flash": {
                 "mode": "manual",
                 "alignment": "bottom_right"
+            },
+            "visualFeedback": {
+                "style": "CONTOUR_RECT",
+                "strokeColor": "0099FF",
+                "fillColor": "220099FF"
             },
             "beepOnResult": true,
             "vibrateOnResult": true,
