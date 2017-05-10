@@ -21,7 +21,7 @@ anyline.mrz = {
             "<br/><b>Number:</b> " + result.documentNumber + " <b>" +
             "<br/>Country:</b> " + result.nationalityCountryCode + "[" + result.issuingCountryCode + "]" +
             "<br/><b>Day of Birth:</b> " + result.dayOfBirth +
-            "<br/><b>Expiration:</b> " + result.expirationDate + +"<br/>" +
+            "<br/><b>Expiration:</b> " + result.expirationDate +"<br/>" +
             "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
             "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
             "</p>" + div.innerHTML;

@@ -18,10 +18,8 @@ anyline.barcode = {
         console.log("Barcode result: " + JSON.stringify(result));
 
 
-        div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" + +"<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
-            + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>"
-            + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
-            + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>"
+        div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/>"
+            + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</br>"
             + "<b>Barcode:</b> " + result.value + "</br>" + "<b>Format </b> " + result.format + "</p>" +
             div.innerHTML;
 

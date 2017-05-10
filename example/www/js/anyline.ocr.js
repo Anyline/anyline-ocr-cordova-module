@@ -59,7 +59,7 @@ anyline.ocr = {
           "style": "rect",
           "maxWidthPercent": "80%",
           "maxHeightPercent": "80%",
-          "alignment": "top_half",
+          "alignment": "center",
           "width": 900,
           "ratioFromSize": {
             "width": 10,
@@ -89,16 +89,14 @@ anyline.ocr = {
       },
 
     ibanOcrConfig: {
-        "scanMode": "LINE",
-        "minCharHeight": 20,
-        "maxCharHeight": 60,
-        "traineddataFiles": ["assets/eng_no_dict.traineddata"],
-        "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-        "validationRegex": "^[A-Z]{2}([0-9A-Z]\\s*){13,32}$",
-        "minConfidence": 65,
-        "minSharpness": 66,
-        "removeSmallContours": true,
-        "removeWhitespaces": true
+      scanMode :  'AUTO' ,
+      tesseractLanguages  : [ 'eng_no_dict' ,  'deu' ],
+      traineddataFiles : [ 'assets/eng_no_dict.traineddata' , 'assets/deu.traineddata' ],
+      charWhitelist :  'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890' ,
+      validationRegex :  '^[A-Z]{2}([0-9A-Z]\\s*){13,32}$' ,
+      minConfidence : 65,
+      removeSmallContours : true,
+      removeWhitespaces : true
     },
 
     anylineVoucherCodesViewConfig: {
@@ -135,18 +133,12 @@ anyline.ocr = {
       },
 
     anylineVoucherCodesOcrConfig: {
-        "scanMode": "GRID",
-        "minCharHeight": 45,
-        "maxCharHeight": 85,
-        "traineddataFiles": ["assets/anyline_capitals.traineddata"],
-        "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-        "validationRegex": "[A-Z0-9]{8}$",
-        "minConfidence": 85,
-        "removeSmallContours": true,
-        "charCountX": 8,
-        "charCountY": 1,
-        "charPaddingXFactor": 0.5,
-        "isBrightTextOnDark": true
+      "scanMode": "AUTO",
+      "tesseractLanguages" : ["anyline_capitals"],
+      "traineddataFiles": ["assets/anyline_capitals.traineddata"],
+      "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+      "validationRegex": "[A-Z0-9]{8}$",
+      "minConfidence": 85
     },
 
     scanIban: function() {
