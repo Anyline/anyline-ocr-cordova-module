@@ -84,6 +84,12 @@ anyline.barcode = {
                 "mode": "auto",
                 "alignment": "bottom_right"
             },
+            "visualFeedback": {
+                "style": "rect",
+                "strokeColor": "0099FF",
+                "fillColor": "220099FF",
+                "animationDuration": 150
+            },
             "beepOnResult": true,
             "vibrateOnResult": true,
             "blinkAnimationOnResult": true,

@@ -85,6 +85,11 @@ anyline.energy = {
         "mode": "manual",
         "alignment": "bottom_right"
       },
+      "visualFeedback": {
+        "style": "CONTOUR_RECT",
+        "strokeColor": "0099FF",
+        "fillColor": "220099FF"
+      },
       "beepOnResult": true,
       "vibrateOnResult": true,
       "blinkAnimationOnResult": true,
@@ -111,7 +116,9 @@ anyline.energy = {
     {
       "captureResolution": "720p",
       "visualFeedback": {
-        "style": "contour_rect"
+        "style": "CONTOUR_RECT",
+        "strokeColor": "0099FF",
+        "fillColor": "220099FF"
       },
       "cutout": {
         "style": "rect",
@@ -164,7 +171,9 @@ anyline.energy = {
     {
       "captureResolution": "720p",
       "visualFeedback": {
-        "style": "contour_rect"
+        "style": "CONTOUR_RECT",
+        "strokeColor": "0099FF",
+        "fillColor": "220099FF"
       },
       "cutout": {
         "style": "rect",
