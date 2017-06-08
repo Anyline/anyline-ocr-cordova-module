@@ -34,43 +34,43 @@
 }
     
 - (void)ELECTRIC_METER:(CDVInvokedUrlCommand *)command {
-    [self processMeterCommand:command withScanMode:ALElectricMeter];
+    [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
 
 - (void)GAS_METER:(CDVInvokedUrlCommand *)command {
-    [self processMeterCommand:command withScanMode:ALGasMeter];
+    [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
 
 - (void)WATER_METER_WHITE:(CDVInvokedUrlCommand *)command {
-    [self processMeterCommand:command withScanMode:ALWaterMeterWhiteBackground];
+    [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
 
 - (void)WATER_METER_BLACK:(CDVInvokedUrlCommand *)command {
-    [self processMeterCommand:command withScanMode:ALWaterMeterBlackBackground];
+    [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
 
 - (void)ELECTRIC_METER_5_1:(CDVInvokedUrlCommand *)command {
-    [self processMeterCommand:command withScanMode:ALElectricMeter5_1];
+    [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
 
 - (void)ELECTRIC_METER_6_1:(CDVInvokedUrlCommand *)command {
-    [self processMeterCommand:command withScanMode:ALElectricMeter6_1];
+    [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
 
 - (void)GAS_METER_6:(CDVInvokedUrlCommand *)command {
-    [self processMeterCommand:command withScanMode:ALGasMeter6];
+    [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
 
 - (void)ANALOG_METER_WHITE:(CDVInvokedUrlCommand *)command {
-    [self processMeterCommand:command withScanMode:ALAnalogMeterWhite];
+    [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
 
 - (void)ANALOG_METER_4:(CDVInvokedUrlCommand *)command {
-    [self processMeterCommand:command withScanMode:ALAnalogMeter4];
+    [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
 
 - (void)ANALOG_METER_7:(CDVInvokedUrlCommand *)command {
-    [self processMeterCommand:command withScanMode:ALAnalogMeter7];
+    [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
 
 - (void)HEAT_METER_4:(CDVInvokedUrlCommand *)command {

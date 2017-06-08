@@ -58,7 +58,8 @@
 
 - (void)anylineDocumentModuleView:(AnylineDocumentModuleView *)anylineDocumentModuleView
                         hasResult:(UIImage *)transformedImage
-                        fullImage:(UIImage *)fullFrame {
+                        fullImage:(UIImage *)fullFrame
+                  documentCorners:(ALSquare *)corners {
     
     NSMutableDictionary *dictResult = [NSMutableDictionary dictionaryWithCapacity:4];
     
