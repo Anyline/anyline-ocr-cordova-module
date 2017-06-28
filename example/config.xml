@@ -5,7 +5,7 @@
     <content src="index.html" />
     <access origin="*" />
     <icon src="www/img/ic_launcher.png" />
-    <engine name="android" spec="^6.2.3" />
     <engine name="ios" spec="^4.4.0" />
-    <plugin name="io-anyline-cordova" spec="file:///Users/daniel/Documents/Development/anyline-ocr-cordova-module" />
+    <engine name="android" spec="https://github.com/apache/cordova-android" />
+    <plugin name="io-anyline-cordova" spec=".." />
 </widget>

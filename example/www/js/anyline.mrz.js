@@ -24,6 +24,7 @@ anyline.mrz = {
             "<br/><b>Expiration:</b> " + result.expirationDate +"<br/>" +
             "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
             "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
+            "<br/><i><b>Checksum:</b>" + result.allCheckDigitsValid + "</i>" +
             "</p>" + div.innerHTML;
 
         document.getElementById("details_scan_modes").removeAttribute("open");

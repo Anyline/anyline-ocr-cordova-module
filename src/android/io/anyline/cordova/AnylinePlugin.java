@@ -23,6 +23,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import at.nineyards.anyline.modules.energy.EnergyScanView;
+import io.anyline.cordova.ScanLicensePlateActivity;
+import io.anyline.cordova.ScanLicensePlateAustriaActivity;
+import io.anyline.cordova.ScanLicensePlateGermanyActivity;
 
 
 public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnResultListener {
@@ -48,6 +51,9 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     public static final int REQUEST_DOCUMENT = 5;
     public static final int DIGITAL_METER = 6;
     public static final int ANALOG_METER = 7;
+    public static final int REQUEST_LICENSE_PLATE = 8;
+    public static final int REQUEST_LICENSE_PLATE_AUSTRIA = 9;
+    public static final int REQUEST_LICENSE_PLATE_GERMANY = 10;
 
     private CallbackContext mCallbackContext;
     private String mAction;
@@ -160,6 +166,15 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
                 break;
             case "ANYLINE_OCR":
                 scan(AnylineOcrActivity.class, REQUEST_ANYLINE_OCR, args);
+                break;
+            case "LICENSE_PLATE":
+                scan(ScanLicensePlateActivity.class, REQUEST_LICENSE_PLATE, args);
+                break;
+            case "LICENSE_PLATE_AUSTRIA":
+                scan(ScanLicensePlateAustriaActivity.class, REQUEST_LICENSE_PLATE_AUSTRIA, args);
+                break;
+            case "LICENSE_PLATE_GERMANY":
+                scan(ScanLicensePlateGermanyActivity.class, REQUEST_LICENSE_PLATE_GERMANY, args);
                 break;
             default:
                 mCallbackContext.error(Resources.getString(cordova.getActivity(),
