@@ -64,7 +64,7 @@ public class AnylineOcrActivity extends AnylineBaseActivity {
                 ocrConfig.setCustomCmdFile(customCmdFile);
                 if (ocrConfig.getCustomCmdFile() != null) {
                     //custom cmd file in cordova is relative to www, so add www
-                    ocrConfig.setCustomCmdFile("www/assets/" + ocrConfig.getCustomCmdFile());
+                    ocrConfig.setCustomCmdFile("www/" + ocrConfig.getCustomCmdFile());
                 }
             }
     

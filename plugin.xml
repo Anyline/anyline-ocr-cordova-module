@@ -39,6 +39,15 @@
     <source-file  src="src/ios/ALRoundedView.m"/>
     <header-file  src="src/ios/ALCordovaUIConfiguration.h"/>
     <source-file  src="src/ios/ALCordovaUIConfiguration.m"/>
+    <!--License Plates-->
+
+    <!--<asset src="src/ios/LicensePlate/Alte.traineddata" target="LicensePlate/Alte.traineddata"/>
+    <asset src="src/ios/LicensePlate/Arial.traineddata" target="LicensePlate/Arial.traineddata"/>
+    <asset src="src/ios/LicensePlate/GL-Nummernschild-Mtl7_uml.traineddata" target="LicensePlate/GL-Nummernschild-Mtl7_uml.traineddata"/>
+    <asset src="src/ios/LicensePlate/license_plates_a.ale" target="LicensePlate/license_plates_a.ale"/>
+    <asset src="src/ios/LicensePlate/license_plates_d.ale" target="LicensePlate/license_plates_d.ale"/>
+    <asset src="src/ios/LicensePlate/license_plates.ale" target="LicensePlate/license_plates.ale"/>-->
+
 <!-- Anyline Framework & Resource Bundle -->
     <framework  custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>
     <resource-file  src="src/ios/anyline_sdk/AnylineResources.bundle"/>
@@ -75,9 +84,6 @@
       <activity  android:name="io.anyline.cordova.EnergyActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
       <activity  android:name="io.anyline.cordova.AnylineOcrActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
       <activity  android:name="io.anyline.cordova.DocumentActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
-      <activity  android:name="io.anyline.cordova.ScanLicensePlateActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
-      <activity  android:name="io.anyline.cordova.ScanLicensePlateAustriaActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
-      <activity  android:name="io.anyline.cordova.ScanLicensePlateGermanyActivity" android:theme="@android:style/Theme.Black.NoTitleBar"/>
     </config-file>
 
 <!-- add plugin source code -->
@@ -91,9 +97,6 @@
     <source-file  src="src/android/io/anyline/cordova/CordovaUIConfig.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/ResultReporter.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/Resources.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/ScanLicensePlateActivity.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/ScanLicensePlateAustriaActivity.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/ScanLicensePlateGermanyActivity.java" target-dir="src/io/anyline/cordova"/>
 
     <resource-file src="src/android/res/values/anyline_sdk_plugin_strings.xml" target="res/values/anyline_sdk_plugin_strings.xml"/>
     <resource-file src="src/android/res/values/anyline_sdk_plugin_colors.xml" target="res/values/anyline_sdk_plugin_colors.xml"/>

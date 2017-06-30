@@ -37,9 +37,6 @@
         
         NSMutableArray<NSString *> *languages = [NSMutableArray arrayWithCapacity:tesseractArray.count];
         for (NSString *tesseractLang in tesseractArray) {
-            NSString *ressourcePath = [[NSBundle mainBundle] pathForResource:[[tesseractLang lastPathComponent] stringByDeletingPathExtension] ofType:[[tesseractLang lastPathComponent] pathExtension] inDirectory:[NSString stringWithFormat:@"%@",[tesseractLang stringByDeletingLastPathComponent]]];
-            NSError *copyError = nil;
-            [ocrModuleView copyTrainedData:ressourcePath fileHash:nil error:&copyError];
             [languages addObject:[[tesseractLang lastPathComponent] stringByDeletingPathExtension]];
         }
         ocrConf.tesseractLanguages = languages;
@@ -49,6 +46,12 @@
         //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Setup failed:" message:error.debugDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         //            [alert show];
         //        }
+        
+        for (NSString *tesseractLang in tesseractArray) {
+            NSString *ressourcePath = [[NSBundle mainBundle] pathForResource:[[tesseractLang lastPathComponent] stringByDeletingPathExtension] ofType:[[tesseractLang lastPathComponent] pathExtension] inDirectory:[NSString stringWithFormat:@"www/%@",[tesseractLang stringByDeletingLastPathComponent]]];
+            NSError *copyError = nil;
+            [ocrModuleView copyTrainedData:ressourcePath fileHash:nil error:&copyError];
+        }
         
         self.moduleView = ocrModuleView;
         
