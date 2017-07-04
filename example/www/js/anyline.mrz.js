@@ -16,7 +16,7 @@ anyline.mrz = {
         console.log("MRZ result: " + JSON.stringify(result));
         var div = document.getElementById('results');
 
-        div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
+            div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
             "<b>Name:</b> " + result.surNames + " " + result.givenNames + "<br/>" + "<b>Type:</b> " + result.documentType +
             "<br/><b>Number:</b> " + result.documentNumber + " <b>" +
             "<br/>Country:</b> " + result.nationalityCountryCode + "[" + result.issuingCountryCode + "]" +
@@ -26,6 +26,7 @@ anyline.mrz = {
             "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
             "<br/><i><b>Checksum:</b>" + result.allCheckDigitsValid + "</i>" +
             "</p>" + div.innerHTML;
+
 
         document.getElementById("details_scan_modes").removeAttribute("open");
         document.getElementById("details_results").setAttribute("open", "");
