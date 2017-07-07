@@ -5,7 +5,7 @@ repositories{
 
 dependencies {
   	compile 'com.google.android.gms:play-services-vision:8.4.0'
-    compile 'io.anyline:anylinesdk:3.13.0@aar'
+    compile 'io.anyline:anylinesdk:3.14.0@aar'
 }
 
 android {

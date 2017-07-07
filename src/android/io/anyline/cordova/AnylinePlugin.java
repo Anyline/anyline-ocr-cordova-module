@@ -119,32 +119,32 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
                 break;
             case "scanElectricMeter":
             case "ELECTRIC_METER":
-                scanEnergy(args, EnergyScanView.ScanMode.ELECTRIC_METER);
+                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
                 break;
             case "ELECTRIC_METER_5_1":
-                scanEnergy(args, EnergyScanView.ScanMode.ELECTRIC_METER_5_1);
+                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
                 break;
             case "ANALOG_METER_4":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER_4);
+                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
                 break;
             case "ANALOG_METER_7":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER_7);
+                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
                 break;
             case "ANALOG_METER_WHITE":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER_WHITE);
+                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
                 break;
             case "scanGasMeter":
             case "GAS_METER":
-                scanEnergy(args, EnergyScanView.ScanMode.GAS_METER);
+                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
                 break;
             case "GAS_METER_6":
-                scanEnergy(args, EnergyScanView.ScanMode.GAS_METER_6);
+                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
                 break;
             case "WATER_METER_WHITE":
-                scanEnergy(args, EnergyScanView.ScanMode.WATER_METER_WHITE);
+                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
                 break;
             case "WATER_METER_BLACK":
-                scanEnergy(args, EnergyScanView.ScanMode.WATER_METER_BLACK);
+                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
                 break;
             case "HEAT_METER_4":
                 scanEnergy(args, EnergyScanView.ScanMode.HEAT_METER_4);
