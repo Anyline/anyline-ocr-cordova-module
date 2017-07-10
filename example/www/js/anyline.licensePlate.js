@@ -15,7 +15,7 @@ anyline.licensePlate = {
 
     console.log("Result: " + JSON.stringify(result));
     var div = document.getElementById('results');
-      let plateResult = '';
+      var plateResult = '';
       if(result.text.indexOf('-') !== -1){
           const licensePlateResult = result.text.split('-');
           plateResult = "<b>Country: </b> " + licensePlateResult[0] + "</p>" +
