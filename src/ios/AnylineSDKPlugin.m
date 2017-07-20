@@ -29,6 +29,10 @@
     [self processMeterCommand:command withScanMode:ALAutoAnalogDigitalMeter];
 }
 
+- (void)DIAL_METER:(CDVInvokedUrlCommand *)command {
+    [self processMeterCommand:command withScanMode:ALDialMeter];
+}
+
 - (void)ANALOG_METER:(CDVInvokedUrlCommand *)command {
     [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }

@@ -15,9 +15,9 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "cordova-android": "^6.2.3",
+        "cordova-android": "git+https://github.com/apache/cordova-android.git",
         "cordova-ios": "^4.4.0",
-        "io-anyline-cordova": "file:.."
+        "io-anyline-cordova": "file:///Users/jonesBoi/Anyline/NewStuff/anyline-ocr-cordova-module"
     },
     "cordova": {
         "platforms": [

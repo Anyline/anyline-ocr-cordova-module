@@ -80,6 +80,9 @@
         case ALDigitalMeter:
             [dictResult setObject:@"Digital Meter" forKey:@"meterType"];
             break;
+        case ALDialMeter:
+            [dictResult setObject:@"Dial Meter" forKey:@"meterType"];
+            break;
         case ALHeatMeter4:
         case ALHeatMeter5:
         case ALHeatMeter6:
@@ -198,6 +201,7 @@
     dispatch_once(&onceToken, ^{
         scanModes = @{
                       @"AUTO_ANALOG_DIGITAL_METER" : @(ALAutoAnalogDigitalMeter),
+                      @"DIAL_METER" : @(ALDialMeter),
                       @"ANALOG_METER" : @(ALAnalogMeter),
                       @"BARCODE" : @(ALBarcode),
                       @"SERIAL_NUMBER" : @(ALSerialNumber),

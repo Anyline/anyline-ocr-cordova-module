@@ -99,7 +99,9 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             case "AUTO_ANALOG_DIGITAL_METER":
                 scanEnergy(args, EnergyScanView.ScanMode.AUTO_ANALOG_DIGITAL_METER);
                 break;
-
+            case "DIAL_METER":
+                scanEnergy(args, EnergyScanView.ScanMode.DIAL_METER);
+                break;
             case "DIGITAL_METER":
                 scanEnergy(args, EnergyScanView.ScanMode.DIGITAL_METER);
                 break;
