@@ -1,6 +1,6 @@
 {
     "name": "anyline-cordova-example",
-    "version": "3.13.1",
+    "version": "3.14.0",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -15,9 +15,9 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "cordova-android": "git+https://github.com/apache/cordova-android.git",
+        "cordova-android": "^6.2.3",
         "cordova-ios": "^4.4.0",
-        "io-anyline-cordova": "file:///Users/jonesBoi/Anyline/NewStuff/anyline-ocr-cordova-module"
+        "io-anyline-cordova": "file:.."
     },
     "cordova": {
         "platforms": [
