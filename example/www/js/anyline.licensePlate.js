@@ -17,23 +17,24 @@ anyline.licensePlate = {
     console.log("Result: " + JSON.stringify(result));
 
     var div = document.getElementById('results');
-      var plateResult = '';
-      if(result.text.indexOf('-') !== -1){
-          var licensePlateResult = result.text.split('-');
+    var plateResult = '';
+    if(result.text.indexOf('-') !== -1){
+        var licensePlateResult = result.text.split('-');
 
-          var country = licensePlateResult[0];
-          if(!country && scanMode && scanMode === "LICENSE_PLATE_AT"){
-            country = 'A';
-          } else if(!country && scanMode && scanMode === "LICENSE_PLATE_DE"){
-            country = 'D';
-          }
+        plateResult = "<b>Country: </b> " + country + "</p>" +
+                      "<b>Plate: </b> " + licensePlateResult[1] + "</p>";
+    } else {
 
-          plateResult = "<b>Country: </b> " + country + "</p>" +
-                        "<b>Plate: </b> " + licensePlateResult[1] + "</p>";
-      }else {
-          plateResult = "<b>Plate: </b> " + result.text + "</p>";
+        var country = "No Country recognized";
+        if(scanMode && scanMode === "LICENSE_PLATE_AT"){
+          country = 'A';
+        } else if(scanMode && scanMode === "LICENSE_PLATE_DE"){
+          country = 'D';
+        }
+        plateResult = "<b>Country: </b> " + country + "</p>" +
+                      "<b>Plate: </b> " + result.text + "</p>";
 
-      }
+    }
       
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
       + plateResult +

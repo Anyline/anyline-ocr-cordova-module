@@ -52,40 +52,42 @@ anyline.document = {
     "aUJBN1VaK0RZSVZrWjhpYXF2Wk5BPT0=",
 
     viewConfig: {
-        "captureResolution": "720p",
-        "pictureResolution": "1080p",
-        "cutout": {
-            "style": "rect",
-            "maxWidthPercent": "100%",
-            "maxHeightPercent": "100%",
-            "width": 720,
-            "ratioFromSize": {
-                "width": 10,
-                "height": 15
-            },
-            "alignment": "center",
-            "strokeWidth": 2,
-            "cornerRadius": 0,
-            "strokeColor": "00000000"
+      "captureResolution":"1080",
+      "pictureResolution":"photo",
+      "cutout": {
+        "style": "rect",
+        "maxWidthPercent": "100%",
+        "maxHeightPercent": "100%",
+        "ratioFromSize": {
+          "width": 10,
+          "height": 15
         },
-        "flash": {
-            "mode": "manual",
-            "alignment": "bottom_left",
-            "offset": {
-                "x": 10,
-                "y": 0
-            }
-        },
-        "visualFeedback": {
-            "style": "RECT",
-            "strokeColor": "300099FF",
-            "animationDuration": 150,
-            "cornerRadius": 2
-        },
-        "beepOnResult": true,
-        "vibrateOnResult": true,
-        "blinkAnimationOnResult": true,
-        "cancelOnResult": true
+        "alignment": "center",
+        "strokeWidth": 2,
+        "cornerRadius": 0,
+        "outerAlpha": 0.0,
+        "outerColor": "00000000",
+        "strokeColor": "00000000"
+      },
+      "flash": {
+        "mode": "manual",
+        "alignment": "bottom_left",
+        "offset": {
+          "x": 10,
+          "y": 0
+        }
+      },
+      "visualFeedback" : {
+        "style": "RECT",
+        "strokeColor": "FF0000",
+        "animationDuration": 150,
+        "cornerRadius": 2,
+        "strokeWidth": 4,
+      },
+      "beepOnResult": false,
+      "vibrateOnResult": false,
+      "blinkAnimationOnResult": true,
+      "cancelOnResult": true
     },
 
     scan: function () {
