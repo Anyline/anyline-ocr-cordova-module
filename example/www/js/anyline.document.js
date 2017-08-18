@@ -53,7 +53,7 @@ anyline.document = {
 
     viewConfig: {
       "captureResolution":"1080",
-      "pictureResolution":"photo",
+      "pictureResolution":"1080",
       "cutout": {
         "style": "rect",
         "maxWidthPercent": "100%",

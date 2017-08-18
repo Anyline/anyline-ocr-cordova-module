@@ -67,40 +67,40 @@ anyline.mrz = {
 
         //mode "scanMRZ" is also still available (for backwards compatibility)
         cordova.exec(this.onResult, this.onError, "AnylineSDK", "MRZ", [licenseKey, {
-            "captureResolution": "1080p",
+          "captureResolution": "1080",
 
-            "cutout": {
-                "style": "rect",
-                "maxWidthPercent": "90%",
-                "maxHeightPercent": "90%",
-                "alignment": "top_half",
-                "strokeWidth": 2,
-                "cornerRadius": 4,
-                "strokeColor": "FFFFFF",
-                "outerColor": "000000",
-                "outerAlpha": 0.3,
-                "cropPadding": {
-                    "x": -30,
-                    "y": -90
-                },
-                "cropOffset": {
-                    "x": 0,
-                    "y": 90
-                }
+          "cutout": {
+            "style": "rect",
+            "maxWidthPercent": "90%",
+            "maxHeightPercent": "90%",
+            "alignment": "top_half",
+            "strokeWidth": 2,
+            "cornerRadius": 4,
+            "strokeColor": "FFFFFF",
+            "outerColor": "000000",
+            "outerAlpha": 0.3,
+            "cropPadding": {
+              "x": -30,
+              "y": -90
             },
-            "flash": {
-                "mode": "manual",
-                "alignment": "bottom_right"
-            },
-            "visualFeedback": {
-                "style": "rect",
-                "strokeColor": "0099FF",
-                "strokeWidth": 2
-            },
-            "beepOnResult": true,
-            "vibrateOnResult": true,
-            "blinkAnimationOnResult": true,
-            "cancelOnResult": true
+            "cropOffset": {
+              "x": 0,
+              "y": 90
+            }
+          },
+          "flash": {
+            "mode": "manual",
+            "alignment": "bottom_right"
+          },
+          "beepOnResult": true,
+          "vibrateOnResult": true,
+          "blinkAnimationOnResult": true,
+          "cancelOnResult": true,
+          "visualFeedback": {
+            "style": "rect",
+            "strokeColor": "0099FF",
+            "strokeWidth": 2
+          }
         }]);
     }
 };

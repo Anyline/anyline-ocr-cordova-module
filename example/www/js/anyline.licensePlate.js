@@ -18,24 +18,24 @@ anyline.licensePlate = {
 
     var div = document.getElementById('results');
     var plateResult = '';
-    if(result.text.indexOf('-') !== -1){
+    var country = 'No Country Found';
+
+    if(result.text.indexOf('-') > 0 ){
         var licensePlateResult = result.text.split('-');
 
-        plateResult = "<b>Country: </b> " + country + "</p>" +
+        plateResult = "<b>Country: </b> " + licensePlateResult[0] + "</p>" +
                       "<b>Plate: </b> " + licensePlateResult[1] + "</p>";
     } else {
 
-        var country = "No Country recognized";
-        if(scanMode && scanMode === "LICENSE_PLATE_AT"){
+        if(this.scanMode && this.scanMode  === "LICENSE_PLATE_AT"){
           country = 'A';
-        } else if(scanMode && scanMode === "LICENSE_PLATE_DE"){
+        } else if(this.scanMode  && this.scanMode  === "LICENSE_PLATE_DE"){
           country = 'D';
         }
         plateResult = "<b>Country: </b> " + country + "</p>" +
                       "<b>Plate: </b> " + result.text + "</p>";
-
     }
-      
+
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
       + plateResult +
       "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
