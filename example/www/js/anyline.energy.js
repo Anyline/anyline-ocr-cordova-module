@@ -148,7 +148,7 @@ anyline.energy = {
         "tintColor": "CCCCCC",
         "offset": {
           "x": 0,
-          "y": 400
+          "y": 500
         }
       }
     },
@@ -171,7 +171,7 @@ anyline.energy = {
     {
       "captureResolution": "720p",
       "visualFeedback": {
-        "style": "CONTOUR_RECT",
+        "style": "RECT",
         "strokeColor": "0099FF",
         "fillColor": "220099FF"
       },
@@ -203,7 +203,7 @@ anyline.energy = {
         "tintColor": "CCCCCC",
         "offset": {
           "x": 0,
-          "y": 400
+          "y": 500
         }
       }
     },

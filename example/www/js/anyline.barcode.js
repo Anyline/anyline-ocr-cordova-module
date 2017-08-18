@@ -93,7 +93,7 @@ anyline.barcode = {
             "beepOnResult": true,
             "vibrateOnResult": true,
             "blinkAnimationOnResult": true,
-            "cancelOnResult": false,
+            "cancelOnResult": true,
             "doneButton": { // iOS only. Android uses hardware back button.
                 "title": "OK",
                 "type": "rect", // fullwidth, rect

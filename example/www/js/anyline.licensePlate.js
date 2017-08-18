@@ -9,16 +9,26 @@ if (anyline === undefined) {
   var anyline = {};
 }
 anyline.licensePlate = {
+  scanMode : null,
   onResult: function (result) {
     //this is called for every mrz scan result
     //the result is a json-object containing all the scaned values and check-digits
 
     console.log("Result: " + JSON.stringify(result));
+
     var div = document.getElementById('results');
       var plateResult = '';
       if(result.text.indexOf('-') !== -1){
-          const licensePlateResult = result.text.split('-');
-          plateResult = "<b>Country: </b> " + licensePlateResult[0] + "</p>" +
+          var licensePlateResult = result.text.split('-');
+
+          var country = licensePlateResult[0];
+          if(!country && scanMode && scanMode === "LICENSE_PLATE_AT"){
+            country = 'A';
+          } else if(!country && scanMode && scanMode === "LICENSE_PLATE_DE"){
+            country = 'D';
+          }
+
+          plateResult = "<b>Country: </b> " + country + "</p>" +
                         "<b>Plate: </b> " + licensePlateResult[1] + "</p>";
       }else {
           plateResult = "<b>Plate: </b> " + result.text + "</p>";
@@ -125,6 +135,8 @@ anyline.licensePlate = {
         this.anylineLicensePlateOcrConfig["aleFile"] = "assets/ALEs/license_plates.ale"
         break;
     }
+
+    this.scanMode = scanMode;
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "ANYLINE_OCR", [this.licenseKey,
       this.anylineLicensePlateViewConfig, this.anylineLicensePlateOcrConfig
     ]);
