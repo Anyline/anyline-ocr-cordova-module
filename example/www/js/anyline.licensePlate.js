@@ -10,6 +10,7 @@ if (anyline === undefined) {
 }
 anyline.licensePlate = {
   onResult: function (result) {
+    localStorage.setItem("hasStartedAnyline", false);
     //this is called for every mrz scan result
     //the result is a json-object containing all the scaned values and check-digits
 
@@ -40,6 +41,7 @@ anyline.licensePlate = {
   },
 
   onError: function (error) {
+    localStorage.setItem("hasStartedAnyline", false);
     //called if an error occurred or the user canceled the scanning
     if (error == "Canceled") {
       //do stuff when user has canceled
@@ -115,6 +117,10 @@ anyline.licensePlate = {
     // see http://documentation.anyline.io/#anyline-config for config details
     // and http://documentation.anyline.io/#anylineOcrModule for module details
 
+    if(localStorage.getItem("hasStartedAnyline") === 'true'){
+      return;
+    }
+    localStorage.setItem("hasStartedAnyline", true);
 
     //Get the right ALE File for License PLate Scan Mode
     switch (scanMode) {

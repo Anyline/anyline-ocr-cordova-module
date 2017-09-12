@@ -10,6 +10,7 @@ if (anyline === undefined) {
 }
 anyline.energy = {
   onResult: function (result) {
+    localStorage.setItem("hasStartedAnyline", false);
     //this is called for every energy scan result
     //the result is a json-object containing the reading the meter type and a path to a cropped and a full image.
 
@@ -42,6 +43,7 @@ anyline.energy = {
   },
 
   onError: function (error) {
+    localStorage.setItem("hasStartedAnyline", false);
     //called if an error occurred or the user canceled the scanning
     if (error == "Canceled") {
       //do stuff when user has canceled
@@ -211,6 +213,11 @@ anyline.energy = {
   ],
 
   scan: function (scanMode) {
+    if(localStorage.getItem("hasStartedAnyline") === 'true'){
+      return;
+    }
+    localStorage.setItem("hasStartedAnyline", true);
+
     console.log("start scan with mode " + scanMode);
     // start the Energy scanning for the given scan mode
     // pass the success and error callbacks, as well as the license key and the config to the plugin
@@ -230,6 +237,11 @@ anyline.energy = {
   },
 
   scanElectricDigitalSegment: function () {
+    if(localStorage.getItem("hasStartedAnyline") === 'true'){
+      return;
+    }
+    localStorage.setItem("hasStartedAnyline", true);
+
     // start the Energy scanning for the given scan mode
     // pass the success and error callbacks, as well as the license key and the config to the plugin
     // see http://documentation.anyline.io/#anyline-config for config details
@@ -238,20 +250,15 @@ anyline.energy = {
   },
 
   scanHeatMeterWithSegment: function () {
+    if(localStorage.getItem("hasStartedAnyline") === 'true'){
+      return;
+    }
+    localStorage.setItem("hasStartedAnyline", true);
+
     // start the Energy scanning for the given scan mode
     // pass the success and error callbacks, as well as the license key and the config to the plugin
     // see http://documentation.anyline.io/#anyline-config for config details
     // and http://documentation.anyline.io/#energy for energy-module details
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "HEAT_METER_4", this.heatConfigWithSegment);
   },
-
-  scanElectricMeter: function () {
-    //scanmode scanElectricMeter can also be used for backwards compatibility)
-    this.execMode("ELECTRIC_METER");
-  },
-
-  scanGasMeter: function () {
-    //scanmode scanGasMeter can also be used for backwards compatibility)
-    this.execMode("GAS_METER");
-  }
 };
