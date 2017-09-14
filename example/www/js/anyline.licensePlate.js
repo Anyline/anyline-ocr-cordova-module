@@ -107,7 +107,7 @@ anyline.licensePlate = {
 
   anylineLicensePlateOcrConfig: {
     "scanMode": "AUTO",
-    "traineddataFiles": ['assets/GL-Nummernschild-Mtl7_uml.traineddata', 'assets/Arial.traineddata', 'assets/Alte.traineddata', 'assets/deu.traineddata'],
+    "traineddataFiles": ['assets/GL-Nummernschild-Mtl7_uml.traineddata', 'assets/Arial.traineddata', 'assets/Alte.traineddata', 'assets/deu.traineddata', 'assets/aut_nice.traineddata', 'assets/leu.traineddata'],
     "minConfidence": 65,
   },
 
@@ -121,19 +121,6 @@ anyline.licensePlate = {
       return;
     }
     localStorage.setItem("hasStartedAnyline", true);
-
-    //Get the right ALE File for License PLate Scan Mode
-    switch (scanMode) {
-      case "LICENSE_PLATE_AT":
-        this.anylineLicensePlateOcrConfig["aleFile"] = "assets/ALEs/license_plates_a.ale"
-        break;
-      case "LICENSE_PLATE_DE":
-        this.anylineLicensePlateOcrConfig["aleFile"] = "assets/ALEs/license_plates_d.ale"
-        break;
-      default:
-        this.anylineLicensePlateOcrConfig["aleFile"] = "assets/ALEs/license_plates.ale"
-        break;
-    }
 
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "ANYLINE_OCR", [this.licenseKey,
       this.anylineLicensePlateViewConfig, this.anylineLicensePlateOcrConfig
