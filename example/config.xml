@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.anyline.examples.cordova" version="3.14.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Anyline Cordova Example</name>
+    <preference name="deployment-target" value="8.0" />
+    <preference name="Orientation" value="portrait" />
+    <content src="index.html" />
+    <access origin="*" />
+    <icon src="www/img/ic_launcher.png" />
+    <engine name="android" spec="git+https://github.com/apache/cordova-android.git" />
+    <engine name="ios" spec="^4.4.0" />
+    <plugin name="io-anyline-cordova" spec="file:///Users/jonesBoi/Anyline/NewStuff/anyline-ocr-cordova-module" />
+</widget>

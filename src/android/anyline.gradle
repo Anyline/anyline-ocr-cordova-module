@@ -1,0 +1,38 @@
+repositories{
+    jcenter()
+    maven { url 'https://anylinesdk.blob.core.windows.net/maven/'}
+}
+
+dependencies {
+  	compile 'com.google.android.gms:play-services-vision:8.4.0'
+    compile 'io.anyline:anylinesdk:3.16.0@aar'
+}
+
+android {
+
+  defaultConfig {
+    minSdkVersion 15
+    ndk { 
+      abiFilters "armeabi-v7a", "x86" 
+    } 
+  }
+
+  compileOptions {
+      sourceCompatibility JavaVersion.VERSION_1_7
+      targetCompatibility JavaVersion.VERSION_1_7
+  }
+
+  packagingOptions {
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/LICENSE'
+  }
+}
+
+ext.postBuildExtras = {
+    android {
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_7
+            targetCompatibility JavaVersion.VERSION_1_7
+        }
+    }
+}

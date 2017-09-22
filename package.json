@@ -1,0 +1,23 @@
+{
+  "name": "io-anyline-cordova",
+  "version": "3.16.0",
+  "description": "The cordova plugin for the Anyline SDK",
+  "cordova": {
+    "id": "io-anyline-cordova",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/Anyline/anyline-ocr-cordova-module"
+  },
+  "author": "Anyline GmbH",
+  "license": "SEE LICENSE IN LICENSE"
+}
