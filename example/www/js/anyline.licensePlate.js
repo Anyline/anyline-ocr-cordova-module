@@ -97,9 +97,8 @@ anyline.licensePlate = {
     "blinkAnimationOnResult": true,
     "cancelOnResult": true,
     "visualFeedback": {
-      "animation": "traverse_multi",
-      "animationDuration": 70,
-      "style": "contour_rect",
+      "animationDuration": 0,
+      "style": "RECT",
       "strokeWidth": 2,
       "strokeColor": "0099FF"
     }
@@ -109,6 +108,7 @@ anyline.licensePlate = {
     "scanMode": "AUTO",
     "traineddataFiles": ['assets/GL-Nummernschild-Mtl7_uml.traineddata', 'assets/Arial.traineddata', 'assets/Alte.traineddata', 'assets/deu.traineddata'],
     "minConfidence": 65,
+    "drawTextOutline": true,
   },
 
   scanLicensePlates: function (scanMode) {

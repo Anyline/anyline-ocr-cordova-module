@@ -21,7 +21,6 @@
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
         AnylineOCRModuleView *ocrModuleView = [[AnylineOCRModuleView alloc] initWithFrame:self.view.bounds];
-        ocrModuleView.currentConfiguration = self.conf;
         
         ALOCRConfig *ocrConf = [[ALOCRConfig alloc] initWithJsonDictionary:self.ocrConfDict];
         
@@ -52,7 +51,9 @@
             NSError *copyError = nil;
             [ocrModuleView copyTrainedData:ressourcePath fileHash:nil error:&copyError];
         }
-        
+
+        ocrModuleView.currentConfiguration = self.conf;
+
         self.moduleView = ocrModuleView;
         
         [self.view addSubview:self.moduleView];
