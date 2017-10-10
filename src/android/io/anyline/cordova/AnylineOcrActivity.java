@@ -163,7 +163,11 @@ public class AnylineOcrActivity extends AnylineBaseActivity {
                 try {
                     jsonResult.put("text", result.getResult().trim());
 
-                    jsonResult.put("outline", jsonForOutline(result.getOutline()));
+                    if(result.getOutline() != null){
+                        jsonResult.put("outline", jsonForOutline(result.getOutline()));
+                    } else {
+                        jsonResult.put("outline", false);
+                    }
                     jsonResult.put("confidence", result.getConfidence());
 
 

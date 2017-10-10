@@ -44,4 +44,6 @@
 
 - (void)DOCUMENT:(CDVInvokedUrlCommand *)command;
 
+- (void)LICENSE_PLATE:(CDVInvokedUrlCommand *)command;
+
 @end

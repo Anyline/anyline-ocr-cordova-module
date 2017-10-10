@@ -6,6 +6,7 @@
 #import "AnylineMRZScanViewController.h"
 #import "AnylineOCRScanViewController.h"
 #import "AnylineDocumentScanViewController.h"
+#import "AnylineLicensePlateViewController.h"
 #import "ALCordovaUIConfiguration.h"
 
 
@@ -36,7 +37,7 @@
 - (void)ANALOG_METER:(CDVInvokedUrlCommand *)command {
     [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
-    
+
 - (void)ELECTRIC_METER:(CDVInvokedUrlCommand *)command {
     [self processMeterCommand:command withScanMode:ALAnalogMeter];
 }
@@ -99,49 +100,63 @@
 
 - (void)MRZ:(CDVInvokedUrlCommand *)command {
     [self processCommandArguments:command];
-    
+
     [self.commandDelegate runInBackground:^{
         self.baseScanViewController = [[AnylineMRZScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf  delegate:self];
-        
+
         [self presentViewController];
     }];
 }
 
 - (void)BARCODE:(CDVInvokedUrlCommand *)command {
     [self processCommandArguments:command];
-    
+
     [self.commandDelegate runInBackground:^{
         self.baseScanViewController = [[AnylineBarcodeScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
-        
+
         [self presentViewController];
     }];
 }
 
 - (void)ANYLINE_OCR:(CDVInvokedUrlCommand *)command {
     [self processCommandArguments:command];
-    
+
     [self.commandDelegate runInBackground:^{
         AnylineOCRScanViewController *ocrScanViewController = [[AnylineOCRScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
-        
+
         ocrScanViewController.ocrConfDict = [command.arguments objectAtIndex:2];
-        
+
         self.baseScanViewController = ocrScanViewController;
-        
+
         [self presentViewController];
     }];
 }
 
 - (void)DOCUMENT:(CDVInvokedUrlCommand *)command {
     [self processCommandArguments:command];
-    
+
     [self.commandDelegate runInBackground:^{
         AnylineDocumentScanViewController *docScanViewController = [[AnylineDocumentScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
-        
+
         self.baseScanViewController = docScanViewController;
-        
+
         [self presentViewController];
     }];
 }
+
+
+- (void)LICENSE_PLATE:(CDVInvokedUrlCommand *)command {
+    [self processCommandArguments:command];
+
+    [self.commandDelegate runInBackground:^{
+        AnylineLicensePlateViewController *licensePlateViewController = [[AnylineLicensePlateViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
+
+        self.baseScanViewController = licensePlateViewController;
+
+        [self presentViewController];
+    }];
+}
+
 
 - (void)scanBarcode:(CDVInvokedUrlCommand *)command {
     [self BARCODE:command];

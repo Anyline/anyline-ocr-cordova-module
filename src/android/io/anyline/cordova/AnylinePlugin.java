@@ -48,6 +48,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     public static final int REQUEST_DOCUMENT = 5;
     public static final int DIGITAL_METER = 6;
     public static final int ANALOG_METER = 7;
+    public static final int REQUEST_LICENSE_PLATE = 8;
 
     private CallbackContext mCallbackContext;
     private String mAction;
@@ -163,6 +164,9 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             case "ANYLINE_OCR":
                 scan(AnylineOcrActivity.class, REQUEST_ANYLINE_OCR, args);
                 break;
+            case "LICENSE_PLATE":
+                scan(LicensePlateActivity.class, REQUEST_LICENSE_PLATE, args);
+                break;
             default:
                 mCallbackContext.error(Resources.getString(cordova.getActivity(),
                         "error_unkown_scan_mode") + " " + action);
@@ -197,7 +201,6 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
                     boolean nativeBarcodeEnabled = json.optBoolean("nativeBarcodeEnabled", false);
                     intent.putExtra(EXTRA_SCAN_NATIVE_BARCODE, nativeBarcodeEnabled);
                 }
-
 
             }
 
