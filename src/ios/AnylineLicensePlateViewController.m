@@ -45,10 +45,6 @@
  */
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
-    // We use this subroutine to start Anyline. The reason it has its own subroutine is
-    // so that we can later use it to restart the scanning process.
-    [self startAnyline];
 }
 
 /*
@@ -56,22 +52,6 @@
  */
 - (void)viewWillDisappear:(BOOL)animated {
     [self.licensePlateModuleView cancelScanningAndReturnError:nil];
-}
-
-/*
- This method is used to tell Anyline to start scanning. It gets called in
- viewDidAppear to start scanning the moment the view appears. Once a result
- is found scanning will stop automatically (you can change this behaviour
- with cancelOnResult:). When the user dismisses self.identificationView this
- method will get called again.
- */
-- (void)startAnyline {
-    NSError *error;
-    BOOL success = [self.licensePlateModuleView startScanningAndReturnError:&error];
-    if( !success ) {
-        // Something went wrong. The error object contains the error description
-        NSAssert(success, @"Start Scanning Error: %@", error.debugDescription);
-    }
 }
 
 #pragma mark -- AnylineOCRModuleDelegate
