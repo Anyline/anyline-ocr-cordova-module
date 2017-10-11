@@ -65,10 +65,10 @@ anyline.licensePlate = {
       "style": "rect",
       "maxWidthPercent": "80%",
       "maxHeightPercent": "80%",
-      "alignment": "center",
+      "alignment": "top_half",
       "width": 720,
       "ratioFromSize": {
-        "width": 5,
+        "width": 2,
         "height": 1
       },
       "strokeWidth": 2,
