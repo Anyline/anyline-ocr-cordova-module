@@ -5,8 +5,8 @@ Anyline provides an easy-to-use SDK for applications to enable Optical Character
 ### Available Modules
 - [**Barcode:**](https://documentation.anyline.io/toc/modules/barcode/index.html)  Scan 23 types of international barcode & QR code formats.
 - [**Energy:**](https://documentation.anyline.io/toc/modules/energy/index.html) Scan meter readings of various electric, gas, and water meters.
-- [**License Plate:**](https://documentation.anyline.io/toc/modules/license_plate/index.html)  Reliable scanning of data from passports' and IDs' machine readable zones (MRZ)
-- [**Document:**](https://documentation.anyline.io/toc/modules/document/index.html)  Reliable scanning of data from passports' and IDs' machine readable zones (MRZ)
+- [**License Plate:**](https://documentation.anyline.io/toc/modules/license_plate/index.html)  Scan license plates of different sizes and from different countries.
+- [**Document:**](https://documentation.anyline.io/toc/modules/document/index.html) Detect document outlines, validate the angles of the document to ensure it is not too skewed, validates the document ratio, determine the sharpness of the text and rectifie the document.
 - [**MRZ:**](https://documentation.anyline.io/toc/modules/mrz/index.html)  Reliable scanning of data from passports' and IDs' machine readable zones (MRZ)
 - [**Anyline OCR:**](https://documentation.anyline.io/toc/modules/anyline_ocr/index.html) Create a custom use case with LINE or GRID recognition
 
