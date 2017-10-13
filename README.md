@@ -3,10 +3,12 @@
 Anyline provides an easy-to-use SDK for applications to enable Optical Character Recognition (OCR) on mobile devices.
 
 ### Available Modules
-- [**Barcode:**](https://documentation.anyline.io/#modules)  Scan 23 types of international barcode & QR code formats.
-- [**Energy:**](https://documentation.anyline.io/#energy) Scan meter readings of various electric, gas, and water meters.
-- [**MRZ:**](https://documentation.anyline.io/#mrz)  Reliable scanning of data from passports' and IDs' machine readable zones (MRZ)
-- [**Anyline OCR:**](https://documentation.anyline.io/#anyline-ocr) Create a custom use case with LINE or GRID recognition
+- [**Barcode:**](https://documentation.anyline.io/toc/modules/barcode/index.html)  Scan 23 types of international barcode & QR code formats.
+- [**Energy:**](https://documentation.anyline.io/toc/modules/energy/index.html) Scan meter readings of various electric, gas, and water meters.
+- [**License Plate:**](https://documentation.anyline.io/toc/modules/license_plate/index.html)  Reliable scanning of data from passports' and IDs' machine readable zones (MRZ)
+- [**Document:**](https://documentation.anyline.io/toc/modules/document/index.html)  Reliable scanning of data from passports' and IDs' machine readable zones (MRZ)
+- [**MRZ:**](https://documentation.anyline.io/toc/modules/mrz/index.html)  Reliable scanning of data from passports' and IDs' machine readable zones (MRZ)
+- [**Anyline OCR:**](https://documentation.anyline.io/toc/modules/anyline_ocr/index.html) Create a custom use case with LINE or GRID recognition
 
 ### Requirements
 
@@ -53,7 +55,7 @@ cordova.exec(onResult, onError, "AnylineSDK", scanMode, config);
 - <b>onResult</b>: a function that is called on a scan result
 - <b>onError</b>: a function that is called on error or when the user canceled the scanning
 - <b>AnylineSDK</b>: add this *string* to make sure the anyline-sdk plugin is called
-- <b>scanMode</b>: "<i>MRZ</i>", "<i>BARCODE</i>", "<i>ANYLINE_OCR</i>", "<i>ELECTRIC_METER</i>", "<i>GAS_METER</i>" (more Energy modes can be found [here](https://documentation.anyline.io/#energy))
+- <b>scanMode</b>: "<i>MRZ</i>", "<i>LICENSE_PLATE</i>", "<i>BARCODE</i>", "<i>ANYLINE_OCR</i>", "<i>ELECTRIC_METER</i>" (more Energy modes can be found [here](https://documentation.anyline.io/#energy))
 - <b>config</b>: an array
     * <b>config[0]</b>: the license key
     * <b>config[1]</b>: the [view config](https://documentation.anyline.io/#anyline-config)

@@ -1,11 +1,11 @@
 repositories{
     jcenter()
-    maven { url 'https://anylinesdk.blob.core.windows.net/testing/'}
+    maven { url 'https://anylinesdk.blob.core.windows.net/maven/'}
 }
 
 dependencies {
   	compile 'com.google.android.gms:play-services-vision:8.4.0'
-    compile 'io.anyline:anylinesdk:3.17.0-RC1@aar'
+    compile 'io.anyline:anylinesdk:3.17.0@aar'
 }
 
 android {
