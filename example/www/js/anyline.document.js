@@ -17,7 +17,10 @@ anyline.document = {
     console.log("Result: " + JSON.stringify(result));
     var div = document.getElementById('results');
 
-    div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" + +"<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
+    div.innerHTML = "<p>"
+        + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
+        + "<img src=\"" + result.fullImagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
+        + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
         + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>"
         + "</p>" + div.innerHTML;
 
