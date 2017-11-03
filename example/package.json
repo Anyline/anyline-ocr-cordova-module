@@ -10,7 +10,8 @@
     "overwrite": "rm -R ../src/android/io && rm -R ../src/android/res && cp -R platforms/android/src/io ../src/android/ && cp -R platforms/android/res ../src/android",
     "overwrite-ios": "rm -R ../src/ios/io && rm -R ../src/ios/res && cp -R platforms/ios/src/io ../src/android/ && cp -R platforms/ios/res ../src/ios",
     "OandR": "npm run overwrite && npm run reinstall",
-    "OandR-ios": "npm run overwrite-ios && npm run reinstall-ios"
+    "OandR-ios": "npm run overwrite-ios && npm run reinstall-ios",
+    "cleanUp": "cordova platform remove android && cordova platform remove ios && cordova plugin remove io-anyline-cordova"
   },
   "author": "Jonas Laux | Daniel Albertini",
   "license": "ISC",

@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -50,6 +51,8 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     private FrameLayout errorMessageLayout;
     private TextView errorMessage;
     private long lastErrorRecieved = 0;
+    private int compressionRatio = 100;
+
 
     private android.os.Handler handler = new android.os.Handler();
 
@@ -103,6 +106,16 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             //JSONException or IllegalArgumentException is possible, return it to javascript
             finishWithError(Resources.getString(this, "error_invalid_json_data") + "\n" + e.getLocalizedMessage());
             return;
+        }
+
+        //get the destination resolution
+        if (jsonObject.has("document")) {
+            try {
+                this.compressionRatio = jsonObject.getJSONObject("document").getInt("compressionRatio");
+            } catch (JSONException e) {
+                finishWithError(e.getMessage());
+                return;
+            }
         }
 
         documentScanView.setConfig(new AnylineViewConfig(this, jsonObject));
@@ -168,7 +181,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
                     // get the transformed image as bitmap
                     // Bitmap bmp = transformedImage.getBitmap();
                     // save the image with quality 100 (only used for jpeg, ignored for png)
-                    transformedImage.save(outFile, 100);
+                    transformedImage.save(outFile, compressionRatio);
                     showToast(getString(getResources().getIdentifier("document_image_saved_to", "string", getPackageName())) + " " + outFile.getAbsolutePath());
                 } catch (IOException e) {
                     e.printStackTrace();

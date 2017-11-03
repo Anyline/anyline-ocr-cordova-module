@@ -89,7 +89,10 @@ anyline.document = {
     "beepOnResult": false,
     "vibrateOnResult": false,
     "blinkAnimationOnResult": true,
-    "cancelOnResult": true
+    "cancelOnResult": true,
+    "document": {
+      "compressionRatio" : 10,
+    }
   },
 
   scan: function () {

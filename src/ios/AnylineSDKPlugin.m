@@ -138,6 +138,14 @@
     [self.commandDelegate runInBackground:^{
         AnylineDocumentScanViewController *docScanViewController = [[AnylineDocumentScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
 
+        NSDictionary *options = [command.arguments objectAtIndex:1];
+        if ([options valueForKey:@"document"]) {
+            NSDictionary *docConfig = [options valueForKey:@"document"];
+            docScanViewController.compressionRate = [[docConfig valueForKey:@"compressionRatio"] integerValue];
+        } else {
+            docScanViewController.compressionRate = 100;
+        }
+
         self.baseScanViewController = docScanViewController;
 
         [self presentViewController];
