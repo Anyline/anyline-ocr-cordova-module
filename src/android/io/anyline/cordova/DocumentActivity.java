@@ -443,7 +443,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     @Override
     protected void onStop() {
         super.onStop();
-        handler.removeCallbacks(errorMessageCleanup);
+        //handler.removeCallbacks(errorMessageCleanup);
         errorMessageCleanup = null;
         handler = null;
     }
