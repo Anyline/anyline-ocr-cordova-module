@@ -18,9 +18,9 @@ anyline.ocr = {
     var div = document.getElementById('results');
 
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-        "<b>Result: </b> " + result.text + "</p>"
+        "<b>Result: </b> " + result.text
         + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
-        + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>"
+        + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</p>"
         + div.innerHTML;
 
     document.getElementById("details_scan_modes").removeAttribute("open");

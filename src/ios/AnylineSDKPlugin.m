@@ -141,9 +141,9 @@
         NSDictionary *options = [command.arguments objectAtIndex:1];
         if ([options valueForKey:@"document"]) {
             NSDictionary *docConfig = [options valueForKey:@"document"];
-            docScanViewController.compressionRate = [[docConfig valueForKey:@"compressionRatio"] integerValue];
+            docScanViewController.quality = [[docConfig valueForKey:@"quality"] integerValue];
         } else {
-            docScanViewController.compressionRate = 100;
+            docScanViewController.quality = 100;
         }
 
         self.baseScanViewController = docScanViewController;

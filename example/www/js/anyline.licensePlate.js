@@ -20,7 +20,7 @@ anyline.licensePlate = {
 
     var div = document.getElementById('results');
 
-    div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
+    div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/>" +
         "<br/><i><b>Country:</b> " + result.country + "</i>" +
         "<br/><i><b>LicensePlate:</b> " + result.licensePlate + "</i>" +
         "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +

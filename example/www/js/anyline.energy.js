@@ -224,15 +224,6 @@ anyline.energy = {
     // see http://documentation.anyline.io/#anyline-config for config details
     // and http://documentation.anyline.io/#energy for energy-module details
 
-    if (scanMode === 'ANALOG_METER')
-      this.energyConfig[1].visualFeedback = {
-        style: "rect"
-      };
-    else
-      this.energyConfig[1].visualFeedback = {
-        style: "contour_rect"
-      };
-
     cordova.exec(this.onResult, this.onError, "AnylineSDK", scanMode, this.energyConfig);
   },
 
