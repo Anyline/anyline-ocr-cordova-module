@@ -1,107 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin
-    xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    id="io-anyline-cordova"
-    version="3.18.0">
+        xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="io-anyline-cordova"
+        version="3.18.0">
 
-  <name>AnylineSDK</name>
+    <name>AnylineSDK</name>
 
-  <platform name="ios">
-    <hook type="after_plugin_install" src="hooks/AfterPluginInstall.js" />
-    <plugins-plist  key="AnylineSDK" string="AnylineSDKPlugin"/>
-<!-- feature tag in config.xml -->
-    <config-file parent="/widget" target="config.xml">
-      <feature name="AnylineSDK">
-        <param  name="ios-package" value="AnylineSDKPlugin"/>
-      </feature>
-    </config-file>
-    <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
-        <string>Yes we scan!</string>
-    </config-file>
+    <platform name="ios">
+        <hook type="after_plugin_install" src="hooks/AfterPluginInstall.js"/>
+        <plugins-plist key="AnylineSDK" string="AnylineSDKPlugin"/>
+        <!-- feature tag in config.xml -->
+        <config-file parent="/widget" target="config.xml">
+            <feature name="AnylineSDK">
+                <param name="ios-package" value="AnylineSDKPlugin"/>
+            </feature>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+            <string>Yes we scan!</string>
+        </config-file>
 
-<!-- Anyline SDK Cordova Plugin Source for iOS -->
-    <header-file  src="src/ios/AnylineSDKPlugin.h"/>
-    <source-file  src="src/ios/AnylineSDKPlugin.m"/>
-    <header-file  src="src/ios/AnylineBaseScanViewController.h"/>
-    <source-file  src="src/ios/AnylineBaseScanViewController.m"/>
-    <header-file  src="src/ios/AnylineBarcodeScanViewController.h"/>
-    <source-file  src="src/ios/AnylineBarcodeScanViewController.m"/>
-    <header-file  src="src/ios/AnylineMRZScanViewController.h"/>
-    <source-file  src="src/ios/AnylineMRZScanViewController.m"/>
-    <header-file  src="src/ios/AnylineEnergyScanViewController.h"/>
-    <source-file  src="src/ios/AnylineEnergyScanViewController.m"/>
-    <header-file  src="src/ios/AnylineOCRScanViewController.h"/>
-    <source-file  src="src/ios/AnylineOCRScanViewController.m"/>
-    <header-file  src="src/ios/AnylineDocumentScanViewController.h"/>
-    <source-file  src="src/ios/AnylineDocumentScanViewController.m"/>
-    <header-file  src="src/ios/ALRoundedView.h"/>
-    <source-file  src="src/ios/ALRoundedView.m"/>
-    <header-file  src="src/ios/ALCordovaUIConfiguration.h"/>
-    <source-file  src="src/ios/ALCordovaUIConfiguration.m"/>
-    <!--License Plates-->
+        <!-- Anyline SDK Cordova Plugin Source for iOS -->
+        <header-file src="src/ios/AnylineSDKPlugin.h"/>
+        <source-file src="src/ios/AnylineSDKPlugin.m"/>
+        <header-file src="src/ios/AnylineBaseScanViewController.h"/>
+        <source-file src="src/ios/AnylineBaseScanViewController.m"/>
+        <header-file src="src/ios/AnylineBarcodeScanViewController.h"/>
+        <source-file src="src/ios/AnylineBarcodeScanViewController.m"/>
+        <header-file src="src/ios/AnylineMRZScanViewController.h"/>
+        <source-file src="src/ios/AnylineMRZScanViewController.m"/>
+        <header-file src="src/ios/AnylineEnergyScanViewController.h"/>
+        <source-file src="src/ios/AnylineEnergyScanViewController.m"/>
+        <header-file src="src/ios/AnylineLicensePlateViewController.h"/>
+        <source-file src="src/ios/AnylineLicensePlateViewController.m"/>
+        <header-file src="src/ios/AnylineOCRScanViewController.h"/>
+        <source-file src="src/ios/AnylineOCRScanViewController.m"/>
+        <header-file src="src/ios/AnylineDocumentScanViewController.h"/>
+        <source-file src="src/ios/AnylineDocumentScanViewController.m"/>
+        <header-file src="src/ios/ALRoundedView.h"/>
+        <source-file src="src/ios/ALRoundedView.m"/>
+        <header-file src="src/ios/ALCordovaUIConfiguration.h"/>
+        <source-file src="src/ios/ALCordovaUIConfiguration.m"/>
+        <!--License Plates-->
 
-    <!--<asset src="src/ios/LicensePlate/Alte.traineddata" target="LicensePlate/Alte.traineddata"/>
-    <asset src="src/ios/LicensePlate/Arial.traineddata" target="LicensePlate/Arial.traineddata"/>
-    <asset src="src/ios/LicensePlate/GL-Nummernschild-Mtl7_uml.traineddata" target="LicensePlate/GL-Nummernschild-Mtl7_uml.traineddata"/>
-    <asset src="src/ios/LicensePlate/license_plates_a.ale" target="LicensePlate/license_plates_a.ale"/>
-    <asset src="src/ios/LicensePlate/license_plates_d.ale" target="LicensePlate/license_plates_d.ale"/>
-    <asset src="src/ios/LicensePlate/license_plates.ale" target="LicensePlate/license_plates.ale"/>-->
+        <!--<asset src="src/ios/LicensePlate/Alte.traineddata" target="LicensePlate/Alte.traineddata"/>
+        <asset src="src/ios/LicensePlate/Arial.traineddata" target="LicensePlate/Arial.traineddata"/>
+        <asset src="src/ios/LicensePlate/GL-Nummernschild-Mtl7_uml.traineddata" target="LicensePlate/GL-Nummernschild-Mtl7_uml.traineddata"/>
+        <asset src="src/ios/LicensePlate/license_plates_a.ale" target="LicensePlate/license_plates_a.ale"/>
+        <asset src="src/ios/LicensePlate/license_plates_d.ale" target="LicensePlate/license_plates_d.ale"/>
+        <asset src="src/ios/LicensePlate/license_plates.ale" target="LicensePlate/license_plates.ale"/>-->
 
-<!-- Anyline Framework & Resource Bundle -->
-    <framework  custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>
-    <resource-file  src="src/ios/anyline_sdk/AnylineResources.bundle"/>
-<!-- Frameworks needed by Anyline SDK for iOS -->
-    <framework  src="libz.tbd"/>
-    <framework  src="libc++.tbd"/>
-    <framework  src="AssetsLibrary.framework"/>
-    <framework  src="Accelerate.framework"/>
+        <!-- Anyline Framework & Resource Bundle -->
+        <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>
+        <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>
+        <!-- Frameworks needed by Anyline SDK for iOS -->
+        <framework src="libz.tbd"/>
+        <framework src="libc++.tbd"/>
+        <framework src="AssetsLibrary.framework"/>
+        <framework src="Accelerate.framework"/>
 
-  </platform>
-  <platform name="android">
-<!-- register plugin -->
-    <framework  custom="true" src="src/android/anyline.gradle" type="gradleReference"/>
-    
-    <config-file parent="/*" target="config.xml">
-      <feature name="AnylineSDK">
-        <param  name="android-package" value="io.anyline.cordova.AnylinePlugin"/>
-        <param  name="onload" value="true"/>
-      </feature>
-    </config-file>
-<!-- add permissions in AndroidManifest.xml file-->
-    <config-file mode="merge" parent="/manifest" target="AndroidManifest.xml">
-      <uses-permission  android:name="android.permission.CAMERA"/>
-      <uses-permission  android:name="android.permission.VIBRATE"/>
-    </config-file>
-   <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml">
-        <meta-data
-        android:name="com.google.android.gms.vision.DEPENDENCIES"
-        android:value="barcode" />
-    </config-file>
-    <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml">
-      <activity  android:name="io.anyline.cordova.BarcodeActivity" android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
-      <activity  android:name="io.anyline.cordova.MrzActivity" android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
-      <activity  android:name="io.anyline.cordova.EnergyActivity" android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
-      <activity  android:name="io.anyline.cordova.AnylineOcrActivity" android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
-      <activity  android:name="io.anyline.cordova.DocumentActivity" android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
-    </config-file>
+    </platform>
+    <platform name="android">
+        <!-- register plugin -->
+        <framework custom="true" src="src/android/anyline.gradle" type="gradleReference"/>
 
-<!-- add plugin source code -->
-    <source-file  src="src/android/io/anyline/cordova/AnylineBaseActivity.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/AnylineOcrActivity.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/AnylinePlugin.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/BarcodeActivity.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/MrzActivity.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/EnergyActivity.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/DocumentActivity.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/CordovaUIConfig.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/ResultReporter.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/Resources.java" target-dir="src/io/anyline/cordova"/>
+        <config-file parent="/*" target="config.xml">
+            <feature name="AnylineSDK">
+                <param name="android-package" value="io.anyline.cordova.AnylinePlugin"/>
+                <param name="onload" value="true"/>
+            </feature>
+        </config-file>
+        <!-- add permissions in AndroidManifest.xml file-->
+        <config-file mode="merge" parent="/manifest" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.CAMERA"/>
+            <uses-permission android:name="android.permission.VIBRATE"/>
+        </config-file>
+        <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml">
+            <meta-data
+                    android:name="com.google.android.gms.vision.DEPENDENCIES"
+                    android:value="barcode"/>
+        </config-file>
+        <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml">
+            <activity android:name="io.anyline.cordova.BarcodeActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+            <activity android:name="io.anyline.cordova.MrzActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+            <activity android:name="io.anyline.cordova.EnergyActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+            <activity android:name="io.anyline.cordova.AnylineOcrActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+            <activity android:name="io.anyline.cordova.DocumentActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+        </config-file>
 
-    <resource-file src="src/android/res/values/anyline_sdk_plugin_strings.xml" target="res/values/anyline_sdk_plugin_strings.xml"/>
-    <resource-file src="src/android/res/values/anyline_sdk_plugin_colors.xml" target="res/values/anyline_sdk_plugin_colors.xml"/>
-    <resource-file src="src/android/res/values-de/anyline_sdk_plugin_strings.xml" target="res/values-de/anyline_sdk_plugin_strings.xml"/>
-    <resource-file src="src/android/res/layout/activity_scan_document.xml" target="res/layout/activity_scan_document.xml"/>
+        <!-- add plugin source code -->
+        <source-file src="src/android/io/anyline/cordova/AnylineBaseActivity.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/AnylineOcrActivity.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/AnylinePlugin.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/BarcodeActivity.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/MrzActivity.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/EnergyActivity.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/LicensePlateActivity.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/DocumentActivity.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/CordovaUIConfig.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/ResultReporter.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/Resources.java" target-dir="src/io/anyline/cordova"/>
 
-  </platform>
+        <resource-file src="src/android/res/values/anyline_sdk_plugin_strings.xml"
+                       target="res/values/anyline_sdk_plugin_strings.xml"/>
+        <resource-file src="src/android/res/values/anyline_sdk_plugin_colors.xml"
+                       target="res/values/anyline_sdk_plugin_colors.xml"/>
+        <resource-file src="src/android/res/values-de/anyline_sdk_plugin_strings.xml"
+                       target="res/values-de/anyline_sdk_plugin_strings.xml"/>
+        <resource-file src="src/android/res/layout/activity_scan_document.xml"
+                       target="res/layout/activity_scan_document.xml"/>
+
+    </platform>
 </plugin>
