@@ -20,11 +20,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import at.nineyards.anyline.camera.AnylineViewConfig;
 import at.nineyards.anyline.camera.CameraController;
@@ -33,6 +35,7 @@ import at.nineyards.anyline.models.AnylineImage;
 import at.nineyards.anyline.modules.document.DocumentResultListener;
 import at.nineyards.anyline.modules.document.DocumentResult;
 import at.nineyards.anyline.modules.document.DocumentScanView;
+import at.nineyards.anyline.util.TempFileUtil;
 
 /**
  * Example activity for the Anyline-Document-Detection-Module
@@ -50,6 +53,8 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     private FrameLayout errorMessageLayout;
     private TextView errorMessage;
     private long lastErrorRecieved = 0;
+    private int quality = 100;
+
 
     private android.os.Handler handler = new android.os.Handler();
 
@@ -105,6 +110,16 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             return;
         }
 
+        //get the destination resolution
+        if (jsonObject.has("document")) {
+            try {
+                this.quality = jsonObject.getJSONObject("document").getInt("quality");
+            } catch (JSONException e) {
+                finishWithError(e.getMessage());
+                return;
+            }
+        }
+
         documentScanView.setConfig(new AnylineViewConfig(this, jsonObject));
 
         // Optional: Set a ratio you want the documents to be restricted to. default is set to DIN_AX
@@ -158,38 +173,44 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
                  * for example
                  *
                  */
-                File outDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "ok");
+                File outDir = new File(getCacheDir(), "ok");
                 outDir.mkdir();
                 // change the file ending to png if you want a png
-                File outFile = new File(outDir, "" + System.currentTimeMillis() + ".jpg");
-                try {
-                    // convert the transformed image into a gray scaled image internally
-                    // transformedImage.getGrayCvMat(false);
-                    // get the transformed image as bitmap
-                    // Bitmap bmp = transformedImage.getBitmap();
-                    // save the image with quality 100 (only used for jpeg, ignored for png)
-                    transformedImage.save(outFile, 100);
-                    showToast(getString(getResources().getIdentifier("document_image_saved_to", "string", getPackageName())) + " " + outFile.getAbsolutePath());
+                JSONObject jsonResult = new JSONObject();
+               try {
+                   // convert the transformed image into a gray scaled image internally
+                   // transformedImage.getGrayCvMat(false);
+                   // get the transformed image as bitmap
+                   // Bitmap bmp = transformedImage.getBitmap();
+                   // save the image with quality 100 (only used for jpeg, ignored for png)
+                   File imageFile = TempFileUtil.createTempFileCheckCache(DocumentActivity.this,
+                           UUID.randomUUID().toString(), ".jpg");
+                   transformedImage.save(imageFile, quality);
+                   showToast(getString(getResources().getIdentifier("document_image_saved_to", "string", getPackageName())) + " " + imageFile.getAbsolutePath());
+
+                   jsonResult.put("imagePath", imageFile.getAbsolutePath());
+
+
+                   // Save the Full Frame Image
+                   if (fullFrame != null) {
+                       imageFile = TempFileUtil.createTempFileCheckCache(DocumentActivity.this,
+                               UUID.randomUUID().toString(), ".jpg");
+                       fullFrame.save(imageFile, quality);
+                       jsonResult.put("fullImagePath", imageFile.getAbsolutePath());
+                   }
+                   // Put outline and conficence to result
+                   jsonResult.put("outline", jsonForOutline(documentResult.getOutline()));
+                   jsonResult.put("confidence", documentResult.getConfidence());
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (JSONException jsonException) {
+                  //should not be possible
+                  Log.e(TAG, "Error while putting image path to json.", jsonException);
                 }
 
                 // release the images
                 transformedImage.release();
                 fullFrame.release();
-
-
-                JSONObject jsonResult = new JSONObject();
-                try {
-                    jsonResult.put("imagePath", outFile.getAbsolutePath());
-
-                    jsonResult.put("outline", jsonForOutline(documentResult.getOutline()));
-                    jsonResult.put("confidence", documentResult.getConfidence());
-
-                } catch (Exception jsonException) {
-                    //should not be possible
-                    Log.e(TAG, "Error while putting image path to json.", jsonException);
-                }
 
                 Boolean cancelOnResult = true;
 
@@ -241,7 +262,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
                 AnylineImage image = documentScanView.getCurrentFullImage();
 
                 if (image != null) {
-                    File outDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "error");
+                    File outDir = new File(getCacheDir(), "error");
                     outDir.mkdir();
                     File outFile = new File(outDir, "" + System.currentTimeMillis() + documentError.name() + ".jpg");
                     try {
@@ -428,7 +449,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     @Override
     protected void onStop() {
         super.onStop();
-        handler.removeCallbacks(errorMessageCleanup);
+        //handler.removeCallbacks(errorMessageCleanup);
         errorMessageCleanup = null;
         handler = null;
     }

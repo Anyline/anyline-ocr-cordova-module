@@ -3,7 +3,7 @@
     xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="io-anyline-cordova"
-    version="3.17.0">
+    version="3.18.0">
 
   <name>AnylineSDK</name>
 
@@ -35,8 +35,6 @@
     <source-file  src="src/ios/AnylineOCRScanViewController.m"/>
     <header-file  src="src/ios/AnylineDocumentScanViewController.h"/>
     <source-file  src="src/ios/AnylineDocumentScanViewController.m"/>
-    <header-file  src="src/ios/AnylineLicensePlateViewController.h"/>
-    <source-file  src="src/ios/AnylineLicensePlateViewController.m"/>
     <header-file  src="src/ios/ALRoundedView.h"/>
     <source-file  src="src/ios/ALRoundedView.m"/>
     <header-file  src="src/ios/ALCordovaUIConfiguration.h"/>
@@ -86,7 +84,6 @@
       <activity  android:name="io.anyline.cordova.EnergyActivity" android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
       <activity  android:name="io.anyline.cordova.AnylineOcrActivity" android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
       <activity  android:name="io.anyline.cordova.DocumentActivity" android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
-      <activity  android:name="io.anyline.cordova.LicensePlateActivity" android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
     </config-file>
 
 <!-- add plugin source code -->
@@ -97,7 +94,6 @@
     <source-file  src="src/android/io/anyline/cordova/MrzActivity.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/EnergyActivity.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/DocumentActivity.java" target-dir="src/io/anyline/cordova"/>
-    <source-file  src="src/android/io/anyline/cordova/LicensePlateActivity.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/CordovaUIConfig.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/ResultReporter.java" target-dir="src/io/anyline/cordova"/>
     <source-file  src="src/android/io/anyline/cordova/Resources.java" target-dir="src/io/anyline/cordova"/>

@@ -21,75 +21,75 @@
 </head>
 
 <body>
-    <h1>Anyline Cordova</h1>
+<h1>Anyline Cordova</h1>
 
-    <div id="navigation">
-        <details id="details_scan_modes" open>
-            <summary class="summary1">
-                Scan Modes
-            </summary>
-            <h2> Energy </h2>
-            <p>
-                <input type="button" value="Analog/Digital Meter" onclick="anyline.energy.scan('AUTO_ANALOG_DIGITAL_METER')" />
-                <br/>
-                <input type="button" value="Analog Meter" onclick="anyline.energy.scan('ANALOG_METER')" />
-                <br/>
-                <input type="button" value="Digital Meter" onclick="anyline.energy.scan('DIGITAL_METER')" />
-                <br/>
-                <input type="button" value="Serial Number" onclick="anyline.energy.scan('SERIAL_NUMBER')" />
-                <br/>
-                <input type="button" value="Heat Meter" onclick="anyline.energy.scanHeatMeterWithSegment()" />
-                <br/>
-                <input type="button" value="Dial Meter ALPHA" onclick="anyline.energy.scan('DIAL_METER')" />
-                <br/>
-                <hr>
-                <h2>Anyline OCR</h2>
-                <p>
-                    <input type="button" value="IBAN" onclick="anyline.ocr.scanIban()" />
-                    <br/>
-                    <input type="button" value="Anyline Voucher Codes" onclick="anyline.ocr.scanAnylineVoucherCodes()" />
-                </p>
-                <hr>
-                <h2> Vehicles </h2>
-                <p>
-                    <input type="button" value="License Plates" onclick="anyline.licensePlate.scanLicensePlates('LICENSE_PLATE')" />
-                    <br/>
-                </p>
-                <hr>
-                <h2> Others </h2>
-                <p>
-                    <input type="button" value="Barcode" onclick="anyline.barcode.scan()" />
-                    <br/>
-                    <input type="button" value="MRZ of Passport or ID" onclick="anyline.mrz.scan()" />
-                    <br/>
-                    <input type="button" value="Document" onclick="anyline.document.scan()" />
-                    <br/>
-                </p>
-        </details>
-
-
+<div id="navigation">
+    <details id="details_scan_modes" open>
+        <summary class="summary1">
+            Scan Modes
+        </summary>
+        <h2> Energy </h2>
+        <p>
+            <input type="button" value="Analog/Digital Meter" onclick="anyline.energy.scan('AUTO_ANALOG_DIGITAL_METER')" />
+            <br/>
+            <input type="button" value="Analog Meter" onclick="anyline.energy.scanElectricDigitalSegment('ANALOG_METER')" />
+            <br/>
+            <input type="button" value="Digital Meter" onclick="anyline.energy.scanElectricDigitalSegment('DIGITAL_METER')" />
+            <br/>
+            <input type="button" value="Serial Number" onclick="anyline.energy.scan('SERIAL_NUMBER')" />
+            <br/>
+            <input type="button" value="Heat Meter" onclick="anyline.energy.scanHeatMeterWithSegment()" />
+            <br/>
+            <input type="button" value="Dial Meter ALPHA" onclick="anyline.energy.scan('DIAL_METER')" />
+            <br/>
         <hr>
-        <details id="details_results">
-            <summary class="summary1">
-                Results
-            </summary>
-            <p>
-                <div id="results">
+        <h2>Anyline OCR</h2>
+        <p>
+            <input type="button" value="IBAN" onclick="anyline.ocr.scanIban()" />
+            <br/>
+            <input type="button" value="Anyline Voucher Codes" onclick="anyline.ocr.scanAnylineVoucherCodes()" />
+        </p>
+        <hr>
+        <h2> Vehicles </h2>
+        <p>
+            <input type="button" value="License Plates" onclick="anyline.licensePlate.scanLicensePlates('LICENSE_PLATE')" />
+            <br/>
+        </p>
+        <hr>
+        <h2> Others </h2>
+        <p>
+            <input type="button" value="Barcode" onclick="anyline.barcode.scan()" />
+            <br/>
+            <input type="button" value="MRZ of Passport or ID" onclick="anyline.mrz.scan()" />
+            <br/>
+            <input type="button" value="Document" onclick="anyline.document.scan()" />
+            <br/>
+        </p>
+    </details>
 
-                </div>
-            </p>
-        </details>
+
+    <hr>
+    <details id="details_results">
+        <summary class="summary1">
+            Results
+        </summary>
+        <p>
+        <div id="results">
+
+        </div>
+        </p>
+    </details>
 
 
-    </div>
+</div>
 
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/anyline.barcode.js"></script>
-    <script type="text/javascript" src="js/anyline.energy.js"></script>
-    <script type="text/javascript" src="js/anyline.mrz.js"></script>
-    <script type="text/javascript" src="js/anyline.ocr.js"></script>
-    <script type="text/javascript" src="js/anyline.document.js"></script>
-    <script type="text/javascript" src="js/anyline.licensePlate.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/anyline.barcode.js"></script>
+<script type="text/javascript" src="js/anyline.energy.js"></script>
+<script type="text/javascript" src="js/anyline.mrz.js"></script>
+<script type="text/javascript" src="js/anyline.ocr.js"></script>
+<script type="text/javascript" src="js/anyline.document.js"></script>
+<script type="text/javascript" src="js/anyline.licensePlate.js"></script>
 </body>
 
 </html>

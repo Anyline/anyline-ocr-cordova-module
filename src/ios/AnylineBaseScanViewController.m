@@ -178,6 +178,17 @@
 }
 
 - (void)doneButtonPressed:(id)sender {
+ Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
+    if (captureDeviceClass != nil) {
+        AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        if ([device hasTorch] && [device hasFlash]){
+            [device lockForConfiguration:nil];
+            [device setTorchMode:AVCaptureTorchModeOff];
+            [device setFlashMode:AVCaptureFlashModeOff];
+        }
+    };
+
+
     [self.moduleView cancelScanningAndReturnError:nil];
     [self dismissViewControllerAnimated:YES completion:^{
         [self.delegate anylineBaseScanViewController:self didStopScanning:sender];
@@ -185,10 +196,15 @@
 }
 
 - (NSString *)saveImageToFileSystem:(UIImage *)image {
+    return [self saveImageToFileSystem:image compressionQuality:0.9];
+}
+
+- (NSString *)saveImageToFileSystem:(UIImage *)image compressionQuality:(CGFloat)compressionQuality {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-    
-    NSData *binaryImageData = UIImageJPEGRepresentation(image, 0.9);
+
+
+    NSData *binaryImageData = UIImageJPEGRepresentation(image, compressionQuality);
     NSString *uuid = [NSUUID UUID].UUIDString;
     NSString *imagePath = [NSString stringWithFormat:@"%@.jpg",uuid];
     

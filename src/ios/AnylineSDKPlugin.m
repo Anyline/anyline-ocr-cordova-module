@@ -138,6 +138,14 @@
     [self.commandDelegate runInBackground:^{
         AnylineDocumentScanViewController *docScanViewController = [[AnylineDocumentScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
 
+        NSDictionary *options = [command.arguments objectAtIndex:1];
+        if ([options valueForKey:@"document"]) {
+            NSDictionary *docConfig = [options valueForKey:@"document"];
+            docScanViewController.quality = [[docConfig valueForKey:@"quality"] integerValue];
+        } else {
+            docScanViewController.quality = 100;
+        }
+
         self.baseScanViewController = docScanViewController;
 
         [self presentViewController];
