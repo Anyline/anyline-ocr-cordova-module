@@ -31,7 +31,7 @@ cordova platform add android@latest
 ```
 iOS:
 ```
-cordova platflorm add ios@latest
+cordova platform add ios@latest
 ```
 
 #### Run it

@@ -1,240 +1,102 @@
-	 _____         _ _         
-	|  _  |___ _ _| |_|___ ___ 
-	|     |   | | | | |   | -_|
-	|__|__|_|_|_  |_|_|_|_|___|
-	          |___|            
-	          
-# Anyline React-Native Plugin
+## Anyline SDK Cordova Plugin ##
 
-[Anyline](https://www.anyline.io) is mobile OCR SDK, which can be configured by yourself to scan all kinds of numbers, characters, text and codes. 
+Anyline provides an easy-to-use SDK for applications to enable Optical Character Recognition (OCR) on mobile devices.
 
-The plugin lets you connect to the SDK with React-Native.
-	  
-## Example
+### Available Modules
+- [**Barcode:**](https://documentation.anyline.io/toc/modules/barcode/index.html)  Scan 23 types of international barcode & QR code formats.
+- [**Energy:**](https://documentation.anyline.io/toc/modules/energy/index.html) Scan meter readings of various electric, gas, and water meters.
+- [**License Plate:**](https://documentation.anyline.io/toc/modules/license_plate/index.html)  Scan license plates of different sizes and from different countries.
+- [**Document:**](https://documentation.anyline.io/toc/modules/document/index.html) Detect document outlines, validate the angles of the document to ensure it is not too skewed, validates the document ratio, determine the sharpness of the text and rectifie the document.
+- [**MRZ:**](https://documentation.anyline.io/toc/modules/mrz/index.html)  Reliable scanning of data from passports' and IDs' machine readable zones (MRZ)
+- [**Anyline OCR:**](https://documentation.anyline.io/toc/modules/anyline_ocr/index.html) Create a custom use case with LINE or GRID recognition
 
-Go to the Example project in the [example folder](https://github.com/Anyline/anyline-ocr-react-native-module/tree/master/example/Anyline).
-
-Check out the examples ResultView.js and config.json to see the implementation.
-	                
-## Quick Start Guide
-
-### 1. Get a License
-Go to [our pricing page](https://www.anyline.io/pricing/) and get your license or sign up for your expiring test license.
-
-### 2. Get the Anyline react-native plugin
-
-Download or Clone the Repo to your node_modules
-```
-project   
-│    android.index.js
-│    ios.index.js
-└─── node_modules
-     └─── anyline-ocr-react-native-module
-```
-
-or just go 
-
-```
- npm i anyline-ocr-react-native-module
-``` 
- 
-
-Link the project. Run in root:
- ```
-react-native link
- ```
-in the root folder.
-
-### 3. Get the native Dependencies
+### Requirements
 
 #### Android
-
-##### Setup Packages
-
-Package name must match with the bundleID from your Anyline License. 
-
-##### Add Anyline Package
-
-Go into the native Android folder of your Project to your MainApplication.
-
-Import the AnylinePackage
-```
-import com.anyline.reactnative.AnylinePackage;
-```
-and add the package to your getPackages function
-```
-@Override
-    protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new AnylinePackage()
-      );
-    }
-```
-#### Issues
-Strict mode does not allow function declarations in a lexically nested statement.
- 
- http://stackoverflow.com/a/41076153/2157717
-
-duplicate files during packaging of APK
-```
-packagingOptions {
-  pickFirst 'lib/armeabi-v7a/libgnustl_shared.so'
-  pickFirst 'lib/x86/libgnustl_shared.so'
-}
-```
-#### iOS 
-Disable bitcode in your project
-
-##### Podfile
-- Copy the [Podfile](https://github.com/Anyline/anyline-ocr-react-native-module/tree/master/example/Anyline/ios/Podfile) 
-from our example Project to your native iOS root folder.
-- Change the target of the Podfile to your project name.
-- ```pod update```
-
-##### Permissions
-Add Camera Permissions to Info.plist
-```
-Privacy - Camera Usage Description
-```
-Add also every other permission you want to configure in your config.js (vibrate, sound).
-
-##### Anyline License
-Your BundleIdentifier of your app has to match with your bundleID from your Anyline License.
-
-### 4. Import the plugin to your JavaScript file
-```
-import Anyline from 'anyline-ocr-react-native-module';
-```
-### 5. Import the config file
-```
-import config from './config.js';
-```
-Add and import a JSON file with the proper structure and elements. The JSON config contains: 
-
-1. The license key 
-
-2. Options field with
--	AnylineSDK config parameter
--	“segment”: which contains the scanModes for the UI Segment (e.g. switch between Analog and Digital) - optional
-3. OCR field with (Only if you want to use the OCR module)
--   your custom training data
--   RegEx Validation
-
-If you want to get detailed information on the config JSON, go to our[`documentation`](https://documentation.anyline.io/toc/view_configuration/index.html).
-
-### 6. Call the Anyline component 
-
-#### Callbacks
-
-```
-AnylineOCR.setupScanViewWithConfigJson(
-        JSON.stringify(config),
-        “ANALOG_METER”,
-        this.onResult,
-        this.onError
-    );
-```
-
-#### Promise
-```
-openAnyline = async () => {
-    ...
-    
-    try {
-        const result = await AnylineOCR.setupScanViewWithConfigJson(JSON.stringify(config), “ANALOG_METER”);
-    } catch(error) {
-        console.error(error);
-    }
-    
-    ...
-}
-```
-
-
-### 7. Add custom TrainData to the OCR Module
-If you want to add you custom traindata, you have to copy it into the native project folder.
+- Android device with SDK >= 15
+- decent camera functionality (recommended: 720p and adequate auto focus)
 
 #### iOS
+- minimum iOS 8.2
+- minimum iPhone4s
+
+
+### Quick Start - Setup
+This is just a simple setup guide to integrate the anylinesdk-plugin in an existing Cordova project.<br/>
+For more information about Cordova, how to use plugins, etc. see <a target="_blank" href="https://cordova.apache.org/">https://cordova.apache.org/</a>.
+
+###### 1. Add the anylinesdk-plugin to your existing cordova project
 ```
-ios   
-└─── trainedData
-     └─── myTrainedData.traineddata
+cordova plugin add io-anyline-cordova
 ```
 
-#### Android
+Or use plugman. E.g. for android:  
+
 ```
-android   
-└─── app
-      └─── src
-            └─── main
-                   └─── assets
-                          └─── traindData
-                                  └─── myTrainedData.traineddata
+plugman install --platform android --project platforms/android --plugin io-anyline-cordova
 ```
-Also the OCR Config has to reflect the path.
 
-
-## Props
-
-| Key | Type | Default | Description |
-| --- | --- | --- | --- |
-| config | string | \*required | config (JSON String)|
-| scanMode | string |  \*required  | Will set the scanMode/Module of the Plugin. |
-| onResult | function | \*required | The function you pass will be the onResult callback. Use this callback to handle the found scan results. |
-| onError | function |  \*required  | The onError function will be called when the AnylinePlugin encounters an error. Handle the error messages in this method. |
-
-### config
-Stringified JSON with all the configurations, detailed information [here](https://documentation.anyline.io/toc/view_configuration/index.html).
-
-Keep in mind, that you have to add every permission to your project, you add in the config (vibrateOnResult -> vibration permission)
-### scanMode
-Available settings: 
-
-##### Energy Meter
+If you'd like to clone the repository you will have to use git-lfs. Use the following commands to install git-lfs.
 ```
-"AUTO_ANALOG_DIGITAL_METER"
-"ANALOG_METER"
-"DIGITAL_METER"
-"DIAL_METER"
-"HEAT_METER_4"
-"HEAT_METER_5"
-"HEAT_METER_6"
-"SERIAL_NUMBER"
+brew install git-lfs
+git lfs install
 ```
-##### Other ScanModes
-```
-"BARCODE"
-"MRZ"
-"ANYLINE_OCR"
-"DOCUMENT"
-"LICENSE_PLATE"
-```
-Get more information in our [Docu](https://documentation.anyline.io/toc/platforms/react-native/getting_started.html#react-native-set-scan-mode).
+If you prefer downloading a package, use the provided `zip` package on the [releases page](https://github.com/Anyline/anyline-ocr-cordova-module/releases). Be aware that the github download zip button does not work for projects with git-lfs.
 
-### onResult Function
-Callback -> Stringified JSON
+
+
+
+###### 2. Plugin Usage
+
+```javaScript
+cordova.exec(onResult, onError, "AnylineSDK", scanMode, config);
 ```
-{
-    reading : 'Result of the Scan',
-    imagePath : 'path to cropped image',
-    fullImagePath : 'path to full image',
-    barcode : 'result of the simultaneous barcode scanning',
-    scanMode : 'selected scanMode',
-    meterType : 'meter type'
-}
+
+- <b>onResult</b>: a function that is called on a scan result
+- <b>onError</b>: a function that is called on error or when the user canceled the scanning
+- <b>AnylineSDK</b>: add this *string* to make sure the anyline-sdk plugin is called
+- <b>scanMode</b>: "<i>MRZ</i>", "<i>LICENSE_PLATE</i>", "<i>BARCODE</i>", "<i>ANYLINE_OCR</i>", "<i>ELECTRIC_METER</i>" (more Energy modes can be found [here](https://documentation.anyline.io/#energy))
+- <b>config</b>: an array
+    * <b>config[0]</b>: the license key
+    * <b>config[1]</b>: the [view config](https://documentation.anyline.io/#anyline-config)
+    * <b>config[2]</b>: the [ocr config](https://documentation.anyline.io/#anyline-ocr) (only uses with mode ANYLINE_OCR)
+
+
+> Example for **config** from MRZ:
+
+```json
+[
+    "YOUR_LICENSE_KEY",
+    {
+        "captureResolution": "1080p",
+        "cutout": {
+            "style": "rect",
+            "maxWidthPercent": "90%",
+            "maxHeightPercent": "90%",
+            "alignment": "top_half",
+            "strokeWidth": 2,
+            "cornerRadius": 4,
+            "strokeColor": "FFFFFF",
+            "outerColor": "000000",
+            "outerAlpha": 0.3
+        },
+        "flash": {
+            "mode": "manual",
+            "alignment": "bottom_right"
+        },
+        "beepOnResult": true,
+        "vibrateOnResult": true,
+        "blinkAnimationOnResult": true,
+        "cancelOnResult": true
+    }
+]
 ```
-More information about the simultaneous barcode scanning [here](https://documentation.anyline.io/toc/modules/overview.html#anyline-modules-simultaneous-barcode-scanning).
 
-### onError Function
-Callback -> String
-- String errorMessage
 
-## Images
+###### 3. Run your cordova project: Enjoy scanning and have fun :)
 
-Keep in mind, all the images are saved in the cache directory of the app. For performance reasons, we only provide the 
-path as string, so we don't have to transfer the whole image through the bridge. Please be aware,  that you should not 
-use the images in the cache directory for persistent storage, but store the images in a location of your choice for persistence. 
+Checkout our <a href="https://documentation.anyline.io/">online documentation</a>  for more details.
+
 
 ## License
 
