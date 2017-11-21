@@ -89,6 +89,8 @@
                       android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
             <activity android:name="io.anyline.cordova.AnylineOcrActivity"
                       android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+            <activity android:name="io.anyline.cordova.LicensePlateActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
             <activity android:name="io.anyline.cordova.DocumentActivity"
                       android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
         </config-file>
