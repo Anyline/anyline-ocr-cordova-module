@@ -170,6 +170,7 @@
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+    [self turnOffTorch];
     [UIApplication sharedApplication].idleTimerDisabled = NO;
 }
 
@@ -178,7 +179,17 @@
 }
 
 - (void)doneButtonPressed:(id)sender {
- Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
+
+    [self turnOffTorch];
+    [self.moduleView cancelScanningAndReturnError:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.delegate anylineBaseScanViewController:self didStopScanning:sender];
+    }];
+}
+
+
+- (void)turnOffTorch{
+    Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
     if (captureDeviceClass != nil) {
         AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
         if ([device hasTorch] && [device hasFlash]){
@@ -187,12 +198,6 @@
             [device setFlashMode:AVCaptureFlashModeOff];
         }
     };
-
-
-    [self.moduleView cancelScanningAndReturnError:nil];
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self.delegate anylineBaseScanViewController:self didStopScanning:sender];
-    }];
 }
 
 - (NSString *)saveImageToFileSystem:(UIImage *)image {
