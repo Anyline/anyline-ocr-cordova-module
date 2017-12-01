@@ -55,6 +55,8 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     private long lastErrorRecieved = 0;
     private int quality = 100;
 
+    private Double maxDocumentOutputResolutionWidth = null;
+    private Double maxDocumentOutputResolutionHeight = null;
 
     private android.os.Handler handler = new android.os.Handler();
 
@@ -87,7 +89,8 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getResources().getIdentifier("activity_scan_document", "layout", getPackageName()));
-        //Set the flag to keep the screen on (otherwise the screen may go dark during scanning)
+
+        // Set the flag to keep the screen on (otherwise the screen may go dark during scanning)
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         imageViewResult = (ImageView) findViewById(getResources().getIdentifier("image_result", "id", getPackageName()));
@@ -96,7 +99,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
         documentScanView = (DocumentScanView) findViewById(getResources().getIdentifier("document_scan_view", "id", getPackageName()));
         // add a camera open listener that will be called when the camera is opened or an error occurred
-        //  this is optional (if not set a RuntimeException will be thrown if an error occurs)
+        // this is optional (if not set a RuntimeException will be thrown if an error occurs)
         documentScanView.setCameraOpenListener(this);
         // the view can be configured via a json file in the assets, and this config is set here
         // (alternatively it can be configured via xml, see the Energy Example for that)
@@ -110,10 +113,12 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             return;
         }
 
-        //get the destination resolution
+        // get the destination resolution
         if (jsonObject.has("document")) {
             try {
                 this.quality = jsonObject.getJSONObject("document").getInt("quality");
+                this.maxDocumentOutputResolutionWidth = jsonObject.getJSONObject("document").getJSONObject("maxOutputResolution").getDouble("width");
+                this.maxDocumentOutputResolutionHeight = jsonObject.getJSONObject("document").getJSONObject("maxOutputResolution").getDouble("height");
             } catch (JSONException e) {
                 finishWithError(e.getMessage());
                 return;
@@ -127,6 +132,11 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
         // Optional: Set a maximum deviation for the ratio. 0.15 is the default
         documentScanView.setMaxDocumentRatioDeviation(0.15);
+
+        // Set maximum output resolution
+        if (maxDocumentOutputResolutionWidth != null && maxDocumentOutputResolutionHeight != null) {
+            documentScanView.setMaxDocumentOutputResolution(maxDocumentOutputResolutionWidth, maxDocumentOutputResolutionHeight);
+        }
 
         // initialize Anyline with the license key and a Listener that is called if a result is found
         documentScanView.initAnyline(licenseKey, new DocumentResultListener() {
@@ -333,7 +343,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
 
         // optionally stop the scan once a valid result was returned
-//        documentScanView.setCancelOnResult(cancelOnResult);
+        // documentScanView.setCancelOnResult(cancelOnResult);
 
     }
 
