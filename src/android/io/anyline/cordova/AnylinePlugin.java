@@ -161,6 +161,9 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             case "SERIAL_NUMBER":
                 scanEnergy(args, EnergyScanView.ScanMode.SERIAL_NUMBER);
                 break;
+             case "DOT_MATRIX_METER":
+                scanEnergy(args, EnergyScanView.ScanMode.DOT_MATRIX_METER);
+                break;
             case "ANYLINE_OCR":
                 scan(AnylineOcrActivity.class, REQUEST_ANYLINE_OCR, args);
                 break;

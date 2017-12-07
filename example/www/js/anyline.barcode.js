@@ -76,7 +76,7 @@ anyline.barcode = {
 
     //mode "scanBarcode" is also still available (for backwards compatibility)
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "BARCODE", [licenseKey, {
-      "captureResolution": "720p",
+      "captureResolution": "1080p",
 
       "cutout": {
         "style": "rect",

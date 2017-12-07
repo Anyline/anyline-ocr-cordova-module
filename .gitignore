@@ -4,3 +4,4 @@ node_modules
 .idea/
 src/android/.idea
 npm-debug.log
+.vscode

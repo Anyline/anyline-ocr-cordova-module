@@ -98,6 +98,10 @@
     [self processMeterCommand:command withScanMode:ALSerialNumber];
 }
 
+- (void)DOT_MATRIX_METER:(CDVInvokedUrlCommand *)command {
+    [self processMeterCommand:command withScanMode:ALDotMatrixMeter];
+}
+
 - (void)MRZ:(CDVInvokedUrlCommand *)command {
     [self processCommandArguments:command];
 
@@ -144,16 +148,27 @@
 
             // Check for Document quality Config and set it
             if([docConfig valueForKey:@"quality"]){
-                docVC.quality = [[docConfig valueForKey:@"quality"] integerValue];
+                docScanViewController.quality = [[docConfig valueForKey:@"quality"] integerValue];
             } else {
-                docVC.quality = 100;
+                docScanViewController.quality = 100;
             }
 
             // Check for Document Max Output Config and set it
             if([docConfig valueForKey:@"maxOutputResoultion"]){
-                NSDictionary *maxOutputResoultionConfig = [options valueForKey:@"maxOutputResoultion"];
-                if([maxOutputResoultionConfig valueForKey:@"width"] && [docConfig valueForKey:@"height"]){
-                    docVC.maxOutputResolution = CGSizeMake([[maxOutputResoultionConfig valueForKey:@"width"] doubleValue], [[maxOutputResoultionConfig valueForKey:@"height"] doubleValue]);
+                NSDictionary *maxOutputResoultionConfig = [docConfig valueForKey:@"maxOutputResoultion"];
+                if([maxOutputResoultionConfig valueForKey:@"width"] && [maxOutputResoultionConfig valueForKey:@"height"]){
+                    docScanViewController.maxOutputResolution = CGSizeMake([[maxOutputResoultionConfig valueForKey:@"width"] doubleValue], [[maxOutputResoultionConfig valueForKey:@"height"] doubleValue]);
+                }
+            }
+
+            // Check for Document Ratio Config and set it
+            if([docConfig valueForKey:@"ratio"]){
+                NSDictionary *ratioConfig = [docConfig valueForKey:@"ratio"];
+                if([ratioConfig valueForKey:@"ratios"]){
+                    docScanViewController.ratios = [ratioConfig valueForKey:@"ratios"];
+                }
+                if([ratioConfig valueForKey:@"deviation"]){
+                    docScanViewController.ratioDeviation = [[ratioConfig valueForKey:@"deviation"] doubleValue];
                 }
             }
         }

@@ -58,8 +58,8 @@ anyline.document = {
   "US9wV21zNwpZaXBOeUkrRGRGbElKWHdIYjJvb2VRPT0K",
 
   viewConfig: {
-    "captureResolution": "1080",
-    "pictureResolution": "1080",
+    "captureResolution": "1080p",
+    "pictureResolution": "1080p",
     "cutout": {
       "style": "rect",
       "maxWidthPercent": "100%",
@@ -96,9 +96,13 @@ anyline.document = {
     "cancelOnResult": true,
     "document": {
       "quality" : 90,
-      "maxOutputResoultion" : {
+      "maxOutputResolution" : {
         "width" : 1920,
         "height" : 1080
+      },
+      "ratio" : {
+        "ratios" : [0.707, 1.41, 1.58, 0.633, 1.296, 0.772],
+        "deviation" : 0.15
       }
     }
   },

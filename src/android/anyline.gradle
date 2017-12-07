@@ -5,13 +5,13 @@ repositories{
 
 dependencies {
   	compile 'com.google.android.gms:play-services-vision:8.4.0'
-    compile 'io.anyline:anylinesdk:3.18.0@aar'
+    compile 'io.anyline:anylinesdk:3.19.0@aar'
 }
 
 android {
 
   defaultConfig {
-    minSdkVersion 15
+    minSdkVersion 16
     ndk { 
       abiFilters "armeabi-v7a", "x86" 
     } 

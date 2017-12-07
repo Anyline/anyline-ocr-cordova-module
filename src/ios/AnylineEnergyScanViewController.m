@@ -212,12 +212,11 @@
                       @"ANALOG_METER" : @(ALAnalogMeter),
                       @"BARCODE" : @(ALBarcode),
                       @"SERIAL_NUMBER" : @(ALSerialNumber),
-                      
+                      @"DOT_MATRIX_METER" : @(ALDotMatrixMeter),
                       @"DIGITAL_METER" : @(ALDigitalMeter),
                       @"HEAT_METER_4" : @(ALHeatMeter4),
                       @"HEAT_METER_5" : @(ALHeatMeter5),
                       @"HEAT_METER_6" : @(ALHeatMeter6),
-                      
                       };
     });
     

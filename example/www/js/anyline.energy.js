@@ -72,7 +72,7 @@ anyline.energy = {
     "T0RLZ05ZTGJtMnJKN0VHZEpvMzMrOTh3S0hWTDFyYjdtYXlXNFdYN2lZbFVqOEFZ\n" +
     "US9wV21zNwpZaXBOeUkrRGRGbElKWHdIYjJvb2VRPT0K",
     {
-      "captureResolution": "720p",
+      "captureResolution": "1080p",
       "cutout": {
         "style": "rect",
         "alignment": "top_half",
@@ -118,7 +118,7 @@ anyline.energy = {
     "T0RLZ05ZTGJtMnJKN0VHZEpvMzMrOTh3S0hWTDFyYjdtYXlXNFdYN2lZbFVqOEFZ\n" +
     "US9wV21zNwpZaXBOeUkrRGRGbElKWHdIYjJvb2VRPT0K",
     {
-      "captureResolution": "720p",
+      "captureResolution": "1080p",
       "visualFeedback": {
         "style": "CONTOUR_RECT",
         "strokeColor": "0099FF",
@@ -172,7 +172,7 @@ anyline.energy = {
     "T0RLZ05ZTGJtMnJKN0VHZEpvMzMrOTh3S0hWTDFyYjdtYXlXNFdYN2lZbFVqOEFZ\n" +
     "US9wV21zNwpZaXBOeUkrRGRGbElKWHdIYjJvb2VRPT0K",
     {
-      "captureResolution": "720p",
+      "captureResolution": "1080p",
       "visualFeedback": {
         "style": "RECT",
         "strokeColor": "0099FF",
@@ -197,7 +197,7 @@ anyline.energy = {
       "cancelOnResult": true,
       "reportingEnabled": true,
       "segment": {
-        "titles": ["Heat Meter 4", "Heat Meter 5", "Heat Meter 6"],
+        "titles": ["4 Digits", "5 Digits", "6 Digits"],
         "modes": ["HEAT_METER_4", "HEAT_METER_5", "HEAT_METER_6"],
         "tintColor": "CCCCCC",
         "offset": {
