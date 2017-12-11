@@ -37,14 +37,10 @@ Or use plugman. E.g. for android:
 plugman install --platform android --project platforms/android --plugin io-anyline-cordova
 ```
 
-Download Pods -> Go into platforms/ios and run
-```
-pod update
-```
 if you get this error:
 
 ```
-command not found: pod
+Error: CocoaPods was not found. Please install version 1.0.1 or greater from https://cocoapods.org/
 ```
 please install [Cocoapods](https://guides.cocoapods.org/using/getting-started.html)
 
