@@ -3,7 +3,7 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova"
-        version="3.19.0">
+        version="3.19.1">
 
     <name>AnylineSDK</name>
 
@@ -51,8 +51,9 @@
         <asset src="src/ios/LicensePlate/license_plates.ale" target="LicensePlate/license_plates.ale"/>-->
 
         <!-- Anyline Framework & Resource Bundle -->
-        <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>
-        <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>
+<!--        <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>-->
+<!--        <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
+        <framework src="Anyline" type="podspec" spec="~> 3.19.0"/>
         <!-- Frameworks needed by Anyline SDK for iOS -->
         <framework src="libz.tbd"/>
         <framework src="libc++.tbd"/>

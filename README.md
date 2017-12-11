@@ -17,8 +17,9 @@ Anyline provides an easy-to-use SDK for applications to enable Optical Character
 - decent camera functionality (recommended: 720p and adequate auto focus)
 
 #### iOS
-- minimum iOS 8.2
+- minimum iOS 8
 - minimum iPhone4s
+- minimum Camera of 1080p
 
 
 ### Quick Start - Setup
@@ -35,6 +36,17 @@ Or use plugman. E.g. for android:
 ```
 plugman install --platform android --project platforms/android --plugin io-anyline-cordova
 ```
+
+Download Pods -> Go into platforms/ios and run
+```
+pod update
+```
+if you get this error:
+
+```
+command not found: pod
+```
+please install [Cocoapods](https://guides.cocoapods.org/using/getting-started.html)
 
 If you'd like to clone the repository you will have to use git-lfs. Use the following commands to install git-lfs.
 ```
