@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "reinstall": "cordova platform remove android && cordova plugin remove io-anyline-cordova && cordova platform add android@latest && cordova plugin add ../..",
-    "reinstall-ios": "cordova platform remove ios && cordova plugin remove io-anyline-cordova && cordova platform add ios@latest && cordova plugin add ../..",
+    "reinstall": "cordova platform remove android && cordova plugin remove io-anyline-cordova && cordova platform add android@latest && cordova plugin add ../plugin",
+    "reinstall-ios": "cordova platform remove ios && cordova plugin remove io-anyline-cordova && cordova platform add ios@latest && cordova plugin add ../plugin",
     "overwrite": "rm -R ../src/android/io && rm -R ../src/android/res && cp -R platforms/android/src/io ../src/android/ && cp -R platforms/android/res ../src/android",
     "overwrite-ios": "rm -R ../src/ios/io && rm -R ../src/ios/res && cp -R platforms/ios/src/io ../src/android/ && cp -R platforms/ios/res ../src/ios",
     "OandR": "npm run overwrite && npm run reinstall",
@@ -16,8 +16,15 @@
   "author": "Jonas Laux | Daniel Albertini",
   "license": "ISC",
   "cordova": {
-    "platforms": [],
-    "plugins": {}
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "io-anyline-cordova": {}
+    }
   },
-  "dependencies": {}
+  "dependencies": {
+    "cordova-android": "^7.0.0",
+    "io-anyline-cordova": "file:../plugin"
+  }
 }

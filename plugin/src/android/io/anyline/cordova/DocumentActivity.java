@@ -55,6 +55,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     private TextView errorMessage;
     private long lastErrorRecieved = 0;
     private int quality = 100;
+    private Runnable errorMessageCleanup;
 
     private Double maxDocumentOutputResolutionWidth = null;
     private Double maxDocumentOutputResolutionHeight = null;
@@ -64,35 +65,36 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
     private android.os.Handler handler = new android.os.Handler();
 
-    // takes care of fading the error message out after some time with no error reported from the SDK
-    private Runnable errorMessageCleanup = new Runnable() {
-        @Override
-        public void run() {
-            if (DocumentActivity.this.isFinishing()) {
-                return;
-            }
-            if (System.currentTimeMillis() > lastErrorRecieved + ERROR_MESSAGE_DELAY) {
-                if (errorMessage == null || errorMessageAnimator == null) {
-                    return;
-                }
-                if (errorMessage.getAlpha() == 0f) {
-                    errorMessage.setText("");
-                } else if (!errorMessageAnimator.isRunning()) {
-                    errorMessageAnimator = ObjectAnimator.ofFloat(errorMessage, "alpha", errorMessage.getAlpha(), 0f);
-                    errorMessageAnimator.setDuration(ERROR_MESSAGE_DELAY);
-                    errorMessageAnimator.setInterpolator(new AccelerateInterpolator());
-                    errorMessageAnimator.start();
-                }
-            }
-            handler.postDelayed(errorMessageCleanup, ERROR_MESSAGE_DELAY);
-
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getResources().getIdentifier("activity_scan_document", "layout", getPackageName()));
+
+
+        // takes care of fading the error message out after some time with no error reported from the SDK
+        errorMessageCleanup = new Runnable() {
+            @Override
+            public void run() {
+                if (DocumentActivity.this.isFinishing()) {
+                    return;
+                }
+                if (System.currentTimeMillis() > lastErrorRecieved + ERROR_MESSAGE_DELAY) {
+                    if (errorMessage == null || errorMessageAnimator == null) {
+                        return;
+                    }
+                    if (errorMessage.getAlpha() == 0f) {
+                        errorMessage.setText("");
+                    } else if (!errorMessageAnimator.isRunning()) {
+                        errorMessageAnimator = ObjectAnimator.ofFloat(errorMessage, "alpha", errorMessage.getAlpha(), 0f);
+                        errorMessageAnimator.setDuration(ERROR_MESSAGE_DELAY);
+                        errorMessageAnimator.setInterpolator(new AccelerateInterpolator());
+                        errorMessageAnimator.start();
+                    }
+                }
+                handler.postDelayed(errorMessageCleanup, ERROR_MESSAGE_DELAY);
+
+            }
+        };
 
         // Set the flag to keep the screen on (otherwise the screen may go dark during scanning)
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -475,9 +477,6 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     @Override
     protected void onStop() {
         super.onStop();
-        //handler.removeCallbacks(errorMessageCleanup);
-        errorMessageCleanup = null;
-        handler = null;
     }
 
     @Override
