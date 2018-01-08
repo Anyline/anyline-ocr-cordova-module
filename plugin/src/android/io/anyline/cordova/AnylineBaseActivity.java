@@ -96,6 +96,10 @@ public abstract class AnylineBaseActivity extends Activity
 
     protected String jsonForOutline(List<PointF> pointList) {
 
+        if (pointList.size() <= 0) {
+            return "No Outline";
+        }
+
         JSONObject upLeft = new JSONObject();
         JSONObject upRight = new JSONObject();
         JSONObject downRight = new JSONObject();
