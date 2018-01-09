@@ -3,7 +3,7 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova"
-        version="3.19.1">
+        version="3.20.0">
 
     <name>AnylineSDK</name>
 
@@ -17,7 +17,7 @@
             </feature>
         </config-file>
         <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
-            <string>Yes we scan!</string>
+            <string>Allow Anyline to access you camera?</string>
         </config-file>
 
         <!-- Anyline SDK Cordova Plugin Source for iOS -->
