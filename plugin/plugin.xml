@@ -43,13 +43,6 @@
         <source-file src="src/ios/ALCordovaUIConfiguration.m"/>
         <!--License Plates-->
 
-        <!--<asset src="src/ios/LicensePlate/Alte.traineddata" target="LicensePlate/Alte.traineddata"/>
-        <asset src="src/ios/LicensePlate/Arial.traineddata" target="LicensePlate/Arial.traineddata"/>
-        <asset src="src/ios/LicensePlate/GL-Nummernschild-Mtl7_uml.traineddata" target="LicensePlate/GL-Nummernschild-Mtl7_uml.traineddata"/>
-        <asset src="src/ios/LicensePlate/license_plates_a.ale" target="LicensePlate/license_plates_a.ale"/>
-        <asset src="src/ios/LicensePlate/license_plates_d.ale" target="LicensePlate/license_plates_d.ale"/>
-        <asset src="src/ios/LicensePlate/license_plates.ale" target="LicensePlate/license_plates.ale"/>-->
-
         <!-- Anyline Framework & Resource Bundle -->
 <!--        <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>-->
 <!--        <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
