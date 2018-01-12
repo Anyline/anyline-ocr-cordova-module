@@ -20,6 +20,7 @@ Anyline provides an easy-to-use SDK for applications to enable Optical Character
 - minimum iOS 8
 - minimum iPhone4s
 - minimum Camera of 1080p
+- Cordova iOS v4.3.0 (Cocoapod support)
 
 
 ### Quick Start - Setup

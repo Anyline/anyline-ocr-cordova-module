@@ -46,7 +46,7 @@
         <!-- Anyline Framework & Resource Bundle -->
 <!--        <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>-->
 <!--        <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
-        <framework src="Anyline" type="podspec" spec="~> 3.19.0"/>
+        <framework src="Anyline" type="podspec" spec="~> 3.20.0"/>
         <!-- Frameworks needed by Anyline SDK for iOS -->
         <framework src="libz.tbd"/>
         <framework src="libc++.tbd"/>
