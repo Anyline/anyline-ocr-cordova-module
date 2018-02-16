@@ -199,15 +199,33 @@
 
 - (void)processMeterCommand:(CDVInvokedUrlCommand *)command withScanMode:(ALScanMode)scanMode {
     [self processCommandArguments:command];
-    
+
     BOOL nativeBarcodeScanning = NO;
-    
+
     if (command.arguments.count == 3) {
         nativeBarcodeScanning = [[command.arguments[2] objectForKey:@"nativeBarcodeEnabled"] boolValue];
     }
-    
+
     [self.commandDelegate runInBackground:^{
         AnylineEnergyScanViewController *energyScanViewController = [[AnylineEnergyScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
+
+
+        // Set SerialNumber Configuration
+        NSDictionary *options = [command.arguments objectAtIndex:1];
+        if ([options valueForKey:@"serialNumber"]) {
+            NSDictionary *serNumConf = [options valueForKey:@"serialNumber"];
+
+            // Check for Serial Number Whitelist and set it
+            if([serNumConf valueForKey:@"numberCharWhitelist"]){
+                energyScanViewController.serialWhitelist = [serNumConf objectForKey:@"numberCharWhitelist"];
+            }
+
+            // Check for Serial Number ValidationRegex and set it
+            if([serNumConf valueForKey:@"validationRegex"]){
+                energyScanViewController.serialValRegex = [serNumConf objectForKey:@"validationRegex"];
+            }
+        }
+
         
         energyScanViewController.scanMode = scanMode;
         energyScanViewController.nativeBarcodeEnabled = nativeBarcodeScanning;

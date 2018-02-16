@@ -19,22 +19,29 @@
         
         NSError *error = nil;
         [energyModuleView setupWithLicenseKey:self.key delegate:self error:&error];
-        //        if(!success) {
-        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Setup failed:" message:error.debugDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        //            [alert show];
-        //        }
-        
+
         [energyModuleView setScanMode:self.scanMode error:nil];
-        energyModuleView.currentConfiguration = self.conf;
 
         if (self.nativeBarcodeEnabled) {
             energyModuleView.captureDeviceManager.barcodeDelegate = self;
         }
 
+        // Set Serial Number specific configurations
+        // Set Validation Regex
+        if (self.serialValRegex) {
+            NSLog(@"ValidationRegex %@", self.serialValRegex);
+            energyModuleView.serialNumberValidationRegex = self.serialValRegex;
+        }
+        // Set Whitelist
+        if (self.serialWhitelist) {
+            NSLog(@"Whitelist %@", self.serialWhitelist);
+            energyModuleView.serialNumberCharWhitelist = self.serialWhitelist;
+        }
+
+        energyModuleView.currentConfiguration = self.conf;
         self.moduleView = energyModuleView;
 
         [self.view addSubview:self.moduleView];
-
         [self.view sendSubviewToBack:self.moduleView];
 
         if(self.cordovaConfig.segmentModes){

@@ -170,6 +170,9 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             case "LICENSE_PLATE":
                 scan(LicensePlateActivity.class, REQUEST_LICENSE_PLATE, args);
                 break;
+            case "DRIVING_LICENSE":
+                scan(AnylineOcrActivity.class, REQUEST_ANYLINE_OCR, args);
+                break;
             default:
                 this.mCallbackContext.error(Resources.getString(cordova.getActivity(),
                         "error_unkown_scan_mode") + " " + action);

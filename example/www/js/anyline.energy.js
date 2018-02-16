@@ -29,13 +29,13 @@ anyline.energy = {
     var div = document.getElementById('results');
 
     div.innerHTML = "<p>"
-        + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
-        + "<b>" + result.meterType + ":</b> " + result.reading
-        + (detailsBarcodes ? "<br/><i><b>Detected Barcodes:</b> " + detailsBarcodes + "</i>" : "")
-        + ((result.confidence && result.confidence >= 0) ? "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" : "")
-        + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>"
-        + "</p>"
-        + div.innerHTML;
+      + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
+      + "<b>" + result.meterType + ":</b> " + result.reading
+      + (detailsBarcodes ? "<br/><i><b>Detected Barcodes:</b> " + detailsBarcodes + "</i>" : "")
+      + ((result.confidence && result.confidence >= 0) ? "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" : "")
+      + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>"
+      + "</p>"
+      + div.innerHTML;
 
     document.getElementById("details_scan_modes").removeAttribute("open");
     document.getElementById("details_results").setAttribute("open", "");
@@ -95,7 +95,56 @@ anyline.energy = {
       "vibrateOnResult": true,
       "blinkAnimationOnResult": true,
       "cancelOnResult": true,
-      "reportingEnabled": true
+      "reportingEnabled": true,
+    },
+    {"nativeBarcodeEnabled": true}
+
+  ],
+  serialNumberConfig: [
+    "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNv\n" +
+    "cmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvbiIsICJpb3NJZGVudGlmaWVy\n" +
+    "IjogWyAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIiBdLCAibGljZW5zZUtl\n" +
+    "eVZlcnNpb24iOiAyLCAibWFqb3JWZXJzaW9uIjogIjMiLCAicGluZ1JlcG9ydGlu\n" +
+    "ZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiBdLCAic2Nv\n" +
+    "cGUiOiBbICJBTEwiIF0sICJzaG93UG9wVXBBZnRlckV4cGlyeSI6IGZhbHNlLCAi\n" +
+    "c2hvd1dhdGVybWFyayI6IHRydWUsICJ0b2xlcmFuY2VEYXlzIjogNjAsICJ2YWxp\n" +
+    "ZCI6ICIyMDE4LTExLTEwIiB9CmNsdkt3aUN1RkhjNWU2TDF6Sm9nQWVLU1E2SnFP\n" +
+    "ZmZKVjhoTnpOQWtHYTQyV2lGMW9GeGNMdXBqaUs4U3NxNDUKMTNsMWh4VnUxSmVG\n" +
+    "aVFaSDdOa2E3MTJ0RnloNHQvc055ZEYvWnBRV3N0YXFDNHB3WVl1R2ltQzJoY1Ur\n" +
+    "ZEtObgpIbGNMRk5CUUh2THAxUmNXK2ovOStmdzFCblFOdHB6bGxZcDVTTXI5Qlkv\n" +
+    "TXZaY2Rlb1NvZmJKN2orZXBwY0dCCkQ5ZGt6eis3SG9lZC9SUk8weXBMMzZtakI2\n" +
+    "LzR3VGw2WndyUk03RWhYSmZsTnVhV1Roa3djZTVOcHdyZG9ENWEKNzJPUE9OTVA0\n" +
+    "T0RLZ05ZTGJtMnJKN0VHZEpvMzMrOTh3S0hWTDFyYjdtYXlXNFdYN2lZbFVqOEFZ\n" +
+    "US9wV21zNwpZaXBOeUkrRGRGbElKWHdIYjJvb2VRPT0K",
+    {
+      "captureResolution": "1080p",
+      "cutout": {
+        "style": "rect",
+        "alignment": "top_half",
+        "strokeWidth": 2,
+        "cornerRadius": 4,
+        "strokeColor": "FFFFFF",
+        "outerColor": "000000",
+        "outerAlpha": 0.3
+      },
+      "flash": {
+        "mode": "manual",
+        "alignment": "bottom_right"
+      },
+      "visualFeedback": {
+        "style": "CONTOUR_RECT",
+        "strokeColor": "0099FF",
+        "fillColor": "220099FF"
+      },
+      "beepOnResult": true,
+      "vibrateOnResult": true,
+      "blinkAnimationOnResult": true,
+      "cancelOnResult": true,
+      "reportingEnabled": true,
+      "serialNumber": {
+        "numberCharWhitelist": '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        "validationRegex": '^[0-9A-Z]{5,}$'
+      }
     },
     {"nativeBarcodeEnabled": true}
 
@@ -314,5 +363,17 @@ anyline.energy = {
     // see http://documentation.anyline.io/#anyline-config for config details
     // and http://documentation.anyline.io/#energy for energy-module details
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "HEAT_METER_4", this.heatConfigWithSegment);
+  },
+  scanSerialNumber: function () {
+    if (localStorage.getItem("hasStartedAnyline") === 'true') {
+      return;
+    }
+    localStorage.setItem("hasStartedAnyline", true);
+
+    // start the Energy scanning for the given scan mode
+    // pass the success and error callbacks, as well as the license key and the config to the plugin
+    // see http://documentation.anyline.io/#anyline-config for config details
+    // and http://documentation.anyline.io/#energy for energy-module details
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "SERIAL_NUMBER", this.serialNumberConfig);
   },
 };

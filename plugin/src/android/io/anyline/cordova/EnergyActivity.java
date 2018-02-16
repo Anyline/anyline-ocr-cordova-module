@@ -74,6 +74,30 @@ public class EnergyActivity extends AnylineBaseActivity {
             return;
         }
 
+        // Set serial number specific configurations
+        if (jsonObject.has("serialNumber")) {
+            try {
+                JSONObject serialNumberConfig = jsonObject.getJSONObject("serialNumber");
+
+                // Set the character whitelist (all the characters that may occur in the data that should be recognized)
+                // as a string for the Serialnumber scan mode.
+                if (serialNumberConfig.has("numberCharWhitelist")) {
+                    Log.d("WhiteList", serialNumberConfig.getString("numberCharWhitelist"));
+                    energyScanView.setSerialNumberCharWhitelist(serialNumberConfig.getString("numberCharWhitelist"));
+                }
+
+                // Set a validation regex string for the Serialnumber scan mode.
+                if (serialNumberConfig.has("validationRegex")) {
+                    Log.d("Regex", serialNumberConfig.getString("validationRegex"));
+                    energyScanView.setSerialNumberValidationRegex(serialNumberConfig.getString("validationRegex"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                finishWithError("error_invalid_json_serial_number_config");
+                return;
+            }
+        }
+
         energyScanView.setConfig(new AnylineViewConfig(this, jsonObject));
         if (jsonObject.has("reportingEnabled")) {
             energyScanView.setReportingEnabled(jsonObject.optBoolean("reportingEnabled", true));

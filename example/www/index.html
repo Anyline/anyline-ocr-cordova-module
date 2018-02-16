@@ -36,7 +36,7 @@
             <br/>
             <input type="button" value="Digital Meter" onclick="anyline.energy.scanElectricDigitalSegment('DIGITAL_METER')" />
             <br/>
-            <input type="button" value="Serial Number" onclick="anyline.energy.scan('SERIAL_NUMBER')" />
+            <input type="button" value="Serial Number" onclick="anyline.energy.scanSerialNumber()" />
             <br/>
             <input type="button" value="Heat Meter" onclick="anyline.energy.scanHeatMeterWithSegment()" />
             <br/>
@@ -50,6 +50,8 @@
             <input type="button" value="IBAN" onclick="anyline.ocr.scanIban()" />
             <br/>
             <input type="button" value="Anyline Voucher Codes" onclick="anyline.ocr.scanAnylineVoucherCodes()" />
+            <br/>
+            <input type="button" value="Austrian Driving License" onclick="anyline.drivingLicense.scan()" />
         </p>
         <hr>
         <h2> Vehicles </h2>
@@ -90,6 +92,7 @@
 <script type="text/javascript" src="js/anyline.energy.js"></script>
 <script type="text/javascript" src="js/anyline.mrz.js"></script>
 <script type="text/javascript" src="js/anyline.ocr.js"></script>
+<script type="text/javascript" src="js/anyline.drivingLicense.js"></script>
 <script type="text/javascript" src="js/anyline.document.js"></script>
 <script type="text/javascript" src="js/anyline.licensePlate.js"></script>
 </body>

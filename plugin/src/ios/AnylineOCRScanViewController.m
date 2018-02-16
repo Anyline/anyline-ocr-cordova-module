@@ -27,30 +27,24 @@
         if ([self.ocrConfDict objectForKey:@"aleFile"]) {
             NSString *aleDirectoryPath = [NSString stringWithFormat:@"%@/%@",@"www", [[self.ocrConfDict objectForKey:@"aleFile"] stringByDeletingLastPathComponent]];
             NSString *pathResource = [[[self.ocrConfDict objectForKey:@"aleFile"] lastPathComponent] stringByDeletingPathExtension];
-            ocrConf.customCmdFilePath = [[NSBundle mainBundle] pathForResource:[[[self.ocrConfDict objectForKey:@"aleFile"] lastPathComponent] stringByDeletingPathExtension] ofType:@"ale" inDirectory:aleDirectoryPath];
+            ocrConf.customCmdFilePath = [[NSBundle mainBundle] pathForResource:pathResource ofType:@"ale" inDirectory:aleDirectoryPath];
         }
 
         self.drawTextOutline = [[self.ocrConfDict objectForKey:@"drawTextOutline"] boolValue];
-        
+
         NSArray *tesseractArray = [self.ocrConfDict objectForKey:@"traineddataFiles"];
-        
-        NSMutableArray<NSString *> *languages = [NSMutableArray arrayWithCapacity:tesseractArray.count];
-        for (NSString *tesseractLang in tesseractArray) {
-            [languages addObject:[[tesseractLang lastPathComponent] stringByDeletingPathExtension]];
-        }
-        ocrConf.tesseractLanguages = languages;
+
         NSError *error = nil;
-        [ocrModuleView setupWithLicenseKey:self.key delegate:self ocrConfig:ocrConf error:&error];
-        //        if(!success) {
-        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Setup failed:" message:error.debugDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        //            [alert show];
-        //        }
-        
+
+         NSMutableArray<NSString *> *languages = [NSMutableArray arrayWithCapacity:tesseractArray.count];
         for (NSString *tesseractLang in tesseractArray) {
             NSString *ressourcePath = [[NSBundle mainBundle] pathForResource:[[tesseractLang lastPathComponent] stringByDeletingPathExtension] ofType:[[tesseractLang lastPathComponent] pathExtension] inDirectory:[NSString stringWithFormat:@"www/%@",[tesseractLang stringByDeletingLastPathComponent]]];
             NSError *copyError = nil;
-            [ocrModuleView copyTrainedData:ressourcePath fileHash:nil error:&copyError];
+            [languages addObject:ressourcePath];
         }
+        ocrConf.languages = languages;
+
+        [ocrModuleView setupWithLicenseKey:self.key delegate:self ocrConfig:ocrConf error:&error];
 
         ocrModuleView.currentConfiguration = self.conf;
 
