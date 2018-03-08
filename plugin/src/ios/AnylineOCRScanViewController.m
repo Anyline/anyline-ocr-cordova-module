@@ -21,9 +21,9 @@
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
         AnylineOCRModuleView *ocrModuleView = [[AnylineOCRModuleView alloc] initWithFrame:self.view.bounds];
-        
+
         ALOCRConfig *ocrConf = [[ALOCRConfig alloc] initWithJsonDictionary:self.ocrConfDict];
-        
+
         if ([self.ocrConfDict objectForKey:@"aleFile"]) {
             NSString *aleDirectoryPath = [NSString stringWithFormat:@"%@/%@",@"www", [[self.ocrConfDict objectForKey:@"aleFile"] stringByDeletingLastPathComponent]];
             NSString *pathResource = [[[self.ocrConfDict objectForKey:@"aleFile"] lastPathComponent] stringByDeletingPathExtension];
@@ -49,9 +49,9 @@
         ocrModuleView.currentConfiguration = self.conf;
 
         self.moduleView = ocrModuleView;
-        
+
         [self.view addSubview:self.moduleView];
-        
+
         [self.view sendSubviewToBack:self.moduleView];
     });
 }
@@ -62,19 +62,19 @@
                didFindResult:(ALOCRResult *)result {
 
     NSMutableDictionary *dictResult = [NSMutableDictionary dictionaryWithCapacity:4];
-    
+
     [dictResult setObject:result.result forKey:@"text"];
-    
+
     NSString *imagePath = [self saveImageToFileSystem:result.image];
-    
+
     [dictResult setValue:imagePath forKey:@"imagePath"];
-    
+
     [dictResult setValue:@(result.confidence) forKey:@"confidence"];
     [dictResult setValue:[self stringForOutline:result.outline] forKey:@"outline"];
 
-    
+
     [self.delegate anylineBaseScanViewController:self didScan:dictResult continueScanning:!self.moduleView.cancelOnResult];
-    
+
     if (self.moduleView.cancelOnResult) {
         [self dismissViewControllerAnimated:YES completion:NULL];
     }

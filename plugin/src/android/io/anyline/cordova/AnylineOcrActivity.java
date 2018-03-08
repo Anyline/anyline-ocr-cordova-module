@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import at.nineyards.anyline.AnylineDebugListener;
@@ -73,23 +74,31 @@ public class AnylineOcrActivity extends AnylineBaseActivity {
                 String[] languages = new String[tesseractArray.length()];
                 for (int i = 0; i < languages.length; i++) {
                     long start = System.currentTimeMillis();
-                    File dirToCopyTo = new File(this.getFilesDir(), "anyline/module_anyline_ocr/tessdata/");
+
                     String traineddataFilePath = tesseractArray.getString(i);
+                    String fileExtension = traineddataFilePath.substring(traineddataFilePath.lastIndexOf(".") + 1);
+
+                    // Check where to copy the training files
+                    File dirToCopy = new File(this.getFilesDir(), "anyline/module_anyline_ocr/tessdata/");
+                    if(Objects.equals(fileExtension, "any")) {
+                        dirToCopy = new File(this.getFilesDir(), "anyline/module_anyline_ocr/trained_models/");
+                    }
+
 
                     int lastFileSeparatorIndex = traineddataFilePath.lastIndexOf(File.separator);
                     int lastDotIndex = traineddataFilePath.lastIndexOf(".");
                     if (lastDotIndex > lastFileSeparatorIndex) {
                         //start after the "/" or with 0 if no fileseperator was found
-                        languages[i] = traineddataFilePath.substring(lastFileSeparatorIndex + 1, lastDotIndex);
+                        languages[i] = "www/assets/" + traineddataFilePath.substring(lastFileSeparatorIndex + 1);
                     } else {
                         //maybe it should just fail here, case propably not useful
                         languages[i] = traineddataFilePath.substring(lastFileSeparatorIndex + 1);
                     }
                     Log.d("languages", languages[i]);
-                    AssetUtil.copyAssetFileWithoutPath(this, "www/" + traineddataFilePath, dirToCopyTo, false);
+                    AssetUtil.copyAssetFileWithoutPath(this, "www/" + traineddataFilePath, dirToCopy, false);
                     Log.v(TAG, "Copy traineddata duration: " + (System.currentTimeMillis() - start));
                 }
-                ocrConfig.setTesseractLanguages(languages);
+                ocrConfig.setLanguages(languages);
             } else {
                 Log.d(TAG, "No Training Data");
             }
