@@ -197,7 +197,7 @@ anyline.energy = {
         "tintColor": "CCCCCC",
         "offset": {
           "x": 0,
-          "y": 500
+          "y": 400
         }
       }
     },

@@ -61,44 +61,49 @@ anyline.vin = {
   "T0RLZ05ZTGJtMnJKN0VHZEpvMzMrOTh3S0hWTDFyYjdtYXlXNFdYN2lZbFVqOEFZ\n" +
   "US9wV21zNwpZaXBOeUkrRGRGbElKWHdIYjJvb2VRPT0K",
 
-  anylineVINViewConfig: {
+    
+anylineVINViewConfig: {
     "captureResolution": "1080p",
     "cutout": {
-      "style": "rect",
-      "width": 500,
-      "alignment": "top",
-      "ratioFromSize": {
-        "width": 62,
-        "height": 9
-      },
-      "offset" : {
-        "x": 0,
-        "y": 395
-      },
-      "outerColor": "000000",
-      "outerAlpha": 0.3,
-      "cornerRadius": 3
+        "style": "rect",
+        "maxWidthPercent": "70%",
+        "alignment": "top_half",
+        "ratioFromSize": {
+            "width": 62,
+            "height": 9
+        },
+        "outerColor": "000000",
+        "outerAlpha": 0.3,
+        "strokeWidth": 1,
+        "strokeColor": "FFFFFF",
+        "cornerRadius": 2,
+        "feedbackStrokeColor": "0099FF",
     },
     "flash": {
-      "mode": "manual",
-      "alignment": "bottom_left",
-      "imageOn": "ic_flash_on",
-      "imageOff": "ic_flash_off"
+        "mode": "manual",
+        "alignment": "bottom_left",
+        "imageOn": "ic_flash_on",
+        "imageOff": "ic_flash_off"
     },
     "visualFeedback": {
-      "animation": "traverse_multi",
-      "animationDuration" : 250,
-      "style": "contour_rect",
-      "strokeWidth": 2,
-      "strokeColor": "0099FF"
-    }
-
-  },
+        "animation": "traverse_multi",
+        "animationDuration" : 250,
+        "style": "contour_rect",
+        "strokeWidth": 2,
+        "strokeColor": "0099FF"
+    },
+    "beepOnResult": false,
+    "vibrateOnResult": true,
+    "blinkAnimationOnResult": true,
+    "cancelOnResult": true,
+    "reportingEnabled": true
+    
+},
   anylineVINOcrConfig: {
     "scanMode": "AUTO",
-    "tesseractLanguages": ["CNN_vin_det_class_prot2_36_whitelist"],
+    "tesseractLanguages": ["vin"],
     "aleFile": "assets/vin.ale",
-    "traineddataFiles": ["assets/CNN_vin_det_class_prot2_36_whitelist.any"],
+    "traineddataFiles": ["assets/vin.any"],
     "minConfidence": 0
   },
 
