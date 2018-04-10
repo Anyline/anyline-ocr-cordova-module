@@ -50,6 +50,7 @@ public class MrzActivity extends AnylineBaseActivity {
                 }
             }
 
+            // set Config to View
             mrzScanView.setConfig(new AnylineViewConfig(this, json));
         } catch (Exception e) {
             //JSONException or IllegalArgumentException is possible, return it to javascript

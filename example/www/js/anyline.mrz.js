@@ -103,8 +103,7 @@ anyline.mrz = {
           "x": 0,
           "y": 90
         },
-        "feedbackStrokeColor": "0099FF"
-        ,
+        "feedbackStrokeColor": "0099FF",
         "offset": {
           "x": 0,
           "y": 30
@@ -118,6 +117,9 @@ anyline.mrz = {
         "style": "rect",
         "strokeColor": "0099FF",
         "strokeWidth": 2
+      },
+      "mrz": {
+        "strictMode": true
       }
     }]);
   }
