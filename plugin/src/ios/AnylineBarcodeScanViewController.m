@@ -54,7 +54,7 @@
     [dictResult setValue:imagePath forKey:@"imagePath"];
     
     [dictResult setValue:@(scanResult.confidence) forKey:@"confidence"];
-    [dictResult setValue:[self stringForOutline:scanResult.outline] forKey:@"outline"];
+    [dictResult setValue:[self stringForOutline:anylineBarcodeModuleView.barcodeScanViewPlugin.outline] forKey:@"outline"];
     
     [self.delegate anylineBaseScanViewController:self
                                          didScan:dictResult

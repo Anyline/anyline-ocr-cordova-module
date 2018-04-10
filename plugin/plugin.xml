@@ -3,7 +3,7 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova"
-        version="3.22.0">
+        version="3.23.0">
 
     <name>AnylineSDK</name>
 
@@ -80,17 +80,17 @@
         </config-file>
         <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml">
             <activity android:name="io.anyline.cordova.BarcodeActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
             <activity android:name="io.anyline.cordova.MrzActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
             <activity android:name="io.anyline.cordova.EnergyActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
             <activity android:name="io.anyline.cordova.AnylineOcrActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
             <activity android:name="io.anyline.cordova.LicensePlateActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
             <activity android:name="io.anyline.cordova.DocumentActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait"/>
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
         </config-file>
 
         <!-- add plugin source code -->

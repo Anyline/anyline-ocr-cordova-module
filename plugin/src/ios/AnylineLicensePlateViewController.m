@@ -69,7 +69,7 @@
         NSMutableDictionary *dictResult = [NSMutableDictionary dictionaryWithCapacity:5];
         [dictResult setValue:scanResult.country forKey:@"country"];
         [dictResult setValue:scanResult.result forKey:@"licensePlate"];
-        [dictResult setValue:[self stringForOutline:scanResult.outline] forKey:@"outline"];
+        [dictResult setValue:[self stringForOutline:anylineLicensePlateModuleView.licensePlateScanViewPlugin.outline] forKey:@"outline"];
         [dictResult setValue:@(scanResult.confidence) forKey:@"confidence"];
         [dictResult setValue:imagePath forKey:@"imagePath"];
 

@@ -106,7 +106,21 @@
     [self processCommandArguments:command];
 
     [self.commandDelegate runInBackground:^{
-        self.baseScanViewController = [[AnylineMRZScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf  delegate:self];
+        AnylineMRZScanViewController *mrzVC = [[AnylineMRZScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf  delegate:self];
+
+        NSDictionary *options = [command.arguments objectAtIndex:1];
+        if ([options valueForKey:@"mrz"]) {
+            NSDictionary *mrzConfig = [options valueForKey:@"mrz"];
+
+            // Check for Document quality Config and set it
+            if([mrzConfig valueForKey:@"strictMode"]){
+                mrzVC.strictMode = [[mrzConfig valueForKey:@"strictMode"] boolValue];
+            } else {
+                mrzVC.strictMode = false;
+            }
+        }
+
+        self.baseScanViewController = mrzVC;
 
         [self presentViewController];
     }];
@@ -226,12 +240,12 @@
             }
         }
 
-        
+
         energyScanViewController.scanMode = scanMode;
         energyScanViewController.nativeBarcodeEnabled = nativeBarcodeScanning;
-        
+
         self.baseScanViewController = energyScanViewController;
-        
+
         [self presentViewController];
     }];
 }
@@ -239,9 +253,9 @@
 - (void)processCommandArguments:(CDVInvokedUrlCommand *)command {
     self.callbackId = command.callbackId;
     self.appKey = [command.arguments objectAtIndex:0];
-    
+
     NSDictionary *options = [command.arguments objectAtIndex:1];
-    self.conf = [[ALUIConfiguration alloc] initWithDictionary:options bundlePath:nil];
+    self.conf = [[ALUIConfiguration alloc] initWithDictionary:options];
     
     self.cordovaUIConf = [[ALCordovaUIConfiguration alloc] initWithDictionary:options];
 }

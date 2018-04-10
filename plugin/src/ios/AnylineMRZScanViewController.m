@@ -12,19 +12,19 @@
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
         AnylineMRZModuleView *mrzModuleView = [[AnylineMRZModuleView alloc] initWithFrame:self.view.bounds];
-        mrzModuleView.currentConfiguration = self.conf;
-        
+
+        // Set strictMode to MRZView
+        [mrzModuleView setStrictMode:self.strictMode];
+
         NSError *error = nil;
         [mrzModuleView setupWithLicenseKey:self.key delegate:self error:&error];
-//        if(!success) {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Setup failed:" message:error.debugDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-//            [alert show];
-//        }
-        
+
+        mrzModuleView.currentConfiguration = self.conf;
+
         self.moduleView = mrzModuleView;
-        
+
         [self.view addSubview:self.moduleView];
-        
+
         [self.view sendSubviewToBack:self.moduleView];
     });
 }
@@ -33,8 +33,8 @@
 
 
 -(void)anylineMRZModuleView:(AnylineMRZModuleView *)anylineMRZModuleView didFindResult:(ALMRZResult *)scanResult {
-    
-    
+
+
     NSMutableDictionary *scanResultDict = [[scanResult.result dictionaryWithValuesForKeys:@[@"documentType",
                                                                                      @"nationalityCountryCode",
                                                                                      @"issuingCountryCode",
@@ -51,14 +51,14 @@
                                                                                      @"checkDigitPersonalNumber",
                                                                                      @"checkdigitFinal"]] mutableCopy];
     self.scannedLabel.text = scanResultDict.description;
-    
+
     NSString *imagePath = [self saveImageToFileSystem:scanResult.image];
-    
+
     [scanResultDict setValue:imagePath forKey:@"imagePath"];
     [scanResultDict setValue:@(scanResult.allCheckDigitsValid) forKey:@"allCheckDigitsValid"];
-    
+
     [scanResultDict setValue:@(scanResult.confidence) forKey:@"confidence"];
-    [scanResultDict setValue:[self stringForOutline:scanResult.outline] forKey:@"outline"];
+    [scanResultDict setValue:[self stringForOutline:anylineMRZModuleView.mrzScanViewPlugin.outline] forKey:@"outline"];
     
 
     

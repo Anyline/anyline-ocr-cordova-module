@@ -124,7 +124,7 @@
     [dictResult setObject:self.detectedBarcodes forKey:@"detectedBarcodes"];
 
     [dictResult setValue:@(scanResult.confidence) forKey:@"confidence"];
-    [dictResult setValue:[self stringForOutline:scanResult.outline] forKey:@"outline"];
+    [dictResult setValue:[self stringForOutline:anylineEnergyModuleView.meterScanViewPlugin.outline] forKey:@"outline"];
 
 
     [self.delegate anylineBaseScanViewController:self didScan:dictResult continueScanning:!self.moduleView.cancelOnResult];

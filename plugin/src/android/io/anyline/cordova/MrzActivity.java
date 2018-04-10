@@ -38,6 +38,18 @@ public class MrzActivity extends AnylineBaseActivity {
         mrzScanView = new MrzScanView(this, null);
         try {
             JSONObject json = new JSONObject(configJson);
+
+            // get MRZ config
+            if (json.has("mrz")) {
+                // set MRZ strict mode
+                JSONObject mrzConf = json.getJSONObject("mrz");
+                if(mrzConf.has("strictMode")){
+                    mrzScanView.setStrictMode(mrzConf.getBoolean("strictMode"));
+                } else {
+                    mrzScanView.setStrictMode(false);
+                }
+            }
+
             mrzScanView.setConfig(new AnylineViewConfig(this, json));
         } catch (Exception e) {
             //JSONException or IllegalArgumentException is possible, return it to javascript

@@ -70,7 +70,7 @@
     [dictResult setValue:imagePath forKey:@"imagePath"];
 
     [dictResult setValue:@(result.confidence) forKey:@"confidence"];
-    [dictResult setValue:[self stringForOutline:result.outline] forKey:@"outline"];
+    [dictResult setValue:[self stringForOutline:anylineOCRModuleView.ocrScanViewPlugin.outline] forKey:@"outline"];
 
 
     [self.delegate anylineBaseScanViewController:self didScan:dictResult continueScanning:!self.moduleView.cancelOnResult];
