@@ -59,7 +59,7 @@ anyline.drivingLicense = {
   "US9wV21zNwpZaXBOeUkrRGRGbElKWHdIYjJvb2VRPT0K",
 
   drivingLicenseConfig: {
-    "captureResolution":"1080",
+    "captureResolution":"720",
     "cutout": {
       "style": "rect",
       "maxWidthPercent": "100%",
