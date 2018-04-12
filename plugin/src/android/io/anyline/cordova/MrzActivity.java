@@ -38,6 +38,8 @@ public class MrzActivity extends AnylineBaseActivity {
         mrzScanView = new MrzScanView(this, null);
         try {
             JSONObject json = new JSONObject(configJson);
+            // set Config to View
+            mrzScanView.setConfig(new AnylineViewConfig(this, json));
 
             // get MRZ config
             if (json.has("mrz")) {
@@ -49,9 +51,6 @@ public class MrzActivity extends AnylineBaseActivity {
                     mrzScanView.setStrictMode(false);
                 }
             }
-
-            // set Config to View
-            mrzScanView.setConfig(new AnylineViewConfig(this, json));
         } catch (Exception e) {
             //JSONException or IllegalArgumentException is possible, return it to javascript
             finishWithError(Resources.getString(this, "error_invalid_json_data") + "\n" + e.getLocalizedMessage());
