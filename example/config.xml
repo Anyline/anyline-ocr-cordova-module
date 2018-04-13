@@ -6,7 +6,4 @@
     <content src="index.html" />
     <access origin="*" />
     <icon src="www/img/ic_launcher.png" />
-    <plugin name="io-anyline-cordova" spec="../plugin" />
-    <engine name="ios" spec="^4.5.4" />
-    <engine name="android" spec="^7.1.0" />
 </widget>
