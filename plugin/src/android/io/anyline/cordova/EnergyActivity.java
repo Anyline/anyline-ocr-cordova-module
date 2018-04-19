@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import at.nineyards.anyline.camera.AnylineViewConfig;
+import at.nineyards.anyline.camera.CameraConfig;
 import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.models.AnylineImage;
 import at.nineyards.anyline.modules.energy.EnergyResultListener;
@@ -68,6 +69,10 @@ public class EnergyActivity extends AnylineBaseActivity {
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(configJson);
+
+            // set individual camera settings for this example by getting the current preferred settings and adapting them
+            CameraConfig camConfig = energyScanView.getPreferredCameraConfig();
+            setFocusConfig(jsonObject, camConfig);
         } catch (Exception e) {
             //JSONException or IllegalArgumentException is possible, return it to javascript
             finishWithError(Resources.getString(this, "error_invalid_json_data") + "\n" + e.getLocalizedMessage());

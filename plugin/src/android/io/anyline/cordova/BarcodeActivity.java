@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import at.nineyards.anyline.camera.AnylineViewConfig;
+import at.nineyards.anyline.camera.CameraConfig;
 import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.camera.CameraOpenListener;
 
@@ -41,6 +42,11 @@ public class BarcodeActivity extends AnylineBaseActivity implements CameraOpenLi
         try {
             JSONObject json = new JSONObject(configJson);
             barcodeScanView.setConfig(new AnylineViewConfig(this, json));
+
+            // set individual camera settings for this example by getting the current preferred settings and adapting them
+            CameraConfig camConfig = barcodeScanView.getPreferredCameraConfig();
+            setFocusConfig(json, camConfig);
+
         } catch (Exception e) {
             //JSONException or IllegalArgumentException is possible, return it to javascript
             finishWithError(Resources.getString(this, "error_invalid_json_data") + "\n" + e.getLocalizedMessage());

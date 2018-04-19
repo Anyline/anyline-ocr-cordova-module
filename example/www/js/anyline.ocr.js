@@ -90,6 +90,13 @@ anyline.ocr = {
       "strokeColor": "0099FF",
       "strokeWidth": 2,
       "fillColor": "110099FF"
+    },
+    "focus": {
+      "mode": "AUTO",
+      "interval" : 8000,
+      "touchEnabled": true,
+      "regionEnabled": true,
+      "autoExposureRegionEnabled": true
     }
   },
 

@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import at.nineyards.anyline.camera.AnylineViewConfig;
+import at.nineyards.anyline.camera.CameraConfig;
 import at.nineyards.anyline.models.AnylineImage;
 import at.nineyards.anyline.modules.mrz.Identification;
 import at.nineyards.anyline.modules.mrz.MrzResultListener;
@@ -40,6 +41,10 @@ public class MrzActivity extends AnylineBaseActivity {
             JSONObject json = new JSONObject(configJson);
             // set Config to View
             mrzScanView.setConfig(new AnylineViewConfig(this, json));
+
+            // set individual camera settings for this example by getting the current preferred settings and adapting them
+            CameraConfig camConfig = mrzScanView.getPreferredCameraConfig();
+            setFocusConfig(json, camConfig);
 
             // get MRZ config
             if (json.has("mrz")) {

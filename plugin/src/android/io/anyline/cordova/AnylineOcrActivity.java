@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import at.nineyards.anyline.AnylineDebugListener;
+import at.nineyards.anyline.camera.CameraConfig;
 import at.nineyards.anyline.core.RunFailure;
 import at.nineyards.anyline.core.Vector_Contour;
 import at.nineyards.anyline.modules.ocr.AnylineOcrResultListener;
@@ -58,6 +59,11 @@ public class AnylineOcrActivity extends AnylineBaseActivity {
 
             json = new JSONObject(ocrConfigString);
             AnylineOcrConfig ocrConfig = new AnylineOcrConfig(json);
+
+
+            // set individual camera settings for this example by getting the current preferred settings and adapting them
+            CameraConfig camConfig = anylineOcrScanView.getPreferredCameraConfig();
+            setFocusConfig(json, camConfig);
 
             //get custom Ale File
             if (json.has("aleFile")) {
