@@ -106,6 +106,18 @@ cordova.exec(onResult, onError, "AnylineSDK", scanMode, config);
 
 Checkout our <a href="https://documentation.anyline.io/">online documentation</a>  for more details.
 
+## Known Issues
+
+### iOS
+```
+Error: data parameter is nil
+```
+This can happen, when the Cocoapod installation is not correctly linked. You can fix this by going into
+**myCordovaApp/platforms/ios** and run:
+
+``` bash
+pod install
+```
 
 ## License
 
