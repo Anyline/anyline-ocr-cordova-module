@@ -35,6 +35,9 @@
             docModuleView.maxOutputResolution = self.maxOutputResolution;
         }
 
+        // Set PostProcessing of the
+        [docModuleView setPostProcessingEnabled:self.postProcessing];
+
         NSError *error = nil;
         BOOL success = [docModuleView setupWithLicenseKey:self.key delegate:self error:&error];
 

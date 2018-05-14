@@ -162,6 +162,8 @@ anyline.ocr = {
     // pass the success and error callbacks, as well as the license key and the config to the plugin
     // see http://documentation.anyline.io/#anyline-config for config details
     // and http://documentation.anyline.io/#anylineOcrModule for module details
+    window.AnylineSupport.getLicenseExpiryDate(this.ibanViewConfig[0]);
+
 
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "ANYLINE_OCR", [this.licenseKey, this.ibanViewConfig,
       this.ibanOcrConfig

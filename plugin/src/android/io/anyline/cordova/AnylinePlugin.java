@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import at.nineyards.anyline.AnylineController;
 import at.nineyards.anyline.modules.energy.EnergyScanView;
 
 
@@ -64,7 +65,11 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 try {
-                    checkPermission();
+                    if(mAction.equals("CHECK_LICENSE")){
+                        getLicenseExpirationDate(mArgs.getString(0));
+                    } else {
+                        checkPermission();
+                    }
                 } catch (Exception e) {
                     mCallbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, "Camera permission denied"));
                 }
@@ -252,5 +257,10 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
         }
 
         this.mCallbackContext.sendPluginResult(pluginResult);
+    }
+
+    private void getLicenseExpirationDate(String license) {
+        String validDate = AnylineController.getLicenseExpirationDate(license);
+        onResult(validDate,true);
     }
 }

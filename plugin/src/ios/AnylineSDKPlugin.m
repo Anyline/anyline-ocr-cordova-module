@@ -167,6 +167,13 @@
                 docScanViewController.quality = 100;
             }
 
+            // Check for Document PostProcessing and set it
+            if([docConfig valueForKey:@"postProcessing"]){
+                docScanViewController.postProcessing = [[docConfig valueForKey:@"postProcessing"] boolValue];
+            } else {
+                docScanViewController.postProcessing = false;
+            }
+
             // Check for Document Max Output Config and set it
             if([docConfig valueForKey:@"maxOutputResoultion"]){
                 NSDictionary *maxOutputResoultionConfig = [docConfig valueForKey:@"maxOutputResoultion"];
@@ -204,6 +211,18 @@
 
         [self presentViewController];
     }];
+}
+
+
+- (void)CHECK_LICENSE:(CDVInvokedUrlCommand *)command {
+    NSError *error = nil;
+    CDVPluginResult *pluginResult;
+
+    NSString *license = [command.arguments objectAtIndex:0];
+    NSString *licenseExpDate = [ALCoreController licenseExpirationDateForLicense:license error:nil];
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:licenseExpDate];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 

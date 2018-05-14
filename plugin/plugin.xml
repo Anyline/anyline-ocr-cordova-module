@@ -3,10 +3,11 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova"
-        version="3.23.1">
+        version="3.24.0">
 
     <name>AnylineSDK</name>
 
+    <!--Add Platform specific Files-->
     <platform name="ios">
         <hook type="after_plugin_install" src="hooks/AfterPluginInstall.js"/>
         <plugins-plist key="AnylineSDK" string="AnylineSDKPlugin"/>
