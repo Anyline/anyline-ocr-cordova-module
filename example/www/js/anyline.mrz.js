@@ -17,6 +17,10 @@ anyline.mrz = {
     console.log("MRZ result: " + JSON.stringify(result));
     var div = document.getElementById('results');
 
+    if(div.childElementCount >= 3) {
+      div.removeChild(div.childNodes[div.childElementCount - 1]);
+    }
+
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
       "<b>Name:</b> " + result.surNames + " " + result.givenNames + "<br/>" + "<b>Type:</b> " + result.documentType +
       "<br/><b>Number:</b> " + result.documentNumber + " <b>" +

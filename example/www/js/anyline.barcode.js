@@ -21,6 +21,9 @@ anyline.barcode = {
     var div = document.getElementById('results');
     console.log("Barcode result: " + JSON.stringify(result));
 
+    if(div.childElementCount >= 3) {
+      div.removeChild(div.childNodes[div.childElementCount - 1]);
+    }
 
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/>"
         + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</br>"

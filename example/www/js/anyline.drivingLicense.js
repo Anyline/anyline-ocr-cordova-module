@@ -17,11 +17,15 @@ anyline.drivingLicense = {
     console.log("Result: " + JSON.stringify(result));
     var div = document.getElementById('results');
 
+    if(div.childElementCount >= 3) {
+      div.removeChild(div.childNodes[div.childElementCount - 1]);
+    }
+
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-        "<b>Result: </b> " + result.text
-        + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
-        + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</p>"
-        + div.innerHTML;
+      "<b>Result: </b> " + result.text
+      + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
+      + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</p>"
+      + div.innerHTML;
 
     document.getElementById("details_scan_modes").removeAttribute("open");
     document.getElementById("details_results").setAttribute("open", "");
@@ -31,7 +35,7 @@ anyline.drivingLicense = {
   onError: function (error) {
     localStorage.setItem("hasStartedAnyline", false);
     //called if an error occurred or the user canceled the scanning
-    if (error == "Canceled") {
+    if (error === "Canceled") {
       //do stuff when user has canceled
       // this can be used as an indicator that the user finished the scanning if canclelOnResult is false
       console.log("AnylineOcr scanning canceled");

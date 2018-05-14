@@ -17,6 +17,10 @@ anyline.document = {
     console.log("Result: " + JSON.stringify(result));
     var div = document.getElementById('results');
 
+    if(div.childElementCount >= 3) {
+      div.removeChild(div.childNodes[div.childElementCount - 1]);
+    }
+
     div.innerHTML = "<p>"
         + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
         + "<img src=\"" + result.fullImagePath + "\" width=\"100%\" height=\"auto\"/><br/>"

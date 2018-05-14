@@ -28,6 +28,10 @@ anyline.energy = {
     }
     var div = document.getElementById('results');
 
+    if(div.childElementCount >= 3) {
+      div.removeChild(div.childNodes[div.childElementCount - 1]);
+    }
+
     div.innerHTML = "<p>"
       + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
       + "<b>" + result.meterType + ":</b> " + result.reading
