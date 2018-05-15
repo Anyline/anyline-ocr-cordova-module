@@ -119,6 +119,14 @@ This can happen, when the Cocoapod installation is not correctly linked. You can
 pod install
 ```
 
+## Additional Functions
+
+#### getLicenseExpiryDate
+Check till when the provided License is or was valid. Returns a string.
+```
+cordova.exec(console.log, console.log, "AnylineSDK", "CHECK_LICENSE", [licenseKey]); // YYYY-MM-DD
+```
+
 ## License
 
 See LICENSE file.
