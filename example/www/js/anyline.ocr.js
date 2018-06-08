@@ -105,15 +105,17 @@ anyline.ocr = {
   },
 
   ibanOcrConfig: {
-    scanMode: 'AUTO',
-    tesseractLanguages: ['eng_no_dict', 'deu'],
-    traineddataFiles: ['assets/eng_no_dict.traineddata', 'assets/deu.traineddata'],
+    scanMode: "LINE",
+    minCharHeight: 25,
+    maxCharHeight: 65,
+    traineddataFiles: ["assets/USNr.any"],
+    minConfidence: 70,
+    removeSmallContours: true,
+    removeWhitespaces: true,
     charWhitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
     validationRegex: '^[A-Z]{2}([0-9A-Z]\\s*){13,32}$',
-    minConfidence: 65,
-    removeSmallContours: true,
-    removeWhitespaces: true
   },
+
 
   anylineVoucherCodesViewConfig: {
     "captureResolution": "1080",

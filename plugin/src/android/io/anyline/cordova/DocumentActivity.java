@@ -56,7 +56,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     private TextView errorMessage;
     private long lastErrorRecieved = 0;
     private int quality = 100;
-    private boolean postProcessing = false;
+    private boolean postProcessing = true;
     private Runnable errorMessageCleanup;
 
     private Double maxDocumentOutputResolutionWidth = null;

@@ -171,7 +171,7 @@
             if([docConfig valueForKey:@"postProcessing"]){
                 docScanViewController.postProcessing = [[docConfig valueForKey:@"postProcessing"] boolValue];
             } else {
-                docScanViewController.postProcessing = false;
+                docScanViewController.postProcessing = true;
             }
 
             // Check for Document Max Output Config and set it
