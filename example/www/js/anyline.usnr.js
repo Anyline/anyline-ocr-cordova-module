@@ -8,7 +8,7 @@
 if (anyline === undefined) {
   var anyline = {};
 }
-anyline.vin = {
+anyline.usnr = {
   onResult: function (result) {
     localStorage.setItem("hasStartedAnyline", false);
     //this is called for every mrz scan result
@@ -64,7 +64,7 @@ anyline.vin = {
   "US9wV21zNwpZaXBOeUkrRGRGbElKWHdIYjJvb2VRPT0K",
 
     
-anylineVINViewConfig: {
+anylineUSNRViewConfig: {
     "captureResolution": "1080p",
     "cutout": {
         "style": "rect",
@@ -101,12 +101,12 @@ anylineVINViewConfig: {
     "reportingEnabled": true
     
 },
-  anylineVINOcrConfig: {
-    "scanMode": "AUTO",
-    "tesseractLanguages": ["vin"],
-    "aleFile": "assets/vin.ale",
-    "traineddataFiles": ["assets/vin.any"],
-    "minConfidence": 0
+  anylineUSNROcrConfig: {
+    "scanMode": "LINE",
+    "minCharHeight": 25,
+    "maxCharHeight": 65,
+    "traineddataFiles": ["assets/USNr.any"],
+    "minConfidence": 70
   },
 
   scan: function () {
@@ -122,8 +122,8 @@ anylineVINViewConfig: {
 
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "ANYLINE_OCR", [
       this.licenseKey,
-      this.anylineVINViewConfig,
-      this.anylineVINOcrConfig
+      this.anylineUSNRViewConfig,
+      this.anylineUSNROcrConfig
     ]);
   }
 };

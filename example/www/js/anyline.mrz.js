@@ -27,6 +27,8 @@ anyline.mrz = {
       "<br/>Country:</b> " + result.nationalityCountryCode + "[" + result.issuingCountryCode + "]" +
       "<br/><b>Day of Birth:</b> " + result.dayOfBirth +
       "<br/><b>Expiration:</b> " + result.expirationDate + "<br/>" +
+      "<br/><b>Day of Birth Date Object:</b> " + new Date(result.dayOfBirthObject) +
+      "<br/><b>Expiration Date Object:</b> " + new Date(result.expirationDateObject) + "<br/>" +
       "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
       "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
       "<br/><i><b>Checksum:</b>" + result.allCheckDigitsValid + "</i>" +

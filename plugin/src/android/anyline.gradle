@@ -1,18 +1,18 @@
 repositories{
     jcenter()
-    maven { url 'https://anylinesdk.blob.core.windows.net/maven/'}
+    maven { url 'https://anylinesdk.blob.core.windows.net/testing/'}
 }
 
 dependencies {
   	compile 'com.google.android.gms:play-services-vision:12.0.1'
-    compile 'io.anyline:anylinesdk:3.24.0@aar'
+    compile 'io.anyline:anylinesdk:3.25.0-RC5@aar'
 }
 
 android {
 
   defaultConfig {
     minSdkVersion 19
-    ndk { 
+    ndk {
       abiFilters "armeabi-v7a", "x86" 
     } 
   }
