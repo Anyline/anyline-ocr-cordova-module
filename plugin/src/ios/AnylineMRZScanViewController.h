@@ -17,6 +17,6 @@
  * @since 3.25.1
  */
 @property (nonatomic, assign) Boolean cropAndTransformID;
-@property (nonatomic, assign) NSString *cropAndTransformErrorMessage;
+@property (nonatomic, strong) NSString *cropAndTransformErrorMessage;
 
 @end
