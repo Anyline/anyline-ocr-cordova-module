@@ -11,5 +11,12 @@
  */
 @property (nonatomic, assign) Boolean strictMode;
 
+/**
+ * Crop and Transform ID
+ *
+ * @since 3.25.1
+ */
+@property (nonatomic, assign) Boolean cropAndTransformID;
+@property (nonatomic, assign) Boolean showPointsOutOfCutoutError;
 
 @end

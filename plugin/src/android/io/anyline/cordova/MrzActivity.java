@@ -10,6 +10,7 @@ package io.anyline.cordova;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,9 +19,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import at.nineyards.anyline.AnylineDebugListener;
 import at.nineyards.anyline.camera.AnylineViewConfig;
 import at.nineyards.anyline.camera.CameraConfig;
 import at.nineyards.anyline.models.AnylineImage;
+import at.nineyards.anyline.core.RunFailure;
+import at.nineyards.anyline.core.exception_error_codes;
 import at.nineyards.anyline.modules.mrz.Identification;
 import at.nineyards.anyline.modules.mrz.MrzResultListener;
 import at.nineyards.anyline.modules.mrz.MrzScanView;
@@ -31,14 +35,19 @@ public class MrzActivity extends AnylineBaseActivity {
     private static final String TAG = MrzActivity.class.getSimpleName();
 
     private MrzScanView mrzScanView;
+    private static Toast notificationToast;
+    private JSONObject json;
+    private String cropAndTransformError;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         mrzScanView = new MrzScanView(this, null);
         try {
-            JSONObject json = new JSONObject(configJson);
+            json = new JSONObject(configJson);
             // set Config to View
             mrzScanView.setConfig(new AnylineViewConfig(this, json));
 
@@ -46,16 +55,6 @@ public class MrzActivity extends AnylineBaseActivity {
             CameraConfig camConfig = mrzScanView.getPreferredCameraConfig();
             setFocusConfig(json, camConfig);
 
-            // get MRZ config
-            if (json.has("mrz")) {
-                // set MRZ strict mode
-                JSONObject mrzConf = json.getJSONObject("mrz");
-                if(mrzConf.has("strictMode")){
-                    mrzScanView.setStrictMode(mrzConf.getBoolean("strictMode"));
-                } else {
-                    mrzScanView.setStrictMode(false);
-                }
-            }
         } catch (Exception e) {
             //JSONException or IllegalArgumentException is possible, return it to javascript
             finishWithError(Resources.getString(this, "error_invalid_json_data") + "\n" + e.getLocalizedMessage());
@@ -63,7 +62,38 @@ public class MrzActivity extends AnylineBaseActivity {
         }
         setContentView(mrzScanView);
 
+
         initAnyline();
+
+        // get MRZ config
+        if (json.has("mrz")) {
+            try {
+                // set MRZ strict mode
+                JSONObject mrzConf = json.getJSONObject("mrz");
+                if (mrzConf.has("strictMode")) {
+                    mrzScanView.setStrictMode(mrzConf.getBoolean("strictMode"));
+                } else {
+                    mrzScanView.setStrictMode(false);
+                }
+
+                // set crop and transform
+                if (mrzConf.has("cropAndTransformID")) {
+                    mrzScanView.setCropAndTransformID(mrzConf.getBoolean("cropAndTransformID"));
+                } else {
+                    mrzScanView.setCropAndTransformID(false);
+                }
+
+
+                // set crop and transform Error Message
+                if (mrzConf.has("cropAndTransformErrorMessage")) {
+                    setDebugListener();
+                    cropAndTransformError = mrzConf.getString("cropAndTransformErrorMessage");
+                }
+
+            } catch (JSONException e){
+                Log.d(TAG, e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -78,6 +108,22 @@ public class MrzActivity extends AnylineBaseActivity {
 
         mrzScanView.cancelScanning();
         mrzScanView.releaseCameraInBackground();
+    }
+
+    private void setDebugListener() {
+        mrzScanView.setDebugListener(new AnylineDebugListener() {
+            @Override
+            public void onDebug(String name, Object value) {
+            }
+
+            @Override
+            public void onRunSkipped(RunFailure runFailure) {
+                // Show Toast, if cropAndTransform is on true, but not all corners are detected 
+                if (runFailure != null && runFailure.errorCode() == exception_error_codes.PointsOutOfCutout.swigValue()) {
+                    showToast(cropAndTransformError);
+                }
+            }
+        });
     }
 
     private void initAnyline() {
@@ -117,6 +163,16 @@ public class MrzActivity extends AnylineBaseActivity {
             }
         });
         mrzScanView.getAnylineController().setWorkerThreadUncaughtExceptionHandler(this);
+    }
+
+    private void showToast(String st) {
+        try {
+            notificationToast.getView().isShown();
+            notificationToast.setText(st);
+        } catch (Exception e) {
+            notificationToast = Toast.makeText(this, st, Toast.LENGTH_SHORT);
+        }
+        notificationToast.show();
     }
 
 }

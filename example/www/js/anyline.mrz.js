@@ -17,7 +17,7 @@ anyline.mrz = {
     console.log("MRZ result: " + JSON.stringify(result));
     var div = document.getElementById('results');
 
-    if(div.childElementCount >= 3) {
+    if (div.childElementCount >= 3) {
       div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
 
@@ -102,12 +102,12 @@ anyline.mrz = {
         "outerColor": "000000",
         "outerAlpha": 0.3,
         "cropPadding": {
-          "x": -30,
-          "y": -90
+          "x": 0,
+          "y": 0
         },
         "cropOffset": {
           "x": 0,
-          "y": 90
+          "y": 0
         },
         "feedbackStrokeColor": "0099FF",
         "offset": {
@@ -123,6 +123,10 @@ anyline.mrz = {
         "style": "rect",
         "strokeColor": "0099FF",
         "strokeWidth": 2
+      },
+      "mrz": {
+        "cropAndTransformID": true,
+        "cropAndTransformErrorMessage": "Edges are not detected",
       }
     }]);
   }

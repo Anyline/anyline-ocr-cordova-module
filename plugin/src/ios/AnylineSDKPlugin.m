@@ -112,11 +112,26 @@
         if ([options valueForKey:@"mrz"]) {
             NSDictionary *mrzConfig = [options valueForKey:@"mrz"];
 
-            // Check for Document quality Config and set it
+            // Check for Strict Mode and set it
             if([mrzConfig valueForKey:@"strictMode"]){
                 mrzVC.strictMode = [[mrzConfig valueForKey:@"strictMode"] boolValue];
             } else {
                 mrzVC.strictMode = false;
+            }
+
+            // Check for cropAndTransformID Config and set it
+            if([mrzConfig valueForKey:@"cropAndTransformID"]){
+                mrzVC.cropAndTransformID = [[mrzConfig valueForKey:@"cropAndTransformID"] boolValue];
+            } else {
+                mrzVC.cropAndTransformID = false;
+            }
+            
+            // Check for showPointsOutOfCutoutError Config and set it
+            if([mrzConfig valueForKey:@"cropAndTransformErrorMessage"]){
+                NSString *str = [mrzConfig objectForKey:@"cropAndTransformErrorMessage"];
+                mrzVC.cropAndTransformErrorMessage = str;
+            } else {
+                mrzVC.cropAndTransformErrorMessage = @"";
             }
         }
 

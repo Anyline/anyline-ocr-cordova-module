@@ -12,6 +12,7 @@ package io.anyline.cordova;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
