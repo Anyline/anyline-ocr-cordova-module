@@ -30,12 +30,12 @@
 
         self.moduleView = mrzModuleView;
 
-        
+    
         [self.view addSubview:self.moduleView];
         [self.view sendSubviewToBack:self.moduleView];
         
         // Set Error Message if set in config
-        if(self.showPointsOutOfCutoutError){
+        if([self.cropAndTransformErrorMessage isEqual:@""]){
             [self.moduleView setDebugDelegate:self];
             
             // This view notifies the user of any problems that occur while he is scanning
@@ -98,7 +98,7 @@
         case ALRunFailurePointsOutOfCutout: {
             NSLog(@"Failure: points out of bounce");
             
-            self.roundedView.textLabel.text = @"Corners are outside of the cutout!";
+            self.roundedView.textLabel.text = [NSString stringWithFormat:@"%@", self.cropAndTransformErrorMessage];
             
             // Animate the appearance of the label
             CGFloat fadeDuration = 1.5;
