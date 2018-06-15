@@ -25,10 +25,10 @@ anyline.mrz = {
       "<b>Name:</b> " + result.surNames + " " + result.givenNames + "<br/>" + "<b>Type:</b> " + result.documentType +
       "<br/><b>Number:</b> " + result.documentNumber + " <b>" +
       "<br/>Country:</b> " + result.nationalityCountryCode + "[" + result.issuingCountryCode + "]" +
-      "<br/><b>Day of Birth:</b> " + result.dayOfBirth +
-      "<br/><b>Expiration:</b> " + result.expirationDate + "<br/>" +
-      "<br/><b>Day of Birth Date Object:</b> " + new Date(result.dayOfBirthObject) +
-      "<br/><b>Expiration Date Object:</b> " + new Date(result.expirationDateObject) + "<br/>" +
+      "<br/><b>Date of Birth:</b> " + result.dayOfBirth +
+      "<br/><b>Expiration Date:</b> " + result.expirationDate + "<br/>" +
+      "<br/><b>Date of Birth Date Object:</b> " + result.dayOfBirthObject +
+      "<br/><b>Expiration Date Object:</b> " + result.expirationDateObject + "<br/>" +
       "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
       "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
       "<br/><i><b>Checksum:</b>" + result.allCheckDigitsValid + "</i>" +
@@ -84,7 +84,7 @@ anyline.mrz = {
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "MRZ", [licenseKey, {
       "captureResolution": "1080",
       "flash": {
-        "mode": "auto",
+        "mode": "off",
         "alignment": "bottom_right"
       },
       "cutout": {

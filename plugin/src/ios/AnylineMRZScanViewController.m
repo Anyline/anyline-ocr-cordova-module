@@ -56,6 +56,13 @@
 -(void)anylineMRZModuleView:(AnylineMRZModuleView *)anylineMRZModuleView didFindResult:(ALMRZResult *)scanResult {
 
 
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy.MM.dd"];
+
+    NSString *expirationDateObject = [formatter stringFromDate:scanResult.result.expirationDateObject];
+    NSString *dayOfBirthDateObject = [formatter stringFromDate:scanResult.result.dayOfBirthDateObject];
+
+
     NSMutableDictionary *scanResultDict = [[scanResult.result dictionaryWithValuesForKeys:@[@"documentType",
                                                                                      @"nationalityCountryCode",
                                                                                      @"issuingCountryCode",
@@ -80,7 +87,9 @@
 
     [scanResultDict setValue:@(scanResult.confidence) forKey:@"confidence"];
     [scanResultDict setValue:[self stringForOutline:anylineMRZModuleView.mrzScanViewPlugin.outline] forKey:@"outline"];
-    
+
+    [scanResultDict setValue:expirationDateObject forKey:@"expirationDateObject"];
+    [scanResultDict setValue:dayOfBirthDateObject forKey:@"dayOfBirthObject"];
 
     
     [self.delegate anylineBaseScanViewController:self didScan:scanResultDict continueScanning:!self.moduleView.cancelOnResult];
