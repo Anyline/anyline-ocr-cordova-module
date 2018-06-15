@@ -84,8 +84,10 @@ anyline.mrz = {
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "MRZ", [licenseKey, {
       "captureResolution": "1080",
       "flash": {
-        "mode": "off",
-        "alignment": "bottom_right"
+        "mode": "manual",
+        "alignment": "bottom_left",
+        "imageOn": "ic_flash_on",
+        "imageOff": "ic_flash_off"
       },
       "cutout": {
         "style": "rect",
@@ -126,7 +128,7 @@ anyline.mrz = {
       },
       "mrz": {
         "cropAndTransformID": true,
-        "cropAndTransformErrorMessage": "Edges are not detected",
+        "cropAndTransformErrorMessage": "Edges are not detected"
       }
     }]);
   }
