@@ -35,7 +35,7 @@
         [self.view sendSubviewToBack:self.moduleView];
         
         // Set Error Message if set in config
-        if ([self.cropAndTransformErrorMessage isEqualToString:@""]) {
+        if (![self.cropAndTransformErrorMessage isEqualToString:@""]) {
             [self.moduleView setDebugDelegate:self];
             
             // This view notifies the user of any problems that occur while he is scanning
