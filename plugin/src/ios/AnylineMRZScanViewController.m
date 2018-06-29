@@ -23,7 +23,7 @@
         // Set strictMode to MRZView
         [mrzModuleView setStrictMode:self.strictMode];
 
-        // Set strictMode to MRZView
+        // Set CropAndTransform to MRZView
         [mrzModuleView setCropAndTransformID:self.cropAndTransformID];
 
         mrzModuleView.currentConfiguration = self.conf;
