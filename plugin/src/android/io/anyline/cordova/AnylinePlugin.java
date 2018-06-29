@@ -67,6 +67,8 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
                 try {
                     if(mAction.equals("CHECK_LICENSE")){
                         getLicenseExpirationDate(mArgs.getString(0));
+                    } else if(mAction.equals("GET_SDK_VERSION")) {
+                        getSDKVersion();
                     } else {
                         checkPermission();
                     }
@@ -262,5 +264,9 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     private void getLicenseExpirationDate(String license) {
         String validDate = AnylineController.getLicenseExpirationDate(license);
         onResult(validDate,true);
+    }
+
+    private void getSDKVersion() {
+        onResult(at.nineyards.anyline.BuildConfig.VERSION_NAME, true);
     }
 }

@@ -240,6 +240,13 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)GET_SDK_VERSION:(CDVInvokedUrlCommand *)command {
+    
+    CDVPluginResult *pluginResult;
+    
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:ALCoreController.versionNumber];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
 
 - (void)scanBarcode:(CDVInvokedUrlCommand *)command {
     [self BARCODE:command];
