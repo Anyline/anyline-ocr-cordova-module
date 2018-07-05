@@ -53,9 +53,6 @@
             <br/>
             <input type="button" value="Austrian Driving License" onclick="anyline.drivingLicense.scan()" />
             <br/>
-            <input type="button" value="Vehicle Identification Nb." onclick="anyline.vin.scan()" />
-            <br/>
-            <input type="button" value="Universal Serial Number" onclick="anyline.usnr.scan()" />
         </p>
         <hr>
         <h2> Vehicles </h2>
@@ -63,6 +60,17 @@
             <input type="button" value="License Plates" onclick="anyline.licensePlate.scanLicensePlates('LICENSE_PLATE')" />
             <br/>
         </p>
+
+        <hr>
+        <h2>MRO</h2>
+        <input type="button" value="Vehicle Identification Nb." onclick="anyline.vin.scan()" />
+        <br/>
+        <input type="button" value="Universal Serial Number" onclick="anyline.usnr.scan()" />
+        <br/>
+        <input type="button" value="Shipping Container" onclick="anyline.container.scan()" />
+        <br/>
+
+        
         <hr>
         <h2> Others </h2>
         <p>
@@ -108,6 +116,7 @@
 <script type="text/javascript" src="js/anyline.licensePlate.js"></script>
 <script type="text/javascript" src="js/anyline.vin.js"></script>
 <script type="text/javascript" src="js/anyline.usnr.js"></script>
+<script type="text/javascript" src="js/anyline.container.js"></script>
 </body>
 
 </html>

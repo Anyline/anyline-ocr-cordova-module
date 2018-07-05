@@ -1,6 +1,6 @@
 {
   "name": "anyline-cordova-example",
-  "version": "3.25.2",
+  "version": "3.26.0",
   "description": "Cordova plugin for implementing Anyline",
   "main": "index.js",
   "scripts": {
@@ -16,17 +16,12 @@
   "author": "Jonas Laux | Daniel Albertini",
   "license": "ISC",
   "cordova": {
-    "platforms": [
-      "android",
-      "ios"
-    ],
+    "platforms": [],
     "plugins": {
       "io-anyline-cordova": {}
     }
   },
   "dependencies": {
-    "cordova-android": "^7.1.0",
-    "cordova-ios": "^4.5.4",
     "io-anyline-cordova": "file:../plugin"
   }
 }

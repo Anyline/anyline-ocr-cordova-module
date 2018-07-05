@@ -127,7 +127,7 @@ anyline.mrz = {
         "strokeWidth": 2
       },
       "mrz": {
-        "cropAndTransformID": true,
+        "cropAndTransformID": false,
         "cropAndTransformErrorMessage": "Edges are not detected"
       }
     }]);
