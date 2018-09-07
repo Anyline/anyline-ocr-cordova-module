@@ -3,8 +3,10 @@
     <name>Anyline Cordova Example</name>
     <preference name="deployment-target" value="8.0" />
     <preference name="Orientation" value="portrait" />
+    <preference name="windows-target-version" value="10.0" />
     <content src="index.html" />
     <access origin="*" />
     <icon src="www/img/ic_launcher.png" />
+    <engine name="windows" spec="latest" />
     <plugin name="io-anyline-cordova" spec="../plugin" />
 </widget>

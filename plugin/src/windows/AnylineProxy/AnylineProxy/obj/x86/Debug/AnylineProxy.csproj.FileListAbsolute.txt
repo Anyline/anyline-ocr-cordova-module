@@ -1,0 +1,1 @@
+D:\Projekte\Anyline\anyline-ocr-cordova-module\plugin\src\windows\AnylineProxy\AnylineProxy\obj\x86\Debug\AnylineProxy.csprojResolveAssemblyReference.cache

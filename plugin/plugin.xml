@@ -7,6 +7,7 @@
 
     <name>AnylineSDK</name>
 
+
     <!--Add Platform specific Files-->
     <platform name="ios">
         <hook type="after_plugin_install" src="hooks/AfterPluginInstall.js"/>
@@ -117,4 +118,13 @@
                        target="res/layout/activity_scan_document.xml"/>
 
     </platform>
+
+
+     <!-- windows -->
+    <platform name="windows">
+        <js-module src="src/windows/AnylineProxy.js" name="AnylineProxy">
+            <merges target="" />
+        </js-module>
+    </platform>
+
 </plugin>
