@@ -8,5 +8,4 @@
     <access origin="*" />
     <icon src="www/img/ic_launcher.png" />
     <engine name="windows" spec="latest" />
-    <plugin name="io-anyline-cordova" spec="../plugin" />
 </widget>

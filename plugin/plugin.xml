@@ -122,6 +122,11 @@
 
      <!-- windows -->
     <platform name="windows">
+
+        <framework src="src/windows/AnylineProxy/AnylineProxy/bin/Debug/AnylineProxy.winmd" target-dir="x86" arch="x86" custom="true"/>
+        <framework src="src/windows/lib/Anyline.winmd" target-dir="x86" arch="x86" custom="true"/>
+        <framework src="src/windows/lib/AnylineSDK.dll" target-dir="x86" arch="x86" custom="true"/>
+
         <js-module src="src/windows/AnylineProxy.js" name="AnylineProxy">
             <merges target="" />
         </js-module>

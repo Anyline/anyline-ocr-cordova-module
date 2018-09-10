@@ -1,0 +1,16 @@
+﻿<Page
+        x:Class="AnylineProxy.AnylineProxy"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:AnylineProxy"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:anyline="using:Anyline.SDK.Modules.Mrz">
+    <!--Add the anyline module namespace here-->
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <!--Add the anyline scan view here-->
+        <anyline:MrzScanView x:Name="AnylineScanView" PreferredCameraDevice="ExternalFront" />
+    </Grid>
+</Page>

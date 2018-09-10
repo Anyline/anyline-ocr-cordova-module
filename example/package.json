@@ -16,8 +16,12 @@
   "author": "Jonas Laux | Daniel Albertini",
   "license": "ISC",
   "cordova": {
-    "platforms": [],
+    "platforms": [
+      "windows"
+    ],
     "plugins": {}
   },
-  "dependencies": {}
+  "dependencies": {
+    "cordova-windows": "^6.0.0"
+  }
 }

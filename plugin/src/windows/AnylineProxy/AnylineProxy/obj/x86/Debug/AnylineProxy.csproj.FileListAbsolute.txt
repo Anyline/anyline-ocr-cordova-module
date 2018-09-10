@@ -1,1 +1,9 @@
-D:\Projekte\Anyline\anyline-ocr-cordova-module\plugin\src\windows\AnylineProxy\AnylineProxy\obj\x86\Debug\AnylineProxy.csprojResolveAssemblyReference.cache
+D:\Projekte\Anyline\anyline-ocr-cordova-module\plugin\src\windows\AnylineProxy\AnylineProxy\obj\x86\Debug\AnylineProxy.g.i.cs
+D:\Projekte\Anyline\anyline-ocr-cordova-module\plugin\src\windows\AnylineProxy\AnylineProxy\obj\x86\Debug\AnylineProxy.g.cs
+D:\Projekte\Anyline\anyline-ocr-cordova-module\plugin\src\windows\AnylineProxy\AnylineProxy\obj\x86\Debug\XamlTypeInfo.g.cs
+D:\Projekte\Anyline\anyline-ocr-cordova-module\plugin\src\windows\AnylineProxy\AnylineProxy\obj\x86\Debug\AnylineProxy.xaml
+D:\Projekte\Anyline\anyline-ocr-cordova-module\plugin\src\windows\AnylineProxy\AnylineProxy\obj\x86\Debug\AnylineProxy.xbf
+D:\Projekte\Anyline\anyline-ocr-cordova-module\plugin\src\windows\AnylineProxy\AnylineProxy\obj\x86\Debug\XamlSaveStateFile.xml
+D:\Projekte\Anyline\anyline-ocr-cordova-module\plugin\src\windows\AnylineProxy\AnylineProxy\obj\x86\Debug\AnylineProxy.winmd
+D:\Projekte\Anyline\anyline-ocr-cordova-module\plugin\src\windows\AnylineProxy\AnylineProxy\obj\x86\Debug\AnylineProxy.winmdobj
+D:\Projekte\Anyline\anyline-ocr-cordova-module\plugin\src\windows\AnylineProxy\AnylineProxy\obj\x86\Debug\AnylineProxy.compile.pdb
