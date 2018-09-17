@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.licensePlateModuleView = [[AnylineLicensePlateModuleView alloc] initWithFrame:self.view.bounds];
+        self.licensePlateModuleView = [[AnylineLicensePlateModuleView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 
         NSError *error = nil;
         [self.licensePlateModuleView setupWithLicenseKey:self.key delegate:self error:&error];

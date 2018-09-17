@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
-        AnylineOCRModuleView *ocrModuleView = [[AnylineOCRModuleView alloc] initWithFrame:self.view.bounds];
+        AnylineOCRModuleView *ocrModuleView = [[AnylineOCRModuleView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 
         ALOCRConfig *ocrConf = [[ALOCRConfig alloc] initWithJsonDictionary:self.ocrConfDict];
 
