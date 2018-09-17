@@ -15,9 +15,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
-
-        AnylineEnergyModuleView *energyModuleView = [[AnylineEnergyModuleView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-
+        AnylineEnergyModuleView *energyModuleView = [[AnylineEnergyModuleView alloc] initWithFrame:self.view.bounds];
+        
         NSError *error = nil;
         [energyModuleView setupWithLicenseKey:self.key delegate:self error:&error];
 

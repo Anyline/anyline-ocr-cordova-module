@@ -11,10 +11,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
-
-        AnylineBarcodeModuleView *barcodeModuleView = [[AnylineBarcodeModuleView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-
-
+        AnylineBarcodeModuleView *barcodeModuleView = [[AnylineBarcodeModuleView alloc] initWithFrame:self.view.bounds];
+        
         NSError *error = nil;
         [barcodeModuleView setupWithLicenseKey:self.key delegate:self error:&error];
 //        if(!success) {

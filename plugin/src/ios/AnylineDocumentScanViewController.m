@@ -23,9 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
-
-        AnylineDocumentModuleView *docModuleView = [[AnylineDocumentModuleView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-
+        AnylineDocumentModuleView *docModuleView = [[AnylineDocumentModuleView alloc] initWithFrame:self.view.bounds];
         docModuleView.currentConfiguration = self.conf;
         
         // Set Document Ratios and deviation

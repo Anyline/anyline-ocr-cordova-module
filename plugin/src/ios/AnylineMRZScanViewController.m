@@ -15,7 +15,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
-        AnylineMRZModuleView *mrzModuleView = [[AnylineMRZModuleView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+        AnylineMRZModuleView *mrzModuleView = [[AnylineMRZModuleView alloc] initWithFrame:self.view.bounds];
 
         NSError *error = nil;
         [mrzModuleView setupWithLicenseKey:self.key delegate:self error:&error];
