@@ -27,7 +27,7 @@ Anyline provides an easy-to-use SDK for applications to enable Optical Character
 This is just a simple setup guide to integrate the anylinesdk-plugin in an existing Cordova project.<br/>
 For more information about Cordova, how to use plugins, etc. see <a target="_blank" href="https://cordova.apache.org/">https://cordova.apache.org/</a>.
 
-###### 1. Add the anylinesdk-plugin to your existing cordova project
+##### 1. Add the anylinesdk-plugin to your existing cordova project
 ```
 cordova plugin add io-anyline-cordova
 ```
@@ -52,10 +52,13 @@ git lfs install
 ```
 If you prefer downloading a package, use the provided `zip` package on the [releases page](https://github.com/Anyline/anyline-ocr-cordova-module/releases). Be aware that the github download zip button does not work for projects with git-lfs.
 
+###### Add WebKit to your iOS project
+- Open your platforms/ios *.xcworkspace with XCode.
+- In the info.plist go to the "Linked Frameworks and Libraries".
+- Add WebKit.framework
 
 
-
-###### 2. Plugin Usage
+##### 2. Plugin Usage
 
 ```javaScript
 cordova.exec(onResult, onError, "AnylineSDK", scanMode, config);
@@ -102,7 +105,7 @@ cordova.exec(onResult, onError, "AnylineSDK", scanMode, config);
 ```
 
 
-###### 3. Run your cordova project: Enjoy scanning and have fun :)
+##### 3. Run your cordova project: Enjoy scanning and have fun :)
 
 Checkout our <a href="https://documentation.anyline.io/">online documentation</a>  for more details.
 
