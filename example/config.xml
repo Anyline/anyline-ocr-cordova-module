@@ -7,4 +7,5 @@
     <access origin="*" />
     <icon src="www/img/ic_launcher.png" />
     <plugin name="io-anyline-cordova" spec="../plugin" />
+    <engine name="android" spec="^7.1.1" />
 </widget>

@@ -81,9 +81,11 @@
         </config-file>
         <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml">
             <activity android:name="io.anyline.cordova.BarcodeActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" />
+                      android:theme="@android:style/Theme.Black.NoTitleBar" 
+                      android:screenOrientation="portrait"/>
             <activity android:name="io.anyline.cordova.MrzActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" />
+                      android:theme="@android:style/Theme.Black.NoTitleBar" 
+                      android:screenOrientation="portrait"/>
             <activity android:name="io.anyline.cordova.EnergyActivity"
                       android:theme="@android:style/Theme.Black.NoTitleBar" />
             <activity android:name="io.anyline.cordova.AnylineOcrActivity"

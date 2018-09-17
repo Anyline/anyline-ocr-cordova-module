@@ -94,7 +94,8 @@ anyline.barcode = {
         "cornerRadius": 3,
         "strokeColor": "FFFFFF",
         "outerColor": "000000",
-        "outerAlpha": 0.3
+        "outerAlpha": 0.3,
+        "feedbackStrokeColor": "0099FF",
       },
       "flash": {
         "mode": "auto",

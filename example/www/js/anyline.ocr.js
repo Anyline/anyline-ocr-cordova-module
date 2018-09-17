@@ -90,7 +90,7 @@ anyline.ocr = {
     "blinkAnimationOnResult": true,
     "cancelOnResult": true,
     "visualFeedback": {
-      "style": "contour_point",
+      "style": "contour_underline",
       "strokeColor": "0099FF",
       "strokeWidth": 2,
       "fillColor": "110099FF"
@@ -133,7 +133,8 @@ anyline.ocr = {
       "cornerRadius": 10,
       "strokeColor": "FFFFFF",
       "outerColor": "000000",
-      "outerAlpha": 0.3
+      "outerAlpha": 0.3,
+      "feedbackStrokeColor": "0099FF",
     },
     "flash": {
       "mode": "manual",
