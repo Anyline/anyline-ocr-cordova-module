@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "reinstall": "cordova platform remove android && cordova plugin remove io-anyline-cordova && cordova platform add android@latest && cordova plugin add ../plugin",
     "reinstall-ios": "cordova platform remove ios && cordova plugin remove io-anyline-cordova && cordova platform add ios@latest && cordova plugin add ../plugin",
+    "reinstall-win": "cordova platform remove windows && cordova plugin remove io-anyline-cordova && cordova platform add windows@latest && cordova plugin add ../plugin",
     "overwrite": "rm -R ../src/android/io && rm -R ../src/android/res && cp -R platforms/android/src/io ../src/android/ && cp -R platforms/android/res ../src/android",
     "overwrite-ios": "rm -R ../src/ios/io && rm -R ../src/ios/res && cp -R platforms/ios/src/io ../src/android/ && cp -R platforms/ios/res ../src/ios",
     "OandR": "npm run overwrite && npm run reinstall",
@@ -19,12 +20,9 @@
     "platforms": [
       "windows"
     ],
-    "plugins": {
-      "io-anyline-cordova": {}
-    }
+    "plugins": {}
   },
   "dependencies": {
-    "cordova-windows": "^6.0.0",
-    "io-anyline-cordova": "file:../plugin"
+    "cordova-windows": "^6.0.0"
   }
 }
