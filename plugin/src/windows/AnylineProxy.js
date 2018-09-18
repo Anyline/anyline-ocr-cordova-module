@@ -1,7 +1,11 @@
-cordova.commandProxy.add("AnylineSDK",{
-    tester: async () =>  {
+cordova.commandProxy.add("AnylineSDK", {
+    tester: () => {
         const jo = new AnylineProxy.AnylineProxy();
-        jo.onlog = function(ev) { console.log(ev.toString()); }
-        await jo.getHelloWorld();
+
+        // register log messages
+        jo.onlog = function (ev) { console.log(ev.toString()); }
+
+        // try to init on UI thread
+        jo.initOnUIThread();
     }
 });

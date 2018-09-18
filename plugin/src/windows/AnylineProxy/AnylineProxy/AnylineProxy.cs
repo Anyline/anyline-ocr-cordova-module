@@ -22,58 +22,50 @@ namespace AnylineProxy
 
         public AnylineProxy()
         {
-            
-        }
-        
-        public IAsyncOperation<bool> GetHelloWorld()
-        {
-            return GetHelloWorldTask().AsAsyncOperation();
-        }
-        
-        private void L(object o)
-        {
-            Log?.Invoke(this, o.ToString());
         }
 
-        [MTAThread]
-        private async Task<bool> GetHelloWorldTask()
+        public void InitOnUIThread()
+        {
+            var disp = Windows.ApplicationModel.Core.CoreApplication.MainView?.CoreWindow?.Dispatcher;
+            if (disp == null) L("Dispatcher is null!");
+            else
+            {
+                disp.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                {
+                    await ExecutionTask();
+                }).AsTask();
+            }
+        }
+        
+        private void L(object o) { Log?.Invoke(this, o.ToString()); }
+
+        private async Task ExecutionTask()
         {
             try
             {
                 L("hello");
-
-                Windows.UI.Xaml.Application.Start((p) => new App());
-
-                L("started app.");
-
-                var disp = Windows.ApplicationModel.Core.CoreApplication.MainView?.CoreWindow?.Dispatcher;
-                if (disp == null) L("Dispatcher is null");
-
+                
                 var window = Windows.ApplicationModel.Core.CoreApplication.MainView?.CoreWindow;
                 if (window == null) L("Window is null");
                 else L(window.PointerPosition);
 
-                await disp.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    try
-                    {
-                        L("I AM WAITING IN A NEW TASK.");
+                //Windows.UI.Xaml.Application.Start((p) => new App());
+                
+                L("I AM WAITING IN A NEW TASK.");
 
-                        if (Window.Current == null)
-                            L("THE CURRENT WINDOW IS NULL");
-                        
-                    }
-                    catch (Exception e)
-                    {
-                        L("Exception occurred: " + e.Message);
-                    }
-                });
+                if (Windows.UI.Xaml.Application.Current == null)
+                    L("Current app is null!!");
+
+                L("started app.");
+
+
+                if (Window.Current == null)
+                    L("THE CURRENT WINDOW IS NULL");
             }
             catch(Exception e)
             {
                 L(e.Message);
             }
-            return true;
         }
 
 
