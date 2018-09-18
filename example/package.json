@@ -20,9 +20,12 @@
     "platforms": [
       "windows"
     ],
-    "plugins": {}
+    "plugins": {
+      "io-anyline-cordova": {}
+    }
   },
   "dependencies": {
-    "cordova-windows": "^6.0.0"
+    "cordova-windows": "^6.0.0",
+    "io-anyline-cordova": "file:../plugin"
   }
 }
