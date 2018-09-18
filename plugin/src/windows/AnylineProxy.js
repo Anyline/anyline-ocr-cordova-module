@@ -1,10 +1,10 @@
-
-
 cordova.commandProxy.add("AnylineSDK",{
-    tester:function() {
-        console.log('jojojojojo');
+    tester: async () =>  {
+        console.log('jojojojojo1');
         const jo = new AnylineProxy.AnylineProxy();
-        console.log(jo.invokeSomething());
-        //AnylineProxy.AnylineProxy.GetHelloWorld();
+
+        const result = await jo.getHelloWorld();
+        console.log(result);
+        console.log('jojojojojoasdasdasds');
     }
 });
