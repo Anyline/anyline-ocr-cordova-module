@@ -10,6 +10,7 @@ using Anyline.SDK.Util;
 using Windows.UI.Xaml;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using AnylineExamplesApp;
 
 namespace AnylineProxy
 {
@@ -34,11 +35,16 @@ namespace AnylineProxy
             Log?.Invoke(this, o.ToString());
         }
 
+        [MTAThread]
         private async Task<bool> GetHelloWorldTask()
         {
             try
             {
                 L("hello");
+
+                Windows.UI.Xaml.Application.Start((p) => new App());
+
+                L("started app.");
 
                 var disp = Windows.ApplicationModel.Core.CoreApplication.MainView?.CoreWindow?.Dispatcher;
                 if (disp == null) L("Dispatcher is null");
@@ -55,13 +61,6 @@ namespace AnylineProxy
 
                         if (Window.Current == null)
                             L("THE CURRENT WINDOW IS NULL");
-
-                        window.PointerMoved += Window_PointerMoved;
-                        /*var frame = new Frame();
-                        log += "\nCreated frame";
-                        frame.Navigate(typeof(MyView));
-                        log += "\nNavigated to MyView";*/
-                        //var app = new AnylineExamplesApp.App();Frame rootFrame = Window.Current.Content as Frame;
                         
                     }
                     catch (Exception e)
