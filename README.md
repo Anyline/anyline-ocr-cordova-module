@@ -52,12 +52,6 @@ git lfs install
 ```
 If you prefer downloading a package, use the provided `zip` package on the [releases page](https://github.com/Anyline/anyline-ocr-cordova-module/releases). Be aware that the github download zip button does not work for projects with git-lfs.
 
-###### Add WebKit to your iOS project
-- Open your platforms/ios *.xcworkspace with XCode.
-- In the info.plist go to the "Linked Frameworks and Libraries".
-- Add WebKit.framework
-
-
 ##### 2. Plugin Usage
 
 ```javaScript
