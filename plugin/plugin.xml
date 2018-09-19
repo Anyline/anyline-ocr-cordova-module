@@ -123,6 +123,7 @@
      <!-- windows -->
     <platform name="windows">
 		<framework src="src/windows/AnylineProxy/AnylineProxy/bin/x86/Debug/AnylineProxy.winmd" target-dir="x86" arch="x86" custom="true"/>
+		<!-- <framework src="src/windows/AnylineProxy/AnylineProxy/bin/x86/Debug/AnylineProxySub.dll" target-dir="x86" arch="x86" custom="true"/> -->
 		<framework src="src/windows/AnylineProxy/AnylineProxy/bin/x86/Debug/Anyline.winmd" target-dir="x86" arch="x86" custom="true"/>
         <framework src="src/windows/AnylineProxy/AnylineProxy/bin/x86/Debug/Anyline.SDK.dll" target-dir="x86" arch="x86" custom="true"/>
         

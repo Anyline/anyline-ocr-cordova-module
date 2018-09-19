@@ -7,3 +7,5 @@ npm-debug.log
 .vscode
 /plugin/src/windows/AnylineProxy/AnylineProxy/bin
 /plugin/src/windows/AnylineProxy/AnylineProxy/obj
+/plugin/src/windows/AnylineProxy/AppUwpJS/bin
+/plugin/src/windows/AnylineProxy/AppUwpJS/bld

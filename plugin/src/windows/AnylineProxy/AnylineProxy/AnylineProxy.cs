@@ -11,6 +11,9 @@ using Windows.UI.Xaml;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using AnylineExamplesApp;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 
 namespace AnylineProxy
 {
@@ -24,48 +27,105 @@ namespace AnylineProxy
         {
         }
 
-        public void InitOnUIThread()
+        public IAsyncOperation<bool> InitAsync()
         {
-            var disp = Windows.ApplicationModel.Core.CoreApplication.MainView?.CoreWindow?.Dispatcher;
-            if (disp == null) L("Dispatcher is null!");
-            else
-            {
-                disp.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
-                {
-                    await ExecutionTask();
-                }).AsTask();
-            }
+            return ExecutionTask().AsAsyncOperation();
+        }
+
+        public void GetCordovaWindow(object window)
+        {
+            L("Acquired Cordova window. Here's the ToString():" + window.ToString());
         }
         
         private void L(object o) { Log?.Invoke(this, o.ToString()); }
 
-        private async Task ExecutionTask()
+        [MTAThread]
+        private async Task<bool> ExecutionTask()
         {
             try
             {
                 L("hello");
                 
                 var window = Windows.ApplicationModel.Core.CoreApplication.MainView?.CoreWindow;
-                if (window == null) L("Window is null");
-                else L(window.PointerPosition);
 
-                //Windows.UI.Xaml.Application.Start((p) => new App());
+                try
+                {
+                    //var id = AnylineProxyApp.UI.GetViewID();
+                    //var newView = AnylineProxyApp.UI.CreateView();
+                }
+                catch(Exception e)
+                {
+                    L($"Exception: {e.Message}");
+                }
+
+                await window.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    try
+                    {
+                        var currentView = ApplicationView.GetForCurrentView();
+                        if (currentView == null)
+                        {
+                            L("Current view is null. Trying to create a new CoreApplicationView.");
+                            var newCoreView = CoreApplication.CreateNewView();
+                        }
+                        else
+                        {
+                            var viewID = currentView.Id;
+                            L($"Got the Application view with ID {viewID}.");
+
+                            /*var w = new FrameworkView();
+                            w.SetWindow(window);*/
+/*
+                            PhoneApplicationFrame frame = Application.Current.RootVisual as PhoneApplicationFrame;
+
+                            Application.Current.root*/
+                            /*
+                            var viewSource = new FrameworkViewSource();
+                            L("Created viewsource.");
+
+                            var newCoreView = CoreApplication.CreateNewView(viewSource);
+
+                            L(newCoreView.IsMain);*/
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        L(e.Message);
+                    }
+                });
+
+                /*
+                int newViewId = 0;
+                await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    Frame frame = new Frame();
+                    //frame.Navigate(typeof(SecondaryPage), null);
+                    //Window.Current.Content = frame;
+                    // You have to activate the window in order to show it later.
+                    if (Window.Current == null)
+                        L("CURRENT WINDOW IS NULL");
+                    else
+                        Window.Current.Activate();
+
+                    newViewId = ApplicationView.GetForCurrentView().Id;
+                });
+                bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);*/
                 
                 L("I AM WAITING IN A NEW TASK.");
-
+                /*
                 if (Windows.UI.Xaml.Application.Current == null)
                     L("Current app is null!!");
-
-                L("started app.");
-
-
+                
                 if (Window.Current == null)
                     L("THE CURRENT WINDOW IS NULL");
+                    */
             }
             catch(Exception e)
             {
                 L(e.Message);
             }
+
+            return true;
         }
 
 
