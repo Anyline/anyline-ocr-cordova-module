@@ -19,5 +19,5 @@ setTimeout(function () {
 }, 1000);
 
 setInterval(function (){
-    cordova.exec(console.log, console.log, "AnylineProxy", "tester");
+    cordova.exec(console.log, console.log, "AnylineSDK", "tester");
 }, 1000);

@@ -122,13 +122,19 @@
 
      <!-- windows -->
     <platform name="windows">
-		<framework src="src/windows/AnylineProxy/AnylineProxy/bin/x86/Debug/AnylineProxy.winmd" target-dir="x86" arch="x86" custom="true"/>
-		<framework src="src/windows/AnylineProxy/AnylineProxy/bin/x86/Debug/Anyline.winmd" target-dir="x86" arch="x86" custom="true"/>
-        <framework src="src/windows/AnylineProxy/AnylineProxy/bin/x86/Debug/Anyline.SDK.dll" target-dir="x86" arch="x86" custom="true"/>
+        <framework src="src/windows/lib/x86/Anyline.dll" target-dir="x86" arch="x86" custom="true"/>
+		<framework src="src/windows/lib/x86/Anyline.winmd" target-dir="x86" arch="x86" custom="true"/>
+        <framework src="src/windows/lib/x86/Anyline.JS.winmd" target-dir="x86" arch="x86" custom="true"/>
+        <framework src="src/windows/lib/x86/Anyline.SDK.dll" target-dir="x86" arch="x86" custom="true"/>
         
         <js-module src="src/windows/AnylineProxy.js" name="AnylineProxy">
             <merges target="" />
         </js-module>
+        <!-- <js-module src="src/windows/scanview.js" name="ScanView">
+            <merges target="anyline.sdk" />
+        </js-module> -->
+        <asset src="src/windows/js" target="js" />
+        <asset src="src/windows/css" target="css" />
     </platform>
 
 </plugin>
