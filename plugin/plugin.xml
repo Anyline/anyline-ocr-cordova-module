@@ -122,11 +122,12 @@
 
      <!-- windows -->
     <platform name="windows">
-        <framework src="src/windows/lib/x86/Anyline.dll" target-dir="x86" arch="x86" custom="true"/>
-		<framework src="src/windows/lib/x86/Anyline.winmd" target-dir="x86" arch="x86" custom="true"/>
-        <framework src="src/windows/lib/x86/Anyline.JS.winmd" target-dir="x86" arch="x86" custom="true"/>
-        <framework src="src/windows/lib/x86/Anyline.SDK.dll" target-dir="x86" arch="x86" custom="true"/>
-        
+		<!--<framework src="src/windows/lib/x86/TEST.winmd" target-dir="x86" arch="x86" custom="true"/>-->
+        <framework src="src\windows\lib\x86\Anyline.JS.winmd" target-dir="x86" arch="x86" custom="true" versions=">=10.0"/>
+        <framework src="src\windows\lib\x86\Anyline.winmd" implementation="src\windows\lib\x86\Anyline.dll" target-dir="x86" arch="x86" custom="true" versions=">=10.0"/>
+        <!--<framework src="src\windows\lib\x86\Anyline.SDK.dll" target-dir="x86" arch="x86" custom="true" versions=">=10.0"/>-->
+        <asset src="src\windows\lib\x86\Anyline.SDK.dll" target-dir="x86" arch="x86" />
+		
         <js-module src="src/windows/AnylineProxy.js" name="AnylineProxy">
             <merges target="" />
         </js-module>
