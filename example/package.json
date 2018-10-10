@@ -21,7 +21,9 @@
       "ios",
       "windows"
     ],
-    "plugins": {}
+    "plugins": {
+      "io-anyline-cordova": {}
+    }
   },
   "dependencies": {
     "cordova-ios": "latest",

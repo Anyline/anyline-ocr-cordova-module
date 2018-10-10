@@ -1,20 +1,16 @@
+
 // EVERYTHING ANYLINE <-> JS /HTML RELATED GOES HERE (FOR NOW)
 
 // TODO:
 /*
     the scanview should create the DOM elements here, right?
-
+ 
     watermark etc.
 */
-
-const scanViewController = new Anyline.JS.ScanViewController();
-const videoElement = document.getElementById("videoElement");
-const canvasElement = document.getElementById("myCanvas");
-const cutoutElement = document.getElementById("cutout");
-const backgroundElement = document.getElementById("background");
-
+const urlutil = require('cordova/urlutil');
 let camHeight = null;
 let camWidth = null;
+const scanViewController = new Anyline.JS.ScanViewController();
 
 const licensePlateConfig = {
     "captureResolution": "720",
@@ -54,112 +50,156 @@ const licensePlateConfig = {
     }
 }
 
-function createElements() {
-    console.log('Hasdasd');
-}
+module.exports = {
 
-function init(licenseKey) {
-    
-    scanViewController.setup(licenseKey, "LICENSE_PLATE", JSON.stringify(licensePlateConfig), "");
-        
-    // start scanning here
-    scanViewController.captureManager.onpreviewstarted = function (args) {
-        scanViewController.startScanning();
-        console.log("started scanning");
-    }
+    createPreview: function () {
 
-    // stop scanning here
-    scanViewController.captureManager.onpreviewstopped = function (args) {
-        scanViewController.cancelScanning();
-        console.log("stopped scanning");
-    }
+        console.log('preview');
+        // CSS
+        createCSSLink("cutout");
+        createCSSLink("default");
 
-    // stop scanning also here (if possible)
-    scanViewController.captureManager.onpreviewerror = function (args) {
-        console.log(args);
-    }
+        // Video
+        videolElement = document.createElement("video");
+        videolElement.id = "videoElement";
 
-    scanViewController.onnotifyupdatecutout = (args) => {
-        const argsString = args.toString();
-        const functionName = argsString.split('(')[0];
-        const functionArgs = argsString.split('(')[1].split(')')[0];
-        window[functionName](JSON.parse(functionArgs));
-    }
+        // Cutout
+        backgroundElement = document.createElement('div');
+        backgroundElement.id = "background";
+        coutoutElement = document.createElement('div');
+        coutoutElement.id = "coutout";
+        backgroundElement.appendChild(coutoutElement)
 
-    scanViewController.onnotifyclearvisualfeedback = (args) => {
-        const argsString = args.toString();
-        window['setCutoutBorders'](argsString);
-        window['clearVF']();
-    }
+        // Canvas
+        canvasElement = document.createElement('canvas');
+        canvasElement.id = "myCanvas";
+    },
 
-    // TODO: make calls in JS
-    scanViewController.onnotifyupdatevisualfeedback = function (args) {
-        if (args) {
+    init: function (licenseKey) {
+
+
+        scanViewController.setup(licenseKey, "LICENSE_PLATE", JSON.stringify(licensePlateConfig), "");
+
+        // start scanning here
+        scanViewController.captureManager.onpreviewstarted = function (args) {
+            scanViewController.startScanning();
+            console.log("started scanning");
+        }
+
+        // stop scanning here
+        scanViewController.captureManager.onpreviewstopped = function (args) {
+            scanViewController.cancelScanning();
+            console.log("stopped scanning");
+        }
+
+        // stop scanning also here (if possible)
+        scanViewController.captureManager.onpreviewerror = function (args) {
+            console.log(args);
+        }
+
+        scanViewController.onnotifyupdatecutout = (args) => {
             const argsString = args.toString();
             const functionName = argsString.split('(')[0];
             const functionArgs = argsString.split('(')[1].split(')')[0];
+            window[functionName](JSON.parse(functionArgs));
+        }
 
-            if (functionName === 'setCutoutBorders') {
-                window[functionName](functionArgs.replace(/['"]+/g, ''));
-            } else if (functionName === 'al_loadConfig' || functionName === 'al_polygon') {
-                window[functionName](JSON.parse(functionArgs));
+        scanViewController.onnotifyclearvisualfeedback = (args) => {
+            const argsString = args.toString();
+            window['setCutoutBorders'](argsString);
+            window['clearVF']();
+        }
+
+        // TODO: make calls in JS
+        scanViewController.onnotifyupdatevisualfeedback = function (args) {
+            if (args) {
+                const argsString = args.toString();
+                const functionName = argsString.split('(')[0];
+                const functionArgs = argsString.split('(')[1].split(')')[0];
+
+                if (functionName === 'setCutoutBorders') {
+                    window[functionName](functionArgs.replace(/['"]+/g, ''));
+                } else if (functionName === 'al_loadConfig' || functionName === 'al_polygon') {
+                    window[functionName](JSON.parse(functionArgs));
+                }
             }
         }
-    }
 
-    // handle scan result..
-    scanViewController.onnotifyscanresult = function (args) {
-        const argsString = args.toString();
-        console.log('Result', argsString);
-    };
-}
+        // handle scan result..
+        scanViewController.onnotifyscanresult = function (args) {
+            const argsString = args.toString();
+            console.log('Result', argsString);
+        };
+    },
 
-// starts the camera (only works after init is called because the config must already be loaded etc.)
-function openCamera() {
+    // starts the camera (only works after init is called because the config must already be loaded etc.)
+    openCamera: function () {
 
-    scanViewController.captureManager.initializeCamera().then(function (result) {
+        scanViewController.captureManager.initializeCamera().then(function (result) {
 
-        let props = scanViewController.captureManager.mediaCapture.videoDeviceController.getMediaStreamProperties(Windows.Media.Capture.MediaStreamType.videoPreview);
-        console.log(props.width + " x " + props.height);
-        camHeight = props.height;
-        camWidth = props.width;
-        videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
+            const videoElement = document.getElementById("videoElement");
 
-        calcVideoRelation();
-        
-        videoElement.play().then(function () {
-            //console.log("Playing.");
-            setInterval(function () {
-                updateFrames();
-            }, 100);
+            let props = scanViewController.captureManager.mediaCapture.videoDeviceController.getMediaStreamProperties(Windows.Media.Capture.MediaStreamType.videoPreview);
+            console.log(props.width + " x " + props.height);
+            camHeight = props.height;
+            camWidth = props.width;
+            videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
+
+            calcVideoRelation();
+
+            videoElement.play().then(function () {
+                //console.log("Playing.");
+                setInterval(function () {
+                    updateFrames();
+                }, 100);
+            });
         });
-    });
+
+        // Event onResize Window
+        window.addEventListener("resize", () => {
+            calcVideoRelation();
+        });
+    },
+
+    // stops the camera
+    closeCamera: function () {
+
+        if (scanViewController.captureManager.mediaCapture == null)
+            return;
+        const videoElement = document.getElementById("videoElement");
+
+        videoElement.src = null;
+
+        scanViewController.captureManager.terminateCamera().then(function (success) {
+            console.log("Stopped: " + success);
+        });
+    },
+
 }
 
-// stops the camera
-function closeCamera() {
-
-    if (scanViewController.captureManager.mediaCapture == null)
-        return;
-
-    videoElement.src = null;
-
-    scanViewController.captureManager.terminateCamera().then(function (success) {
-        console.log("Stopped: " + success);
-    });
+// Utils
+function createCSSLink(name) {
+    var styleElement = document.createElement('link');
+    styleElement.rel = "stylesheet";
+    styleElement.type = "text/css";
+    styleElement.href = urlutil.makeAbsolute("/www/css/" + name + ".css");
+    document.head.appendChild(styleElement);
 }
 
 // Calculate the Video and Webview width and height
-const calcVideoRelation = function () {  
+function calcVideoRelation() {
     const camRelation = camWidth / camHeight;
     const windowRelation = window.innerWidth / window.innerHeight;
+    const canvasElement = document.getElementById("myCanvas");
+    const backgroundElement = document.getElementById("background");
+    const videoElement = document.getElementById("videoElement");
 
     // mirror preview & VF when the camera is front-facing
     if (scanViewController.captureManager.isPreviewMirrored) {
 
         var mirror = "-moz-transform: scale(-1, 1); \
-        -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
-        transform: scale(-1, 1); filter: FlipH;";
+            -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
+            transform: scale(-1, 1); filter: FlipH;";
 
         videoElement.style.cssText = mirror;
         canvasElement.style.cssText = mirror;
@@ -216,7 +256,3 @@ const calcVideoRelation = function () {
 }
 
 
-// Event onResize Window
-window.addEventListener("resize", () => {
-    calcVideoRelation();
-});

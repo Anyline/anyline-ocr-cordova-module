@@ -18,6 +18,6 @@ setTimeout(function () {
     );
 }, 1000);
 
-setInterval(function (){
+setTimeout(function (){
     cordova.exec(console.log, console.log, "AnylineSDK", "tester");
 }, 1000);
