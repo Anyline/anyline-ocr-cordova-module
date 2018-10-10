@@ -1,4 +1,5 @@
 
+
 // EVERYTHING ANYLINE <-> JS /HTML RELATED GOES HERE (FOR NOW)
 
 // TODO:
@@ -54,29 +55,42 @@ module.exports = {
 
     createPreview: function () {
 
-        console.log('preview');
         // CSS
         createCSSLink("cutout");
         createCSSLink("default");
 
+        // Scripts
+        includeScript(urlutil.makeAbsolute("/www/js/cutout.js"), console.log);
+        includeScript(urlutil.makeAbsolute("/www/js/visualFeedback.js"), console.log);
+        includeScript(urlutil.makeAbsolute("/www/js/util.js"), console.log);
+
+        // Root
+        const anylineRoot = document.createElement('div')
+        anylineRoot.id = 'anylineRoot';
+
         // Video
-        videolElement = document.createElement("video");
-        videolElement.id = "videoElement";
+        const videoElement = document.createElement("video");
+        videoElement.id = "videoElement";
 
         // Cutout
-        backgroundElement = document.createElement('div');
+        const backgroundElement = document.createElement('div');
         backgroundElement.id = "background";
-        coutoutElement = document.createElement('div');
-        coutoutElement.id = "coutout";
-        backgroundElement.appendChild(coutoutElement)
+        const cutoutElement = document.createElement('div');
+        cutoutElement.id = "cutout";
+        backgroundElement.appendChild(cutoutElement)
 
         // Canvas
-        canvasElement = document.createElement('canvas');
+        const canvasElement = document.createElement('canvas');
         canvasElement.id = "myCanvas";
+
+        [videoElement, backgroundElement, canvasElement].forEach(function (element) {
+            anylineRoot.appendChild(element);
+        });
+        document.body.appendChild(anylineRoot);
+        disableZoomAndScroll();
     },
 
     init: function (licenseKey) {
-
 
         scanViewController.setup(licenseKey, "LICENSE_PLATE", JSON.stringify(licensePlateConfig), "");
 
@@ -98,10 +112,13 @@ module.exports = {
         }
 
         scanViewController.onnotifyupdatecutout = (args) => {
+            console.log(args.toString());
             const argsString = args.toString();
             const functionName = argsString.split('(')[0];
-            const functionArgs = argsString.split('(')[1].split(')')[0];
-            window[functionName](JSON.parse(functionArgs));
+            const functionArgs = JSON.stringify(argsString.split('(')[1].split(')')[0]);
+            //console.log(functionName);
+            //console.log(functionArgs);
+            //window[functionName](JSON.parse(functionArgs));
         }
 
         scanViewController.onnotifyclearvisualfeedback = (args) => {
@@ -134,9 +151,9 @@ module.exports = {
 
     // starts the camera (only works after init is called because the config must already be loaded etc.)
     openCamera: function () {
-
+        console.log('openCam');
         scanViewController.captureManager.initializeCamera().then(function (result) {
-
+            console.log('camOpened');
             const videoElement = document.getElementById("videoElement");
 
             let props = scanViewController.captureManager.mediaCapture.videoDeviceController.getMediaStreamProperties(Windows.Media.Capture.MediaStreamType.videoPreview);
@@ -146,12 +163,11 @@ module.exports = {
             videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
 
             calcVideoRelation();
-
             videoElement.play().then(function () {
-                //console.log("Playing.");
-                setInterval(function () {
-                    updateFrames();
-                }, 100);
+                console.log("Playing.");
+                //setInterval(function () {
+                //    updateFrames();
+                //}, 100);
             });
         });
 
@@ -183,6 +199,7 @@ function createCSSLink(name) {
     styleElement.rel = "stylesheet";
     styleElement.type = "text/css";
     styleElement.href = urlutil.makeAbsolute("/www/css/" + name + ".css");
+    console.log(styleElement.href);
     document.head.appendChild(styleElement);
 }
 
@@ -198,8 +215,8 @@ function calcVideoRelation() {
     if (scanViewController.captureManager.isPreviewMirrored) {
 
         var mirror = "-moz-transform: scale(-1, 1); \
-            -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
-            transform: scale(-1, 1); filter: FlipH;";
+                        -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
+                        transform: scale(-1, 1); filter: FlipH;";
 
         videoElement.style.cssText = mirror;
         canvasElement.style.cssText = mirror;
@@ -249,10 +266,76 @@ function calcVideoRelation() {
         }
     }
 
-    // Update Cutout from SDK
+    //// Update Cutout from SDK
     var w = window.innerWidth;
     var h = window.innerHeight;
     scanViewController.updateForSize(w, h);
 }
 
+
+function disableZoomAndScroll() {
+    document.body.classList.add('no-zoom');
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('no-scroll');
+}
+
+function enableZoomAndScroll() {
+    document.body.classList.remove('no-zoom');
+    document.body.style.overflow = '';
+    document.body.classList.remove('no-scroll');
+}
+
+function includeScript(path, cb) {
+    if (!(window.MSApp && window.MSApp.execUnsafeLocalFunction)) {
+        var node = document.createElement("script"),
+            okHandler, errHandler;
+
+        node.src = path;
+
+        okHandler = function () {
+            this.removeEventListener("load", okHandler);
+            this.removeEventListener("error", errHandler);
+            cb(path, 'success');
+        };
+        errHandler = function (error) {
+            this.removeEventListener("load", okHandler);
+            this.removeEventListener("error", errHandler);
+            cb("Error loading script: " + path);
+        };
+
+        node.addEventListener("load", okHandler);
+        node.addEventListener("error", errHandler);
+
+        document.body.appendChild(node);
+    } else {
+        readLocalFile(path, function (err, result) {
+            MSApp.execUnsafeLocalFunction(function () {
+                var node = document.createElement("script");
+                node.text = result;
+                document.body.appendChild(node);
+                cb();
+            });
+        });
+    }
+}
+
+function readLocalFile(path, cb) {
+    window.requestFileSystem(window.PERSISTENT, 0, function (fs) {
+        fs.root.getFile(path, {}, function (fileEntry) {
+            fileEntry.file(function (file) {
+                var reader = new FileReader();
+
+                reader.onloadend = function (e) {
+                    if (this.error) {
+                        cb(this.error);
+                    } else {
+                        cb(null, this.result);
+                    }
+                };
+
+                reader.readAsText(file);
+            }, cb);
+        }, cb);
+    }, cb);
+}
 

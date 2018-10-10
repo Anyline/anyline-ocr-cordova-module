@@ -125,20 +125,26 @@
         <framework src="src\windows\lib\x86\Anyline.JS.winmd" target-dir="x86" arch="x86" custom="true" versions=">=10.0"/>
         <framework src="src\windows\lib\x86\Anyline.winmd" implementation="src\windows\lib\x86\Anyline.dll" target-dir="x86" arch="x86" custom="true" versions=">=10.0"/>
         <framework src="src\windows\lib\x86\Anyline.SDK.dll" target-dir="x86" arch="x86" />
-		
+		<config-file target="package.appxmanifest" parent="/Package/Capabilities">
+            <DeviceCapability Name="webcam"/>
+        </config-file>
         <js-module src="src/windows/AnylineProxy.js" name="AnylineProxy" >
             <runs />
         </js-module>
         <js-module src="src/windows/scanview.js" name="ScanView">
             <clobbers target="anyline.sdk" />
         </js-module>
-        <js-module src="src/windows/js/cutout.js" name="Cutout" >
+        <!-- <js-module src="src/windows/js/cutout.js" name="Cutout" >
+            <merge target="anyline.sdk" />
         </js-module>
         <js-module src="src/windows/js/util.js" name="Util" >
+            <merge target="anyline.sdk" />
         </js-module>
         <js-module src="src/windows/js/visualFeedback.js" name="VisualFeedback" >
-        </js-module>
+           <merge target="anyline.sdk" />
+        </js-module> -->
         <asset src="src/windows/css" target="css" />
+         <asset src="src/windows/js" target="js" />
     </platform>
 
 </plugin>
