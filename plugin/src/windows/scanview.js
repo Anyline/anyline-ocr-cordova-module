@@ -1,10 +1,11 @@
+cordova.define("io-anyline-cordova.ScanView", function(require, exports, module) {
 /*
     Anyline ScanView
 */
 const urlutil = require('cordova/urlutil');
 let camHeight = null;
 let camWidth = null;
-let scanViewController;
+let scanViewController = null;
 
 module.exports = {
 
@@ -21,6 +22,14 @@ module.exports = {
         // start scanning here
         scanViewController.captureManager.onpreviewstarted = function (args) {
             try {
+
+                let props = scanViewController.captureManager.getResolution();
+                console.log("preview started with " + props.width + " x " + props.height);
+                camWidth = props.width;
+                camHeight = props.height;
+
+                calcVideoRelation();
+
                 scanViewController.startScanning();
             } catch (e) {
                 console.error(e);
@@ -75,7 +84,6 @@ module.exports = {
             const argsString = args.toString();
             closeCamera();
             destroyPreview();
-            scanViewController.cancelScanning();
             delete scanViewController;
             onSuccess(JSON.parse(argsString));
         };
@@ -236,13 +244,8 @@ function openCamera() {
     scanViewController.captureManager.initializeCamera().then(function (result) {
         const videoElement = document.getElementById("videoElement");
 
-        let props = scanViewController.captureManager.mediaCapture.videoDeviceController.getMediaStreamProperties(Windows.Media.Capture.MediaStreamType.videoPreview);
-        console.log(props.width + " x " + props.height);
-        camHeight = props.height;
-        camWidth = props.width;
         videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
 
-        calcVideoRelation();
         videoElement.play().then(function () {
             console.log("Playing.");
             VFRender = setInterval(function () {
@@ -341,3 +344,5 @@ function calcVideoRelation() {
     var h = window.innerHeight;
     scanViewController.updateForSize(w, h);
 }
+
+});
