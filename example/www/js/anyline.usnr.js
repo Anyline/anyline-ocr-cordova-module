@@ -103,8 +103,7 @@ anylineUSNRViewConfig: {
 },
   anylineUSNROcrConfig: {
     "scanMode": "AUTO",
-    "traineddataFiles": ["assets/USNr.any"],
-    "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    "traineddataFiles": ["assets/USNr.any"]
   },
 
   scan: function () {

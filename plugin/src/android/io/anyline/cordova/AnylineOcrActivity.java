@@ -60,6 +60,9 @@ public class AnylineOcrActivity extends AnylineBaseActivity {
             json = new JSONObject(ocrConfigString);
             AnylineOcrConfig ocrConfig = new AnylineOcrConfig(json);
 
+            if (ocrConfig.getCharWhitelist() == "") {
+                ocrConfig.setCharWhitelist(null);
+            }
 
             // set individual camera settings for this example by getting the current preferred settings and adapting them
             CameraConfig camConfig = anylineOcrScanView.getPreferredCameraConfig();
