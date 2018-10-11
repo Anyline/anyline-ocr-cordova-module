@@ -17,7 +17,3 @@ setTimeout(function () {
         "GET_SDK_VERSION"
     );
 }, 1000);
-
-setTimeout(function (){
-    cordova.exec(console.log, console.log, "AnylineSDK", "tester");
-}, 1000);

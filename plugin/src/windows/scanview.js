@@ -1,57 +1,15 @@
-// EVERYTHING ANYLINE <-> JS /HTML RELATED GOES HERE (FOR NOW)
-
-// TODO:
 /*
-    the scanview should create the DOM elements here, right?
- 
-    watermark etc.
+    Anyline ScanView
 */
 const urlutil = require('cordova/urlutil');
 let camHeight = null;
 let camWidth = null;
-const scanViewController = new Anyline.JS.ScanViewController();
-
-const licensePlateConfig = {
-    "captureResolution": "720",
-    "cutout": {
-        "style": "rect",
-        "maxWidthPercent": "100%",
-        "maxHeightPercent": "100%",
-        "alignment": "center",
-        "width": 0,
-        "ratioFromSize": {
-            "width": 2,
-            "height": 1
-        },
-        "strokeWidth": 2,
-        "cornerRadius": 10,
-        "strokeColor": "FFFFFF",
-        "outerColor": "000000",
-        "outerAlpha": 0.3,
-        "feedbackStrokeColor": "0099FF"
-    },
-    "flash": {
-        "mode": "manual",
-        "alignment": "bottom_right",
-        "imageOn": "flash_on",
-        "imageOff": "flash_off"
-    },
-    "beepOnResult": true,
-    "vibrateOnResult": true,
-    "blinkAnimationOnResult": true,
-    "cancelOnResult": false,
-    "visualFeedback": {
-        "style": "rect",
-        "strokeWidth": 2,
-        "strokeColor": "0099FF",
-        "fillColor": "330099FF",
-        "cornerRadius": 0
-    }
-}
+let scanViewController;
 
 module.exports = {
 
     init: function (licenseKey, mode, config, onSuccess, onError, ocrConfig) {
+        scanViewController = new Anyline.JS.ScanViewController();
         createPreview();
 
         if (!ocrConfig) {
@@ -195,7 +153,6 @@ function createCSSLink(name) {
     styleElement.type = "text/css";
     styleElement.id = "anylineStyle" + name;
     styleElement.href = urlutil.makeAbsolute("/www/css/" + name + ".css");
-    console.log(styleElement.href);
     document.head.appendChild(styleElement);
 }
 
