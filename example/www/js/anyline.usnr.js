@@ -102,11 +102,9 @@ anylineUSNRViewConfig: {
     
 },
   anylineUSNROcrConfig: {
-    "scanMode": "LINE",
-    "minCharHeight": 25,
-    "maxCharHeight": 65,
+    "scanMode": "AUTO",
     "traineddataFiles": ["assets/USNr.any"],
-    "minConfidence": 70
+    "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
   },
 
   scan: function () {
