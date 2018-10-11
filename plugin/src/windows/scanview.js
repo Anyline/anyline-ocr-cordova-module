@@ -1,4 +1,3 @@
-cordova.define("io-anyline-cordova.ScanView", function(require, exports, module) {
 /*
     Anyline ScanView
 */
@@ -255,9 +254,7 @@ function openCamera() {
     });
 
     // Event onResize Window
-    window.addEventListener("resize", () => {
-        calcVideoRelation();
-    });
+    window.addEventListener("resize", calcVideoRelation);
 }
 
 // stops the camera
@@ -269,7 +266,7 @@ function closeCamera() {
     videoElement.src = null;
 
     clearInterval(VFRender);
-    window.removeEventListener('resize');
+    window.removeEventListener('resize', calcVideoRelation);
 
     scanViewController.captureManager.terminateCamera().then(function (success) {
         console.log("Stopped: " + success);
@@ -344,5 +341,3 @@ function calcVideoRelation() {
     var h = window.innerHeight;
     scanViewController.updateForSize(w, h);
 }
-
-});
