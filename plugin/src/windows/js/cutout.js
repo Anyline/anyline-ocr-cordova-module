@@ -5,7 +5,7 @@ function setupCutout(config) {
     var cutoutDiv = document.getElementById('cutout');
     var backgroundDiv = document.getElementById('background');
     var canvas = document.getElementById('myCanvas');
-
+    document.body.style.overflow = 'hidden';
 
     var cornerRadius = config.cornerRadius,
         strokeWidth = config.strokeWidth,

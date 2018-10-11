@@ -1,5 +1,3 @@
-
-
 // EVERYTHING ANYLINE <-> JS /HTML RELATED GOES HERE (FOR NOW)
 
 // TODO:
@@ -53,50 +51,23 @@ const licensePlateConfig = {
 
 module.exports = {
 
-    createPreview: function () {
+    init: function (licenseKey, mode, config, onSuccess, onError, ocrConfig) {
+        createPreview();
 
-        // CSS
-        createCSSLink("cutout");
-        createCSSLink("default");
+        if (!ocrConfig) {
+            ocrConfig = "";
+        }
 
-        // Scripts
-        includeScript(urlutil.makeAbsolute("/www/js/cutout.js"), console.log);
-        includeScript(urlutil.makeAbsolute("/www/js/visualFeedback.js"), console.log);
-        includeScript(urlutil.makeAbsolute("/www/js/util.js"), console.log);
-
-        // Root
-        const anylineRoot = document.createElement('div')
-        anylineRoot.id = 'anylineRoot';
-
-        // Video
-        const videoElement = document.createElement("video");
-        videoElement.id = "videoElement";
-
-        // Cutout
-        const backgroundElement = document.createElement('div');
-        backgroundElement.id = "background";
-        const cutoutElement = document.createElement('div');
-        cutoutElement.id = "cutout";
-        backgroundElement.appendChild(cutoutElement)
-
-        // Canvas
-        const canvasElement = document.createElement('canvas');
-        canvasElement.id = "myCanvas";
-
-        [videoElement, backgroundElement, canvasElement].forEach(function (element) {
-            anylineRoot.appendChild(element);
-        });
-        document.body.appendChild(anylineRoot);
-        disableZoomAndScroll();
-    },
-
-    init: function (licenseKey) {
-
-        scanViewController.setup(licenseKey, "LICENSE_PLATE", JSON.stringify(licensePlateConfig), "");
+        scanViewController.setup(licenseKey, mode, JSON.stringify(config), "");
 
         // start scanning here
         scanViewController.captureManager.onpreviewstarted = function (args) {
-            scanViewController.startScanning();
+            try {
+                scanViewController.startScanning();
+            } catch (e) {
+                console.error(e);
+                onError(e);
+            }
             console.log("started scanning");
         }
 
@@ -115,10 +86,8 @@ module.exports = {
             console.log(args.toString());
             const argsString = args.toString();
             const functionName = argsString.split('(')[0];
-            const functionArgs = JSON.stringify(argsString.split('(')[1].split(')')[0]);
-            //console.log(functionName);
-            //console.log(functionArgs);
-            //window[functionName](JSON.parse(functionArgs));
+            const functionArgs = argsString.split('(')[1].split(')')[0];
+            window[functionName](JSON.parse(functionArgs));
         }
 
         scanViewController.onnotifyclearvisualfeedback = (args) => {
@@ -127,7 +96,6 @@ module.exports = {
             window['clearVF']();
         }
 
-        // TODO: make calls in JS
         scanViewController.onnotifyupdatevisualfeedback = function (args) {
             if (args) {
                 const argsString = args.toString();
@@ -141,56 +109,83 @@ module.exports = {
                 }
             }
         }
+        // Open the camera!!!
+        openCamera();
 
         // handle scan result..
         scanViewController.onnotifyscanresult = function (args) {
             const argsString = args.toString();
-            console.log('Result', argsString);
+            closeCamera();
+            destroyPreview();
+            scanViewController.cancelScanning();
+            delete scanViewController;
+            onSuccess(JSON.parse(argsString));
         };
     },
+}
 
-    // starts the camera (only works after init is called because the config must already be loaded etc.)
-    openCamera: function () {
-        console.log('openCam');
-        scanViewController.captureManager.initializeCamera().then(function (result) {
-            console.log('camOpened');
-            const videoElement = document.getElementById("videoElement");
+/////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////        Preview                ///////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 
-            let props = scanViewController.captureManager.mediaCapture.videoDeviceController.getMediaStreamProperties(Windows.Media.Capture.MediaStreamType.videoPreview);
-            console.log(props.width + " x " + props.height);
-            camHeight = props.height;
-            camWidth = props.width;
-            videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
+function createPreview() {
 
-            calcVideoRelation();
-            videoElement.play().then(function () {
-                console.log("Playing.");
-                //setInterval(function () {
-                //    updateFrames();
-                //}, 100);
-            });
-        });
+    // CSS
+    if (!document.getElementById('anylineStylecutout')) {
+        createCSSLink("cutout");
+    }
+    if (!document.getElementById('anylineStyledefault')) {
+        createCSSLink("default");
+    }
 
-        // Event onResize Window
-        window.addEventListener("resize", () => {
-            calcVideoRelation();
-        });
-    },
+    // Scripts
+    if (!document.getElementById("anylineCutoutScript")) {
+        includeScript(urlutil.makeAbsolute("/www/js/cutout.js"), console.log, 'anylineCutoutScript');
+    }
+    if (!document.getElementById("anylineVFScript")) {
+        includeScript(urlutil.makeAbsolute("/www/js/visualFeedback.js"), console.log, 'anylineVFScript');
+    }
+    if (!document.getElementById("anylineUtilScript")) {
+        includeScript(urlutil.makeAbsolute("/www/js/util.js"), console.log, 'anylineUtilScript');
+    }
+    // Root
+    const anylineRoot = document.createElement('div')
+    anylineRoot.id = 'anylineRoot';
 
-    // stops the camera
-    closeCamera: function () {
+    // Video
+    const videoElement = document.createElement("video");
+    videoElement.id = "videoElement";
 
-        if (scanViewController.captureManager.mediaCapture == null)
-            return;
-        const videoElement = document.getElementById("videoElement");
+    // Cutout
+    const backgroundElement = document.createElement('div');
+    backgroundElement.id = "background";
+    const cutoutElement = document.createElement('div');
+    cutoutElement.id = "cutout";
+    backgroundElement.appendChild(cutoutElement)
 
-        videoElement.src = null;
+    // Canvas
+    const canvasElement = document.createElement('canvas');
+    canvasElement.id = "myCanvas";
 
-        scanViewController.captureManager.terminateCamera().then(function (success) {
-            console.log("Stopped: " + success);
-        });
-    },
+    [videoElement, backgroundElement, canvasElement].forEach(function (element) {
+        anylineRoot.appendChild(element);
+    });
+    document.body.appendChild(anylineRoot);
+    disableZoomAndScroll();
+}
 
+function destroyPreview() {
+
+    // Root Element
+    document.getElementById("anylineRoot").remove();
+
+    // Zoom/Scroll
+    enableZoomAndScroll();
+
+    //Events
+    scanViewController.onnotifyupdatevisualfeedback = null;
+    scanViewController.onnotifyclearvisualfeedback = null;
+    scanViewController.onnotifyupdatecutout = null;
 }
 
 // Utils
@@ -198,9 +193,127 @@ function createCSSLink(name) {
     var styleElement = document.createElement('link');
     styleElement.rel = "stylesheet";
     styleElement.type = "text/css";
+    styleElement.id = "anylineStyle" + name;
     styleElement.href = urlutil.makeAbsolute("/www/css/" + name + ".css");
     console.log(styleElement.href);
     document.head.appendChild(styleElement);
+}
+
+
+function disableZoomAndScroll() {
+    document.body.classList.add('no-zoom');
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('no-scroll');
+}
+
+function enableZoomAndScroll() {
+    document.body.classList.remove('no-zoom');
+    document.body.style.overflow = '';
+    document.body.classList.remove('no-scroll');
+}
+
+function includeScript(path, cb, id) {
+    if (!(window.MSApp && window.MSApp.execUnsafeLocalFunction)) {
+        var node = document.createElement("script"),
+            okHandler, errHandler;
+
+        node.src = path;
+        node.id = id;
+
+        okHandler = function () {
+            this.removeEventListener("load", okHandler);
+            this.removeEventListener("error", errHandler);
+            cb(path, 'success');
+        };
+        errHandler = function (error) {
+            this.removeEventListener("load", okHandler);
+            this.removeEventListener("error", errHandler);
+            cb("Error loading script: " + path);
+        };
+
+        node.addEventListener("load", okHandler);
+        node.addEventListener("error", errHandler);
+
+        document.body.appendChild(node);
+    } else {
+        readLocalFile(path, function (err, result) {
+            MSApp.execUnsafeLocalFunction(function () {
+                var node = document.createElement("script");
+                node.text = result;
+                document.body.appendChild(node);
+                cb();
+            });
+        });
+    }
+}
+
+function readLocalFile(path, cb) {
+    window.requestFileSystem(window.PERSISTENT, 0, function (fs) {
+        fs.root.getFile(path, {}, function (fileEntry) {
+            fileEntry.file(function (file) {
+                var reader = new FileReader();
+
+                reader.onloadend = function (e) {
+                    if (this.error) {
+                        cb(this.error);
+                    } else {
+                        cb(null, this.result);
+                    }
+                };
+
+                reader.readAsText(file);
+            }, cb);
+        }, cb);
+    }, cb);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////        Camera                 ///////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+
+// Visual Feedback
+let VFRender = null;
+
+// starts the camera (only works after init is called because the config must already be loaded etc.)
+function openCamera() {
+    scanViewController.captureManager.initializeCamera().then(function (result) {
+        const videoElement = document.getElementById("videoElement");
+
+        let props = scanViewController.captureManager.mediaCapture.videoDeviceController.getMediaStreamProperties(Windows.Media.Capture.MediaStreamType.videoPreview);
+        console.log(props.width + " x " + props.height);
+        camHeight = props.height;
+        camWidth = props.width;
+        videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
+
+        calcVideoRelation();
+        videoElement.play().then(function () {
+            console.log("Playing.");
+            VFRender = setInterval(function () {
+                updateFrames();
+            }, 100);
+        });
+    });
+
+    // Event onResize Window
+    window.addEventListener("resize", () => {
+        calcVideoRelation();
+    });
+}
+
+// stops the camera
+function closeCamera() {
+
+    if (scanViewController.captureManager.mediaCapture == null)
+        return;
+    const videoElement = document.getElementById("videoElement");
+    videoElement.src = null;
+
+    clearInterval(VFRender);
+    window.removeEventListener('resize');
+
+    scanViewController.captureManager.terminateCamera().then(function (success) {
+        console.log("Stopped: " + success);
+    });
 }
 
 // Calculate the Video and Webview width and height
@@ -215,8 +328,8 @@ function calcVideoRelation() {
     if (scanViewController.captureManager.isPreviewMirrored) {
 
         var mirror = "-moz-transform: scale(-1, 1); \
-                        -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
-                        transform: scale(-1, 1); filter: FlipH;";
+                            -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
+                            transform: scale(-1, 1); filter: FlipH;";
 
         videoElement.style.cssText = mirror;
         canvasElement.style.cssText = mirror;
@@ -271,71 +384,3 @@ function calcVideoRelation() {
     var h = window.innerHeight;
     scanViewController.updateForSize(w, h);
 }
-
-
-function disableZoomAndScroll() {
-    document.body.classList.add('no-zoom');
-    document.body.style.overflow = 'hidden';
-    document.body.classList.add('no-scroll');
-}
-
-function enableZoomAndScroll() {
-    document.body.classList.remove('no-zoom');
-    document.body.style.overflow = '';
-    document.body.classList.remove('no-scroll');
-}
-
-function includeScript(path, cb) {
-    if (!(window.MSApp && window.MSApp.execUnsafeLocalFunction)) {
-        var node = document.createElement("script"),
-            okHandler, errHandler;
-
-        node.src = path;
-
-        okHandler = function () {
-            this.removeEventListener("load", okHandler);
-            this.removeEventListener("error", errHandler);
-            cb(path, 'success');
-        };
-        errHandler = function (error) {
-            this.removeEventListener("load", okHandler);
-            this.removeEventListener("error", errHandler);
-            cb("Error loading script: " + path);
-        };
-
-        node.addEventListener("load", okHandler);
-        node.addEventListener("error", errHandler);
-
-        document.body.appendChild(node);
-    } else {
-        readLocalFile(path, function (err, result) {
-            MSApp.execUnsafeLocalFunction(function () {
-                var node = document.createElement("script");
-                node.text = result;
-                document.body.appendChild(node);
-                cb();
-            });
-        });
-    }
-}
-
-function readLocalFile(path, cb) {
-    window.requestFileSystem(window.PERSISTENT, 0, function (fs) {
-        fs.root.getFile(path, {}, function (fileEntry) {
-            fileEntry.file(function (file) {
-                var reader = new FileReader();
-
-                reader.onloadend = function (e) {
-                    if (this.error) {
-                        cb(this.error);
-                    } else {
-                        cb(null, this.result);
-                    }
-                };
-
-                reader.readAsText(file);
-            }, cb);
-        }, cb);
-    }, cb);
-}
-
