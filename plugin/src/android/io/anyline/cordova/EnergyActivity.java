@@ -223,7 +223,7 @@ public class EnergyActivity extends AnylineBaseActivity {
             barcodeList = new ArrayList<String>();
             jsonArray = new JSONArray();
 
-            energyScanView.enableBarcodeDetection(true, new NativeBarcodeResultListener() {
+            energyScanView.enableBarcodeDetection(new NativeBarcodeResultListener() {
                 @Override
                 public void onBarcodesReceived(SparseArray<Barcode> barcodes) {
                     if (barcodes.size() > 0) {
