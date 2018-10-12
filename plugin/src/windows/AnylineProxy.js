@@ -8,11 +8,11 @@ cordova.commandProxy.add("AnylineSDK",{
         const license = configArray[0];
         const viewConfig = configArray[1];
         const ocrConfig = configArray[2];
-        window.anyline.sdk.init(license, 'LICENSE_PLATE', viewConfig, onSuccess, onError, ocrConfig);
+        window.anyline.sdk.init(license, 'ANYLINE_OCR', viewConfig, onSuccess, onError, ocrConfig);
     },
     MRZ: function (onSuccess, onError, configArray) {
         const license = configArray[0];
         const viewConfig = configArray[1];
-        window.anyline.sdk.init(license, 'LICENSE_PLATE', viewConfig, onSuccess, onError, "");
+        window.anyline.sdk.init(license, 'MRZ', viewConfig, onSuccess, onError, "");
     },
 });
