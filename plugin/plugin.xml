@@ -134,15 +134,6 @@
         <js-module src="src/windows/scanview.js" name="ScanView">
             <clobbers target="anyline.sdk" />
         </js-module>
-        <!-- <js-module src="src/windows/js/cutout.js" name="Cutout" >
-            <merge target="anyline.sdk" />
-        </js-module>
-        <js-module src="src/windows/js/util.js" name="Util" >
-            <merge target="anyline.sdk" />
-        </js-module>
-        <js-module src="src/windows/js/visualFeedback.js" name="VisualFeedback" >
-           <merge target="anyline.sdk" />
-        </js-module> -->
         <asset src="src/windows/css" target="css" />
          <asset src="src/windows/js" target="js" />
     </platform>
