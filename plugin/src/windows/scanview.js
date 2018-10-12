@@ -49,7 +49,6 @@ module.exports = {
         }
 
         scanViewController.onnotifyupdatecutout = (args) => {
-            console.log(args.toString());
             const argsString = args.toString();
             const functionName = argsString.split('(')[0];
             const functionArgs = argsString.split('(')[1].split(')')[0];
@@ -84,7 +83,9 @@ module.exports = {
             closeCamera();
             destroyPreview();
             delete scanViewController;
-            onSuccess(JSON.parse(argsString));
+            const result = JSON.parse(argsString);
+            //result.imagePath = result.imagePath.replace(/\\/g, '/');
+            onSuccess(result);
         };
     },
 }
@@ -142,6 +143,7 @@ function createPreview() {
 function destroyPreview() {
 
     // Root Element
+    document.getElementById("myCanvas").remove();
     document.getElementById("anylineRoot").remove();
 
     // Zoom/Scroll
@@ -285,8 +287,8 @@ function calcVideoRelation() {
     if (scanViewController.captureManager.isPreviewMirrored) {
 
         var mirror = "-moz-transform: scale(-1, 1); \
-                            -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
-                            transform: scale(-1, 1); filter: FlipH;";
+                                -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
+                                transform: scale(-1, 1); filter: FlipH;";
 
         videoElement.style.cssText = mirror;
         canvasElement.style.cssText = mirror;
@@ -306,12 +308,10 @@ function calcVideoRelation() {
         videoElement.style.top = 0;
         backgroundElement.style.top = 0;
         canvasElement.style.top = 0;
-        if (overflowWidth > 0 && window.innerWidth < camWidth) {
-            var ow = -(overflowWidth / 2) + 'px';
-            videoElement.style.left = ow;
-            backgroundElement.style.left = ow;
-            canvasElement.style.left = ow;
-        }
+        var ow = -(overflowWidth / 2) + 'px';
+        videoElement.style.left = ow;
+        backgroundElement.style.left = ow;
+        canvasElement.style.left = ow;
     } else {
         // Video
         videoElement.style.width = window.innerWidth + 'px';
@@ -326,14 +326,10 @@ function calcVideoRelation() {
         videoElement.style.left = 0;
         backgroundElement.style.left = 0;
         canvasElement.style.left = 0;
-        if (overflowHeight > 0 && window.innerHeight < camHeight) {
-
-            var oh = -(overflowHeight / 2) + 'px';
-
-            videoElement.style.top = oh;
-            backgroundElement.style.top = oh;
-            canvasElement.style.top = oh;
-        }
+        var oh = -(overflowHeight / 2) + 'px';
+        videoElement.style.top = oh;
+        backgroundElement.style.top = oh;
+        canvasElement.style.top = oh;
     }
 
     //// Update Cutout from SDK
