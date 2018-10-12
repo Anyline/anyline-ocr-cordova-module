@@ -125,6 +125,11 @@
         <framework src="src\windows\lib\x86\Anyline.JS.winmd" target-dir="x86" arch="x86" custom="true" versions=">=10.0"/>
         <framework src="src\windows\lib\x86\Anyline.winmd" implementation="src\windows\lib\x86\Anyline.dll" target-dir="x86" arch="x86" custom="true" versions=">=10.0"/>
         <framework src="src\windows\lib\x86\Anyline.SDK.dll" target-dir="x86" arch="x86" />
+		
+		<framework src="src\windows\lib\arm\Anyline.JS.winmd" target-dir="arm" arch="arm" custom="true" versions=">=10.0"/>
+        <framework src="src\windows\lib\arm\Anyline.winmd" implementation="src\windows\lib\arm\Anyline.dll" target-dir="arm" arch="arm" custom="true" versions=">=10.0"/>
+        <framework src="src\windows\lib\arm\Anyline.SDK.dll" target-dir="arm" arch="arm" />
+		
 		<config-file target="package.appxmanifest" parent="/Package/Capabilities">
             <DeviceCapability Name="webcam"/>
         </config-file>
