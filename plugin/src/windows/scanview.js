@@ -84,7 +84,10 @@ module.exports = {
             destroyPreview();
             delete scanViewController;
             const result = JSON.parse(argsString);
-            //result.imagePath = result.imagePath.replace(/\\/g, '/');
+            
+            // Remap for relative paths
+            result.imagePath = "ms-appdata:///temp/SavedImages/" + result.imagePath.substr(result.imagePath.lastIndexOf('\\') + 1);
+            result.fullImagePath = "ms-appdate:///temp/SavedImages/" + result.fullImagePath.substr(result.fullImagePath.lastIndexOf('\\') + 1);
             onSuccess(result);
         };
     },
