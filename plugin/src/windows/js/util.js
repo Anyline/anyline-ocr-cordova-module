@@ -1,4 +1,4 @@
-﻿const getColorFromHexString = (colorString) => {
+﻿function getColorFromHexString(colorString) {
     if(colorString){
         colorString = colorString.toString().replace('#', '');
         if (colorString && colorString.length === 6) {
