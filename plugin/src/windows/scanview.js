@@ -9,14 +9,16 @@ let scanViewController = null;
 module.exports = {
 
     init: function (licenseKey, mode, config, onSuccess, onError, ocrConfig) {
-        scanViewController = new Anyline.JS.ScanViewController();
-        createPreview();
 
-        if (!ocrConfig) {
-            ocrConfig = "";
+        scanViewController = new Anyline.JS.ScanViewController();
+
+        createPreview(config.doneButton, onError);
+
+        if (ocrConfig || ocrConfig !== '') {
+            ocrConfig = JSON.stringify(ocrConfig);
         }
 
-        scanViewController.setup(licenseKey, mode, JSON.stringify(config), "");
+        scanViewController.setup(licenseKey, mode, JSON.stringify(config), ocrConfig);
 
         // start scanning here
         scanViewController.captureManager.onpreviewstarted = function (args) {
@@ -66,16 +68,25 @@ module.exports = {
                 const argsString = args.toString();
                 const functionName = argsString.split('(')[0];
                 const functionArgs = argsString.split('(')[1].split(')')[0];
-
                 if (functionName === 'setCutoutBorders') {
                     window[functionName](functionArgs.replace(/['"]+/g, ''));
-                } else if (functionName === 'al_loadConfig' || functionName === 'al_polygon') {
+                } else {
                     window[functionName](JSON.parse(functionArgs));
                 }
             }
         }
+
         // Open the camera!!!
         openCamera();
+
+        // handle errors
+        scanViewController.onnotifyexception = function (args) {
+            const argsString = args.toString();
+            closeCamera();
+            destroyPreview();
+            delete scanViewController;
+            onError(argsString);
+        };
 
         // handle scan result..
         scanViewController.onnotifyscanresult = function (args) {
@@ -84,7 +95,12 @@ module.exports = {
             destroyPreview();
             delete scanViewController;
             const result = JSON.parse(argsString);
-            
+            if (mode === 'ANYLINE_OCR') {
+                result.text = result.result;
+            } else if (mode === 'BARCODE') {
+                result.value = result.result;
+                result.format = result.barcodeFormat;
+            }
             // Remap for relative paths
             result.imagePath = "ms-appdata:///temp/SavedImages/" + result.imagePath.substr(result.imagePath.lastIndexOf('\\') + 1);
             result.fullImagePath = "ms-appdate:///temp/SavedImages/" + result.fullImagePath.substr(result.fullImagePath.lastIndexOf('\\') + 1);
@@ -97,14 +113,14 @@ module.exports = {
 ///////////////////////        Preview                ///////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 
-function createPreview() {
+function createPreview(cancelButton, onError) {
 
     // CSS
     if (!document.getElementById('anylineStylecutout')) {
-        createCSSLink("cutout");
+        createCSSLink("anylineCutout");
     }
     if (!document.getElementById('anylineStyledefault')) {
-        createCSSLink("default");
+        createCSSLink("anylineDefault");
     }
 
     // Scripts
@@ -123,18 +139,33 @@ function createPreview() {
 
     // Video
     const videoElement = document.createElement("video");
-    videoElement.id = "videoElement";
+    videoElement.id = "anylineVideoElement";
+
+    //if (cancelButton) { TODO uncomment if config is wanted
+
+    const cancelBtnElement = document.createElement("button");
+    cancelBtnElement.id = "anylineCancelButton";
+    cancelBtnElement.innerHTML = 'CANCEL';
+    cancelBtnElement.onclick = function () {
+        closeCamera();
+        destroyPreview();
+        delete scanViewController;
+        onError('canceled');
+        return false;
+    }
+    anylineRoot.appendChild(cancelBtnElement);
+    //}
 
     // Cutout
     const backgroundElement = document.createElement('div');
-    backgroundElement.id = "background";
+    backgroundElement.id = "anylineBackground";
     const cutoutElement = document.createElement('div');
-    cutoutElement.id = "cutout";
+    cutoutElement.id = "anylineCutout";
     backgroundElement.appendChild(cutoutElement)
 
     // Canvas
     const canvasElement = document.createElement('canvas');
-    canvasElement.id = "myCanvas";
+    canvasElement.id = "anylineCanvas";
 
     [videoElement, backgroundElement, canvasElement].forEach(function (element) {
         anylineRoot.appendChild(element);
@@ -146,7 +177,7 @@ function createPreview() {
 function destroyPreview() {
 
     // Root Element
-    document.getElementById("myCanvas").remove();
+    document.getElementById("anylineCanvas").remove();
     document.getElementById("anylineRoot").remove();
 
     // Zoom/Scroll
@@ -156,6 +187,8 @@ function destroyPreview() {
     scanViewController.onnotifyupdatevisualfeedback = null;
     scanViewController.onnotifyclearvisualfeedback = null;
     scanViewController.onnotifyupdatecutout = null;
+    scanViewController.onnotifyexception = null;
+    scanViewController.onnotifyscanresult = null;
 }
 
 // Utils
@@ -246,7 +279,7 @@ let VFRender = null;
 // starts the camera (only works after init is called because the config must already be loaded etc.)
 function openCamera() {
     scanViewController.captureManager.initializeCamera().then(function (result) {
-        const videoElement = document.getElementById("videoElement");
+        const videoElement = document.getElementById("anylineVideoElement");
 
         videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
 
@@ -264,10 +297,10 @@ function openCamera() {
 
 // stops the camera
 function closeCamera() {
-
+    scanViewController.cancelScanning();
     if (scanViewController.captureManager.mediaCapture == null)
         return;
-    const videoElement = document.getElementById("videoElement");
+    const videoElement = document.getElementById("anylineVideoElement");
     videoElement.src = null;
 
     clearInterval(VFRender);
@@ -282,16 +315,16 @@ function closeCamera() {
 function calcVideoRelation() {
     const camRelation = camWidth / camHeight;
     const windowRelation = window.innerWidth / window.innerHeight;
-    const canvasElement = document.getElementById("myCanvas");
-    const backgroundElement = document.getElementById("background");
-    const videoElement = document.getElementById("videoElement");
+    const canvasElement = document.getElementById("anylineCanvas");
+    const backgroundElement = document.getElementById("anylineBackground");
+    const videoElement = document.getElementById("anylineVideoElement");
 
     // mirror preview & VF when the camera is front-facing
     if (scanViewController.captureManager.isPreviewMirrored) {
 
         var mirror = "-moz-transform: scale(-1, 1); \
-                                -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
-                                transform: scale(-1, 1); filter: FlipH;";
+                                            -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
+                                            transform: scale(-1, 1); filter: FlipH;";
 
         videoElement.style.cssText = mirror;
         canvasElement.style.cssText = mirror;
@@ -332,7 +365,7 @@ function calcVideoRelation() {
         var oh = -(overflowHeight / 2) + 'px';
         videoElement.style.top = oh;
         backgroundElement.style.top = oh;
-        canvasElement.style.top = oh;
+        //canvasElement.style.top = oh;
     }
 
     //// Update Cutout from SDK

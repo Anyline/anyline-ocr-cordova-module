@@ -15,8 +15,7 @@
 
 }
 
-#videoElement{
-    /* position: absolute; */
+#anylineVideoElement{
     position: fixed;
     z-index: -1;
     top:0;
@@ -27,7 +26,7 @@
     overflow: hidden;   
 }
 
-#myCanvas{
+#anylineCanvas{
     margin: auto;
     z-index: 99;
     top:0;
@@ -36,4 +35,18 @@
     right: 0;
     overflow: hidden;
     position: absolute;
+}
+
+
+#anylineCancelButton{
+    position: fixed;
+    z-index: 99999;
+    bottom: 60px;
+    margin: auto;
+    left: 50%;
+    font-size: 3em;
+    background-color: transparent;
+    border: 0;
+    color: white;
+    transform: translateX(-50%);
 }

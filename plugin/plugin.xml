@@ -140,7 +140,7 @@
             <clobbers target="anyline.sdk" />
         </js-module>
         <asset src="src/windows/css" target="css" />
-         <asset src="src/windows/js" target="js" />
+        <asset src="src/windows/js" target="js" />
     </platform>
 
 </plugin>

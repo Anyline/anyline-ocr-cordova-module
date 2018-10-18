@@ -1,4 +1,4 @@
-cordova.commandProxy.add("AnylineSDK",{
+cordova.commandProxy.add("AnylineSDK", {
     AUTO_ANALOG_DIGITAL_METER: function (onSuccess, onError, configArray) {
         const license = configArray[0];
         const viewConfig = configArray[1];
@@ -48,6 +48,12 @@ cordova.commandProxy.add("AnylineSDK",{
         const license = configArray[0];
         const viewConfig = configArray[1];
         const ocrConfig = configArray[2];
+
+        //// ReMap OCR Assets
+        ocrConfig.languages = ocrConfig.traineddataFiles.map(function (lang) { return "www/" + lang });
+        ocrConfig.customCmdFile = "www/" + ocrConfig.aleFile;
+        delete ocrConfig.tesseractLanguages;
+
         window.anyline.sdk.init(license, 'ANYLINE_OCR', viewConfig, onSuccess, onError, ocrConfig);
     },
     MRZ: function (onSuccess, onError, configArray) {

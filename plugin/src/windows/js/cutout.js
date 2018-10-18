@@ -2,9 +2,9 @@
 
 
 function setupCutout(config) {
-    var cutoutDiv = document.getElementById('cutout');
-    var backgroundDiv = document.getElementById('background');
-    var canvas = document.getElementById('myCanvas');
+    var cutoutDiv = document.getElementById('anylineCutout');
+    var backgroundDiv = document.getElementById('anylineBackground');
+    var canvas = document.getElementById('anylineCanvas');
     document.body.style.overflow = 'hidden';
 
     var cornerRadius = config.cornerRadius,
@@ -84,6 +84,6 @@ function setupCutout(config) {
 }
 
 function setCutoutBorders(feedbackColor) {
-    var cutoutDiv = document.getElementById('cutout');
+    var cutoutDiv = document.getElementById('anylineCutout');
     cutoutDiv.style.borderColor = getColorFromHexString(feedbackColor);
 }
