@@ -10,6 +10,15 @@ Anyline provides an easy-to-use SDK for applications to enable Optical Character
 - [**MRZ:**](https://documentation.anyline.io/toc/modules/mrz/index.html)  Reliable scanning of data from passports' and IDs' machine readable zones (MRZ)
 - [**Anyline OCR:**](https://documentation.anyline.io/toc/modules/anyline_ocr/index.html) Create a custom use case with LINE or GRID recognition
 
+###UWP
+
+UWP is currently available in a Beta phase. You can use it with <b>x86</b> and <b>ARM</b>.
+Available Modules are: 
+    - <b>Anyline OCR</b>
+    - <b>Barcode</b>
+    - <b>License Plate</b>
+    - <b>MRZ</b>
+
 ### Requirements
 
 #### Android
