@@ -12,7 +12,7 @@ Anyline provides an easy-to-use SDK for applications to enable Optical Character
 
 ###UWP
 
-UWP is currently available in a Beta phase. You can use it with <b>x86</b> and <b>ARM</b>.
+UWP is currently available in a Beta phase. You can use it with <b>x86</b>.
 Available Modules are: 
     - <b>Anyline OCR</b>
     - <b>Barcode</b>
