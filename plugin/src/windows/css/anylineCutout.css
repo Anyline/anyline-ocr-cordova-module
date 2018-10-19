@@ -1,0 +1,10 @@
+﻿#anylineBackground {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    align-content: stretch;
+}
+
+#anylineCutout {
+    position: relative;
+}

@@ -1,17 +1,18 @@
 {
   "name": "anyline-cordova-example",
-  "version": "4.0.0",
+  "version": "4.1",
   "description": "Cordova plugin for implementing Anyline",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "reinstall": "cordova platform remove android && cordova plugin remove io-anyline-cordova && cordova platform add android@latest && cordova plugin add ../plugin",
     "reinstall-ios": "cordova platform remove ios && cordova plugin remove io-anyline-cordova && cordova platform add ios@latest && cordova plugin add ../plugin",
+    "reinstall-win": "cordova platform remove windows && cordova plugin remove io-anyline-cordova && cordova platform add windows@latest && cordova plugin add ../plugin",
     "overwrite": "rm -R ../src/android/io && rm -R ../src/android/res && cp -R platforms/android/src/io ../src/android/ && cp -R platforms/android/res ../src/android",
     "overwrite-ios": "rm -R ../src/ios/io && rm -R ../src/ios/res && cp -R platforms/ios/src/io ../src/android/ && cp -R platforms/ios/res ../src/ios",
     "OandR": "npm run overwrite && npm run reinstall",
     "OandR-ios": "npm run overwrite-ios && npm run reinstall-ios",
-    "cleanUp": "cordova platform remove android && cordova platform remove ios && cordova plugin remove io-anyline-cordova"
+    "cleanUp": "cordova platform remove android && cordova platform remove ios && cordova platform remove windows && cordova plugin remove io-anyline-cordova"
   },
   "author": "Jonas Laux | Daniel Albertini",
   "license": "ISC",
