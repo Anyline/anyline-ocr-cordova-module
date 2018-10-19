@@ -11,12 +11,9 @@ module.exports = {
 
     init: function (licenseKey, mode, config, onSuccess, onError, ocrConfig) {
 
-        // Lock View to Portrait
-        Windows.Graphics.Display.DisplayInformation.autoRotationPreferences = Windows.Graphics.Display.DisplayOrientations.portrait;
-
         onErrorGlobal = onError;
-
         scanViewController = new Anyline.JS.ScanViewController();
+        scanViewController.setMemoryCollectionMode(2);
         createPreview(config.doneButton);
 
         if (ocrConfig || ocrConfig !== '') {
@@ -143,6 +140,9 @@ function createPreview(cancelButton) {
     if (!document.getElementById("anylineUtilScript")) {
         includeScript(urlutil.makeAbsolute("/www/js/util.js"), console.log, 'anylineUtilScript');
     }
+    if (!document.getElementById("anylineTorchScript")) {
+        includeScript(urlutil.makeAbsolute("/www/js/torch.js"), console.log, 'anylineTorchScript');
+    }
     // Root
     const anylineRoot = document.createElement('div')
     anylineRoot.id = 'anylineRoot';
@@ -164,6 +164,16 @@ function createPreview(cancelButton) {
     }
     anylineRoot.appendChild(cancelBtnElement);
     //}
+
+    // Torch
+    // const torchBtnElement = document.createElement("button");
+    // torchBtnElement.id = "anylineTorchButton";
+    // torchBtnElement.innerHTML = 'TORCH';
+    // torchBtnElement.onclick = function () {
+    //     enableTorch();
+    // }
+    // anylineRoot.appendChild(torchBtnElement);
+
 
     // Cutout
     const backgroundElement = document.createElement('div');

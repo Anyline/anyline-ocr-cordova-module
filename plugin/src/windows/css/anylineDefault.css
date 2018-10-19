@@ -49,3 +49,15 @@
     color: white;
     transform: translateX(-50%);
 }
+
+#anylineTorchButton{
+    position: fixed;
+    z-index: 99999;
+    bottom: 60px;
+    margin: auto;
+    left: 80%;
+    font-size: 3em;
+    background-color: transparent;
+    border: 0;
+    color: white;
+}
