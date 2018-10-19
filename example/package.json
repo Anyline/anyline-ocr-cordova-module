@@ -18,11 +18,7 @@
   "license": "ISC",
   "cordova": {
     "platforms": [],
-    "plugins": {
-      "io-anyline-cordova": {}
-    }
+    "plugins": {}
   },
-  "dependencies": {
-    "io-anyline-cordova": "file:../plugin"
-  }
+  "dependencies": {}
 }
