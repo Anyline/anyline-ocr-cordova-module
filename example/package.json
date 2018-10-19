@@ -12,22 +12,17 @@
     "overwrite-ios": "rm -R ../src/ios/io && rm -R ../src/ios/res && cp -R platforms/ios/src/io ../src/android/ && cp -R platforms/ios/res ../src/ios",
     "OandR": "npm run overwrite && npm run reinstall",
     "OandR-ios": "npm run overwrite-ios && npm run reinstall-ios",
-    "cleanUp": "cordova platform remove android && cordova platform remove ios && cordova plugin remove io-anyline-cordova"
+    "cleanUp": "cordova platform remove android && cordova platform remove ios && cordova platform remove windows && cordova plugin remove io-anyline-cordova"
   },
   "author": "Jonas Laux | Daniel Albertini",
   "license": "ISC",
   "cordova": {
-    "platforms": [
-      "ios",
-      "windows"
-    ],
+    "platforms": [],
     "plugins": {
       "io-anyline-cordova": {}
     }
   },
   "dependencies": {
-    "cordova-ios": "latest",
-    "cordova-windows": "^6.0.1",
     "io-anyline-cordova": "file:../plugin"
   }
 }

@@ -7,7 +7,5 @@
     <content src="index.html" />
     <access origin="*" />
     <icon src="www/img/ic_launcher.png" />
-    <engine name="ios" spec="latest" />
-    <engine name="windows" spec="latest" />
     <plugin name="io-anyline-cordova" spec="../plugin" />
 </widget>
