@@ -16,4 +16,4 @@ setTimeout(function () {
         "AnylineSDK",
         "GET_SDK_VERSION"
     );
-}, 1000);
+}, 2000);

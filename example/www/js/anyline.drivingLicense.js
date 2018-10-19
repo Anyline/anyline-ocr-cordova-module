@@ -50,7 +50,7 @@ anyline.drivingLicense = {
     "captureResolution":"1080",
     "cutout": {
       "style": "rect",
-      "maxWidthPercent": "100%",
+      "maxWidthPercent": "90%",
       "maxHeightPercent": "100%",
       "alignment": "center",
       "ratioFromSize" : {

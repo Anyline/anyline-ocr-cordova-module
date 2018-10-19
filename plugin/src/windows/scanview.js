@@ -1,18 +1,23 @@
 /*
     Anyline ScanView
 */
+const webUIApp = Windows.UI.WebUI.WebUIApplication;
 const urlutil = require('cordova/urlutil');
-let camHeight = null;
-let camWidth = null;
 let scanViewController = null;
+let onErrorGlobal;
+
 
 module.exports = {
 
     init: function (licenseKey, mode, config, onSuccess, onError, ocrConfig) {
 
-        scanViewController = new Anyline.JS.ScanViewController();
+        // Lock View to Portrait
+        Windows.Graphics.Display.DisplayInformation.autoRotationPreferences = Windows.Graphics.Display.DisplayOrientations.portrait;
 
-        createPreview(config.doneButton, onError);
+        onErrorGlobal = onError;
+
+        scanViewController = new Anyline.JS.ScanViewController();
+        createPreview(config.doneButton);
 
         if (ocrConfig || ocrConfig !== '') {
             ocrConfig = JSON.stringify(ocrConfig);
@@ -23,12 +28,6 @@ module.exports = {
         // start scanning here
         scanViewController.captureManager.onpreviewstarted = function (args) {
             try {
-
-                let props = scanViewController.captureManager.getResolution();
-                console.log("preview started with " + props.width + " x " + props.height);
-                camWidth = props.width;
-                camHeight = props.height;
-
                 calcVideoRelation();
 
                 scanViewController.startScanning();
@@ -41,13 +40,18 @@ module.exports = {
 
         // stop scanning here
         scanViewController.captureManager.onpreviewstopped = function (args) {
-            scanViewController.cancelScanning();
-            console.log("stopped scanning");
+            const argsString = args.toString();
+            console.error('onPreviewStopped', argsString);
         }
 
         // stop scanning also here (if possible)
         scanViewController.captureManager.onpreviewerror = function (args) {
-            console.log(args);
+            const argsString = args.toString();
+            console.error('onPreviewError', argsString);
+            closeCamera();
+            destroyPreview();
+            delete scanViewController;
+            onError(argsString);
         }
 
         scanViewController.onnotifyupdatecutout = (args) => {
@@ -61,6 +65,11 @@ module.exports = {
             const argsString = args.toString();
             window['setCutoutBorders'](argsString);
             window['clearVF']();
+        }
+
+        // Event triggered if screen is rotated
+        scanViewController.captureManager.onpreviewrotated = () => {
+            calcVideoRelation();
         }
 
         scanViewController.onnotifyupdatevisualfeedback = function (args) {
@@ -82,6 +91,7 @@ module.exports = {
         // handle errors
         scanViewController.onnotifyexception = function (args) {
             const argsString = args.toString();
+            console.error('onNotifyExcepction', argsString);
             closeCamera();
             destroyPreview();
             delete scanViewController;
@@ -113,7 +123,7 @@ module.exports = {
 ///////////////////////        Preview                ///////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 
-function createPreview(cancelButton, onError) {
+function createPreview(cancelButton) {
 
     // CSS
     if (!document.getElementById('anylineStylecutout')) {
@@ -150,8 +160,7 @@ function createPreview(cancelButton, onError) {
         closeCamera();
         destroyPreview();
         delete scanViewController;
-        onError('canceled');
-        return false;
+        onErrorGlobal('canceled');
     }
     anylineRoot.appendChild(cancelBtnElement);
     //}
@@ -293,6 +302,7 @@ function openCamera() {
 
     // Event onResize Window
     window.addEventListener("resize", calcVideoRelation);
+    webUIApp.addEventListener('enteredbackground', msVisibilityChangeHandler, false);
 }
 
 // stops the camera
@@ -301,19 +311,30 @@ function closeCamera() {
     if (scanViewController.captureManager.mediaCapture == null)
         return;
     const videoElement = document.getElementById("anylineVideoElement");
-    videoElement.src = null;
+    if (videoElement) {
+        videoElement.src = null;
+    }
 
     clearInterval(VFRender);
     window.removeEventListener('resize', calcVideoRelation);
+    webUIApp.removeEventListener('enteredbackground', msVisibilityChangeHandler);
 
     scanViewController.captureManager.terminateCamera().then(function (success) {
         console.log("Stopped: " + success);
     });
 }
 
+function msVisibilityChangeHandler() {
+    closeCamera();
+    destroyPreview();
+    delete scanViewController;
+    onErrorGlobal('canceled');
+}
+
 // Calculate the Video and Webview width and height
 function calcVideoRelation() {
-    const camRelation = camWidth / camHeight;
+    let props = scanViewController.captureManager.getResolution();
+    const camRelation = props.width / props.height;
     const windowRelation = window.innerWidth / window.innerHeight;
     const canvasElement = document.getElementById("anylineCanvas");
     const backgroundElement = document.getElementById("anylineBackground");
@@ -323,8 +344,8 @@ function calcVideoRelation() {
     if (scanViewController.captureManager.isPreviewMirrored) {
 
         var mirror = "-moz-transform: scale(-1, 1); \
-                                            -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
-                                            transform: scale(-1, 1); filter: FlipH;";
+                                -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
+                                transform: scale(-1, 1); filter: FlipH;";
 
         videoElement.style.cssText = mirror;
         canvasElement.style.cssText = mirror;
@@ -363,7 +384,7 @@ function calcVideoRelation() {
         backgroundElement.style.left = 0;
         canvasElement.style.left = 0;
         var oh = -(overflowHeight / 2) + 'px';
-        videoElement.style.top = oh;
+        //videoElement.style.top = oh;
         backgroundElement.style.top = oh;
         //canvasElement.style.top = oh;
     }

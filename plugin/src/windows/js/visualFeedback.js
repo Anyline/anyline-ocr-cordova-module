@@ -508,7 +508,7 @@ function drawLine(config, x1, y1, x2, y2, stroke, color) {
 }
 
 function clearContext() {
-    if (typeof document.getElementById('anylineCanvas').getContext("2d") == 'undefined') {
+    if (!document.getElementById('anylineCanvas') && typeof document.getElementById('anylineCanvas').getContext("2d") == 'undefined') {
         return;
     }
     var context = document.getElementById('anylineCanvas').getContext("2d");

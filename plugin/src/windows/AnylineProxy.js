@@ -50,10 +50,13 @@ cordova.commandProxy.add("AnylineSDK", {
         const ocrConfig = configArray[2];
 
         //// ReMap OCR Assets
-        ocrConfig.languages = ocrConfig.traineddataFiles.map(function (lang) { return "www/" + lang });
-        ocrConfig.customCmdFile = "www/" + ocrConfig.aleFile;
-        delete ocrConfig.tesseractLanguages;
-
+        if (ocrConfig.traineddataFiles) {
+            ocrConfig.languages = ocrConfig.traineddataFiles.map(function (lang) { return "www/" + lang });
+            delete ocrConfig.tesseractLanguages;
+        }
+        if (ocrConfig.aleFile) {
+            ocrConfig.customCmdFile = "www/" + ocrConfig.aleFile;
+        }
         window.anyline.sdk.init(license, 'ANYLINE_OCR', viewConfig, onSuccess, onError, ocrConfig);
     },
     MRZ: function (onSuccess, onError, configArray) {
