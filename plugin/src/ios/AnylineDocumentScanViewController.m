@@ -62,17 +62,11 @@
                         fullImage:(UIImage *)fullFrame
                   documentCorners:(ALSquare *)corners {
     
-    NSMutableDictionary *dictResult = [NSMutableDictionary dictionaryWithCapacity:4];
-    
-    CGFloat dividedCompRate = (CGFloat) self.quality/100;
-    NSString *imagePath = [self saveImageToFileSystem:transformedImage compressionQuality:dividedCompRate];
-    NSString *fullImagePath = [self saveImageToFileSystem:fullFrame compressionQuality:dividedCompRate];
-    NSString *outline = [self stringForOutline:corners];
-
-
-    [dictResult setValue:imagePath forKey:@"imagePath"];
-    [dictResult setValue:fullImagePath forKey:@"fullImagePath"];
-    [dictResult setValue:outline forKey:@"outline"];
+    NSDictionary *dictResult = [ALPluginHelper dictionaryForTransformedImage:transformedImage
+                                                                   fullFrame:fullFrame
+                                                                     quality:self.quality
+                                                            detectedBarcodes:nil
+                                                                     outline:corners];
     
 
     [self.delegate anylineBaseScanViewController:self didScan:dictResult continueScanning:!self.moduleView.cancelOnResult];

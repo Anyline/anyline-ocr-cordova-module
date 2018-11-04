@@ -25,6 +25,10 @@
         <!-- Anyline SDK Cordova Plugin Source for iOS -->
         <header-file src="src/ios/AnylineSDKPlugin.h"/>
         <source-file src="src/ios/AnylineSDKPlugin.m"/>
+        <header-file src="src/ios/ALPluginHelper.h"/>
+        <source-file src="src/ios/ALPluginHelper.m"/>
+        <header-file src="src/ios/ALPluginScanViewController.h"/>
+        <source-file src="src/ios/ALPluginScanViewController.m"/>
         <header-file src="src/ios/AnylineBaseScanViewController.h"/>
         <source-file src="src/ios/AnylineBaseScanViewController.m"/>
         <header-file src="src/ios/AnylineBarcodeScanViewController.h"/>

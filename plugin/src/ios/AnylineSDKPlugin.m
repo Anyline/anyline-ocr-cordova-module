@@ -8,17 +8,19 @@
 #import "AnylineDocumentScanViewController.h"
 #import "AnylineLicensePlateViewController.h"
 #import "ALCordovaUIConfiguration.h"
+#import "ALPluginScanViewController.h"
 
 
-@interface AnylineSDKPlugin()<AnylineBaseScanViewControllerDelegate>
+@interface AnylineSDKPlugin()<AnylineBaseScanViewControllerDelegate,ALPluginScanViewControllerDelegate>
 
-@property (nonatomic, strong) AnylineBaseScanViewController *baseScanViewController;
+@property (nonatomic, strong) UIViewController *baseScanViewController;
 @property (nonatomic, strong) ALUIConfiguration *conf;
 
 @property (nonatomic, strong) NSString *callbackId;
-@property (nonatomic, strong) NSString *appKey;
+@property (nonatomic, strong) NSString *licensekey;
 
 @property (nonatomic, strong) ALCordovaUIConfiguration *cordovaUIConf;
+@property (nonatomic, strong) NSDictionary *anyline4Config;
 
 @end
 
@@ -106,7 +108,7 @@
     [self processCommandArguments:command];
 
     [self.commandDelegate runInBackground:^{
-        AnylineMRZScanViewController *mrzVC = [[AnylineMRZScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf  delegate:self];
+        AnylineMRZScanViewController *mrzVC = [[AnylineMRZScanViewController alloc] initWithKey:self.licensekey configuration:self.conf cordovaConfiguration:self.cordovaUIConf  delegate:self];
 
         NSDictionary *options = [command.arguments objectAtIndex:1];
         if ([options valueForKey:@"mrz"]) {
@@ -145,7 +147,7 @@
     [self processCommandArguments:command];
 
     [self.commandDelegate runInBackground:^{
-        self.baseScanViewController = [[AnylineBarcodeScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
+        self.baseScanViewController = [[AnylineBarcodeScanViewController alloc] initWithKey:self.licensekey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
 
         [self presentViewController];
     }];
@@ -155,7 +157,7 @@
     [self processCommandArguments:command];
 
     [self.commandDelegate runInBackground:^{
-        AnylineOCRScanViewController *ocrScanViewController = [[AnylineOCRScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
+        AnylineOCRScanViewController *ocrScanViewController = [[AnylineOCRScanViewController alloc] initWithKey:self.licensekey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
 
         ocrScanViewController.ocrConfDict = [command.arguments objectAtIndex:2];
 
@@ -165,11 +167,40 @@
     }];
 }
 
+- (void)scan:(CDVInvokedUrlCommand *)command {
+    [self processCommandArgumentsAnyline4:command];
+    
+    [self.commandDelegate runInBackground:^{
+        ALPluginScanViewController *pluginScanViewController =
+        [[ALPluginScanViewController alloc] initWithLicensekey:self.licensekey
+                                                 configuration:self.anyline4Config
+                                          cordovaConfiguration:self.cordovaUIConf
+                                                      delegate:self];
+        
+        if([self.anyline4Config valueForKey:@"quality"]){
+            pluginScanViewController.quality = [[self.anyline4Config valueForKey:@"quality"] integerValue];
+        }
+        
+        if([self.anyline4Config valueForKey:@"cropAndTransformErrorMessage"]){
+            NSString *str = [self.anyline4Config objectForKey:@"cropAndTransformErrorMessage"];
+            pluginScanViewController.cropAndTransformErrorMessage = str;
+        }
+        
+        if ([self.anyline4Config valueForKey:@"nativeBarcodeEnabled"]) {
+            pluginScanViewController.nativeBarcodeEnabled = [[self.anyline4Config objectForKey:@"nativeBarcodeEnabled"] boolValue];
+        }
+        
+        self.baseScanViewController = pluginScanViewController;
+        
+        [self presentViewController];
+    }];
+}
+
 - (void)DOCUMENT:(CDVInvokedUrlCommand *)command {
     [self processCommandArguments:command];
 
     [self.commandDelegate runInBackground:^{
-        AnylineDocumentScanViewController *docScanViewController = [[AnylineDocumentScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
+        AnylineDocumentScanViewController *docScanViewController = [[AnylineDocumentScanViewController alloc] initWithKey:self.licensekey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
 
         NSDictionary *options = [command.arguments objectAtIndex:1];
         if ([options valueForKey:@"document"]) {
@@ -220,7 +251,7 @@
     [self processCommandArguments:command];
 
     [self.commandDelegate runInBackground:^{
-        AnylineLicensePlateViewController *licensePlateViewController = [[AnylineLicensePlateViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
+        AnylineLicensePlateViewController *licensePlateViewController = [[AnylineLicensePlateViewController alloc] initWithKey:self.licensekey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
 
         self.baseScanViewController = licensePlateViewController;
 
@@ -262,7 +293,7 @@
     }
 
     [self.commandDelegate runInBackground:^{
-        AnylineEnergyScanViewController *energyScanViewController = [[AnylineEnergyScanViewController alloc] initWithKey:self.appKey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
+        AnylineEnergyScanViewController *energyScanViewController = [[AnylineEnergyScanViewController alloc] initWithKey:self.licensekey configuration:self.conf cordovaConfiguration:self.cordovaUIConf delegate:self];
 
 
         // Set SerialNumber Configuration
@@ -293,12 +324,21 @@
 
 - (void)processCommandArguments:(CDVInvokedUrlCommand *)command {
     self.callbackId = command.callbackId;
-    self.appKey = [command.arguments objectAtIndex:0];
+    self.licensekey = [command.arguments objectAtIndex:0];
 
     NSDictionary *options = [command.arguments objectAtIndex:1];
     self.conf = [[ALUIConfiguration alloc] initWithDictionary:options];
     
     self.cordovaUIConf = [[ALCordovaUIConfiguration alloc] initWithDictionary:options];
+}
+
+- (void)processCommandArgumentsAnyline4:(CDVInvokedUrlCommand *)command {
+    self.callbackId = command.callbackId;
+    self.licensekey = [command.arguments objectAtIndex:0];
+    
+    self.anyline4Config = [command.arguments objectAtIndex:1];
+    
+    self.cordovaUIConf = [[ALCordovaUIConfiguration alloc] initWithDictionary:self.anyline4Config];
 }
 
 - (void)presentViewController {
@@ -314,7 +354,31 @@
 
 #pragma mark - AnylineBaseScanViewControllerDelegate
 
-- (void)anylineBaseScanViewController:(AnylineBaseScanViewController *)baseScanViewController didScan:(id)scanResult continueScanning:(BOOL)continueScanning {
+- (void)anylineBaseScanViewController:(AnylineBaseScanViewController *)baseScanViewController
+                              didScan:(id)scanResult
+                     continueScanning:(BOOL)continueScanning {
+    [self handleDidScanWithResult:scanResult continueScanning:continueScanning];
+}
+
+-(void)anylineBaseScanViewController:(AnylineBaseScanViewController *)baseScanViewController didStopScanning:(id)sender {
+    [self handleDidStopScanning];
+}
+
+#pragma mark - ALPluginScanViewControllerDelegate
+
+- (void)pluginScanViewController:(nonnull ALPluginScanViewController *)pluginScanViewController
+                         didScan:(nonnull id)scanResult
+                continueScanning:(BOOL)continueScanning {
+    [self handleDidScanWithResult:scanResult continueScanning:continueScanning];
+}
+
+- (void)pluginScanViewController:(nonnull ALPluginScanViewController *)pluginScanViewController
+                 didStopScanning:(nonnull id)sender {
+    [self handleDidStopScanning];
+}
+
+- (void)handleDidScanWithResult:(id)scanResult
+               continueScanning:(BOOL)continueScanning {
     CDVPluginResult *pluginResult;
     if ([scanResult isKindOfClass:[NSString class]]) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:scanResult];
@@ -327,8 +391,7 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
 }
 
-
--(void)anylineBaseScanViewController:(AnylineBaseScanViewController *)baseScanViewController didStopScanning:(id)sender {
+- (void)handleDidStopScanning {
     CDVPluginResult *pluginResult;
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Canceled"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];

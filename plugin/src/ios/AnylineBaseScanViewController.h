@@ -3,6 +3,7 @@
 
 #import <Anyline/Anyline.h>
 #import "ALCordovaUIConfiguration.h"
+#import "ALPluginHelper.h"
 
 @protocol AnylineBaseScanViewControllerDelegate;
 

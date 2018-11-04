@@ -62,22 +62,16 @@
 
 - (void)anylineLicensePlateModuleView:(AnylineLicensePlateModuleView *)anylineLicensePlateModuleView
                         didFindResult:(ALLicensePlateResult *)scanResult {
-        // Get the imagepath from result
-        NSString *imagePath = [self saveImageToFileSystem:scanResult.image];
+    NSDictionary *dictResult = [ALPluginHelper dictionaryForLicensePlateResult:scanResult
+                                                              detectedBarcodes:nil
+                                                                       outline:anylineLicensePlateModuleView.licensePlateScanViewPlugin.outline
+                                                                       quality:100];
 
-        //Create the result Object
-        NSMutableDictionary *dictResult = [NSMutableDictionary dictionaryWithCapacity:5];
-        [dictResult setValue:scanResult.country forKey:@"country"];
-        [dictResult setValue:scanResult.result forKey:@"licensePlate"];
-        [dictResult setValue:[self stringForOutline:anylineLicensePlateModuleView.licensePlateScanViewPlugin.outline] forKey:@"outline"];
-        [dictResult setValue:@(scanResult.confidence) forKey:@"confidence"];
-        [dictResult setValue:imagePath forKey:@"imagePath"];
+    [self.delegate anylineBaseScanViewController:self didScan:dictResult continueScanning:!self.moduleView.cancelOnResult];
 
-        [self.delegate anylineBaseScanViewController:self didScan:dictResult continueScanning:!self.moduleView.cancelOnResult];
-
-        if (self.moduleView.cancelOnResult) {
-            [self dismissViewControllerAnimated:YES completion:NULL];
-        }
+    if (self.moduleView.cancelOnResult) {
+        [self dismissViewControllerAnimated:YES completion:NULL];
+    }
 }
 
 - (void)anylineModuleView:(AnylineAbstractModuleView *)anylineModuleView
