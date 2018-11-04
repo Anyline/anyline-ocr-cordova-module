@@ -52,6 +52,65 @@ anyline.mrz = {
 
     alert(error);
   },
+    
+anylineMRZViewConfig: {
+    "camera" : {
+        "captureResolution" : "1080p"
+    },
+    "flash" : {
+        "mode" : "manual",
+        "alignment" : "bottom_left"
+    },
+    "viewPlugin" : {
+        "plugin" : {
+            "id" : "IDPlugin_ID",
+            "idPlugin" : {
+                "mrzConfig" : {
+                    "strictMode" : false,
+                    "cropAndTransformID" : false
+                }
+            }
+        },
+        "cutoutConfig" : {
+            "style": "rect",
+            "maxWidthPercent": "90%",
+            "maxHeightPercent": "90%",
+            "alignment": "center",
+            "ratioFromSize": {
+                "width": 125,
+                "height": 85
+            },
+            "strokeWidth": 2,
+            "cornerRadius": 4,
+            "strokeColor": "FFFFFF",
+            "outerColor": "000000",
+            "outerAlpha": 0.3,
+            "cropPadding": {
+                "x": 0,
+                "y": 0
+            },
+            "cropOffset": {
+                "x": 0,
+                "y": 0
+            },
+            "feedbackStrokeColor": "0099FF",
+            "offset": {
+                "x": 0,
+                "y": 30
+            }
+        },
+        "scanFeedback" : {
+            "style": "rect",
+            "strokeColor": "0099FF",
+            "strokeWidth": 2,
+            "blinkOnResult": true,
+            "beepOnResult": true,
+            "vibrateOnResult": true
+        },
+        "cancelOnResult" : true
+    },
+    "cropAndTransformErrorMessage": "Edges are not detected"
+},
 
   scan: function () {
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
@@ -64,57 +123,10 @@ anyline.mrz = {
     // and http://documentation.anyline.io/#mrz for module details
 
     var licenseKey = "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImlvc0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsICJtYWpvclZlcnNpb24iOiAiNCIsICJtYXhEYXlzTm90UmVwb3J0ZWQiOiAwLCAicGluZ1JlcG9ydGluZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiwgIldpbmRvd3MiIF0sICJzY29wZSI6IFsgIkFMTCIgXSwgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogZmFsc2UsICJzaG93V2F0ZXJtYXJrIjogdHJ1ZSwgInRvbGVyYW5jZURheXMiOiA5MCwgInZhbGlkIjogIjIwMjAtMTAtMjAiLCAid2luZG93c0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0gfQpJYzVHSWVpdTBUYmJoQjE4T2poeHllY1g3Q296NWorR1o2azVtanJTUUtxVFYrYWRKODk4MHA2QmZ6UVdoK1ZyCnF6UE4yTURuWnFNSTcwUk13NHFGV0VJek16Z1J2ZUg3ZzhYM3RHbUcyUTdzazh0Y1Q1Zk5aditNNmpTeXQ1WG4KM010Ry9yZnp2YVRiQlo5VnV5ektsVXdDakZVdVhqd2xIVm1QZS9hc2ljMkVpbWhMU2JTam9PN0Nzajhjd0ZNVApKZDJTTnBncmdQYUtSUzZrdlNFMEJJU3ltVnAvb1VIcm9xUGtlUWRxa2owQk1ZU3Z4VmM4L0p3L1RvdHNvY1IvCmxIWi93VG03UldGRDVhZXpIdjJDcjNVN1ArSW1KdkNUb3JCc3VUa3B6VzF1dHIvQlNkckI3dVJNVFpPOW84UjcKS1ZhaUlmNmZYSExQanBkbkpmQXdqUT09Cg==";
+      
+      
 
     //mode "scanMRZ" is also still available (for backwards compatibility)
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "MRZ", [licenseKey, {
-      "captureResolution": "1080",
-      "flash": {
-        "mode": "manual",
-        "alignment": "bottom_left",
-        "imageOn": "ic_flash_on",
-        "imageOff": "ic_flash_off"
-      },
-      "cutout": {
-        "style": "rect",
-        "maxWidthPercent": "90%",
-        "maxHeightPercent": "90%",
-        "alignment": "center",
-        "ratioFromSize": {
-          "width": 125,
-          "height": 85
-        },
-        "strokeWidth": 2,
-        "cornerRadius": 4,
-        "strokeColor": "FFFFFF",
-        "outerColor": "000000",
-        "outerAlpha": 0.3,
-        "cropPadding": {
-          "x": 0,
-          "y": 0
-        },
-        "cropOffset": {
-          "x": 0,
-          "y": 0
-        },
-        "feedbackStrokeColor": "0099FF",
-        "offset": {
-          "x": 0,
-          "y": 30
-        }
-      },
-      "beepOnResult": true,
-      "vibrateOnResult": true,
-      "blinkAnimationOnResult": true,
-      "cancelOnResult": true,
-      "visualFeedback": {
-        "style": "rect",
-        "strokeColor": "0099FF",
-        "strokeWidth": 2
-      },
-      "mrz": {
-        "cropAndTransformID": false,
-        "cropAndTransformErrorMessage": "Edges are not detected"
-      }
-    }]);
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [licenseKey, this.anylineMRZViewConfig]);
   }
 };
