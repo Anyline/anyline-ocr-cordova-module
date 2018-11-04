@@ -50,49 +50,54 @@ anyline.container = {
 
     
 anylineContainerViewConfig: {
-  "captureResolution":"1080p",
-  "cutout" : {
-      "style": "rect",
-      "width": 720,
-      "maxWidthPercent": "80%",
-      "alignment": "top_half",
-      "ratioFromSize" : {
-          "width": 720,
-          "height": 144
-      },
-      "strokeWidth": 2,
-      "strokeColor": "FFFFFF",
-      "cornerRadius": 4,
-      "outerColor": "000000",
-      "outerAlpha": 0.5,
-      "feedbackStrokeColor": "0099FF",
-      "offset": {
-          "x": 0,
-          "y": -15
-      }
-  },
-  "flash" : {
-      "mode": "manual",
-      "alignment": "bottom_right",
-      "imageOn": "flash_on",
-      "imageOff": "flash_off"
-  },
-  "visualFeedback": {
-      "style": "CONTOUR_RECT",
-      "strokeColor": "0099FF",
-      "fillColor": "220099FF"
-  },
-  "beepOnResult": true,
-  "vibrateOnResult": true,
-  "blinkAnimationOnResult": true,
-  "cancelOnResult": true,
-  "reportingEnabled": true
+    "camera" : {
+        "captureResolution" : "1080p"
+    },
+    "flash" : {
+        "mode" : "manual",
+        "alignment" : "bottom_right"
+    },
+    "viewPlugin" : {
+        "plugin" : {
+            "id" : "Container_ID",
+            "ocrPlugin" : {
+                "scanMode": "AUTO",
+                "languages": ["www/assets/USNr.any"],
+                "aleFile": "assets/container_scanner.ale"
+            }
+        },
+        "cutoutConfig" : {
+            "style": "rect",
+            "width": 720,
+            "maxWidthPercent": "80%",
+            "alignment": "top_half",
+            "ratioFromSize" : {
+                "width": 720,
+                "height": 144
+            },
+            "strokeWidth": 2,
+            "strokeColor": "FFFFFF",
+            "cornerRadius": 4,
+            "outerColor": "000000",
+            "outerAlpha": 0.5,
+            "feedbackStrokeColor": "0099FF",
+            "offset": {
+                "x": 0,
+                "y": -15
+            }
+        },
+        "scanFeedback" : {
+            "style": "CONTOUR_RECT",
+            "strokeColor": "0099FF",
+            "fillColor": "220099FF",
+            "blinkOnResult": true,
+            "beepOnResult": true,
+            "vibrateOnResult": true
+        },
+        "cancelOnResult" : true
+    }
 },
-  anylineContainerOcrConfig: {
-    "scanMode": "AUTO",
-    "traineddataFiles": ["assets/USNr.any"],
-    "aleFile": "assets/container_scanner.ale",
-  },
+  
 
 
   scan: function () {
@@ -106,10 +111,9 @@ anylineContainerViewConfig: {
     }
     localStorage.setItem("hasStartedAnyline", true);
 
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "ANYLINE_OCR", [
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
       this.licenseKey,
-      this.anylineContainerViewConfig,
-      this.anylineContainerOcrConfig
+      this.anylineContainerViewConfig
     ]);
   }
 };
