@@ -32,13 +32,11 @@
         <p>
             <input type="button" value="Analog/Digital Meter" onclick="anyline.energy.scan('AUTO_ANALOG_DIGITAL_METER')" />
             <br/>
-            <input type="button" value="Analog Meter" onclick="anyline.energy.scanElectricDigitalSegment('ANALOG_METER')" />
+            <input type="button" value="Analog Meter" onclick="anyline.energy.scanElectricAnalogSegment()" />
             <br/>
-            <input type="button" value="Digital Meter" onclick="anyline.energy.scanElectricDigitalSegment('DIGITAL_METER')" />
+            <input type="button" value="Digital Meter" onclick="anyline.energy.scanElectricDigitalSegment()" />
             <br/>
-            <input type="button" value="Serial Number" onclick="anyline.energy.scanSerialNumber()" />
-            <br/>
-            <input type="button" value="Heat Meter" onclick="anyline.energy.scanHeatMeterWithSegment()" />
+            <input type="button" value="Serial Number" onclick="anyline.energy.scan('SERIAL_NUMBER')" />
             <br/>
             <input type="button" value="Dial Meter ALPHA" onclick="anyline.energy.scan('DIAL_METER')" />
             <br/>
