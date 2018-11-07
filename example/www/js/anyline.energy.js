@@ -72,7 +72,7 @@ serialNumber: {
     
 meterViewPluginConfig: {
     "camera" : {
-        "captureResolution" : "1080p"
+        "captureResolution" : "720p"
     },
     "flash" : {
         "mode": "manual",

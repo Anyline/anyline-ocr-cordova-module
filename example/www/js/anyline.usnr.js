@@ -50,46 +50,53 @@ anyline.usnr = {
 
     
 anylineUSNRViewConfig: {
-    "captureResolution": "1080p",
-    "cutout": {
-        "style": "rect",
-        "maxWidthPercent": "70%",
-        "alignment": "top_half",
-        "ratioFromSize": {
-            "width": 62,
-            "height": 9
-        },
-        "outerColor": "000000",
-        "outerAlpha": 0.3,
-        "strokeWidth": 1,
-        "strokeColor": "FFFFFF",
-        "cornerRadius": 2,
-        "feedbackStrokeColor": "0099FF",
-    },
-    "flash": {
+    "camera": {
+        "captureResolution": "720"
+      },
+      "flash": {
         "mode": "manual",
-        "alignment": "bottom_left",
-        "imageOn": "ic_flash_on",
-        "imageOff": "ic_flash_off"
-    },
-    "visualFeedback": {
-        "animation": "traverse_multi",
-        "animationDuration" : 250,
-        "style": "contour_rect",
-        "strokeWidth": 2,
-        "strokeColor": "0099FF"
-    },
-    "beepOnResult": false,
-    "vibrateOnResult": true,
-    "blinkAnimationOnResult": true,
-    "cancelOnResult": true,
-    "reportingEnabled": true
+        "alignment": "bottom_right"
+      },
+      "viewPlugin":{
+        "plugin":{
+                  "id":"USNR_ID",
+                  "ocrPlugin":{
+                      "scanMode": "AUTO",
+                      "languages": ["www/assets/USNr.any"]
+                  }
+        },
+        "cutoutConfig": {
+          "style": "rect",
+          "width": 720,
+          "alignment": "top_half",
+          "maxWidthPercent": "80%",
+          "ratioFromSize": {
+            "width": 720,
+            "height": 144
+          },
+          "strokeWidth": 2,
+          "strokeColor": "FFFFFF",
+          "cornerRadius": 4,
+          "outerColor": "000000",
+          "outerAlpha": 0.5,
+          "feedbackStrokeColor": "0099FF",
+          "offset": {
+            "x": 0,
+            "y": -15
+          }
+        },
+        "scanFeedback": {
+          "style": "CONTOUR_RECT",
+          "strokeColor": "0099FF",
+          "fillColor": "220099FF",
+          "beepOnResult": true,
+          "vibrateOnResult": true,
+          "blinkAnimationOnResult": true
+        },
+        "cancelOnResult": true
+      }
     
 },
-  anylineUSNROcrConfig: {
-    "scanMode": "AUTO",
-    "traineddataFiles": ["assets/USNr.any"]
-  },
 
   scan: function () {
     // start the Anyline OCR scanning
@@ -102,10 +109,9 @@ anylineUSNRViewConfig: {
     }
     localStorage.setItem("hasStartedAnyline", true);
 
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "ANYLINE_OCR", [
-      this.licenseKey,
-      this.anylineUSNRViewConfig,
-      this.anylineUSNROcrConfig
-    ]);
-  }
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
+          this.licenseKey,
+          this.anylineUSNRViewConfig
+        ]);
+      }
 };
