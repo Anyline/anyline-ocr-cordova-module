@@ -197,6 +197,8 @@
     roundedView.textLabel.text = @"";
     roundedView.alpha = 0;
     [viewController.view addSubview:roundedView];
+    
+    return roundedView;
 }
 
 + (void)updateButtonPosition:(UIButton *)button
