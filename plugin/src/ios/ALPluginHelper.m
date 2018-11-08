@@ -167,7 +167,7 @@
     NSInteger index = [config.segmentModes indexOfObject:[ALPluginHelper stringFromScanMode:scanMode]];
     [segment setSelectedSegmentIndex:index];
     
-    [segment addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventValueChanged];
+    [segment addTarget:viewController action:@selector(segmentChange:) forControlEvents:UIControlEventValueChanged];
     
     [viewController.view addSubview:segment];
     

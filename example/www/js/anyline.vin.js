@@ -47,50 +47,58 @@ anyline.vin = {
   },
 
   licenseKey: "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImlvc0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsICJtYWpvclZlcnNpb24iOiAiNCIsICJtYXhEYXlzTm90UmVwb3J0ZWQiOiAwLCAicGluZ1JlcG9ydGluZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiwgIldpbmRvd3MiIF0sICJzY29wZSI6IFsgIkFMTCIgXSwgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogZmFsc2UsICJzaG93V2F0ZXJtYXJrIjogdHJ1ZSwgInRvbGVyYW5jZURheXMiOiA5MCwgInZhbGlkIjogIjIwMjAtMTAtMjAiLCAid2luZG93c0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0gfQpJYzVHSWVpdTBUYmJoQjE4T2poeHllY1g3Q296NWorR1o2azVtanJTUUtxVFYrYWRKODk4MHA2QmZ6UVdoK1ZyCnF6UE4yTURuWnFNSTcwUk13NHFGV0VJek16Z1J2ZUg3ZzhYM3RHbUcyUTdzazh0Y1Q1Zk5aditNNmpTeXQ1WG4KM010Ry9yZnp2YVRiQlo5VnV5ektsVXdDakZVdVhqd2xIVm1QZS9hc2ljMkVpbWhMU2JTam9PN0Nzajhjd0ZNVApKZDJTTnBncmdQYUtSUzZrdlNFMEJJU3ltVnAvb1VIcm9xUGtlUWRxa2owQk1ZU3Z4VmM4L0p3L1RvdHNvY1IvCmxIWi93VG03UldGRDVhZXpIdjJDcjNVN1ArSW1KdkNUb3JCc3VUa3B6VzF1dHIvQlNkckI3dVJNVFpPOW84UjcKS1ZhaUlmNmZYSExQanBkbkpmQXdqUT09Cg==",
-  anylineVINViewConfig: {
-    "captureResolution": "1080p",
-    "cutout": {
-      "style": "rect",
-      "maxWidthPercent": "70%",
-      "alignment": "top_half",
-      "ratioFromSize": {
-        "width": 62,
-        "height": 9
-      },
-      "outerColor": "000000",
-      "outerAlpha": 0.3,
-      "strokeWidth": 1,
-      "strokeColor": "FFFFFF",
-      "cornerRadius": 2,
-      "feedbackStrokeColor": "0099FF",
-    },
-    "flash": {
-      "mode": "manual",
-      "alignment": "bottom_left",
-      "imageOn": "ic_flash_on",
-      "imageOff": "ic_flash_off"
-    },
-    "visualFeedback": {
-      "animation": "traverse_multi",
-      "animationDuration": 250,
-      "style": "contour_rect",
-      "strokeWidth": 2,
-      "strokeColor": "0099FF"
-    },
-    "beepOnResult": false,
-    "vibrateOnResult": true,
-    "blinkAnimationOnResult": true,
-    "cancelOnResult": true,
-    "reportingEnabled": true
 
-  },
-  anylineVINOcrConfig: {
-    "scanMode": "AUTO",
-    "tesseractLanguages": ["vin"],
-    "aleFile": "assets/vin.ale",
-    "traineddataFiles": ["assets/vin.any"],
-    "minConfidence": 0
-  },
+  anylineVINViewConfig: {
+    "camera": {
+        "captureResolution": "720"
+      },
+      "flash": {
+        "mode": "manual",
+        "alignment": "bottom_left",
+        "imageOn": "ic_flash_on",
+        "imageOff": "ic_flash_off"
+      },
+      "viewPlugin":{
+        "plugin":{
+                  "id":"USNR_ID",
+                  "ocrPlugin":{
+                      "scanMode": "AUTO",
+                      "languages": ["www/assets/USNr.any"]
+                      "aleFile": "assets/vin.ale",
+                      "minConfidence": 0
+                  }
+        },
+        "cutoutConfig": {
+          "style": "rect",
+          "width": 720,
+          "alignment": "top_half",
+          "maxWidthPercent": "70%",
+          "ratioFromSize": {
+            "width": 62,
+            "height": 9
+          },
+          "strokeWidth": 1
+          "strokeColor": "FFFFFF",
+          "cornerRadius": 2,
+          "outerColor": "000000",
+          "outerAlpha": 0.3,
+          "feedbackStrokeColor": "0099FF"
+        },
+        "scanFeedback": {
+            "animation": "traverse_multi",
+            "animationDuration": 250,
+            "style": "contour_rect",
+            "strokeWidth": 2,
+            "strokeColor": "0099FF",
+            "beepOnResult": false,
+            "vibrateOnResult": true,
+            "blinkAnimationOnResult": true,
+            "cancelOnResult": true,
+            "reportingEnabled": true
+        },
+        "cancelOnResult": true
+      }
+},
 
   scan: function () {
     // start the Anyline OCR scanning
@@ -103,10 +111,9 @@ anyline.vin = {
     }
     localStorage.setItem("hasStartedAnyline", true);
 
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "ANYLINE_OCR", [
-      this.licenseKey,
-      this.anylineVINViewConfig,
-      this.anylineVINOcrConfig
-    ]);
-  }
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
+          this.licenseKey,
+          this.anylineUSNRViewConfig
+        ]);
+      }
 };
