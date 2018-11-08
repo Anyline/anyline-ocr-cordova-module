@@ -142,7 +142,7 @@
 #pragma mark - UI helpers
 
 + (UILabel *)createLabelForView:(UIView *)view {
-
+    
     UILabel *scannedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, 44)];
     scannedLabel.center = CGPointMake(view.center.x, view.center.y+166);
     
@@ -189,6 +189,14 @@
                                   onView:viewController.view];
     
     return doneButton;
+}
+
++ (ALRoundedView *)createRoundedViewForViewController:(UIViewController *)viewController {
+    ALRoundedView *roundedView = [[ALRoundedView alloc] initWithFrame:CGRectMake(20, 115, viewController.view.bounds.size.width - 40, 30)];
+    roundedView.fillColor = [UIColor colorWithRed:98.0/255.0 green:39.0/255.0 blue:232.0/255.0 alpha:0.6];
+    roundedView.textLabel.text = @"";
+    roundedView.alpha = 0;
+    [viewController.view addSubview:roundedView];
 }
 
 + (void)updateButtonPosition:(UIButton *)button
@@ -410,8 +418,8 @@
                                                                        @"categories",
                                                                        @"drivingLicenseString"]] mutableCopy];
         
-//        NSString *issuingDateObject = [formatter stringFromDate:[scanResult.result issuingDateObject]];
-//        [dictResult setValue:issuingDateObject forKey:@"issuingDateObject"];
+        //        NSString *issuingDateObject = [formatter stringFromDate:[scanResult.result issuingDateObject]];
+        //        [dictResult setValue:issuingDateObject forKey:@"issuingDateObject"];
     }
     NSString *dayOfBirthDateObject = [formatter stringFromDate:[scanResult.result dayOfBirthDateObject]];
     [dictResult setValue:dayOfBirthDateObject forKey:@"dayOfBirthObject"];
