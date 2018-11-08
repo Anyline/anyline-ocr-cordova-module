@@ -115,7 +115,7 @@ anyline.ocr = {
           "languages" : ["www/assets/anyline_capitals.traineddata"],
           "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
           "validationRegex": "[A-Z0-9]{8}$",
-  	"minConfidence": 85
+          "minConfidence": 85
 
         }
       },

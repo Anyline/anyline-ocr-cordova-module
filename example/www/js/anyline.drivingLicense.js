@@ -38,7 +38,7 @@ anyline.drivingLicense = {
     if (error === "Canceled") {
       //do stuff when user has canceled
       // this can be used as an indicator that the user finished the scanning if canclelOnResult is false
-      console.log("AnylineOcr scanning canceled");
+      console.log("Anyline ID scanning canceled");
       return;
     }
 
@@ -46,50 +46,51 @@ anyline.drivingLicense = {
   },
 
   licenseKey: "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImlvc0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsICJtYWpvclZlcnNpb24iOiAiNCIsICJtYXhEYXlzTm90UmVwb3J0ZWQiOiAwLCAicGluZ1JlcG9ydGluZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiwgIldpbmRvd3MiIF0sICJzY29wZSI6IFsgIkFMTCIgXSwgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogZmFsc2UsICJzaG93V2F0ZXJtYXJrIjogdHJ1ZSwgInRvbGVyYW5jZURheXMiOiA5MCwgInZhbGlkIjogIjIwMjAtMTAtMjAiLCAid2luZG93c0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0gfQpJYzVHSWVpdTBUYmJoQjE4T2poeHllY1g3Q296NWorR1o2azVtanJTUUtxVFYrYWRKODk4MHA2QmZ6UVdoK1ZyCnF6UE4yTURuWnFNSTcwUk13NHFGV0VJek16Z1J2ZUg3ZzhYM3RHbUcyUTdzazh0Y1Q1Zk5aditNNmpTeXQ1WG4KM010Ry9yZnp2YVRiQlo5VnV5ektsVXdDakZVdVhqd2xIVm1QZS9hc2ljMkVpbWhMU2JTam9PN0Nzajhjd0ZNVApKZDJTTnBncmdQYUtSUzZrdlNFMEJJU3ltVnAvb1VIcm9xUGtlUWRxa2owQk1ZU3Z4VmM4L0p3L1RvdHNvY1IvCmxIWi93VG03UldGRDVhZXpIdjJDcjNVN1ArSW1KdkNUb3JCc3VUa3B6VzF1dHIvQlNkckI3dVJNVFpPOW84UjcKS1ZhaUlmNmZYSExQanBkbkpmQXdqUT09Cg==",
-  drivingLicenseConfig: {
-    "captureResolution":"1080",
-    "cutout": {
-      "style": "rect",
-      "maxWidthPercent": "90%",
-      "maxHeightPercent": "100%",
-      "alignment": "center",
-      "ratioFromSize" : {
-        "width": 125,
-        "height": 85
-      },
-      "strokeWidth": 2,
-      "cornerRadius": 4,
-      "strokeColor": "FFFFFF",
-      "outerColor": "000000",
-      "outerAlpha": 0.3,
-      "feedbackStrokeColor": "0099FF"
+  
+drivingLicenseConfig: {
+    "camera" : {
+        "captureResolution" : "1080p"
     },
-    "flash": {
-      "mode": "manual",
-      "alignment": "bottom_right",
-      "imageOn": "flash_on",
-      "imageOff": "flash_off"
+    "flash" : {
+        "mode" : "manual",
+        "alignment" : "bottom_left"
     },
-    "beepOnResult": true,
-    "vibrateOnResult": true,
-    "blinkAnimationOnResult": true,
-    "cancelOnResult": true,
-    "visualFeedback": {
-      "style": "CONTOUR_POINT",
-      "strokeColor": "0099FF",
-      "strokeWidth": 2
+    "viewPlugin" : {
+        "plugin" : {
+            "id" : "IDPlugin_ID",
+            "idPlugin" : {
+                "drivingLicenseConfig" : {
+                    "scanMode" : "AUTO"
+                }
+            }
+        },
+        "cutoutConfig" : {
+            "style": "rect",
+            "maxWidthPercent": "100%",
+            "maxHeightPercent": "100%",
+            "alignment": "center",
+            "ratioFromSize": {
+                "width": 134,
+                "height": 85
+            },
+            "strokeWidth": 2,
+            "cornerRadius": 4,
+            "strokeColor": "FFFFFF",
+            "outerAlpha": 0.3,
+            "outerColor": "000000",
+            "feedbackStrokeColor": "0099FF"
+        },
+        "scanFeedback" : {
+            "style": "CONTOUR_POINT",
+            "strokeColor": "0099FF",
+            "strokeWidth": 2,
+            "blinkOnResult": true,
+            "beepOnResult": true,
+            "vibrateOnResult": true
+        },
+        "cancelOnResult" : true
     }
-  },
-
-  anylineDrivingLicenseOcrConfig: {
-    "scanMode": "AUTO",
-    "tesseractLanguages": ["eng_no_dict", "deu"],
-    "aleFile": "assets/anyline_austrian_driving_license.ale",
-    "traineddataFiles": ["assets/eng_no_dict.traineddata", "assets/deu.traineddata"],
-    "minConfidence": 0
-  },
-
-
+},
 
   scan: function () {
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
@@ -97,11 +98,14 @@ anyline.drivingLicense = {
     }
 
     localStorage.setItem("hasStartedAnyline", true);
-    // start the Anyline OCR scanning
+    // start the Anyline ID scanning
     // pass the success and error callbacks, as well as the license key and the config to the plugin
     // see http://documentation.anyline.io/#anyline-config for config details
-    // and http://documentation.anyline.io/#anylineOcrModule for module details
+    // see https://documentation.anyline.com/toc/products/id/driving_license/index.html for plugin details
 
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "ANYLINE_OCR", [this.licenseKey, this.drivingLicenseConfig, this.anylineDrivingLicenseOcrConfig]);
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
+                                                                     this.licenseKey,
+                                                                     this.drivingLicenseConfig
+                                                                     ]);
   },
 };
