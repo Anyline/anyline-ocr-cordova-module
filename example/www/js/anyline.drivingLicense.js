@@ -21,10 +21,9 @@ anyline.drivingLicense = {
       div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
 
-    diiv.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
+    div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
             "<b>Name:</b> " + result.surNames + " " + result.givenNames + "<br/>" +
             "<br/><b>Number:</b> " + result.nr + " <b>" +
-            "<br/>Country:</b> " + result.nationalityCountryCode + "[" + result.issuingCountryCode + "]" +
             "<br/><b>Date of Birth:</b> " + result.dateOfBirth +
             "<br/><b>Expiration Date:</b> " + result.expirationDate + "<br/>" +
             "<br/><b>Issuing Date:</b> " + result.issuingDate + "<br/>" +
