@@ -170,7 +170,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             case "SERIAL_NUMBER":
                 scanEnergy(args, EnergyScanView.ScanMode.SERIAL_NUMBER);
                 break;
-             case "DOT_MATRIX_METER":
+            case "DOT_MATRIX_METER":
                 scanEnergy(args, EnergyScanView.ScanMode.DOT_MATRIX_METER);
                 break;
             case "ANYLINE_OCR":
@@ -184,6 +184,10 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
                 break;
             case "scan":
                 scanAnyline4(args);
+                break;
+            case "scanDocument":
+                scanAnyline4Document(args);
+                break;
             default:
                 this.mCallbackContext.error(Resources.getString(cordova.getActivity(),
                         "error_unkown_scan_mode") + " " + action);
@@ -198,8 +202,30 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
         scan(EnergyActivity.class, REQUEST_METER, data, modeEnum.name());
     }
 
-    private void scanAnyline4(JSONArray data) {
-        scan(Anyline4Activity.class, REQUEST_ANYLINE_4, data);
+    private void scanAnyline4(JSONArray data){
+        if(data.length() > 1){
+            JSONObject jsonConfig = null;
+            try {
+                jsonConfig = data.getJSONObject(1);
+                if(jsonConfig.has("viewPlugin")){
+                    JSONObject viewPlugin = jsonConfig.getJSONObject("viewPlugin");
+                    if(viewPlugin != null && viewPlugin.has("plugin")){
+                        JSONObject plugin = viewPlugin.getJSONObject("plugin");
+                        if(plugin != null && plugin.has("documentPlugin")){
+                            scan(Document4Activity.class, REQUEST_ANYLINE_4, data);
+                        }else{
+                            scan(Anyline4Activity.class, REQUEST_ANYLINE_4, data);
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void scanAnyline4Document(JSONArray data) {
+        scan(Document4Activity.class, REQUEST_ANYLINE_4, data);
     }
 
     private void scan(Class<?> activityToStart, int requestCode, JSONArray data, String mode) {

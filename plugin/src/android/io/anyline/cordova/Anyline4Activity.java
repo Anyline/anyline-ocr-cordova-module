@@ -50,7 +50,7 @@ import io.anyline.view.ScanViewPlugin;
 
 
 public class Anyline4Activity extends AnylineBaseActivity {
-	private static final String TAG = AnylineOcrActivity.class.getSimpleName();
+	private static final String TAG = Anyline4Activity.class.getSimpleName();
 
 	private ScanView anylineScanView;
 	private ScanViewPlugin scanViewPlugin;
@@ -293,9 +293,6 @@ public class Anyline4Activity extends AnylineBaseActivity {
 							setResult(scanViewPlugin, jsonResult);
 						}
 					});
-				} else if(scanViewPlugin instanceof DocumentScanViewPlugin){
-					Intent intent = new Intent(getApplicationContext(), Document4Activity.class);
-					getApplicationContext().startActivity(intent);
 				}
 			}
 

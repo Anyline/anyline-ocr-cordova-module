@@ -107,8 +107,6 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
 		// this is optional (if not set a RuntimeException will be thrown if an error occurs)
 		documentScanView.setCameraOpenListener(this);
 		// the view can be configured via a json file in the assets, and this config is set here
-		// (alternatively it can be configured via xml, see the Energy Example for that)
-		JSONObject jsonObject;
 
 		try {
 			final JSONObject json = new JSONObject(configJson);
@@ -271,7 +269,7 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
 				// is called when the outline of the document is detected. return true if the outline is consumed by
 				// the implementation here, false if the outline should be drawn by the DocumentScanView
 				lastOutline = rect; // saving the outline for the animations
-				return false;
+				return true;
 			}
 
 			@Override
