@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import at.nineyards.anyline.AnylineController;
+import at.nineyards.anyline.models.AnylineImage;
 import at.nineyards.anyline.modules.energy.EnergyScanView;
 
 
@@ -50,6 +51,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     public static final int DIGITAL_METER = 6;
     public static final int ANALOG_METER = 7;
     public static final int REQUEST_LICENSE_PLATE = 8;
+    public static final int REQUEST_ANYLINE_4 = 9;
 
     private CallbackContext mCallbackContext;
     private String mAction;
@@ -180,6 +182,8 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             case "DRIVING_LICENSE":
                 scan(AnylineOcrActivity.class, REQUEST_ANYLINE_OCR, args);
                 break;
+            case "scan":
+                scanAnyline4(args);
             default:
                 this.mCallbackContext.error(Resources.getString(cordova.getActivity(),
                         "error_unkown_scan_mode") + " " + action);
@@ -194,6 +198,10 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
         scan(EnergyActivity.class, REQUEST_METER, data, modeEnum.name());
     }
 
+    private void scanAnyline4(JSONArray data) {
+        scan(Anyline4Activity.class, REQUEST_ANYLINE_4, data);
+    }
+
     private void scan(Class<?> activityToStart, int requestCode, JSONArray data, String mode) {
         Intent intent = new Intent(cordova.getActivity(), activityToStart);
 
@@ -202,6 +210,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             if (data.length() > 1) {
                 intent.putExtra(EXTRA_CONFIG_JSON, data.getString(1));
             }
+            //this is just for old plugins
             if (data.length() > 2) {
 
                 //currently we only support native barcode for energy, which will not have a OCR config, so this will be enough

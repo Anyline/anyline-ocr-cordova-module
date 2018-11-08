@@ -140,9 +140,9 @@ anyline.energy = {
         "beepOnResult": true,
         "vibrateOnResult": true
       },
-      "cancelOnResult": true,
-      "nativeBarcodeEnabled": true
+      "cancelOnResult": true
     },
+    "nativeBarcodeEnabled": true,
     "segment": {
       "titles": ["Analog", "Digital"],
       "modes": ["ANALOG_METER", "DIGITAL_METER"],
