@@ -211,6 +211,21 @@ public class Anyline4Activity extends AnylineBaseActivity {
 					if (json.has("reportingEnabled")) {
 						scanViewPlugin.setReportingEnabled(json.optBoolean("reportingEnabled", true));
 					}
+					if(json.has("viewPlugin")){
+						JSONObject viewPlugin = json.getJSONObject("viewPlugin");
+						if(viewPlugin != null && viewPlugin.has("plugin")){
+							JSONObject plugin = viewPlugin.getJSONObject("plugin");
+							if(plugin != null && plugin.has("ocrScanPlugin")){
+								JSONObject ocrScanPlugin = plugin.getJSONObject("ocrScanPlugin");{
+									if(ocrScanPlugin != null && ocrScanPlugin.has("aleFile")){
+										String customCmdFile = json.getString("aleFile");
+										json.remove("aleFile");
+										json.put("customCmdFile", customCmdFile);
+									}
+								}
+							}
+						}
+					}
 
 					scanViewPlugin.addScanResultListener(new ScanResultListener<OcrScanResult>() {
 						@Override

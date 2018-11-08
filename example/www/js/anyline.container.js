@@ -63,7 +63,7 @@ anylineContainerViewConfig: {
             "ocrPlugin" : {
                 "scanMode": "AUTO",
                 "languages": ["www/assets/USNr.any"],
-                "customCmdFile": "www/assets/container_scanner.ale"
+                "aleFile": "www/assets/container_scanner.ale"
             }
         },
         "cutoutConfig" : {

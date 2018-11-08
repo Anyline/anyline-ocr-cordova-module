@@ -185,9 +185,6 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             case "scan":
                 scanAnyline4(args);
                 break;
-            case "scanDocument":
-                scanAnyline4Document(args);
-                break;
             default:
                 this.mCallbackContext.error(Resources.getString(cordova.getActivity(),
                         "error_unkown_scan_mode") + " " + action);

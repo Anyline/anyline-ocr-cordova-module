@@ -55,17 +55,14 @@ anyline.vin = {
       "flash": {
         "mode": "manual",
         "alignment": "bottom_left",
-        "imageOn": "ic_flash_on",
-        "imageOff": "ic_flash_off"
       },
       "viewPlugin":{
         "plugin":{
                   "id":"USNR_ID",
                   "ocrPlugin":{
                       "scanMode": "AUTO",
-                      "languages": ["www/assets/USNr.any"]
-                      "aleFile": "assets/vin.ale",
-                      "minConfidence": 0
+                      "languages": ["www/assets/USNr.any"],
+                      "aleFile": "www/assets/vin.ale"
                   }
         },
         "cutoutConfig": {
@@ -77,7 +74,7 @@ anyline.vin = {
             "width": 62,
             "height": 9
           },
-          "strokeWidth": 1
+          "strokeWidth": 1,
           "strokeColor": "FFFFFF",
           "cornerRadius": 2,
           "outerColor": "000000",
@@ -93,11 +90,12 @@ anyline.vin = {
             "beepOnResult": false,
             "vibrateOnResult": true,
             "blinkAnimationOnResult": true,
-            "cancelOnResult": true,
-            "reportingEnabled": true
+            "cancelOnResult": true
         },
-        "cancelOnResult": true
+        "cancelOnResult": true,
+	    "reportingEnabled": true
       }
+
 },
 
   scan: function () {
@@ -113,7 +111,7 @@ anyline.vin = {
 
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
           this.licenseKey,
-          this.anylineUSNRViewConfig
+          this.anylineVINViewConfig
         ]);
-      }
+    }
 };
