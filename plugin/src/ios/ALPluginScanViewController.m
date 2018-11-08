@@ -10,7 +10,8 @@
 #import "ALPluginHelper.h"
 #import "ALRoundedView.h"
 
-@interface ALPluginScanViewController ()<ALIDPluginDelegate,ALOCRScanPluginDelegate,ALBarcodeScanPluginDelegate,ALMeterScanPluginDelegate,ALLicensePlateScanPluginDelegate,ALDocumentScanPluginDelegate,AnylineNativeBarcodeDelegate, ALInfoDelegate, ALScanViewPluginDelegate>
+
+@interface ALPluginScanViewController ()<ALIDPluginDelegate,ALOCRScanPluginDelegate,ALBarcodeScanPluginDelegate,ALMeterScanPluginDelegate,ALLicensePlateScanPluginDelegate,ALDocumentScanPluginDelegate,AnylineNativeBarcodeDelegate, ALInfoDelegate, ALScanViewPluginDelegate, ALDocumentInfoDelegate>
 
 @property (nonatomic, strong) NSDictionary *anylineConfig;
 @property (nonatomic, weak) id<ALPluginScanViewControllerDelegate> delegate;
@@ -77,6 +78,13 @@
                                                                config:self.cordovaConfig
                                                              scanMode:((ALMeterScanViewPlugin *)self.scanView.scanViewPlugin).meterScanPlugin.scanMode];
         [(ALMeterScanViewPlugin *)self.scanView.scanViewPlugin addScanViewPluginDelegate:self];
+    }
+    
+    if ([self.scanView.scanViewPlugin isKindOfClass:[ALDocumentScanViewPlugin class]]) {
+        [(ALDocumentScanViewPlugin *)self.scanView.scanViewPlugin addScanViewPluginDelegate:self];
+        [((ALDocumentScanViewPlugin *)self.scanView.scanViewPlugin).documentScanPlugin addInfoDelegate:self];
+        
+        self.roundedView = [ALPluginHelper createRoundedViewForViewController:self];
     }
     
     if (self.nativeBarcodeEnabled) {
@@ -233,25 +241,17 @@
 /*
  This method receives errors that occured during the scan.
  */
-- (void)anylineDocumentModuleView:(AnylineDocumentModuleView *)anylineDocumentModuleView
-  reportsPictureProcessingFailure:(ALDocumentError)error {
+-(void)anylineDocumentScanPlugin:(ALDocumentScanPlugin *)anylineDocumentScanPlugin reportsPictureProcessingFailure:(ALDocumentError)error {
     [self showUserLabel:error];
 }
 
 /*
  This method receives errors that occured during the scan.
  */
-- (void)anylineDocumentModuleView:(AnylineDocumentModuleView *)anylineDocumentModuleView
-  reportsPreviewProcessingFailure:(ALDocumentError)error {
+
+-(void)anylineDocumentScanPlugin:(ALDocumentScanPlugin *)anylineDocumentScanPlugin reportsPreviewProcessingFailure:(ALDocumentError)error {
     [self showUserLabel:error];
 }
-
-- (BOOL)anylineDocumentModuleView:(AnylineDocumentModuleView *)anylineDocumentModuleView
-          documentOutlineDetected:(ALSquare *)outline
-                      anglesValid:(BOOL)anglesValid {
-    return NO;
-}
-
 - (void)anylineScanPlugin:(ALAbstractScanPlugin * _Nonnull)anylineScanPlugin
                runSkipped:(ALRunSkippedReason * _Nonnull)runSkippedReason {
     
@@ -285,7 +285,9 @@
 }
 
 - (void)handleResult:(NSDictionary *)dictResult result:(ALScanResult *)scanResult {
-    self.scannedLabel.text = (NSString *)scanResult.result;
+    if ([scanResult.result isKindOfClass:[NSString class]]) {
+        self.scannedLabel.text = (NSString *)scanResult.result;
+    }
     
     [self.delegate pluginScanViewController:self
                                     didScan:dictResult
