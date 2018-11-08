@@ -10,7 +10,7 @@
 #import "ALPluginHelper.h"
 #import "ALRoundedView.h"
 
-@interface ALPluginScanViewController ()<ALIDPluginDelegate,ALOCRScanPluginDelegate,ALBarcodeScanPluginDelegate,ALMeterScanPluginDelegate,ALLicensePlateScanPluginDelegate,ALDocumentScanPluginDelegate,AnylineNativeBarcodeDelegate, ALInfoDelegate>
+@interface ALPluginScanViewController ()<ALIDPluginDelegate,ALOCRScanPluginDelegate,ALBarcodeScanPluginDelegate,ALMeterScanPluginDelegate,ALLicensePlateScanPluginDelegate,ALDocumentScanPluginDelegate,AnylineNativeBarcodeDelegate, ALInfoDelegate, ALScanViewPluginDelegate>
 
 @property (nonatomic, strong) NSDictionary *anylineConfig;
 @property (nonatomic, weak) id<ALPluginScanViewControllerDelegate> delegate;
@@ -76,6 +76,7 @@
         self.segment = [ALPluginHelper createSegmentForViewController:self
                                                                config:self.cordovaConfig
                                                              scanMode:((ALMeterScanViewPlugin *)self.scanView.scanViewPlugin).meterScanPlugin.scanMode];
+        [(ALMeterScanViewPlugin *)self.scanView.scanViewPlugin addScanViewPluginDelegate:self];
     }
     
     if (self.nativeBarcodeEnabled) {
@@ -108,18 +109,20 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not start scanning" message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
     }
+    
+    
+    
+    if(self.cordovaConfig.segmentModes){
+        self.segment.frame = CGRectMake(self.scanView.scanViewPlugin.cutoutRect.origin.x + self.cordovaConfig.segmentXPositionOffset/2,
+                                        self.scanView.scanViewPlugin.cutoutRect.origin.y + self.cordovaConfig.segmentYPositionOffset/2,
+                                        self.view.frame.size.width - 2*(self.scanView.scanViewPlugin.cutoutRect.origin.x + self.cordovaConfig.segmentXPositionOffset/2),
+                                        self.segment.frame.size.height);
+        self.segment.hidden = NO;
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [UIApplication sharedApplication].idleTimerDisabled = NO;
-}
-
-- (IBAction)segmentChange:(id)sender {
-    NSString *modeString = self.cordovaConfig.segmentModes[((UISegmentedControl *)sender).selectedSegmentIndex];
-    ALScanMode scanMode = [ALPluginHelper scanModeFromString:modeString];
-    if ([self.scanView.scanViewPlugin isKindOfClass:[ALMeterScanViewPlugin class]]) {
-        [((ALMeterScanViewPlugin *)self.scanView.scanViewPlugin).meterScanPlugin setScanMode:scanMode error:nil];
-    }
 }
 
 - (BOOL)shouldAutorotate {
@@ -139,6 +142,24 @@
     }];
 }
 
+- (void)segmentChange:(id)sender {
+    NSString *modeString = self.cordovaConfig.segmentModes[((UISegmentedControl *)sender).selectedSegmentIndex];
+    ALScanMode scanMode = [ALPluginHelper scanModeFromString:modeString];
+    if ([self.scanView.scanViewPlugin isKindOfClass:[ALMeterScanViewPlugin class]]) {
+        [((ALMeterScanViewPlugin *)self.scanView.scanViewPlugin).meterScanPlugin setScanMode:scanMode error:nil];
+    }
+}
+
+#pragma mark - ALScanViewPluginDelegate Delegate Methods
+
+//Update the position and size of the segment control, after cutout has been updated.
+- (void)anylineScanViewPlugin:(ALAbstractScanViewPlugin *)anylineScanViewPlugin updatedCutout:(CGRect)cutoutRect {
+    //Handle Cutout related positions here. E.g. Warning Views/Icons
+    //SegmentControl is not modified here, because it will move with cutout changes (=> origin.y changes from analog to digital meter scanMode)
+}
+
+
+#pragma mark - Anyline Result Delegate Methods
 - (void)anylineIDScanPlugin:(ALIDScanPlugin * _Nonnull)anylineIDScanPlugin
               didFindResult:(ALIDResult * _Nonnull)scanResult {
     NSDictionary *dictResult = [ALPluginHelper dictionaryForIDResult:scanResult
