@@ -61,8 +61,8 @@ anyline.vin = {
                   "id":"USNR_ID",
                   "ocrPlugin":{
                       "scanMode": "AUTO",
-                      "languages": ["www/assets/USNr.any"],
-                      "aleFile": "www/assets/vin.ale"
+                      "languages": ["assets/USNr.any"],
+                      "aleFile": "assets/vin.ale"
                   }
         },
         "cutoutConfig": {

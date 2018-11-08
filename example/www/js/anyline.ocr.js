@@ -60,7 +60,7 @@ anyline.ocr = {
         "id" : "OCR_IBAN",
         "ocrPlugin" : {
           "scanMode" : "LINE",
-          "languages" : ["www/assets/USNr.any"],
+          "languages" : ["assets/USNr.any"],
           "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
           "minCharHeight" : 25,
           "maxCharHeight" : 65,
@@ -112,7 +112,7 @@ anyline.ocr = {
         "id" : "OCR_VC",
         "ocrPlugin" : {
           "scanMode" : "AUTO",
-          "languages" : ["www/assets/anyline_capitals.traineddata"],
+          "languages" : ["assets/anyline_capitals.traineddata"],
           "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
           "validationRegex": "[A-Z0-9]{8}$",
           "minConfidence": 85

@@ -17,8 +17,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import at.nineyards.anyline.AnylineDebugListener;
 import at.nineyards.anyline.camera.CameraController;
@@ -27,6 +29,7 @@ import at.nineyards.anyline.core.Vector_Contour;
 import at.nineyards.anyline.core.exception_error_codes;
 import at.nineyards.anyline.modules.barcode.NativeBarcodeResultListener;
 import at.nineyards.anyline.modules.mrz.Identification;
+import at.nineyards.anyline.util.AssetUtil;
 import io.anyline.plugin.ScanResult;
 import io.anyline.plugin.ScanResultListener;
 import io.anyline.plugin.barcode.BarcodeScanResult;
@@ -127,7 +130,9 @@ public class Anyline4Activity extends AnylineBaseActivity {
 
 	private void initAnyline(){
 		try {
-			final JSONObject json = new JSONObject(configJson);
+			JSONObject json = new JSONObject(configJson);
+			//this is used for the OCR Plugin, when languages has to be added
+			json = AnylinePluginHelper.setLanguages(json,getApplicationContext());
 			anylineScanView.setScanConfig(json, licenseKey);
 			if(anylineScanView != null) {
 				scanViewPlugin = anylineScanView.getScanViewPlugin();
@@ -210,21 +215,6 @@ public class Anyline4Activity extends AnylineBaseActivity {
 				} else if (scanViewPlugin instanceof OcrScanViewPlugin) {
 					if (json.has("reportingEnabled")) {
 						scanViewPlugin.setReportingEnabled(json.optBoolean("reportingEnabled", true));
-					}
-					if(json.has("viewPlugin")){
-						JSONObject viewPlugin = json.getJSONObject("viewPlugin");
-						if(viewPlugin != null && viewPlugin.has("plugin")){
-							JSONObject plugin = viewPlugin.getJSONObject("plugin");
-							if(plugin != null && plugin.has("ocrScanPlugin")){
-								JSONObject ocrScanPlugin = plugin.getJSONObject("ocrScanPlugin");{
-									if(ocrScanPlugin != null && ocrScanPlugin.has("aleFile")){
-										String customCmdFile = json.getString("aleFile");
-										json.remove("aleFile");
-										json.put("customCmdFile", customCmdFile);
-									}
-								}
-							}
-						}
 					}
 
 					scanViewPlugin.addScanResultListener(new ScanResultListener<OcrScanResult>() {

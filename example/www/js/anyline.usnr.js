@@ -62,7 +62,7 @@ anylineUSNRViewConfig: {
                   "id":"USNR_ID",
                   "ocrPlugin":{
                       "scanMode": "AUTO",
-                      "languages": ["www/assets/USNr.any"]
+                      "languages": ["assets/USNr.any"]
                   }
         },
         "cutoutConfig": {

@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,10 +15,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import at.nineyards.anyline.modules.barcode.BarcodeScanView;
 import at.nineyards.anyline.modules.barcode.NativeBarcodeResultListener;
+import at.nineyards.anyline.util.AssetUtil;
 import at.nineyards.anyline.util.TempFileUtil;
 import io.anyline.plugin.ScanResult;
 import io.anyline.plugin.meter.MeterScanMode;
@@ -29,6 +32,69 @@ public class AnylinePluginHelper {
 
 	private static Toast notificationToast;
 
+	public static JSONObject setLanguages(JSONObject json, Context context){
+		if(json.has("viewPlugin")){
+			try {
+				JSONObject viewPlugin = json.getJSONObject("viewPlugin");
+				if(viewPlugin != null && viewPlugin.has("plugin")){
+
+					JSONObject plugin = viewPlugin.getJSONObject("plugin");
+					if(plugin != null && plugin.has("ocrPlugin")){
+						JSONObject ocrScanPlugin = plugin.getJSONObject("ocrPlugin");{
+							if(ocrScanPlugin != null && ocrScanPlugin.has("aleFile")){
+								String customCmdFile = ocrScanPlugin.getString("aleFile");
+								ocrScanPlugin.remove("aleFile");
+								ocrScanPlugin.put("customCmdFile", "www/" + customCmdFile);
+							}
+							JSONArray tesseractArray = ocrScanPlugin.optJSONArray("languages");
+							JSONArray newLanguagesArray = new JSONArray();
+							if (tesseractArray != null) {
+								String[] languages = new String[tesseractArray.length()];
+								for (int i = 0; i < languages.length; i++) {
+									long start = System.currentTimeMillis();
+
+									String traineddataFilePath = tesseractArray.getString(i);
+									String fileExtension = traineddataFilePath.substring(traineddataFilePath.lastIndexOf(".") + 1);
+
+									// Check where to copy the training files
+									File dirToCopy = new File(context.getFilesDir(), "anyline/module_anyline_ocr/tessdata/");
+									if(Objects.equals(fileExtension, "any")) {
+										dirToCopy = new File(context.getFilesDir(), "anyline/module_anyline_ocr/trained_models/");
+									}
+
+
+									int lastFileSeparatorIndex = traineddataFilePath.lastIndexOf(File.separator);
+									int lastDotIndex = traineddataFilePath.lastIndexOf(".");
+									if (lastDotIndex > lastFileSeparatorIndex) {
+										//start after the "/" or with 0 if no fileseperator was found
+										languages[i] = "www/assets/" + traineddataFilePath.substring(lastFileSeparatorIndex + 1);
+									} else {
+										//maybe it should just fail here, case propably not useful
+										languages[i] = traineddataFilePath.substring(lastFileSeparatorIndex + 1);
+									}
+									newLanguagesArray.put(languages[i]);
+									Log.d("languages", languages[i]);
+									AssetUtil.copyAssetFileWithoutPath(context, "www/" + traineddataFilePath, dirToCopy, false);
+									Log.v(TAG, "Copy traineddata duration: " + (System.currentTimeMillis() - start));
+								}
+								//ocrConfig.setLanguages(languages);
+
+								ocrScanPlugin.put("languages", newLanguagesArray);
+
+							} else {
+								Log.d(TAG, "No Training Data");
+							}
+						}
+					}
+				}
+			}catch (JSONException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return json;
+	}
 	public static JSONObject jsonHelper(Anyline4Activity activity, ScanResult<?> scanResult, JSONObject jsonObject) {
 		try {
 			File imageFile = TempFileUtil.createTempFileCheckCache(activity,

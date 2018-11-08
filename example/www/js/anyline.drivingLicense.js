@@ -21,8 +21,16 @@ anyline.drivingLicense = {
       div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
 
-    div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-      "<b>Result: </b> " + result.text
+    diiv.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
+            "<b>Name:</b> " + result.surNames + " " + result.givenNames + "<br/>" +
+            "<br/><b>Number:</b> " + result.nr + " <b>" +
+            "<br/>Country:</b> " + result.nationalityCountryCode + "[" + result.issuingCountryCode + "]" +
+            "<br/><b>Date of Birth:</b> " + result.dateOfBirth +
+            "<br/><b>Expiration Date:</b> " + result.expirationDate + "<br/>" +
+            "<br/><b>Issuing Date:</b> " + result.issuingDate + "<br/>" +
+            "<br/><b>Authority:</b> " + result.authority +
+            "<br/><b>Categories:</b> " + result.categories + "<br/>" +
+            "<br/><b>Place of Birth:</b> " + result.placeOfBirth + "<br/>"
       + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
       + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</p>"
       + div.innerHTML;
