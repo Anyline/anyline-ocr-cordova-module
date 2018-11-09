@@ -31,7 +31,8 @@ anyline.mrz = {
       "<br/><b>Expiration Date Object:</b> " + result.expirationDateObject + "<br/>" +
       "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
       "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
-      "<br/><i><b>Checksum:</b>" + result.allCheckDigitsValid + "</i>" +
+      "<br/><i><b>Checksum:</b>" + result.allCheckDigitsValid + "</i>"+
+      (result.address ? "<br/><i><b>Address:</b>" + result.address + "</i>" : "") +
       "</p>" + div.innerHTML;
 
 
