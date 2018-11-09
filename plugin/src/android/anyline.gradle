@@ -4,8 +4,8 @@ repositories{
 }
 
 dependencies {
-  	implementation 'com.google.android.gms:play-services-vision:12.0.1'
-    implementation 'io.anyline:anylinesdk:4@aar'
+  	implementation 'com.google.android.gms:play-services-vision:17.0.2'
+    implementation 'io.anyline:anylinesdk:5@aar'
 }
 
 android {

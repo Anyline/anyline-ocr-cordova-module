@@ -3,7 +3,7 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova"
-        version="4.1.0">
+        version="5.0.0">
 
     <name>AnylineSDK</name>
 
@@ -54,7 +54,7 @@
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods -->
-        <framework src="Anyline" type="podspec" spec="~> 4"/>
+        <framework src="Anyline" type="podspec" spec="~> 5"/>
 
 
         <!-- Frameworks needed by Anyline SDK for iOS -->
@@ -106,11 +106,11 @@
         </config-file>
 
         <!-- add plugin source code -->
-	<source-file src="src/android/io/anyline/cordova/Anyline4Activity.java" target-dir="src/io/anyline/cordova"/>        
-	<source-file src="src/android/io/anyline/cordova/AnylineBaseActivity.java" target-dir="src/io/anyline/cordova"/>
+	    <source-file src="src/android/io/anyline/cordova/Anyline4Activity.java" target-dir="src/io/anyline/cordova"/>        
+	    <source-file src="src/android/io/anyline/cordova/AnylineBaseActivity.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/AnylineOcrActivity.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/AnylinePlugin.java" target-dir="src/io/anyline/cordova"/>
-	<source-file src="src/android/io/anyline/cordova/AnylinePluginHelper.java" target-dir="src/io/anyline/cordova"/>
+	    <source-file src="src/android/io/anyline/cordova/AnylinePluginHelper.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/BarcodeActivity.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/MrzActivity.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/EnergyActivity.java" target-dir="src/io/anyline/cordova"/>
