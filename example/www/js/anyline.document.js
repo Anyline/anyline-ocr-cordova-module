@@ -50,7 +50,7 @@ anyline.document = {
   viewConfig: {
       "camera" : {
           "pictureResolution": "1080p",
-          "captureResolution" : "1080p"
+          "captureResolution" : "720p"
       },
       "flash" : {
           "mode": "manual",
@@ -76,19 +76,16 @@ anyline.document = {
               "style": "rect",
               "maxWidthPercent": "100%",
               "maxHeightPercent": "100%",
+              "ratioFromSize": {
+                  "width": 10,
+                  "height": 15
+              },
               "alignment": "center",
               "strokeWidth": 2,
               "cornerRadius": 0,
-              "outerAlpha": 0.0,
-              "outerColor": "00000000",
               "strokeColor": "00000000"
           },
           "scanFeedback" : {
-              "style": "RECT",
-              "strokeColor": "FF0000",
-              "animationDuration": 150,
-              "cornerRadius": 2,
-              "strokeWidth": 4,
               "blinkOnResult": true,
               "beepOnResult": false,
               "vibrateOnResult": false
