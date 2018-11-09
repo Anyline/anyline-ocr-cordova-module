@@ -1,6 +1,5 @@
 package io.anyline.cordova;
 
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Rect;
 import android.os.Build;
@@ -17,24 +16,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
 import at.nineyards.anyline.AnylineDebugListener;
 import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.core.RunFailure;
 import at.nineyards.anyline.core.Vector_Contour;
 import at.nineyards.anyline.core.exception_error_codes;
-import at.nineyards.anyline.modules.barcode.NativeBarcodeResultListener;
 import at.nineyards.anyline.modules.mrz.Identification;
-import at.nineyards.anyline.util.AssetUtil;
 import io.anyline.plugin.ScanResult;
 import io.anyline.plugin.ScanResultListener;
 import io.anyline.plugin.barcode.BarcodeScanResult;
 import io.anyline.plugin.barcode.BarcodeScanViewPlugin;
-import io.anyline.plugin.document.DocumentScanViewPlugin;
 import io.anyline.plugin.id.DrivingLicenseConfig;
 import io.anyline.plugin.id.DrivingLicenseResult;
 import io.anyline.plugin.id.ID;
@@ -180,7 +173,11 @@ public class Anyline4Activity extends AnylineBaseActivity {
 								if (jsonResult.has("issuingCountryCode")) {
 									try {
 										if(jsonResult.get("issuingCountryCode").equals("D")){
-											jsonResult.put("address", jsonResult.get("address"));
+											String address=null;
+											if(jsonResult.get("address") != null) {
+												address = jsonResult.get("address").toString().replace("\\n", "\n");
+											}
+											jsonResult.put("address", address);
 										}else{
 											jsonResult.remove("address");
 										}
