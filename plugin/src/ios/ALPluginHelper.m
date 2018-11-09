@@ -387,6 +387,8 @@
     [formatter setDateFormat:@"yyyy.MM.dd"];
     
     if ([scanResult.result isKindOfClass:[ALMRZIdentification class]]) {
+        ALMRZIdentification *mrzIdentification = (ALMRZIdentification *)scanResult.result;
+        
         dictResult = [[scanResult.result dictionaryWithValuesForKeys:@[@"documentType",
                                                                        @"nationalityCountryCode",
                                                                        @"issuingCountryCode",
@@ -405,6 +407,10 @@
         
         
         [dictResult setValue:@(scanResult.allCheckDigitsValid) forKey:@"allCheckDigitsValid"];
+        
+        if ([[scanResult.result documentType] isEqualToString:@"ID"] && [[scanResult.result issuingCountryCode] isEqualToString:@"D"]) {
+            [dictResult setValue:mrzIdentification.address forKey:@"address"];
+        }
         
         NSString *expirationDateObject = [formatter stringFromDate:[scanResult.result expirationDateObject]];
         [dictResult setValue:expirationDateObject forKey:@"expirationDateObject"];

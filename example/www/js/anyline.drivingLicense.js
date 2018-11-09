@@ -23,8 +23,8 @@ anyline.drivingLicense = {
 
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
             "<b>Name:</b> " + result.surNames + " " + result.givenNames + "<br/>" +
-            "<br/><b>Number:</b> " + result.nr + " <b>" +
-            "<br/><b>Date of Birth:</b> " + result.dateOfBirth +
+            "<br/><b>Number:</b> " + result.documentNumber + " <b>" +
+            "<br/><b>Date of Birth:</b> " + result.dayOfBirth +
             "<br/><b>Expiration Date:</b> " + result.expirationDate + "<br/>" +
             "<br/><b>Issuing Date:</b> " + result.issuingDate + "<br/>" +
             "<br/><b>Authority:</b> " + result.authority +
