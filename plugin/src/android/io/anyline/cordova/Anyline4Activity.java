@@ -204,6 +204,25 @@ public class Anyline4Activity extends AnylineBaseActivity {
 							@Override
 							public void onResult(ScanResult<ID> idScanResult) {
 								JSONObject jsonResult = ((DrivingLicenseResult) idScanResult.getResult()).toJSONObject();
+								//clean this
+								if(jsonResult.has("nr")){
+									try {
+										String documentNumber = jsonResult.getString("nr");
+										jsonResult.remove("nr");
+										jsonResult.put("documentNumber", documentNumber);
+									} catch (JSONException e) {
+										e.printStackTrace();
+									}
+								}
+								if(jsonResult.has("dateOfBirth")){
+									try {
+										String dateOfBirth = jsonResult.getString("dateOfBirth");
+										jsonResult.remove("dateOfBirth");
+										jsonResult.put("dayOfBirth", dateOfBirth);
+									} catch (JSONException e) {
+										e.printStackTrace();
+									}
+								}
 
 								try {
 									jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, idScanResult, jsonResult);
