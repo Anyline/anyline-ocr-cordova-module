@@ -21,100 +21,103 @@
 </head>
 
 <body>
-<h1>Anyline Cordova</h1>
+    <h1>Anyline Cordova</h1>
 
-<div id="navigation">
-    <details id="details_scan_modes" open>
-        <summary class="summary1">
-            Scan Modes
-        </summary>
-        <h2> Energy </h2>
-        <p>
-            <input type="button" value="Analog/Digital Meter" onclick="anyline.energy.scan('AUTO_ANALOG_DIGITAL_METER')" />
-            <br/>
-            <input type="button" value="Analog Meter" onclick="anyline.energy.scanElectricAnalogSegment()" />
-            <br/>
-            <input type="button" value="Digital Meter" onclick="anyline.energy.scanElectricDigitalSegment()" />
-            <br/>
-            <input type="button" value="Serial Number" onclick="anyline.energy.scan('SERIAL_NUMBER')" />
-            <br/>
-            <input type="button" value="Dial Meter ALPHA" onclick="anyline.energy.scan('DIAL_METER')" />
-            <br/>
-            <input type="button" value="Dot Matrix Meter" onclick="anyline.energy.scan('DOT_MATRIX_METER')" />
-            <br/>
+    <div id="navigation">
+        <details id="details_scan_modes" open>
+            <summary class="summary1">
+                Scan Modes
+            </summary>
+            <h2> Meter Reading </h2>
+            <p>
+                <input type="button" value="Analog/Digital Meter" onclick="anyline.energy.scan('AUTO_ANALOG_DIGITAL_METER')" />
+                <br />
+                <input type="button" value="Analog Meter" onclick="anyline.energy.scanElectricAnalogSegment()" />
+                <br />
+                <input type="button" value="Digital Meter" onclick="anyline.energy.scanElectricDigitalSegment()" />
+                <br />
+                <input type="button" value="Serial Number" onclick="anyline.energy.scan('SERIAL_NUMBER')" />
+                <br />
+                <input type="button" value="Dial Meter ALPHA" onclick="anyline.energy.scan('DIAL_METER')" />
+                <br />
+                <input type="button" value="Dot Matrix Meter" onclick="anyline.energy.scan('DOT_MATRIX_METER')" />
+                <br />
+                <hr>
+                <h2>ID</h2>
+                <input type="button" value="AUT/GER Driving License" onclick="anyline.drivingLicense.scan()" />
+                <br />
+                <input type="button" value="MRZ of Passport or ID" onclick="anyline.mrz.scan()" />
+                <br />
+                <p>
+                </p>
+                <h2>Anyline OCR</h2>
+                <p>
+                    <input type="button" value="IBAN" onclick="anyline.ocr.scanIban()" />
+                    <br />
+                    <input type="button" value="Anyline Voucher Codes" onclick="anyline.ocr.scanAnylineVoucherCodes()" />
+                    <br />
+                </p>
+                <hr>
+                <h2> Vehicles </h2>
+                <p>
+                    <input type="button" value="License Plates" onclick="anyline.licensePlate.scanLicensePlates('LICENSE_PLATE')" />
+                    <br />
+                </p>
+
+                <hr>
+                <h2>MRO</h2>
+                <input type="button" value="Vehicle Identification Nb." onclick="anyline.vin.scan()" />
+                <br />
+                <input type="button" value="Universal Serial Number" onclick="anyline.usnr.scan()" />
+                <br />
+                <input type="button" value="Shipping Container" onclick="anyline.container.scan()" />
+                <br />
+
+
+                <hr>
+                <h2> Others </h2>
+                <p>
+                    <input type="button" value="Barcode" onclick="anyline.barcode.scan()" />
+                    <br />
+                    <input type="button" value="Document" onclick="anyline.document.scan()" />
+                    <br />
+                </p>
+        </details>
+
+
         <hr>
-        <h2>Anyline OCR</h2>
-        <p>
-            <input type="button" value="IBAN" onclick="anyline.ocr.scanIban()" />
-            <br/>
-            <input type="button" value="Anyline Voucher Codes" onclick="anyline.ocr.scanAnylineVoucherCodes()" />
-            <br/>
-            <input type="button" value="AUT/GER Driving License" onclick="anyline.drivingLicense.scan()" />
-            <br/>
-        </p>
+        <details id="details_results">
+            <summary class="summary1">
+                Results
+            </summary>
+            <p>
+                <div id="results">
+
+                </div>
+            </p>
+        </details>
         <hr>
-        <h2> Vehicles </h2>
-        <p>
-            <input type="button" value="License Plates" onclick="anyline.licensePlate.scanLicensePlates('LICENSE_PLATE')" />
-            <br/>
-        </p>
-
-        <hr>
-        <h2>MRO</h2>
-        <input type="button" value="Vehicle Identification Nb." onclick="anyline.vin.scan()" />
-        <br/>
-        <input type="button" value="Universal Serial Number" onclick="anyline.usnr.scan()" />
-        <br/>
-        <input type="button" value="Shipping Container" onclick="anyline.container.scan()" />
-        <br/>
-
-        
-        <hr>
-        <h2> Others </h2>
-        <p>
-            <input type="button" value="Barcode" onclick="anyline.barcode.scan()" />
-            <br/>
-            <input type="button" value="MRZ of Passport or ID" onclick="anyline.mrz.scan()" />
-            <br/>
-            <input type="button" value="Document" onclick="anyline.document.scan()" />
-            <br/>
-        </p>
-    </details>
-
-
-    <hr>
-    <details id="details_results">
-        <summary class="summary1">
-            Results
-        </summary>
-        <p>
-        <div id="results">
-
-        </div>
-        </p>
-    </details>
-    <hr>
-    <div id="versions">
-        <div id="SDK">
-        </div>
-        <div>
-            <p>Cordova Build Version: 1</p>
+        <div id="versions">
+            <div id="SDK">
+            </div>
+            <div>
+                <p>Cordova Build Version: 1</p>
+            </div>
         </div>
     </div>
-</div>
 
-<script type="text/javascript" src="cordova.js"></script>
-<script type="text/javascript" src="js/anyline.general.js"></script>
-<script type="text/javascript" src="js/anyline.barcode.js"></script>
-<script type="text/javascript" src="js/anyline.energy.js"></script>
-<script type="text/javascript" src="js/anyline.mrz.js"></script>
-<script type="text/javascript" src="js/anyline.ocr.js"></script>
-<script type="text/javascript" src="js/anyline.drivingLicense.js"></script>
-<script type="text/javascript" src="js/anyline.document.js"></script>
-<script type="text/javascript" src="js/anyline.licensePlate.js"></script>
-<script type="text/javascript" src="js/anyline.vin.js"></script>
-<script type="text/javascript" src="js/anyline.usnr.js"></script>
-<script type="text/javascript" src="js/anyline.container.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/anyline.general.js"></script>
+    <script type="text/javascript" src="js/anyline.barcode.js"></script>
+    <script type="text/javascript" src="js/anyline.energy.js"></script>
+    <script type="text/javascript" src="js/anyline.mrz.js"></script>
+    <script type="text/javascript" src="js/anyline.ocr.js"></script>
+    <script type="text/javascript" src="js/anyline.drivingLicense.js"></script>
+    <script type="text/javascript" src="js/anyline.document.js"></script>
+    <script type="text/javascript" src="js/anyline.licensePlate.js"></script>
+    <script type="text/javascript" src="js/anyline.vin.js"></script>
+    <script type="text/javascript" src="js/anyline.usnr.js"></script>
+    <script type="text/javascript" src="js/anyline.container.js"></script>
 </body>
 
 </html>
