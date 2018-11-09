@@ -9,6 +9,7 @@
 #import <Anyline/Anyline.h>
 #import <UIKit/UIKit.h>
 #import "ALCordovaUIConfiguration.h"
+#import "ALRoundedView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -43,6 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (UIButton *)createButtonForViewController:(UIViewController *)viewController
                                      config:(ALCordovaUIConfiguration *)config;
+
++ (ALRoundedView *)createRoundedViewForViewController:(UIViewController *)viewController;
 
 + (NSDictionary *)dictionaryForMeterResult:(ALMeterResult *)scanResult
                           detectedBarcodes:(NSMutableArray<NSDictionary *> *)detectedBarcodes

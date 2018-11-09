@@ -29,29 +29,25 @@
         // Set Document Ratios and deviation
         [docModuleView setDocumentRatios:self.ratios];
         docModuleView.maxDocumentRatioDeviation = [NSNumber numberWithDouble:self.ratioDeviation];
-
+        
         // Set max Output Resolution
         if(!CGSizeEqualToSize(CGSizeZero, self.maxOutputResolution)){
             docModuleView.maxOutputResolution = self.maxOutputResolution;
         }
-
+        
         // Set PostProcessing of the
         [docModuleView setPostProcessingEnabled:self.postProcessing];
-
+        
         NSError *error = nil;
         BOOL success = [docModuleView setupWithLicenseKey:self.key delegate:self error:&error];
-
+        
         self.moduleView = docModuleView;
         
         [self.view addSubview:self.moduleView];
         [self.view sendSubviewToBack:self.moduleView];
         
         // This view notifies the user of any problems that occur while he is scanning
-        self.roundedView = [[ALRoundedView alloc] initWithFrame:CGRectMake(20, 115, self.view.bounds.size.width - 40, 30)];
-        self.roundedView.fillColor = [UIColor colorWithRed:98.0/255.0 green:39.0/255.0 blue:232.0/255.0 alpha:0.6];
-        self.roundedView.textLabel.text = @"";
-        self.roundedView.alpha = 0;
-        [self.view addSubview:self.roundedView];
+        self.roundedView = [ALPluginHelper createRoundedViewForViewController:self];
     });
 }
 
@@ -68,7 +64,7 @@
                                                             detectedBarcodes:nil
                                                                      outline:corners];
     
-
+    
     [self.delegate anylineBaseScanViewController:self didScan:dictResult continueScanning:!self.moduleView.cancelOnResult];
     
     if (self.moduleView.cancelOnResult) {
