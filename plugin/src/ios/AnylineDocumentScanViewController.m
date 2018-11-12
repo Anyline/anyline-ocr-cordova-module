@@ -24,6 +24,8 @@
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
         AnylineDocumentModuleView *docModuleView = [[AnylineDocumentModuleView alloc] initWithFrame:self.view.bounds];
+        
+        self.conf.pictureResolution = ALPictureResolution1080;
         docModuleView.currentConfiguration = self.conf;
         
         // Set Document Ratios and deviation

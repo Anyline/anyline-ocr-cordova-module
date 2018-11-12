@@ -363,7 +363,7 @@
     
     [dictResult setValue:fullImagePath forKey:@"fullImagePath"];
     
-    if (detectedBarcodes || detectedBarcodes.count == 0) {
+    if (detectedBarcodes && detectedBarcodes.count != 0) {
         [dictResult setObject:detectedBarcodes forKey:@"detectedBarcodes"];
     }
     
@@ -425,9 +425,6 @@
                                                                        @"authority",
                                                                        @"categories",
                                                                        @"drivingLicenseString"]] mutableCopy];
-        
-        //        NSString *issuingDateObject = [formatter stringFromDate:[scanResult.result issuingDateObject]];
-        //        [dictResult setValue:issuingDateObject forKey:@"issuingDateObject"];
     }
     NSString *dayOfBirthDateObject = [formatter stringFromDate:[scanResult.result dayOfBirthDateObject]];
     [dictResult setValue:dayOfBirthDateObject forKey:@"dayOfBirthObject"];
@@ -460,7 +457,7 @@
     [dictResult setValue:@(scanResult.confidence) forKey:@"confidence"];
     [dictResult setValue:[ALPluginHelper stringForOutline:outline] forKey:@"outline"];
     
-    if (detectedBarcodes || detectedBarcodes.count == 0) {
+    if (detectedBarcodes && detectedBarcodes.count != 0) {
         [dictResult setObject:detectedBarcodes forKey:@"detectedBarcodes"];
     }
     
@@ -508,7 +505,7 @@
     [dictResult setValue:@(scanResult.confidence) forKey:@"confidence"];
     [dictResult setValue:imagePath forKey:@"imagePath"];
     
-    if (detectedBarcodes || detectedBarcodes.count == 0) {
+    if (detectedBarcodes && detectedBarcodes.count != 0) {
         [dictResult setObject:detectedBarcodes forKey:@"detectedBarcodes"];
     }
     
@@ -532,7 +529,7 @@
     [dictResult setValue:fullImagePath forKey:@"fullImagePath"];
     [dictResult setValue:outlineString forKey:@"outline"];
     
-    if (detectedBarcodes || detectedBarcodes.count == 0) {
+    if (detectedBarcodes && detectedBarcodes.count != 0) {
         [dictResult setObject:detectedBarcodes forKey:@"detectedBarcodes"];
     }
     
