@@ -58,10 +58,10 @@ anyline.vin = {
       },
       "viewPlugin":{
         "plugin":{
-                  "id":"USNR_ID",
+                  "id":"VIN_ID",
                   "ocrPlugin":{
                       "scanMode": "AUTO",
-                      "languages": ["assets/USNr.any"],
+                      "languages": ["assets/vin.any"],
                       "aleFile": "assets/vin.ale"
                   }
         },

@@ -202,90 +202,6 @@ anyline.energy = {
     }
   },
 
-
-  //  energyConfigWithSegment: [
-  //    "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImlvc0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsICJtYWpvclZlcnNpb24iOiAiNCIsICJtYXhEYXlzTm90UmVwb3J0ZWQiOiAwLCAicGluZ1JlcG9ydGluZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiwgIldpbmRvd3MiIF0sICJzY29wZSI6IFsgIkFMTCIgXSwgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogZmFsc2UsICJzaG93V2F0ZXJtYXJrIjogdHJ1ZSwgInRvbGVyYW5jZURheXMiOiA5MCwgInZhbGlkIjogIjIwMjAtMTAtMjAiLCAid2luZG93c0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0gfQpJYzVHSWVpdTBUYmJoQjE4T2poeHllY1g3Q296NWorR1o2azVtanJTUUtxVFYrYWRKODk4MHA2QmZ6UVdoK1ZyCnF6UE4yTURuWnFNSTcwUk13NHFGV0VJek16Z1J2ZUg3ZzhYM3RHbUcyUTdzazh0Y1Q1Zk5aditNNmpTeXQ1WG4KM010Ry9yZnp2YVRiQlo5VnV5ektsVXdDakZVdVhqd2xIVm1QZS9hc2ljMkVpbWhMU2JTam9PN0Nzajhjd0ZNVApKZDJTTnBncmdQYUtSUzZrdlNFMEJJU3ltVnAvb1VIcm9xUGtlUWRxa2owQk1ZU3Z4VmM4L0p3L1RvdHNvY1IvCmxIWi93VG03UldGRDVhZXpIdjJDcjNVN1ArSW1KdkNUb3JCc3VUa3B6VzF1dHIvQlNkckI3dVJNVFpPOW84UjcKS1ZhaUlmNmZYSExQanBkbkpmQXdqUT09Cg==",
-  //    {
-  //      "captureResolution": "1080p",
-  //      "visualFeedback": {
-  //        "style": "CONTOUR_RECT",
-  //        "strokeColor": "0099FF",
-  //        "fillColor": "220099FF"
-  //      },
-  //      "cutout": {
-  //        "style": "rect",
-  //        "alignment": "top_half",
-  //        "strokeWidth": 2,
-  //        "cornerRadius": 4,
-  //        "strokeColor": "FFFFFF",
-  //        "outerColor": "000000",
-  //        "outerAlpha": 0.3,
-  //        "feedbackStrokeColor": "0099FF",
-  //      },
-  //      "flash": {
-  //        "mode": "manual",
-  //        "alignment": "bottom_right"
-  //      },
-  //      "beepOnResult": true,
-  //      "vibrateOnResult": true,
-  //      "blinkAnimationOnResult": true,
-  //      "cancelOnResult": true,
-  //      "reportingEnabled": true,
-  //      "segment": {
-  //        "titles": ["Analog", "Digital"],
-  //        "modes": ["ANALOG_METER", "DIGITAL_METER"],
-  //        "tintColor": "CCCCCC",
-  //        "offset": {
-  //          "x": 0,
-  //          "y": 400
-  //        }
-  //      }
-  //    },
-  //    {"nativeBarcodeEnabled": true}
-  //  ],
-
-  //no heat anymore as anyline4 does not support heater meters
-  //  heatConfigWithSegment: [
-  //    "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImlvc0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsICJtYWpvclZlcnNpb24iOiAiNCIsICJtYXhEYXlzTm90UmVwb3J0ZWQiOiAwLCAicGluZ1JlcG9ydGluZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiwgIldpbmRvd3MiIF0sICJzY29wZSI6IFsgIkFMTCIgXSwgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogZmFsc2UsICJzaG93V2F0ZXJtYXJrIjogdHJ1ZSwgInRvbGVyYW5jZURheXMiOiA5MCwgInZhbGlkIjogIjIwMjAtMTAtMjAiLCAid2luZG93c0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0gfQpJYzVHSWVpdTBUYmJoQjE4T2poeHllY1g3Q296NWorR1o2azVtanJTUUtxVFYrYWRKODk4MHA2QmZ6UVdoK1ZyCnF6UE4yTURuWnFNSTcwUk13NHFGV0VJek16Z1J2ZUg3ZzhYM3RHbUcyUTdzazh0Y1Q1Zk5aditNNmpTeXQ1WG4KM010Ry9yZnp2YVRiQlo5VnV5ektsVXdDakZVdVhqd2xIVm1QZS9hc2ljMkVpbWhMU2JTam9PN0Nzajhjd0ZNVApKZDJTTnBncmdQYUtSUzZrdlNFMEJJU3ltVnAvb1VIcm9xUGtlUWRxa2owQk1ZU3Z4VmM4L0p3L1RvdHNvY1IvCmxIWi93VG03UldGRDVhZXpIdjJDcjNVN1ArSW1KdkNUb3JCc3VUa3B6VzF1dHIvQlNkckI3dVJNVFpPOW84UjcKS1ZhaUlmNmZYSExQanBkbkpmQXdqUT09Cg==",
-  //    {
-  //      "captureResolution": "1080p",
-  //      "visualFeedback": {
-  //        "style": "RECT",
-  //        "strokeColor": "0099FF",
-  //        "fillColor": "220099FF"
-  //      },
-  //      "cutout": {
-  //        "style": "rect",
-  //        "alignment": "top_half",
-  //        "strokeWidth": 2,
-  //        "cornerRadius": 4,
-  //        "strokeColor": "FFFFFF",
-  //        "outerColor": "000000",
-  //        "outerAlpha": 0.3,
-  //        "feedbackStrokeColor": "0099FF",
-  //      },
-  //      "flash": {
-  //        "mode": "manual",
-  //        "alignment": "bottom_right"
-  //      },
-  //      "beepOnResult": true,
-  //      "vibrateOnResult": true,
-  //      "blinkAnimationOnResult": true,
-  //      "cancelOnResult": true,
-  //      "reportingEnabled": true,
-  //      "segment": {
-  //        "titles": ["4 Digits", "5 Digits", "6 Digits"],
-  //        "modes": ["HEAT_METER_4", "HEAT_METER_5", "HEAT_METER_6"],
-  //        "tintColor": "CCCCCC",
-  //        "offset": {
-  //          "x": 0,
-  //          "y": 500
-  //        }
-  //      }
-  //    },
-  //    {"nativeBarcodeEnabled": true}
-  //  ],
-
   dialConfig:
   {
     "camera": {
@@ -297,9 +213,9 @@ anyline.energy = {
     },
     "viewPlugin": {
       "plugin": {
-        "id": "Meter_ID",
+        "id": "DIAL_METER",
         "meterPlugin": {
-          "scanMode": "DIGITAL_METER"
+          "scanMode": "DIAL_METER"
         }
       },
       "cutout": {
