@@ -64,9 +64,6 @@ cordova.commandProxy.add("AnylineSDK", {
             ocrConfig.languages = ocrConfig.traineddataFiles.map(function (lang) { return "www/" + lang });
             delete ocrConfig.tesseractLanguages;
         }
-        if (ocrConfig.aleFile) {
-            ocrConfig.customCmdFile = "www/" + ocrConfig.aleFile;
-        }
         window.anyline.sdk.init(license, 'ANYLINE_OCR', viewConfig, onSuccess, onError, ocrConfig);
     },
     MRZ: function (onSuccess, onError, configArray) {

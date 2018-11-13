@@ -41,11 +41,6 @@ public class AnylinePluginHelper {
 					JSONObject plugin = viewPlugin.getJSONObject("plugin");
 					if(plugin != null && plugin.has("ocrPlugin")){
 						JSONObject ocrScanPlugin = plugin.getJSONObject("ocrPlugin");{
-							if(ocrScanPlugin != null && ocrScanPlugin.has("aleFile")){
-								String customCmdFile = ocrScanPlugin.getString("aleFile");
-								ocrScanPlugin.remove("aleFile");
-								ocrScanPlugin.put("customCmdFile", "www/" + customCmdFile);
-							}
 							JSONArray tesseractArray = ocrScanPlugin.optJSONArray("languages");
 							JSONArray newLanguagesArray = new JSONArray();
 							if (tesseractArray != null) {

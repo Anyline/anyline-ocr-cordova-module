@@ -62,7 +62,7 @@ anyline.vin = {
                   "ocrPlugin":{
                       "scanMode": "AUTO",
                       "languages": ["assets/vin.any"],
-                      "aleFile": "assets/vin.ale"
+                      "customCmdFile": "www/assets/vin.ale"
                   }
         },
         "cutoutConfig": {
