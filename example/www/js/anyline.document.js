@@ -76,13 +76,23 @@ anyline.document = {
                 "style": "rect",
                 "maxWidthPercent": "100%",
                 "maxHeightPercent": "100%",
+                "ratioFromSize": {
+                    "width": 10,
+                    "height": 15
+                },
                 "alignment": "center",
-                "strokeWidth": 0,
+                "strokeWidth": 2,
                 "cornerRadius": 0,
-                "strokeColor": "00000000",
-                "feedbackStrokeColor": "00000000"
+                "outerAlpha": 0.0,
+                "outerColor": "00000000",
+                "strokeColor": "00000000"
             },
             "scanFeedback": {
+                "style": "RECT",
+                "strokeColor": "FF0000",
+                "animationDuration": 150,
+                "cornerRadius": 2,
+                "strokeWidth": 4,
                 "blinkOnResult": true,
                 "beepOnResult": false,
                 "vibrateOnResult": false
