@@ -8,6 +8,13 @@
 
 Anyline provides an easy-to-use SDK for applications to enable Optical Character Recognition (OCR) on mobile devices.
 
+## Update to >= 5.0
+
+If you use this plugin with a equal or greater version then 5.0, you can use our new Anyline structure, which will provide the whole
+configuration of every SDK Feature through the config file. If you use the the 'scan' call in your Javascript files, you have to 
+use a new config style.
+The old calls with the old configurations will still work.
+
 ### Available Products
 - [**Barcode:**](https://documentation.anyline.com/toc/products/barcode/index.html)  Scan 23 types of international barcode & QR code formats.
 - [**Energy:**](https://documentation.anyline.com/toc/products/meter/index.html) Scan meter readings of various electric, gas, and water meters.
