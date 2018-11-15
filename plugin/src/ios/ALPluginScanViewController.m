@@ -52,34 +52,13 @@
     return self;
 }
 
-//Will update the ocr config paths to always start with "www/"
-- (void)modifyOCRFilePaths:(NSDictionary *)dict {
-    //TODO: copy dict parameter to new dictionary and return it, instead of modifying the parameter.
-    NSString *aleFile = [dict valueForKeyPath:@"viewPlugin.plugin.ocrPlugin.aleFile"];
-    if (aleFile) {
-        [dict setValue:[NSString stringWithFormat:@"www/%@", aleFile] forKeyPath:@"viewPlugin.plugin.ocrPlugin.aleFile"];
-    }
-    
-    NSMutableArray<NSString *> *languages = [dict valueForKeyPath:@"viewPlugin.plugin.ocrPlugin.languages"];
-    if (languages) {
-        NSMutableArray<NSString *> *modifiedLanguages = [[NSMutableArray alloc] initWithCapacity:languages.count];
-        for (NSString *language in languages) {
-            
-            NSString *newLang = [NSString stringWithFormat:@"www/%@", language];
-            [modifiedLanguages addObject:newLang];
-        }
-        
-        [dict setValue:modifiedLanguages forKeyPath:@"viewPlugin.plugin.ocrPlugin.languages"];
-    }
-}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     NSError *error = nil;
     
-    //will update the ocr config paths to always start with "www/"
-    [self modifyOCRFilePaths:self.anylineConfig];
     
     self.scanView = [ALScanView scanViewForFrame:self.view.bounds
                                       configDict:self.anylineConfig
@@ -99,13 +78,35 @@
         
         self.scanView.cameraConfig = [ALCameraConfig defaultCameraConfig];
     }
-    
+
     if(!self.scanView) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not start scanning" message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
         
         return;
     }
+    
+    if ([self.scanView.scanViewPlugin isKindOfClass:[ALOCRScanViewPlugin class]]) {
+        NSString *customCmdFile = [self.anylineConfig valueForKeyPath:@"viewPlugin.plugin.ocrPlugin.customCmdFile"];
+        
+        if (customCmdFile) {
+//            ALOCRConfig *ocrConfig = (ALOCRConfig *)self.anylineConfig;
+//            [ocrConfig setCustomCmdFilePath:customCmdFile];
+//            self.anylineConfig = (NSDictionary *)ocrConfig;
+            NSString *fileName = [self.anylineConfig valueForKeyPath:@"viewPlugin.plugin.ocrPlugin.customCmdFile"];
+            if (fileName) {
+                NSString *cmdFileDirectoryPath = [fileName stringByDeletingLastPathComponent];
+                NSString *pathResource = [[fileName lastPathComponent] stringByDeletingPathExtension];
+                NSString *filePath =  [[NSBundle mainBundle] pathForResource:pathResource ofType:@"ale" inDirectory:cmdFileDirectoryPath];
+                
+                ALOCRConfig *ocrConfig = ((ALOCRScanViewPlugin *)self.scanView.scanViewPlugin).ocrScanPlugin.ocrConfig;
+                [ocrConfig setCustomCmdFilePath:filePath];
+                [((ALOCRScanViewPlugin *)self.scanView.scanViewPlugin).ocrScanPlugin setOCRConfig:ocrConfig error:nil];
+            }
+            
+        }
+    }
+    
     
     [self.scanView startCamera];
     

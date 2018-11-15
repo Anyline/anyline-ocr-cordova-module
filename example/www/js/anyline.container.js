@@ -18,7 +18,7 @@ anyline.container = {
 
     var div = document.getElementById('results');
 
-    if(div.childElementCount >= 3) {
+    if (div.childElementCount >= 3) {
       div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
 
@@ -48,56 +48,56 @@ anyline.container = {
 
   licenseKey: "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImlvc0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsICJtYWpvclZlcnNpb24iOiAiNCIsICJtYXhEYXlzTm90UmVwb3J0ZWQiOiAwLCAicGluZ1JlcG9ydGluZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiwgIldpbmRvd3MiIF0sICJzY29wZSI6IFsgIkFMTCIgXSwgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogZmFsc2UsICJzaG93V2F0ZXJtYXJrIjogdHJ1ZSwgInRvbGVyYW5jZURheXMiOiA5MCwgInZhbGlkIjogIjIwMjAtMTAtMjAiLCAid2luZG93c0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0gfQpJYzVHSWVpdTBUYmJoQjE4T2poeHllY1g3Q296NWorR1o2azVtanJTUUtxVFYrYWRKODk4MHA2QmZ6UVdoK1ZyCnF6UE4yTURuWnFNSTcwUk13NHFGV0VJek16Z1J2ZUg3ZzhYM3RHbUcyUTdzazh0Y1Q1Zk5aditNNmpTeXQ1WG4KM010Ry9yZnp2YVRiQlo5VnV5ektsVXdDakZVdVhqd2xIVm1QZS9hc2ljMkVpbWhMU2JTam9PN0Nzajhjd0ZNVApKZDJTTnBncmdQYUtSUzZrdlNFMEJJU3ltVnAvb1VIcm9xUGtlUWRxa2owQk1ZU3Z4VmM4L0p3L1RvdHNvY1IvCmxIWi93VG03UldGRDVhZXpIdjJDcjNVN1ArSW1KdkNUb3JCc3VUa3B6VzF1dHIvQlNkckI3dVJNVFpPOW84UjcKS1ZhaUlmNmZYSExQanBkbkpmQXdqUT09Cg==K",
 
-    
-anylineContainerViewConfig: {
-    "camera" : {
-        "captureResolution" : "1080p"
+
+  anylineContainerViewConfig: {
+    "camera": {
+      "captureResolution": "1080p"
     },
-    "flash" : {
-        "mode" : "manual",
-        "alignment" : "bottom_right"
+    "flash": {
+      "mode": "manual",
+      "alignment": "bottom_right"
     },
-    "viewPlugin" : {
-        "plugin" : {
-            "id" : "Container_ID",
-            "ocrPlugin" : {
-                "scanMode": "AUTO",
-                "languages": ["assets/USNr.any"],
-                "customCmdFile": "www/assets/container_scanner.ale"
-            }
+    "viewPlugin": {
+      "plugin": {
+        "id": "Container_ID",
+        "ocrPlugin": {
+          "scanMode": "AUTO",
+          "languages": ["www/assets/USNr.any"],
+          "customCmdFile": "www/assets/container_scanner.ale"
+        }
+      },
+      "cutoutConfig": {
+        "style": "rect",
+        "width": 720,
+        "maxWidthPercent": "80%",
+        "alignment": "top_half",
+        "ratioFromSize": {
+          "width": 720,
+          "height": 144
         },
-        "cutoutConfig" : {
-            "style": "rect",
-            "width": 720,
-            "maxWidthPercent": "80%",
-            "alignment": "top_half",
-            "ratioFromSize" : {
-                "width": 720,
-                "height": 144
-            },
-            "strokeWidth": 2,
-            "strokeColor": "FFFFFF",
-            "cornerRadius": 4,
-            "outerColor": "000000",
-            "outerAlpha": 0.5,
-            "feedbackStrokeColor": "0099FF",
-            "offset": {
-                "x": 0,
-                "y": -15
-            }
-        },
-        "scanFeedback" : {
-            "style": "CONTOUR_RECT",
-            "strokeColor": "0099FF",
-            "fillColor": "220099FF",
-            "blinkOnResult": true,
-            "beepOnResult": true,
-            "vibrateOnResult": true
-        },
-        "cancelOnResult" : true
+        "strokeWidth": 2,
+        "strokeColor": "FFFFFF",
+        "cornerRadius": 4,
+        "outerColor": "000000",
+        "outerAlpha": 0.5,
+        "feedbackStrokeColor": "0099FF",
+        "offset": {
+          "x": 0,
+          "y": -15
+        }
+      },
+      "scanFeedback": {
+        "style": "CONTOUR_RECT",
+        "strokeColor": "0099FF",
+        "fillColor": "220099FF",
+        "blinkOnResult": true,
+        "beepOnResult": true,
+        "vibrateOnResult": true
+      },
+      "cancelOnResult": true
     }
-},
-  
+  },
+
 
 
   scan: function () {
