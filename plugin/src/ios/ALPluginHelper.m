@@ -421,7 +421,6 @@
                                                                        @"surNames",
                                                                        @"givenNames",
                                                                        @"dayOfBirth",
-                                                                       @"issuingDate",
                                                                        @"placeOfBirth",
                                                                        @"issuingDate",
                                                                        @"expirationDate",
