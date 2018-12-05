@@ -172,7 +172,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 								JSONObject jsonResult = ((Identification) idScanResult.getResult()).toJSONObject();
 								if (jsonResult.has("issuingCountryCode")) {
 									try {
-										if(jsonResult.get("issuingCountryCode").equals("D")){
+										if(jsonResult.get("issuingCountryCode").equals("D") && jsonResult.get("documentType").equals("ID")){
 											String address=null;
 											if(jsonResult.get("address") != null) {
 												address = jsonResult.get("address").toString().replace("\\n", "\n");

@@ -324,6 +324,7 @@
 }
 
 + (NSDictionary *)dictionaryForMeterResult:(ALMeterResult *)scanResult
++ (NSDictionary *)dictionaryForMeterResult:(ALMeterResult *)scanResult
                           detectedBarcodes:(NSMutableArray<NSDictionary *> *)detectedBarcodes
                                    outline:(ALSquare *)outline
                                    quality:(NSInteger)quality {
@@ -396,6 +397,7 @@
                                                                        @"givenNames",
                                                                        @"documentNumber",
                                                                        @"checkdigitNumber",
+                                                                       @"issuingDate",
                                                                        @"dayOfBirth",
                                                                        @"checkdigitDayOfBirth",
                                                                        @"sex",
@@ -419,6 +421,7 @@
                                                                        @"surNames",
                                                                        @"givenNames",
                                                                        @"dayOfBirth",
+                                                                       @"issuingDate",
                                                                        @"placeOfBirth",
                                                                        @"issuingDate",
                                                                        @"expirationDate",
@@ -426,11 +429,11 @@
                                                                        @"categories",
                                                                        @"drivingLicenseString"]] mutableCopy];
     }
-    NSString *dayOfBirthDateObject = [formatter stringFromDate:[scanResult.result dayOfBirthDateObject]];
-    [dictResult setValue:dayOfBirthDateObject forKey:@"dayOfBirthObject"];
+    // NSString *dayOfBirthDateObject = [formatter stringFromDate:[scanResult.result dayOfBirthDateObject]];
+    [dictResult setValue:[scanResult.result dayOfBirthDateObject] forKey:@"dayOfBirthObject"];
     
-    NSString *expirationDateObject = [formatter stringFromDate:[scanResult.result expirationDateObject]];
-    [dictResult setValue:expirationDateObject forKey:@"expirationDateObject"];
+    // NSString *expirationDateObject = [formatter stringFromDate:[scanResult.result expirationDateObject]];
+    [dictResult setValue:[scanResult.result expirationDateObject] forKey:@"expirationDateObject"];
     
     [dictResult setValue:imagePath forKey:@"imagePath"];
     
