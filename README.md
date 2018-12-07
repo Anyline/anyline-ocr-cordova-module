@@ -77,7 +77,7 @@ If you prefer downloading a package, use the provided `zip` package on the [rele
 ##### 2. Plugin Usage
 
 ```javaScript
-cordova.exec(onResult, onError, "AnylineSDK", scanMode, config);
+cordova.exec(onResult, onError, "AnylineSDK", "scan", config);
 ```
 
 - <b>onResult</b>: a function that is called on a scan result
@@ -88,68 +88,61 @@ cordova.exec(onResult, onError, "AnylineSDK", scanMode, config);
     * <b>config[0]</b>: the license key
     * <b>config[1]</b>: the [view config](https://documentation.anyline.com/toc/view_configuration/)
 
-> Example for **config** from MRZ:
+
+##### OCR sample configuration
+For more examples, check the [example configurations](https://github.com/Anyline/anyline-ocr-cordova-module/tree/master/example/www/js).
 
 ```json
 [
-    "YOUR_LICENSE_KEY",
-    {
+  "YOUR_LICENSE_KEY",
+  {
     "camera": {
-      "captureResolution": "1080p"
+      "captureResolution": "1080"
     },
     "flash": {
       "mode": "manual",
-      "alignment": "bottom_left"
+      "alignment": "bottom_right"
     },
     "viewPlugin": {
-      "plugin": {
-        "id": "IDPlugin_ID",
-        "idPlugin": {
-          "mrzConfig": {
-            "strictMode": false,
-            "cropAndTransformID": false
-          }
+      "plugin" : {
+        "id" : "OCR_VC",
+        "ocrPlugin" : {
+          "scanMode" : "AUTO",
+          "languages" : ["www/assets/anyline_capitals.traineddata"],
+          "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+          "validationRegex": "[A-Z0-9]{8}$",
+          "minConfidence": 85
+
         }
       },
       "cutoutConfig": {
         "style": "rect",
-        "maxWidthPercent": "90%",
-        "maxHeightPercent": "90%",
+        "maxWidthPercent": "80%",
+        "maxHeightPercent": "80%",
         "alignment": "center",
+        "width": 540,
         "ratioFromSize": {
-          "width": 125,
-          "height": 85
+          "width": 5,
+          "height": 1
         },
         "strokeWidth": 2,
-        "cornerRadius": 4,
+        "cornerRadius": 10,
         "strokeColor": "FFFFFF",
         "outerColor": "000000",
         "outerAlpha": 0.3,
-        "cropPadding": {
-          "x": 0,
-          "y": 0
-        },
-        "cropOffset": {
-          "x": 0,
-          "y": 0
-        },
-        "feedbackStrokeColor": "0099FF",
-        "offset": {
-          "x": 0,
-          "y": 30
-        }
+        "feedbackStrokeColor": "0099FF"
       },
       "scanFeedback": {
-        "style": "rect",
+        "style": "contour_point",
+        "strokeWidth": 3,
         "strokeColor": "0099FF",
-        "strokeWidth": 2,
-        "blinkOnResult": true,
+        "fillColor": "220099FF",
         "beepOnResult": true,
-        "vibrateOnResult": true
+        "vibrateOnResult": true,
+        "blinkAnimationOnResult": true
       },
       "cancelOnResult": true
-    },
-    "cropAndTransformErrorMessage": "Edges are not detected"
+    }
   }
 ]
 ```
