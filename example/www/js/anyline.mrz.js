@@ -29,6 +29,7 @@ anyline.mrz = {
       "<br/><b>Expiration Date:</b> " + result.expirationDate + "<br/>" +
       "<br/><b>Date of Birth Date Object:</b> " + result.dayOfBirthObject +
       "<br/><b>Expiration Date Object:</b> " + result.expirationDateObject +
+      (result.issuingDate ? "<br/><b>Issuing Date:</b>" + result.issuingDate : "") + "<br/>" +
       (result.address ? "<br/><b>Address:</b>" + result.address : "") + "<br/>" +
       "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
       "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
