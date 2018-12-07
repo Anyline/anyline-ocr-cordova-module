@@ -23,7 +23,7 @@ The old calls with the old configurations will still work.
 - [**ID:**](https://documentation.anyline.com/toc/products/id/index.html)  Reliable scanning of data from passports, Driving Licenses and IDs machine readable zones (MRZ)
 - [**Anyline OCR:**](https://documentation.anyline.com/toc/products/anyline_ocr/index.html) Create a custom use case with LINE or GRID recognition
 
-###UWP
+### UWP
 
 UWP is currently available in a Beta phase. You can use it with <b>x86</b>.
 Available products are: 
