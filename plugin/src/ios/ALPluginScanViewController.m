@@ -52,9 +52,6 @@
     return self;
 }
 
-NSString *vinAny = [[NSBundle mainBundle] pathForResource:@"vin" ofType:@"any"];
-    [config setLanguages:@[vinAny] error:nil];
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
