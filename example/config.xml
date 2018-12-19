@@ -10,7 +10,5 @@
     <content src="index.html" />
     <access origin="*" />
     <icon src="www/img/ic_launcher.png" />
-    <plugin name="io-anyline-cordova" spec="../plugin" />
-    <engine name="android" spec="^7.1.4" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
 </widget>
