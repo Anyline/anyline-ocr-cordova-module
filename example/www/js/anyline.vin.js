@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Anyline Cordova Plugin
  * anyline.ocr.js
  *
@@ -108,6 +108,12 @@ anyline.vin = {
       return;
     }
     localStorage.setItem("hasStartedAnyline", true);
+
+    // patch for windows
+    if (cordova.platformId == 'windows') {
+        this.anylineVINViewConfig.viewPlugin.plugin.ocrPlugin.languages[0] = "www/assets/vin_2.any";
+        this.anylineVINViewConfig.viewPlugin.plugin.ocrPlugin.customCmdFile = "www/assets/vin_2.ale";
+    }
 
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
       this.licenseKey,

@@ -1,3 +1,4 @@
+﻿cordova.define("io-anyline-cordova.ScanView", function(require, exports, module) {
 /*
     Anyline ScanView
 */
@@ -5,12 +6,13 @@ const webUIApp = Windows.UI.WebUI.WebUIApplication;
 const urlutil = require('cordova/urlutil');
 let scanViewController = null;
 let onErrorGlobal;
-
+let baseConfig;
 
 module.exports = {
 
     init: function (licenseKey, mode, config, onSuccess, onError, ocrConfig) {
 
+        baseConfig = config;
         onErrorGlobal = onError;
         scanViewController = new Anyline.JS.ScanViewController();
         scanViewController.setMemoryCollectionMode(2);
@@ -82,7 +84,7 @@ module.exports = {
             }
         }
 
-        // Open the camera!!!
+        // Open the camera first
         openCamera();
 
         // handle errors
@@ -95,7 +97,7 @@ module.exports = {
             onError(argsString);
         };
 
-        // handle scan result..
+        // handle scan result
         scanViewController.onnotifyscanresult = function (args) {
             const argsString = args.toString();
             closeCamera();
@@ -151,8 +153,6 @@ function createPreview(cancelButton) {
     const videoElement = document.createElement("video");
     videoElement.id = "anylineVideoElement";
 
-    //if (cancelButton) { TODO uncomment if config is wanted
-
     const cancelBtnElement = document.createElement("button");
     cancelBtnElement.id = "anylineCancelButton";
     cancelBtnElement.innerHTML = 'CANCEL';
@@ -163,18 +163,7 @@ function createPreview(cancelButton) {
         onErrorGlobal('canceled');
     }
     anylineRoot.appendChild(cancelBtnElement);
-    //}
-
-    // Torch
-    // const torchBtnElement = document.createElement("button");
-    // torchBtnElement.id = "anylineTorchButton";
-    // torchBtnElement.innerHTML = 'TORCH';
-    // torchBtnElement.onclick = function () {
-    //     enableTorch();
-    // }
-    // anylineRoot.appendChild(torchBtnElement);
-
-
+    
     // Cutout
     const backgroundElement = document.createElement('div');
     backgroundElement.id = "anylineBackground";
@@ -185,6 +174,20 @@ function createPreview(cancelButton) {
     // Canvas
     const canvasElement = document.createElement('canvas');
     canvasElement.id = "anylineCanvas";
+
+    // Torch
+    const flashButtonRoot = document.createElement('div');
+    flashButtonRoot.id = "anylineFlashButtonRoot";
+    anylineRoot.appendChild(flashButtonRoot);
+
+    // Torch
+    const flashButton = document.createElement("button");
+    flashButton.id = "anylineFlashButton";
+    flashButton.innerHTML = 'TORCH ONNNN';
+    flashButton.onclick = function () {
+        //enableTorch();
+    }
+    flashButtonRoot.appendChild(flashButton);
 
     [videoElement, backgroundElement, canvasElement].forEach(function (element) {
         anylineRoot.appendChild(element);
@@ -198,7 +201,7 @@ function destroyPreview() {
     // Root Element
     document.getElementById("anylineCanvas").remove();
     document.getElementById("anylineRoot").remove();
-
+    
     // Zoom/Scroll
     enableZoomAndScroll();
 
@@ -349,6 +352,8 @@ function calcVideoRelation() {
     const canvasElement = document.getElementById("anylineCanvas");
     const backgroundElement = document.getElementById("anylineBackground");
     const videoElement = document.getElementById("anylineVideoElement");
+    const flashButton = document.getElementById("anylineFlashButton");
+    const flashButtonRoot = document.getElementById("anylineFlashButtonRoot");
 
     // mirror preview & VF when the camera is front-facing
     if (scanViewController.captureManager.isPreviewMirrored) {
@@ -379,6 +384,9 @@ function calcVideoRelation() {
         videoElement.style.left = ow;
         backgroundElement.style.left = ow;
         canvasElement.style.left = ow;
+
+        //flashButton.style.left = ow;
+
     } else {
         // Video
         videoElement.style.width = window.innerWidth + 'px';
@@ -394,13 +402,70 @@ function calcVideoRelation() {
         backgroundElement.style.left = 0;
         canvasElement.style.left = 0;
         var oh = -(overflowHeight / 2) + 'px';
-        //videoElement.style.top = oh;
         backgroundElement.style.top = oh;
-        //canvasElement.style.top = oh;
     }
 
     //// Update Cutout from SDK
     var w = window.innerWidth;
     var h = window.innerHeight;
     scanViewController.updateForSize(w, h);
+
+    // TODO (PS): separate method?
+
+    // update the flash button alignment
+
+    /*flashButtonRoot.style.left = 0 + 'px';
+    flashButtonRoot.style.top = 0 + 'px';
+    flashButtonRoot.style.right = w + 'px';
+    flashButtonRoot.style.bottom = h + 'px';*/
+
+
+    var alignment = baseConfig.flash.alignment;
+    var margin = 10;
+    var buttonWidth = 150;
+    var buttonHeight = 50;
+
+    switch (alignment) {
+        case "top":
+            flashButton.style.top = margin + 'px';
+            flashButton.style.left = w/2 - buttonWidth/2 + 'px';
+            flashButton.style.bottom = h - margin - buttonHeight + 'px';
+            flashButton.style.right = w/2 + buttonWidth/2 + 'px';
+        break;
+        case "top_left":
+            flashButton.style.top = margin + 'px';
+            flashButton.style.left = margin + 'px';
+            flashButton.style.bottom = h - margin - buttonHeight + 'px';
+            flashButton.style.right = w - margin - buttonWidth + 'px';
+            break;
+        case "top_right":
+            flashButton.style.top = margin + 'px';
+            flashButton.style.left = w - margin - buttonWidth + 'px';
+            flashButton.style.bottom = h - margin - buttonHeight + 'px';
+            flashButton.style.right = w - margin + 'px';
+            break;
+        case "bottom":
+            flashButton.style.top = h - margin - buttonHeight + 'px';
+            flashButton.style.left = w / 2 - buttonWidth / 2 + 'px';
+            flashButton.style.bottom = h - margin + 'px';
+            flashButton.style.right = w / 2 + buttonWidth / 2 + 'px';
+            break;
+        case "bottom_left":
+            flashButton.style.top = h - margin - buttonHeight + 'px';
+            flashButton.style.left = margin + 'px';
+            flashButton.style.bottom = h - margin + 'px';
+            flashButton.style.right = w - margin - buttonWidth + 'px';
+            break;
+        case "bottom_right":
+            /*flashButton.style.top = h - margin - buttonHeight + 'px';
+            flashButton.style.left = w - margin - buttonWidth + 'px';
+            flashButton.style.bottom = h - margin + 'px';
+            flashButton.style.right = w - margin + 'px';*/
+            flashButton.style.left = 100 + '%';
+            flashButton.style.top = 100 + '%';
+
+            break;
+    }
 }
+
+});

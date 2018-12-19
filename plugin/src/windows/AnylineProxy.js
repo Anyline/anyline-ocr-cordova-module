@@ -1,4 +1,9 @@
 cordova.commandProxy.add("AnylineSDK", {
+	scan: function(onSuccess, onError, configArray) {
+		const license = configArray[0];
+        const viewConfig = configArray[1];
+        window.anyline.sdk.init(license, 'scan', viewConfig, onSuccess, onError, "");
+	},
     AUTO_ANALOG_DIGITAL_METER: function (onSuccess, onError, configArray) {
         onError('This mode is not implemented yet in UWP');
         //const license = configArray[0];
