@@ -18,11 +18,16 @@
   "license": "ISC",
   "cordova": {
     "plugins": {
-      "cordova-plugin-file": {}
+      "cordova-plugin-file": {},
+      "io-anyline-cordova": {}
     },
-    "platforms": []
+    "platforms": [
+      "android"
+    ]
   },
   "dependencies": {
-    "cordova-plugin-file": "^6.0.1"
+    "cordova-android": "^7.1.4",
+    "cordova-plugin-file": "^6.0.1",
+    "io-anyline-cordova": "file:../plugin"
   }
 }

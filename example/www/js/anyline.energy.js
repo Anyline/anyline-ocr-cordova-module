@@ -32,47 +32,26 @@ anyline.energy = {
       div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
 
+    window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory, function (dir) {
+      window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory, function (targetDir) {
 
 
-    // window.resolveLocalFileSystemURL(cordova.file.applicationStorageDirectory, function (dir) {
-    //   console.log("got main dir", dir);
+        dir.getFile(result.imagePath, { create: false }, function (fileEntry) {
+          fileEntry.copyTo(targetDir, fileEntry.name, function () {
+            console.log('DONE');
+            //done
+          }, function (err) {
+            console.log('ERROR' + err);
+            //here I get err = 1
+          });
+        })
 
-    //   dir.getFile(result.imagePath, { create: false }, function (fileEntry) {
-    //     console.log("got the file", fileEntry);
-    //     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
-    //       fileSys.root.getDirectory("MyScans", { create: true, exclusive: false }, function (dir) {
-    //         fileEntry.copyTo(dir, fileEntry.name, console.log('YESS'), console.log('NOO1'));
-    //       }, console.log('NOO2'));
-    //     }, console.log('NOO3'));
-    //     // fileEntry.file(function (file) {
-    //     //   var reader = new FileReader();
-    //     //   reader.onloadend = function (e) {
-    //     //     //In this e you have your file
-    //     //     console.log(e);
-    //     //     copyPhoto(e);
-
-    //     //   };
-    //     //   reader.readAsDataURL(file);
-    //   });
-    // });
-
-    window.resolveLocalFileSystemURL(
-      result.imagePath,
-      function (fileEntry) {
-        console.log(fileEntry);
-        newFileUri = cordova.file.dataDirectory + "images/";
-        oldFileUri = result.imagePath;
-
-        // newFileName = guid("car") + fileExt;
-        window.resolveLocalFileSystemURL(newFileUri,
-          function (dirEntry) {
-            // move the file to a new directory and rename it
-            fileEntry.moveTo(dirEntry, fileEntry.name, console.log, console.error);
-          },
-          console.error);
-      },
-      console.error);
-
+      }, function (err) {
+        console.log('ERROR');
+      });
+    }, function (err) {
+      console.log('ERROR');
+    });
 
 
     div.innerHTML = "<p>"
