@@ -1,5 +1,4 @@
-﻿cordova.define("io-anyline-cordova.ScanView", function(require, exports, module) {
-/*
+﻿/*
     Anyline ScanView
 */
 const webUIApp = Windows.UI.WebUI.WebUIApplication;
@@ -7,6 +6,9 @@ const urlutil = require('cordova/urlutil');
 let scanViewController = null;
 let onErrorGlobal;
 let baseConfig;
+
+let TORCH_OFF = "TORCH OFF";
+let TORCH_ON = "TORCH ON";
 
 module.exports = {
 
@@ -142,9 +144,6 @@ function createPreview(cancelButton) {
     if (!document.getElementById("anylineUtilScript")) {
         includeScript(urlutil.makeAbsolute("/www/js/util.js"), console.log, 'anylineUtilScript');
     }
-    if (!document.getElementById("anylineTorchScript")) {
-        includeScript(urlutil.makeAbsolute("/www/js/torch.js"), console.log, 'anylineTorchScript');
-    }
     // Root
     const anylineRoot = document.createElement('div')
     anylineRoot.id = 'anylineRoot';
@@ -183,10 +182,26 @@ function createPreview(cancelButton) {
     // Torch
     const flashButton = document.createElement("button");
     flashButton.id = "anylineFlashButton";
-    flashButton.innerHTML = 'TORCH ONNNN';
+    flashButton.style.visibility = "hidden";
+    flashButton.innerHTML = TORCH_OFF;
     flashButton.onclick = function () {
-        //enableTorch();
-    }
+        if (scanViewController == null) return;
+        if (scanViewController.isFlashSupported() || true) {
+            if (!scanViewController.isFlashEnabled()) {
+                var success = scanViewController.enableFlash();
+                // flash is enabled:
+                if (success == true || true) {
+                    flashButton.innerHTML = TORCH_ON;
+                }
+            } else {
+                var success = scanViewController.disableFlash();
+                // flash is disabled:
+                if (success == true || true) {
+                    flashButton.innerHTML = TORCH_OFF;
+                }
+            }
+        }
+    };
     flashButtonRoot.appendChild(flashButton);
 
     [videoElement, backgroundElement, canvasElement].forEach(function (element) {
@@ -313,6 +328,8 @@ function openCamera() {
         });
     });
 
+    updateFlashButton();
+
     // Event onResize Window
     window.addEventListener("resize", calcVideoRelation);
     webUIApp.addEventListener('enteredbackground', msVisibilityChangeHandler, false);
@@ -344,6 +361,53 @@ function msVisibilityChangeHandler() {
     onErrorGlobal('canceled');
 }
 
+// align & update button from config
+function updateFlashButton() {
+
+    const flashButton = document.getElementById("anylineFlashButton");
+
+    var margin = 10;
+
+    switch (baseConfig.flash.mode) {
+        case "manual":
+        case "auto":
+            flashButton.style.visibility = "visible";
+            break;
+        case "none":
+            flashButton.style.visibility = "hidden";
+            break;
+    }
+
+    switch (baseConfig.flash.alignment) {
+        case "top":
+            flashButton.style.transform = "translate(-50%)";
+            flashButton.style.left = 50 + '%';
+            flashButton.style.top = margin + 'px';
+            break;
+        case "top_left":
+            flashButton.style.left = margin + 'px';
+            flashButton.style.top = margin + 'px';
+            break;
+        case "top_right":
+            flashButton.style.top = margin + 'px';
+            flashButton.style.right = margin + 'px';
+            break;
+        case "bottom":
+            flashButton.style.transform = "translate(-50%)";
+            flashButton.style.left = 50 + '%';
+            flashButton.style.bottom = margin + 'px';
+            break;
+        case "bottom_left":
+            flashButton.style.left = margin + 'px';
+            flashButton.style.bottom = margin + 'px';
+            break;
+        case "bottom_right":
+            flashButton.style.bottom = margin + 'px';
+            flashButton.style.right = margin + 'px';
+            break;
+    }
+}
+
 // Calculate the Video and Webview width and height
 function calcVideoRelation() {
     let props = scanViewController.captureManager.getResolution();
@@ -352,8 +416,6 @@ function calcVideoRelation() {
     const canvasElement = document.getElementById("anylineCanvas");
     const backgroundElement = document.getElementById("anylineBackground");
     const videoElement = document.getElementById("anylineVideoElement");
-    const flashButton = document.getElementById("anylineFlashButton");
-    const flashButtonRoot = document.getElementById("anylineFlashButtonRoot");
 
     // mirror preview & VF when the camera is front-facing
     if (scanViewController.captureManager.isPreviewMirrored) {
@@ -385,8 +447,6 @@ function calcVideoRelation() {
         backgroundElement.style.left = ow;
         canvasElement.style.left = ow;
 
-        //flashButton.style.left = ow;
-
     } else {
         // Video
         videoElement.style.width = window.innerWidth + 'px';
@@ -405,67 +465,11 @@ function calcVideoRelation() {
         backgroundElement.style.top = oh;
     }
 
-    //// Update Cutout from SDK
+    // Update Cutout from SDK
     var w = window.innerWidth;
     var h = window.innerHeight;
     scanViewController.updateForSize(w, h);
 
-    // TODO (PS): separate method?
+    updateFlashButton();
 
-    // update the flash button alignment
-
-    /*flashButtonRoot.style.left = 0 + 'px';
-    flashButtonRoot.style.top = 0 + 'px';
-    flashButtonRoot.style.right = w + 'px';
-    flashButtonRoot.style.bottom = h + 'px';*/
-
-
-    var alignment = baseConfig.flash.alignment;
-    var margin = 10;
-    var buttonWidth = 150;
-    var buttonHeight = 50;
-
-    switch (alignment) {
-        case "top":
-            flashButton.style.top = margin + 'px';
-            flashButton.style.left = w/2 - buttonWidth/2 + 'px';
-            flashButton.style.bottom = h - margin - buttonHeight + 'px';
-            flashButton.style.right = w/2 + buttonWidth/2 + 'px';
-        break;
-        case "top_left":
-            flashButton.style.top = margin + 'px';
-            flashButton.style.left = margin + 'px';
-            flashButton.style.bottom = h - margin - buttonHeight + 'px';
-            flashButton.style.right = w - margin - buttonWidth + 'px';
-            break;
-        case "top_right":
-            flashButton.style.top = margin + 'px';
-            flashButton.style.left = w - margin - buttonWidth + 'px';
-            flashButton.style.bottom = h - margin - buttonHeight + 'px';
-            flashButton.style.right = w - margin + 'px';
-            break;
-        case "bottom":
-            flashButton.style.top = h - margin - buttonHeight + 'px';
-            flashButton.style.left = w / 2 - buttonWidth / 2 + 'px';
-            flashButton.style.bottom = h - margin + 'px';
-            flashButton.style.right = w / 2 + buttonWidth / 2 + 'px';
-            break;
-        case "bottom_left":
-            flashButton.style.top = h - margin - buttonHeight + 'px';
-            flashButton.style.left = margin + 'px';
-            flashButton.style.bottom = h - margin + 'px';
-            flashButton.style.right = w - margin - buttonWidth + 'px';
-            break;
-        case "bottom_right":
-            /*flashButton.style.top = h - margin - buttonHeight + 'px';
-            flashButton.style.left = w - margin - buttonWidth + 'px';
-            flashButton.style.bottom = h - margin + 'px';
-            flashButton.style.right = w - margin + 'px';*/
-            flashButton.style.left = 100 + '%';
-            flashButton.style.top = 100 + '%';
-
-            break;
-    }
 }
-
-});
