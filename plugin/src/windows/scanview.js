@@ -186,17 +186,17 @@ function createPreview(cancelButton) {
     flashButton.innerHTML = TORCH_OFF;
     flashButton.onclick = function () {
         if (scanViewController == null) return;
-        if (scanViewController.isFlashSupported() || true) {
+        if (scanViewController.isFlashSupported()) {
             if (!scanViewController.isFlashEnabled()) {
                 var success = scanViewController.enableFlash();
                 // flash is enabled:
-                if (success == true || true) {
+                if (success == true) {
                     flashButton.innerHTML = TORCH_ON;
                 }
             } else {
                 var success = scanViewController.disableFlash();
                 // flash is disabled:
-                if (success == true || true) {
+                if (success == true) {
                     flashButton.innerHTML = TORCH_OFF;
                 }
             }

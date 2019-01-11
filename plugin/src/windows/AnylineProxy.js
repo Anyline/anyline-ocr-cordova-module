@@ -76,4 +76,4 @@ cordova.commandProxy.add("AnylineSDK", {
         const viewConfig = configArray[1];
         window.anyline.sdk.init(license, 'MRZ', viewConfig, onSuccess, onError, "");
     },
-});    
+}); 
