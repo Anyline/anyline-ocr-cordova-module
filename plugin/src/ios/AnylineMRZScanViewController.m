@@ -16,21 +16,21 @@
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
         AnylineMRZModuleView *mrzModuleView = [[AnylineMRZModuleView alloc] initWithFrame:self.view.bounds];
-
+        
         NSError *error = nil;
         [mrzModuleView setupWithLicenseKey:self.key delegate:self error:&error];
-
+        
         // Set strictMode to MRZView
         [mrzModuleView setStrictMode:self.strictMode];
-
+        
         // Set CropAndTransform to MRZView
         [mrzModuleView setCropAndTransformID:self.cropAndTransformID];
-
+        
         mrzModuleView.currentConfiguration = self.conf;
-
+        
         self.moduleView = mrzModuleView;
-
-    
+        
+        
         [self.view addSubview:self.moduleView];
         [self.view sendSubviewToBack:self.moduleView];
         
@@ -54,43 +54,12 @@
 
 
 -(void)anylineMRZModuleView:(AnylineMRZModuleView *)anylineMRZModuleView didFindResult:(ALMRZResult *)scanResult {
-
-
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy.MM.dd"];
     
-    NSString *expirationDateObject = [formatter stringFromDate:[scanResult.result expirationDateObject]];
-    NSString *dayOfBirthDateObject = [formatter stringFromDate:[scanResult.result dayOfBirthDateObject]];
-
-
-    NSMutableDictionary *scanResultDict = [[scanResult.result dictionaryWithValuesForKeys:@[@"documentType",
-                                                                                     @"nationalityCountryCode",
-                                                                                     @"issuingCountryCode",
-                                                                                     @"surNames",
-                                                                                     @"givenNames",
-                                                                                     @"documentNumber",
-                                                                                     @"checkdigitNumber",
-                                                                                     @"dayOfBirth",
-                                                                                     @"checkdigitDayOfBirth",
-                                                                                     @"sex",
-                                                                                     @"expirationDate",
-                                                                                     @"checkdigitExpirationDate",
-                                                                                     @"personalNumber",
-                                                                                     @"checkDigitPersonalNumber",
-                                                                                     @"checkdigitFinal"]] mutableCopy];
-    self.scannedLabel.text = scanResultDict.description;
-
-    NSString *imagePath = [self saveImageToFileSystem:scanResult.image];
-
-    [scanResultDict setValue:imagePath forKey:@"imagePath"];
-    [scanResultDict setValue:@(scanResult.allCheckDigitsValid) forKey:@"allCheckDigitsValid"];
-
-    [scanResultDict setValue:@(scanResult.confidence) forKey:@"confidence"];
-    [scanResultDict setValue:[self stringForOutline:anylineMRZModuleView.mrzScanViewPlugin.outline] forKey:@"outline"];
-
-    [scanResultDict setValue:expirationDateObject forKey:@"expirationDateObject"];
-    [scanResultDict setValue:dayOfBirthDateObject forKey:@"dayOfBirthObject"];
-
+    NSDictionary *scanResultDict = [ALPluginHelper dictionaryForIDResult:scanResult
+                                                        detectedBarcodes:nil
+                                                                 outline:anylineMRZModuleView.mrzScanViewPlugin.outline
+                                                                 quality:90];
+    
     
     [self.delegate anylineBaseScanViewController:self didScan:scanResultDict continueScanning:!self.moduleView.cancelOnResult];
     
