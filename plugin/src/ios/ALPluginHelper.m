@@ -412,9 +412,6 @@
         if ([[scanResult.result documentType] isEqualToString:@"ID"] && [[scanResult.result issuingCountryCode] isEqualToString:@"D"]) {
             [dictResult setValue:mrzIdentification.address forKey:@"address"];
         }
-        
-        NSString *expirationDateObject = [formatter stringFromDate:[scanResult.result expirationDateObject]];
-        [dictResult setValue:expirationDateObject forKey:@"expirationDateObject"];
     } else {
         dictResult = [[scanResult.result dictionaryWithValuesForKeys:@[@"documentNumber",
                                                                        @"surNames",
@@ -426,21 +423,12 @@
                                                                        @"authority",
                                                                        @"categories",
                                                                        @"drivingLicenseString"]] mutableCopy];
-        
-//        NSString *issuingDateObject = [formatter stringFromDate:[scanResult.result issuingDateObject]];
-//        [dictResult setValue:issuingDateObject forKey:@"issuingDateObject"];
     }
-//    NSString *dayOfBirthDateObject = [formatter stringFromDate:[scanResult.result dayOfBirthDateObject]];
-//    [dictResult setValue:dayOfBirthDateObject forKey:@"dayOfBirthObject"];
     
-//    NSString *expirationDateObject = [formatter stringFromDate:[scanResult.result expirationDateObject]];
-//    [dictResult setValue:expirationDateObject forKey:@"expirationDateObject"];
+    [dictResult setValue:[ALPluginHelper stringForDate:[scanResult.result dayOfBirthDateObject]] forKey:@"dayOfBirthDateObject"];
+    [dictResult setValue:[ALPluginHelper stringForDate:[scanResult.result expirationDateObject]] forKey:@"expirationDateObject"];
+    [dictResult setValue:[ALPluginHelper stringForDate:[scanResult.result issuingDateObject]] forKey:@"issuingDateObject"];
     
-    
-    [dictResult setValue:[NSString stringWithFormat: @"%@",[scanResult.result dayOfBirthDateObject]] forKey:@"dayOfBirthObject"];
-    [dictResult setValue:[NSString stringWithFormat: @"%@",[scanResult.result expirationDateObject]] forKey:@"expirationDateObject"];
-    [dictResult setValue:[NSString stringWithFormat: @"%@",[scanResult.result issuingDateObject]] forKey:@"issuingDateObject"];
-
     [dictResult setValue:imagePath forKey:@"imagePath"];
     
     [dictResult setValue:@(scanResult.confidence) forKey:@"confidence"];
@@ -543,6 +531,24 @@
     }
     
     return dictResult;
+}
+
+
+#pragma mark - Date Parsing Utils
+
++ (NSString *)stringForDate:(NSDate *)date {
+    if (!date) {
+        return nil;
+    }
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT+0:00"]];
+    [dateFormatter setDateFormat:@"EEE MMM d hh:mm:ss ZZZZ yyyy"];
+    
+    //Date will be formatted to string - e.g.: "Fri Jan 11 12:00:00 GMT+0:00 1980"
+    NSString *dateString = [dateFormatter stringFromDate:date];
+    
+    return dateString;
 }
 
 @end
