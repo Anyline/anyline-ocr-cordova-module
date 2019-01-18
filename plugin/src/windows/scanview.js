@@ -14,10 +14,21 @@ module.exports = {
 
     init: function (licenseKey, mode, config, onSuccess, onError, ocrConfig) {
 
+        Anyline.JS.Util.Debug.verbosity = 4;
+        
+        /*Anyline.JS.Util.Debug.onlog = function (args) {
+            console.log(args.toString());
+        }*/
+
         baseConfig = config;
         onErrorGlobal = onError;
         scanViewController = new Anyline.JS.ScanViewController();
         scanViewController.setMemoryCollectionMode(2);
+
+        scanViewController.onnotifyexception = function (args) {
+            console.log(args);
+        }
+
         createPreview(config.doneButton);
 
         if (ocrConfig || ocrConfig !== '') {
@@ -42,7 +53,7 @@ module.exports = {
         // stop scanning here
         scanViewController.captureManager.onpreviewstopped = function (args) {
             const argsString = args.toString();
-            console.error('onPreviewStopped', argsString);
+            console.log('onPreviewStopped', argsString);
         }
 
         // stop scanning also here (if possible)
@@ -111,6 +122,8 @@ module.exports = {
             } else if (mode === 'BARCODE') {
                 result.value = result.result;
                 result.format = result.barcodeFormat;
+            } else {
+                result.text = result.result;
             }
             // Remap for relative paths
             result.imagePath = "ms-appdata:///temp/SavedImages/" + result.imagePath.substr(result.imagePath.lastIndexOf('\\') + 1);
@@ -213,19 +226,31 @@ function createPreview(cancelButton) {
 
 function destroyPreview() {
 
-    // Root Element
-    document.getElementById("anylineCanvas").remove();
-    document.getElementById("anylineRoot").remove();
-    
-    // Zoom/Scroll
-    enableZoomAndScroll();
+    try
+    {
+        // Root Element
+        var _anylineCanvas = document.getElementById("anylineCanvas");
+        if (_anylineCanvas != null) {
+            document.getElementById("anylineCanvas").remove();
+        }
+        var _anylineRoot = document.getElementById("anylineRoot");
+        if (_anylineRoot != null) {
+            document.getElementById("anylineRoot").remove();
+        }
 
-    //Events
-    scanViewController.onnotifyupdatevisualfeedback = null;
-    scanViewController.onnotifyclearvisualfeedback = null;
-    scanViewController.onnotifyupdatecutout = null;
-    scanViewController.onnotifyexception = null;
-    scanViewController.onnotifyscanresult = null;
+        // Zoom/Scroll
+        enableZoomAndScroll();
+
+        //Events
+        scanViewController.onnotifyupdatevisualfeedback = null;
+        scanViewController.onnotifyclearvisualfeedback = null;
+        scanViewController.onnotifyupdatecutout = null;
+        scanViewController.onnotifyexception = null;
+        scanViewController.onnotifyscanresult = null;
+    }
+    catch (exception) {
+        console.log(exception);
+    }
 }
 
 // Utils
@@ -318,6 +343,10 @@ function openCamera() {
     scanViewController.captureManager.initializeCamera().then(function (result) {
         const videoElement = document.getElementById("anylineVideoElement");
 
+        if (videoElement == null) {
+            console.error("VideoElement not found!");
+        }
+
         videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
 
         videoElement.play().then(function () {
@@ -365,6 +394,9 @@ function msVisibilityChangeHandler() {
 function updateFlashButton() {
 
     const flashButton = document.getElementById("anylineFlashButton");
+
+    if (flashButton == null)
+        return;
 
     var margin = 10;
 
@@ -416,6 +448,9 @@ function calcVideoRelation() {
     const canvasElement = document.getElementById("anylineCanvas");
     const backgroundElement = document.getElementById("anylineBackground");
     const videoElement = document.getElementById("anylineVideoElement");
+
+    if (canvasElement == null || backgroundElement == null || videoElement == null)
+        return;
 
     // mirror preview & VF when the camera is front-facing
     if (scanViewController.captureManager.isPreviewMirrored) {
