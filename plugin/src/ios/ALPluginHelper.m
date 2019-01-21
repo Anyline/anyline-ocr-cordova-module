@@ -425,7 +425,7 @@
                                                                        @"drivingLicenseString"]] mutableCopy];
     }
     
-    [dictResult setValue:[ALPluginHelper stringForDate:[scanResult.result dayOfBirthDateObject]] forKey:@"dayOfBirthDateObject"];
+    [dictResult setValue:[ALPluginHelper stringForDate:[scanResult.result dayOfBirthDateObject]] forKey:@"dayOfBirthObject"];
     [dictResult setValue:[ALPluginHelper stringForDate:[scanResult.result expirationDateObject]] forKey:@"expirationDateObject"];
     [dictResult setValue:[ALPluginHelper stringForDate:[scanResult.result issuingDateObject]] forKey:@"issuingDateObject"];
     
@@ -542,7 +542,7 @@
     }
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT+0:00"]];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC+0:00"]];
     [dateFormatter setDateFormat:@"EEE MMM d hh:mm:ss ZZZZ yyyy"];
     
     //Date will be formatted to string - e.g.: "Fri Jan 11 12:00:00 GMT+0:00 1980"
