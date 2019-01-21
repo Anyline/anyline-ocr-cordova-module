@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Anyline Cordova Plugin
  * anyline.ocr.js
  *
@@ -108,6 +108,11 @@ anylineUSNRViewConfig: {
       return;
     }
     localStorage.setItem("hasStartedAnyline", true);
+
+    // patch for windows
+    if (cordova.platformId == 'windows') {
+        this.anylineUSNRViewConfig.viewPlugin.plugin.ocrPlugin.languages[0] = "www/assets/usnr_2.any";
+    }
 
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
           this.licenseKey,

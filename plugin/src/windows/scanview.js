@@ -1,19 +1,34 @@
-/*
+﻿/*
     Anyline ScanView
 */
 const webUIApp = Windows.UI.WebUI.WebUIApplication;
 const urlutil = require('cordova/urlutil');
 let scanViewController = null;
 let onErrorGlobal;
+let baseConfig;
 
+let TORCH_OFF = "TORCH OFF";
+let TORCH_ON = "TORCH ON";
 
 module.exports = {
 
     init: function (licenseKey, mode, config, onSuccess, onError, ocrConfig) {
 
+        Anyline.JS.Util.Debug.verbosity = 4;
+        
+        /*Anyline.JS.Util.Debug.onlog = function (args) {
+            console.log(args.toString());
+        }*/
+
+        baseConfig = config;
         onErrorGlobal = onError;
         scanViewController = new Anyline.JS.ScanViewController();
         scanViewController.setMemoryCollectionMode(2);
+
+        scanViewController.onnotifyexception = function (args) {
+            console.log(args);
+        }
+
         createPreview(config.doneButton);
 
         if (ocrConfig || ocrConfig !== '') {
@@ -38,7 +53,7 @@ module.exports = {
         // stop scanning here
         scanViewController.captureManager.onpreviewstopped = function (args) {
             const argsString = args.toString();
-            console.error('onPreviewStopped', argsString);
+            console.log('onPreviewStopped', argsString);
         }
 
         // stop scanning also here (if possible)
@@ -82,7 +97,7 @@ module.exports = {
             }
         }
 
-        // Open the camera!!!
+        // Open the camera first
         openCamera();
 
         // handle errors
@@ -95,7 +110,7 @@ module.exports = {
             onError(argsString);
         };
 
-        // handle scan result..
+        // handle scan result
         scanViewController.onnotifyscanresult = function (args) {
             const argsString = args.toString();
             closeCamera();
@@ -107,6 +122,8 @@ module.exports = {
             } else if (mode === 'BARCODE') {
                 result.value = result.result;
                 result.format = result.barcodeFormat;
+            } else {
+                result.text = result.result;
             }
             // Remap for relative paths
             result.imagePath = "ms-appdata:///temp/SavedImages/" + result.imagePath.substr(result.imagePath.lastIndexOf('\\') + 1);
@@ -140,9 +157,6 @@ function createPreview(cancelButton) {
     if (!document.getElementById("anylineUtilScript")) {
         includeScript(urlutil.makeAbsolute("/www/js/util.js"), console.log, 'anylineUtilScript');
     }
-    if (!document.getElementById("anylineTorchScript")) {
-        includeScript(urlutil.makeAbsolute("/www/js/torch.js"), console.log, 'anylineTorchScript');
-    }
     // Root
     const anylineRoot = document.createElement('div')
     anylineRoot.id = 'anylineRoot';
@@ -150,8 +164,6 @@ function createPreview(cancelButton) {
     // Video
     const videoElement = document.createElement("video");
     videoElement.id = "anylineVideoElement";
-
-    //if (cancelButton) { TODO uncomment if config is wanted
 
     const cancelBtnElement = document.createElement("button");
     cancelBtnElement.id = "anylineCancelButton";
@@ -163,18 +175,7 @@ function createPreview(cancelButton) {
         onErrorGlobal('canceled');
     }
     anylineRoot.appendChild(cancelBtnElement);
-    //}
-
-    // Torch
-    // const torchBtnElement = document.createElement("button");
-    // torchBtnElement.id = "anylineTorchButton";
-    // torchBtnElement.innerHTML = 'TORCH';
-    // torchBtnElement.onclick = function () {
-    //     enableTorch();
-    // }
-    // anylineRoot.appendChild(torchBtnElement);
-
-
+    
     // Cutout
     const backgroundElement = document.createElement('div');
     backgroundElement.id = "anylineBackground";
@@ -186,6 +187,36 @@ function createPreview(cancelButton) {
     const canvasElement = document.createElement('canvas');
     canvasElement.id = "anylineCanvas";
 
+    // Torch
+    const flashButtonRoot = document.createElement('div');
+    flashButtonRoot.id = "anylineFlashButtonRoot";
+    anylineRoot.appendChild(flashButtonRoot);
+
+    // Torch
+    const flashButton = document.createElement("button");
+    flashButton.id = "anylineFlashButton";
+    flashButton.style.visibility = "hidden";
+    flashButton.innerHTML = TORCH_OFF;
+    flashButton.onclick = function () {
+        if (scanViewController == null) return;
+        if (scanViewController.isFlashSupported()) {
+            if (!scanViewController.isFlashEnabled()) {
+                var success = scanViewController.enableFlash();
+                // flash is enabled:
+                if (success == true) {
+                    flashButton.innerHTML = TORCH_ON;
+                }
+            } else {
+                var success = scanViewController.disableFlash();
+                // flash is disabled:
+                if (success == true) {
+                    flashButton.innerHTML = TORCH_OFF;
+                }
+            }
+        }
+    };
+    flashButtonRoot.appendChild(flashButton);
+
     [videoElement, backgroundElement, canvasElement].forEach(function (element) {
         anylineRoot.appendChild(element);
     });
@@ -195,19 +226,31 @@ function createPreview(cancelButton) {
 
 function destroyPreview() {
 
-    // Root Element
-    document.getElementById("anylineCanvas").remove();
-    document.getElementById("anylineRoot").remove();
+    try
+    {
+        // Root Element
+        var _anylineCanvas = document.getElementById("anylineCanvas");
+        if (_anylineCanvas != null) {
+            document.getElementById("anylineCanvas").remove();
+        }
+        var _anylineRoot = document.getElementById("anylineRoot");
+        if (_anylineRoot != null) {
+            document.getElementById("anylineRoot").remove();
+        }
 
-    // Zoom/Scroll
-    enableZoomAndScroll();
+        // Zoom/Scroll
+        enableZoomAndScroll();
 
-    //Events
-    scanViewController.onnotifyupdatevisualfeedback = null;
-    scanViewController.onnotifyclearvisualfeedback = null;
-    scanViewController.onnotifyupdatecutout = null;
-    scanViewController.onnotifyexception = null;
-    scanViewController.onnotifyscanresult = null;
+        //Events
+        scanViewController.onnotifyupdatevisualfeedback = null;
+        scanViewController.onnotifyclearvisualfeedback = null;
+        scanViewController.onnotifyupdatecutout = null;
+        scanViewController.onnotifyexception = null;
+        scanViewController.onnotifyscanresult = null;
+    }
+    catch (exception) {
+        console.log(exception);
+    }
 }
 
 // Utils
@@ -300,6 +343,10 @@ function openCamera() {
     scanViewController.captureManager.initializeCamera().then(function (result) {
         const videoElement = document.getElementById("anylineVideoElement");
 
+        if (videoElement == null) {
+            console.error("VideoElement not found!");
+        }
+
         videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
 
         videoElement.play().then(function () {
@@ -309,6 +356,8 @@ function openCamera() {
             }, 100);
         });
     });
+
+    updateFlashButton();
 
     // Event onResize Window
     window.addEventListener("resize", calcVideoRelation);
@@ -341,6 +390,56 @@ function msVisibilityChangeHandler() {
     onErrorGlobal('canceled');
 }
 
+// align & update button from config
+function updateFlashButton() {
+
+    const flashButton = document.getElementById("anylineFlashButton");
+
+    if (flashButton == null)
+        return;
+
+    var margin = 10;
+
+    switch (baseConfig.flash.mode) {
+        case "manual":
+        case "auto":
+            flashButton.style.visibility = "visible";
+            break;
+        case "none":
+            flashButton.style.visibility = "hidden";
+            break;
+    }
+
+    switch (baseConfig.flash.alignment) {
+        case "top":
+            flashButton.style.transform = "translate(-50%)";
+            flashButton.style.left = 50 + '%';
+            flashButton.style.top = margin + 'px';
+            break;
+        case "top_left":
+            flashButton.style.left = margin + 'px';
+            flashButton.style.top = margin + 'px';
+            break;
+        case "top_right":
+            flashButton.style.top = margin + 'px';
+            flashButton.style.right = margin + 'px';
+            break;
+        case "bottom":
+            flashButton.style.transform = "translate(-50%)";
+            flashButton.style.left = 50 + '%';
+            flashButton.style.bottom = margin + 'px';
+            break;
+        case "bottom_left":
+            flashButton.style.left = margin + 'px';
+            flashButton.style.bottom = margin + 'px';
+            break;
+        case "bottom_right":
+            flashButton.style.bottom = margin + 'px';
+            flashButton.style.right = margin + 'px';
+            break;
+    }
+}
+
 // Calculate the Video and Webview width and height
 function calcVideoRelation() {
     let props = scanViewController.captureManager.getResolution();
@@ -349,6 +448,9 @@ function calcVideoRelation() {
     const canvasElement = document.getElementById("anylineCanvas");
     const backgroundElement = document.getElementById("anylineBackground");
     const videoElement = document.getElementById("anylineVideoElement");
+
+    if (canvasElement == null || backgroundElement == null || videoElement == null)
+        return;
 
     // mirror preview & VF when the camera is front-facing
     if (scanViewController.captureManager.isPreviewMirrored) {
@@ -379,6 +481,7 @@ function calcVideoRelation() {
         videoElement.style.left = ow;
         backgroundElement.style.left = ow;
         canvasElement.style.left = ow;
+
     } else {
         // Video
         videoElement.style.width = window.innerWidth + 'px';
@@ -394,13 +497,14 @@ function calcVideoRelation() {
         backgroundElement.style.left = 0;
         canvasElement.style.left = 0;
         var oh = -(overflowHeight / 2) + 'px';
-        //videoElement.style.top = oh;
         backgroundElement.style.top = oh;
-        //canvasElement.style.top = oh;
     }
 
-    //// Update Cutout from SDK
+    // Update Cutout from SDK
     var w = window.innerWidth;
     var h = window.innerHeight;
     scanViewController.updateForSize(w, h);
+
+    updateFlashButton();
+
 }

@@ -369,7 +369,11 @@ function drawContourRectOverlay(config, lsquares) {
 }
 
 function roundedPath(config, points) {
-    var context = document.getElementById('anylineCanvas').getContext("2d");
+    var canvas = document.getElementById('anylineCanvas')
+    if (canvas == null)
+        return;
+
+    var context = canvas.getContext("2d");
     var radius = config.visualFeedbackCornerRadius;
     if (typeof points == 'undefined') {
         return;
@@ -411,7 +415,10 @@ function roundedPath(config, points) {
 }
 
 function drawPolygon(config, points) {
-    var context = document.getElementById('anylineCanvas').getContext("2d");
+    var canvas = document.getElementById('anylineCanvas');
+    if (canvas == null)
+        return;
+    var context = canvas.getContext("2d");
     var radius = config.visualFeedbackCornerRadius;
 
     if (typeof points == 'undefined') {
@@ -498,7 +505,10 @@ function drawContourUnderlineOverlay(config, lsquares) {
 }
 
 function drawLine(config, x1, y1, x2, y2, stroke, color) {
-    var context = document.getElementById('anylineCanvas').getContext("2d");
+    var canvas = document.getElementById('anylineCanvas');
+    if (canvas == null)
+        return;
+    var context = canvas.getContext("2d");
     context.strokeStyle = color;
     context.beginPath();
     context.moveTo(x1, y1);
@@ -508,7 +518,7 @@ function drawLine(config, x1, y1, x2, y2, stroke, color) {
 }
 
 function clearContext() {
-    if (!document.getElementById('anylineCanvas') && typeof document.getElementById('anylineCanvas').getContext("2d") == 'undefined') {
+    if (!document.getElementById('anylineCanvas') || typeof document.getElementById('anylineCanvas').getContext("2d") == 'undefined') {
         return;
     }
     var context = document.getElementById('anylineCanvas').getContext("2d");
@@ -526,6 +536,8 @@ function drawCircle(config, x, y, radius, color) {
 
 function resizeCanvas(x, y) {
     const visualFeedbackCan = document.getElementById("anylineCanvas");
+    if (visualFeedbackCan == null)
+        return;
 
     visualFeedbackCan.width = x;
     visualFeedbackCan.height = y;
@@ -533,7 +545,11 @@ function resizeCanvas(x, y) {
 }
 
 function roundRect(config, x, y, width, height) {
-    var context = document.getElementById('anylineCanvas').getContext("2d");
+    var canvas = document.getElementById('anylineCanvas');
+    if (canvas == null) 
+        return;
+    
+    var context = canvas.getContext("2d");
     var radius = config.visualFeedbackCornerRadius;
     if (typeof radius === 'number') {
         radius = {

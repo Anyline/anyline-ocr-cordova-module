@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Anyline Cordova Plugin
  * anyline.ocr.js
  *
@@ -171,6 +171,11 @@ anyline.ocr = {
     // see http://documentation.anyline.io/#anyline-config for config details
     // and http://documentation.anyline.io/#anylineOcrModule for module details
 
+	// patch for windows
+    if (cordova.platformId == 'windows') {
+        this.ibanViewConfig.viewPlugin.plugin.ocrPlugin.languages[0] = "www/assets/usnr_2.any";
+    }
+	
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.anylineVoucherCodesViewConfig]);
   }
 };
