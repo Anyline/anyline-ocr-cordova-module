@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Anyline Cordova Plugin
  * anyline.ocr.js
  *
@@ -110,6 +110,12 @@ anyline.container = {
       return;
     }
     localStorage.setItem("hasStartedAnyline", true);
+
+    // patch for windows
+    if (cordova.platformId == 'windows') {
+        this.anylineContainerViewConfig.viewPlugin.plugin.ocrPlugin.languages[0] = "www/assets/usnr_2.any";
+        this.anylineContainerViewConfig.viewPlugin.plugin.ocrPlugin.customCmdFile = "www/assets/container_scanner_2.ale";
+    }
 
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
       this.licenseKey,

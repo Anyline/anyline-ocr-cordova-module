@@ -50,14 +50,19 @@
     transform: translateX(-50%);
 }
 
-#anylineTorchButton{
+#anylineFlashButtonRoot{
+    position:fixed;
+    z-index: 99998;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+
+#anylineFlashButton{
     position: fixed;
     z-index: 99999;
-    bottom: 60px;
-    margin: auto;
-    left: 80%;
     font-size: 3em;
     background-color: transparent;
-    border: 0;
+    border: solid;
     color: white;
 }

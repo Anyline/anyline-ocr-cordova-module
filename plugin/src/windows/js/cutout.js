@@ -7,6 +7,9 @@ function setupCutout(config) {
     var canvas = document.getElementById('anylineCanvas');
     document.body.style.overflow = 'hidden';
 
+    if (cutoutDiv == null || backgroundDiv == null || canvas == null)
+        return;
+
     var cornerRadius = config.cornerRadius,
         strokeWidth = config.strokeWidth,
         strokeColor = config.strokeColor,
@@ -34,56 +37,21 @@ function setupCutout(config) {
     // borderColor
     cutoutDiv.style.borderColor = getColorFromHexString(strokeColor);
     // background
-    // cutoutDiv.style.boxShadow = outerAlpha ? '0 0 0 99995px rgba(0, 0, 0, ' + outerAlpha + ')' : '0 0 0 99995px rgba(0, 0, 0, 0.0)';
     cutoutDiv.style.boxShadow = `0 0 0 99995px ${getColorFromHexString(outerAlpha)}`;
 
-    // offset
-
-    //  if (offset && offset.x) {
-    //
-    //    cutoutDiv.style.marginLeft = offset.x + 'px';
-    //
-    //  }
-    //
-    //  if (offset && offset.y) {
-    //
-    //    cutoutDiv.style.marginTop = offset.y + 'px';
-    //
-    //  }
-
-
     // Check if cutout is out of the View and put it back if so
-
 
     var _cutoutDiv$getBoundin = cutoutDiv.getBoundingClientRect(),
         left = _cutoutDiv$getBoundin.left,
         right = _cutoutDiv$getBoundin.right,
         top = _cutoutDiv$getBoundin.top,
         bottom = _cutoutDiv$getBoundin.bottom;
-    /*
-      if (left <= 0) {
-        cutoutDiv.style.marginLeft = '0';
-        backgroundDiv.style.justifyContent = 'flex-start';
-      }
-    
-      if (top <= 0) {
-        cutoutDiv.style.marginTop = '0';
-        cutoutDiv.style.alignSelf = 'flex-start';
-      }
-    
-      if (right >= document.documentElement.scrollWidth) {
-        cutoutDiv.style.marginLeft = '0';
-        backgroundDiv.style.justifyContent = 'flex-end';
-      }
-    
-      if (bottom >= document.documentElement.scrollHeight) {
-        cutoutDiv.style.marginTop = '0px';
-        cutoutDiv.style.alignSelf = 'flex-end';
-      }
-      */
 }
 
 function setCutoutBorders(feedbackColor) {
     var cutoutDiv = document.getElementById('anylineCutout');
+    if (cutoutDiv == null)
+        return;
+
     cutoutDiv.style.borderColor = getColorFromHexString(feedbackColor);
 }

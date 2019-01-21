@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Anyline Cordova Plugin
  * anyline.barcode.js
  *
