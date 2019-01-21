@@ -214,16 +214,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 										e.printStackTrace();
 									}
 								}
-								if(jsonResult.has("dateOfBirth")){
-									try {
-										String dateOfBirth = jsonResult.getString("dateOfBirth");
-										jsonResult.remove("dateOfBirth");
-										jsonResult.put("dayOfBirth", dateOfBirth);
-									} catch (JSONException e) {
-										e.printStackTrace();
-									}
-								}
-
+								
 								try {
 									jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, idScanResult, jsonResult);
 								} catch (Exception e) {
