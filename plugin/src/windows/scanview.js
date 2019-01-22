@@ -172,7 +172,7 @@ function createPreview(cancelButton) {
         closeCamera();
         destroyPreview();
         delete scanViewController;
-        onErrorGlobal('canceled');
+        onErrorGlobal('Canceled');
     }
     anylineRoot.appendChild(cancelBtnElement);
     
@@ -387,7 +387,7 @@ function msVisibilityChangeHandler() {
     closeCamera();
     destroyPreview();
     delete scanViewController;
-    onErrorGlobal('canceled');
+    onErrorGlobal('Canceled');
 }
 
 // align & update button from config
