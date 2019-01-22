@@ -6,7 +6,8 @@
     "id": "io-anyline-cordova",
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "windows"
     ]
   },
   "keywords": [
