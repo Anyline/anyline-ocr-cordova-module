@@ -1,6 +1,6 @@
 {
   "name": "io-anyline-cordova",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "The cordova plugin for the Anyline SDK",
   "cordova": {
     "id": "io-anyline-cordova",
@@ -13,7 +13,8 @@
   "keywords": [
     "ecosystem:cordova",
     "cordova-ios",
-    "cordova-android"
+    "cordova-android",
+    "cordova-windows"
   ],
   "repository": {
     "type": "git",
