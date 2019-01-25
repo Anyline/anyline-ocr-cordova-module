@@ -6,23 +6,25 @@ const urlutil = require('cordova/urlutil');
 let scanViewController = null;
 let onErrorGlobal;
 let baseConfig;
-
-let TORCH_OFF = "TORCH OFF";
-let TORCH_ON = "TORCH ON";
-
+let skipFocus = false;
+let TORCH_OFF = "<img src=\"img\\torch_off.png\" style=\"vertical-align:middle\" />";
+let TORCH_ON = "<img src=\"img\\torch_on.png\" style=\"vertical-align:middle\" />";
 module.exports = {
 
     init: function (licenseKey, mode, config, onSuccess, onError, ocrConfig) {
 
-        Anyline.JS.Util.Debug.verbosity = 4;
+        // enable for debug purposes only!
+        /*Anyline.JS.Util.Debug.verbosity = 4;
         
-        /*Anyline.JS.Util.Debug.onlog = function (args) {
+        Anyline.JS.Util.Debug.onlog = function (args) {
             console.log(args.toString());
         }*/
 
         baseConfig = config;
         onErrorGlobal = onError;
         scanViewController = new Anyline.JS.ScanViewController();
+
+        // set this if you're experiencing memory issues
         scanViewController.setMemoryCollectionMode(2);
 
         scanViewController.onnotifyexception = function (args) {
@@ -83,9 +85,10 @@ module.exports = {
         scanViewController.captureManager.onpreviewrotated = () => {
             calcVideoRelation();
         }
-
+        
         scanViewController.onnotifyupdatevisualfeedback = function (args) {
             if (args) {
+
                 const argsString = args.toString();
                 const functionName = argsString.split('(')[0];
                 const functionArgs = argsString.split('(')[1].split(')')[0];
@@ -149,13 +152,13 @@ function createPreview(cancelButton) {
 
     // Scripts
     if (!document.getElementById("anylineCutoutScript")) {
-        includeScript(urlutil.makeAbsolute("/www/js/cutout.js"), console.log, 'anylineCutoutScript');
+        includeScript(urlutil.makeAbsolute("/www/js/cutout.js"), 'anylineCutoutScript');
     }
     if (!document.getElementById("anylineVFScript")) {
-        includeScript(urlutil.makeAbsolute("/www/js/visualFeedback.js"), console.log, 'anylineVFScript');
+        includeScript(urlutil.makeAbsolute("/www/js/visualFeedback.js"), 'anylineVFScript');
     }
     if (!document.getElementById("anylineUtilScript")) {
-        includeScript(urlutil.makeAbsolute("/www/js/util.js"), console.log, 'anylineUtilScript');
+        includeScript(urlutil.makeAbsolute("/www/js/util.js"), 'anylineUtilScript');
     }
     // Root
     const anylineRoot = document.createElement('div')
@@ -198,22 +201,31 @@ function createPreview(cancelButton) {
     flashButton.style.visibility = "hidden";
     flashButton.innerHTML = TORCH_OFF;
     flashButton.onclick = function () {
+
+        skipFocus = true;
+        setTimeout(function () { skipFocus = false; }, 1000);
+
         if (scanViewController == null) return;
         if (scanViewController.isFlashSupported()) {
-            if (!scanViewController.isFlashEnabled()) {
+            if (!scanViewController.captureManager.mediaCapture.videoDeviceController.flashControl.enabled) {
                 var success = scanViewController.enableFlash();
+                scanViewController.captureManager.mediaCapture.videoDeviceController.flashControl.enabled = true;
                 // flash is enabled:
                 if (success == true) {
                     flashButton.innerHTML = TORCH_ON;
+                    console.log("Torch enabled.");
                 }
             } else {
                 var success = scanViewController.disableFlash();
+                scanViewController.captureManager.mediaCapture.videoDeviceController.flashControl.enabled = false;
                 // flash is disabled:
                 if (success == true) {
                     flashButton.innerHTML = TORCH_OFF;
+                    console.log("Torch disabled.");
                 }
             }
         }
+
     };
     flashButtonRoot.appendChild(flashButton);
 
@@ -276,7 +288,7 @@ function enableZoomAndScroll() {
     document.body.classList.remove('no-scroll');
 }
 
-function includeScript(path, cb, id) {
+function includeScript(path, id) {
     if (!(window.MSApp && window.MSApp.execUnsafeLocalFunction)) {
         var node = document.createElement("script"),
             okHandler, errHandler;
@@ -287,12 +299,10 @@ function includeScript(path, cb, id) {
         okHandler = function () {
             this.removeEventListener("load", okHandler);
             this.removeEventListener("error", errHandler);
-            cb(path, 'success');
         };
         errHandler = function (error) {
             this.removeEventListener("load", okHandler);
             this.removeEventListener("error", errHandler);
-            cb("Error loading script: " + path);
         };
 
         node.addEventListener("load", okHandler);
@@ -305,7 +315,6 @@ function includeScript(path, cb, id) {
                 var node = document.createElement("script");
                 node.text = result;
                 document.body.appendChild(node);
-                cb();
             });
         });
     }
@@ -335,6 +344,26 @@ function readLocalFile(path, cb) {
 ///////////////////////        Camera                 ///////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 
+function focus() {
+    try {
+
+        if (skipFocus)
+            return;
+
+        if (scanViewController != null) {
+            if (scanViewController.captureManager.mediaCapture.videoDeviceController.focusControl.supported == true) {
+                scanViewController.captureManager.mediaCapture.videoDeviceController.focusControl.focusAsync();
+                //console.log("Focused successfully.");
+            } else {
+                //console.log("Focus is not supported on this device.");
+            }
+        }
+    }
+    catch (exception) {
+        console.log("Unable to focus: " + exception);
+    }
+}
+
 // Visual Feedback
 let VFRender = null;
 
@@ -348,13 +377,24 @@ function openCamera() {
         }
 
         videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
+        try {
+            videoElement.onplay = function () {
+                console.log("Playing.");
+                VFRender = setInterval(function () {
+                    updateFrames();
+                }, 100);
+            };
+            videoElement.play();
 
-        videoElement.play().then(function () {
-            console.log("Playing.");
-            VFRender = setInterval(function () {
-                updateFrames();
-            }, 100);
-        });
+            // tap to focus
+            const anylineRoot = document.getElementById("anylineRoot");
+            anylineRoot.onclick = function () {
+                focus();
+            };
+        }
+        catch (ex) {
+            console.log(ex);
+        }
     });
 
     updateFlashButton();
@@ -366,6 +406,10 @@ function openCamera() {
 
 // stops the camera
 function closeCamera() {
+    const anylineRoot = document.getElementById("anylineRoot");
+    if (anylineRoot)
+        anylineRoot.onclick = null;
+
     scanViewController.cancelScanning();
     if (scanViewController.captureManager.mediaCapture == null)
         return;
@@ -448,9 +492,14 @@ function calcVideoRelation() {
     const canvasElement = document.getElementById("anylineCanvas");
     const backgroundElement = document.getElementById("anylineBackground");
     const videoElement = document.getElementById("anylineVideoElement");
+    const flashElement = document.getElementById("anylineFlashButton");
 
     if (canvasElement == null || backgroundElement == null || videoElement == null)
         return;
+
+    if (flashElement != null) {
+        flashElement.style.opacity = scanViewController.captureManager.mediaCapture.videoDeviceController.flashControl.supported ? 1.0 : 0.3;
+    }
 
     // mirror preview & VF when the camera is front-facing
     if (scanViewController.captureManager.isPreviewMirrored) {
@@ -493,11 +542,14 @@ function calcVideoRelation() {
 
         const overflowHeight = window.innerWidth / camRelation - window.innerHeight;
 
-        videoElement.style.left = 0;
-        backgroundElement.style.left = 0;
-        canvasElement.style.left = 0;
+        videoElement.style.left = 0 + 'px';
+        backgroundElement.style.left = 0 + 'px';
+        canvasElement.style.left = 0 + 'px';
         var oh = -(overflowHeight / 2) + 'px';
         backgroundElement.style.top = oh;
+
+        videoElement.style.top = oh;
+
     }
 
     // Update Cutout from SDK

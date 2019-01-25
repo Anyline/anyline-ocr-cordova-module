@@ -15,7 +15,7 @@
 }
 
 #anylineVideoElement{
-    position: fixed;
+    position: relative;
     z-index: -1;
     top:0;
     bottom: 0;
@@ -58,11 +58,12 @@
     background-color: transparent;
 }
 
-#anylineFlashButton{
+#anylineFlashButton {
     position: fixed;
     z-index: 99999;
     font-size: 3em;
     background-color: transparent;
-    border: solid;
+    border: none;
     color: white;
 }
+
