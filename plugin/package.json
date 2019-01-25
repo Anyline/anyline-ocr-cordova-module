@@ -6,13 +6,15 @@
     "id": "io-anyline-cordova",
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "windows"
     ]
   },
   "keywords": [
     "ecosystem:cordova",
     "cordova-ios",
-    "cordova-android"
+    "cordova-android",
+    "cordova-windows"
   ],
   "repository": {
     "type": "git",
