@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Anyline Cordova Plugin
  * anyline.ocr.js
  *
@@ -53,7 +53,8 @@ licenseKey:"eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRv
     
   anylineLicensePlateViewConfig: {
       "camera" : {
-          "captureResolution" : "1080p"
+          "captureResolution" : "1080p",
+	        "zoomGesture" : true 
       },
       "flash" : {
           "mode" : "manual",
