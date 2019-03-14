@@ -17,15 +17,15 @@ anyline.ocr = {
     console.log("Result: " + JSON.stringify(result));
     var div = document.getElementById('results');
 
-    if(div.childElementCount >= 3) {
+    if (div.childElementCount >= 3) {
       div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
 
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-        "<b>Result: </b> " + result.text
-        + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
-        + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</p>"
-        + div.innerHTML;
+      "<b>Result: </b> " + result.text
+      + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
+      + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</p>"
+      + div.innerHTML;
 
     document.getElementById("details_scan_modes").removeAttribute("open");
     document.getElementById("details_results").setAttribute("open", "");
@@ -48,24 +48,24 @@ anyline.ocr = {
   licenseKey: "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImlvc0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsICJtYWpvclZlcnNpb24iOiAiNCIsICJtYXhEYXlzTm90UmVwb3J0ZWQiOiAwLCAicGluZ1JlcG9ydGluZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiwgIldpbmRvd3MiIF0sICJzY29wZSI6IFsgIkFMTCIgXSwgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogZmFsc2UsICJzaG93V2F0ZXJtYXJrIjogdHJ1ZSwgInRvbGVyYW5jZURheXMiOiA5MCwgInZhbGlkIjogIjIwMjAtMTAtMjAiLCAid2luZG93c0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0gfQpJYzVHSWVpdTBUYmJoQjE4T2poeHllY1g3Q296NWorR1o2azVtanJTUUtxVFYrYWRKODk4MHA2QmZ6UVdoK1ZyCnF6UE4yTURuWnFNSTcwUk13NHFGV0VJek16Z1J2ZUg3ZzhYM3RHbUcyUTdzazh0Y1Q1Zk5aditNNmpTeXQ1WG4KM010Ry9yZnp2YVRiQlo5VnV5ektsVXdDakZVdVhqd2xIVm1QZS9hc2ljMkVpbWhMU2JTam9PN0Nzajhjd0ZNVApKZDJTTnBncmdQYUtSUzZrdlNFMEJJU3ltVnAvb1VIcm9xUGtlUWRxa2owQk1ZU3Z4VmM4L0p3L1RvdHNvY1IvCmxIWi93VG03UldGRDVhZXpIdjJDcjNVN1ArSW1KdkNUb3JCc3VUa3B6VzF1dHIvQlNkckI3dVJNVFpPOW84UjcKS1ZhaUlmNmZYSExQanBkbkpmQXdqUT09Cg==K",
 
   ibanViewConfig: {
-    "camera":{
-      "captureResolution":"1080"
+    "camera": {
+      "captureResolution": "1080"
     },
     "flash": {
       "mode": "manual",
       "alignment": "bottom_right"
     },
-    "viewPlugin" : {
-      "plugin" : {
-        "id" : "OCR_IBAN",
-        "ocrPlugin" : {
-          "scanMode" : "LINE",
-          "languages" : ["www/assets/USNr.any"],
+    "viewPlugin": {
+      "plugin": {
+        "id": "OCR_IBAN",
+        "ocrPlugin": {
+          "scanMode": "LINE",
+          "languages": ["www/assets/USNr.any"],
           "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-          "minCharHeight" : 25,
-          "maxCharHeight" : 65,
-          "minConfidence" : 70,
-  	"validationRegex": "^[A-Z]{2}([0-9A-Z]\\s*){13,32}$"
+          "minCharHeight": 25,
+          "maxCharHeight": 65,
+          "minConfidence": 70,
+          "validationRegex": "^[A-Z]{2}([0-9A-Z]\\s*){13,32}$"
         }
       },
       "cutoutConfig": {
@@ -108,11 +108,11 @@ anyline.ocr = {
       "alignment": "bottom_right"
     },
     "viewPlugin": {
-      "plugin" : {
-        "id" : "OCR_VC",
-        "ocrPlugin" : {
-          "scanMode" : "AUTO",
-          "languages" : ["www/assets/anyline_capitals.traineddata"],
+      "plugin": {
+        "id": "OCR_VC",
+        "ocrPlugin": {
+          "scanMode": "AUTO",
+          "languages": ["www/assets/anyline_capitals.traineddata"],
           "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
           "validationRegex": "[A-Z0-9]{8}$",
           "minConfidence": 85
@@ -149,6 +149,74 @@ anyline.ocr = {
     }
   },
 
+  cowTagConfig: {
+    "camera": {
+      "captureResolution": "1080"
+    },
+    "flash": {
+      "mode": "manual",
+      "alignment": "bottom_right"
+    },
+    "viewPlugin": {
+      "plugin": {
+        "id": "OCR_COW",
+        "ocrPlugin": {
+          "scanMode": "AUTO",
+          "languages": ["www/assets/USNr.any"],
+          "customCmdFile": "www/assets/cow_tag_scanner.ale"
+        }
+      },
+      "cutoutConfig": {
+        "style": "rect",
+        "maxWidthPercent": "80%",
+        "maxHeightPercent": "80%",
+        "alignment": "center",
+        "width": 600,
+        "ratioFromSize": {
+          "width": 1,
+          "height": 1
+        },
+        "strokeWidth": 2,
+        "cornerRadius": 10,
+        "strokeColor": "FFFFFF",
+        "outerColor": "000000",
+        "outerAlpha": 0.3,
+        "feedbackStrokeColor": "0099FF",
+        "cropPadding": {
+          "x": 60,
+          "y": 60
+        },
+        "cropOffset": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "cancelOnResult": true,
+      "scanFeedback": {
+        "style": "rect",
+        "strokeWidth": 2,
+        "strokeColor": "0099FF",
+        "fillColor": "330099FF",
+        "cornerRadius": 0,
+        "beepOnResult": true,
+        "vibrateOnResult": true,
+        "blinkAnimationOnResult": true
+      }
+    }
+  },
+
+  scanCowTag: function () {
+    if (localStorage.getItem("hasStartedAnyline") === 'true') {
+      return;
+    }
+    localStorage.setItem("hasStartedAnyline", true);
+    // start the Anyline OCR scanning
+    // pass the success and error callbacks, as well as the license key and the config to the plugin
+    // see http://documentation.anyline.io/#anyline-config for config details
+    // and http://documentation.anyline.io/#anylineOcrModule for module details
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.cowTagConfig]);
+  },
+
   scanIban: function () {
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
       return;
@@ -171,11 +239,11 @@ anyline.ocr = {
     // see http://documentation.anyline.io/#anyline-config for config details
     // and http://documentation.anyline.io/#anylineOcrModule for module details
 
-	// patch for windows
+    // patch for windows
     if (cordova.platformId == 'windows') {
-        this.ibanViewConfig.viewPlugin.plugin.ocrPlugin.languages[0] = "www/assets/usnr_2.any";
+      this.ibanViewConfig.viewPlugin.plugin.ocrPlugin.languages[0] = "www/assets/usnr_2.any";
     }
-	
+
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.anylineVoucherCodesViewConfig]);
   }
 };
