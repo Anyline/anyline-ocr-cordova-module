@@ -21,20 +21,18 @@ anyline.germanIdFront = {
       div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
 
-    // div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-    //   "<b>Name:</b> " + result.surNames + " " + result.givenNames + "<br/>" + "<b>Type:</b> " + result.documentType +
-    //   "<br/><b>Number:</b> " + result.documentNumber + " <b>" +
-    //   "<br/>Country:</b> " + result.nationalityCountryCode + "[" + result.issuingCountryCode + "]" +
-    //   "<br/><b>Date of Birth:</b> " + result.dayOfBirth +
-    //   "<br/><b>Expiration Date:</b> " + result.expirationDate + "<br/>" +
-    //   "<br/><b>Date of Birth Date Object:</b> " + result.dayOfBirthObject +
-    //   "<br/><b>Expiration Date Object:</b> " + result.expirationDateObject +
-    //   (result.issuingDate ? "<br/><b>Issuing Date:</b>" + result.issuingDate : "") + "<br/>" +
-    //   (result.address ? "<br/><b>Address:</b>" + result.address : "") + "<br/>" +
-    //   "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
-    //   "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
-    //   "<br/><i><b>Checksum:</b>" + result.allCheckDigitsValid + "</i>"+
-    //   "</p>" + div.innerHTML;
+    div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
+      "<b>Name:</b> " + result.surNames + " " + result.givenNames + "<br/>" + 
+      "<b>Number:</b> " + result.documentNumber + " <b>" +
+      "<br/>Day of Birth:</b> " + result.dayOfBirth + "<br/>" +
+      "<br/><b>Expiration Date:</b> " + result.expirationDate + "<br/>" +
+      "<br/><b>Day of Birth Date Object:</b> " + result.dayOfBirthObject +
+      "<br/><b>Expiration Date Object:</b> " + result.expirationDateObject +
+      "<br/><b>Nationality:</b> " + result.nationality +
+      "<br/><b>Card Access Number:</b> " + result.cardAccessNumber +
+      "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
+      "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
+      "</p>" + div.innerHTML;
 
 
     document.getElementById("details_scan_modes").removeAttribute("open");
