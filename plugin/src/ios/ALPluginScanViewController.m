@@ -173,6 +173,8 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [UIApplication sharedApplication].idleTimerDisabled = NO;
+    [self.scanView.scanViewPlugin stopAndReturnError:nil];
+    [self.scanView stopCamera];
 }
 
 - (BOOL)shouldAutorotate {
@@ -322,7 +324,7 @@
             break;
         }
         default:
-            break;
+        break;
     }
 }
 
@@ -345,19 +347,19 @@
     NSString *helpString = nil;
     switch (error) {
         case ALDocumentErrorNotSharp:
-            helpString = @"Document not Sharp";
-            break;
+        helpString = @"Document not Sharp";
+        break;
         case ALDocumentErrorSkewTooHigh:
-            helpString = @"Wrong Perspective";
-            break;
+        helpString = @"Wrong Perspective";
+        break;
         case ALDocumentErrorImageTooDark:
-            helpString = @"Too Dark";
-            break;
+        helpString = @"Too Dark";
+        break;
         case ALDocumentErrorShakeDetected:
-            helpString = @"Too much shaking";
-            break;
+        helpString = @"Too much shaking";
+        break;
         default:
-            break;
+        break;
     }
     
     // The error is not in the list above or a label is on screen at the moment
