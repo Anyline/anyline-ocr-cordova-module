@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
@@ -11,6 +12,8 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +21,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import at.nineyards.anyline.AnylineDebugListener;
 import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.core.RunFailure;
@@ -53,11 +58,11 @@ public class Anyline4Activity extends AnylineBaseActivity {
 	private RadioGroup radioGroup;
 	private CordovaUIConfig cordovaUiConfig;
 	private String cropAndTransformError;
+	private int delay = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		//init the scan view
 		anylineScanView = new ScanView(this, null);
 
@@ -65,6 +70,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 		try {
 			//start initialize anyline
 			initAnyline();
+
 		}catch (Exception ex){
 			ex.printStackTrace();
 		}
@@ -76,7 +82,14 @@ public class Anyline4Activity extends AnylineBaseActivity {
 	protected void onResume() {
 		super.onResume();
 		//start scanning
-		anylineScanView.start();
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				anylineScanView.start();
+			}
+		}, delay);
+
+
 	}
 
 	@Override
@@ -126,6 +139,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 			JSONObject json = new JSONObject(configJson);
 			//this is used for the OCR Plugin, when languages has to be added
 			json = AnylinePluginHelper.setLanguages(json,getApplicationContext());
+			delay = AnylinePluginHelper.delayStartScanTime(json);
 			anylineScanView.setScanConfig(json, licenseKey);
 			if(anylineScanView != null) {
 				scanViewPlugin = anylineScanView.getScanViewPlugin();
@@ -214,7 +228,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 										e.printStackTrace();
 									}
 								}
-								
+
 								try {
 									jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, idScanResult, jsonResult);
 								} catch (Exception e) {
@@ -288,7 +302,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 
 					anylineScanView.setCameraOpenListener(this);
 					if (nativeBarcodeEnabled) {
-						List<Barcode> barcodeList = AnylinePluginHelper.nativeBarcodeList(anylineScanView);
+						List<FirebaseVisionBarcode> barcodeList = AnylinePluginHelper.nativeBarcodeList(anylineScanView);
 						for(int i=0; i< barcodeList.size(); i++) {
 							jsonArray.put(AnylinePluginHelper.wrapBarcodeInJson(barcodeList.get(i)));
 						}

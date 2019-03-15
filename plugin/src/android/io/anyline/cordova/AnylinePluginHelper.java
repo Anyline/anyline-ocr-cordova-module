@@ -6,6 +6,7 @@ import android.util.SparseArray;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,9 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
+import at.nineyards.anyline.camera.NativeBarcodeResultListener;
 import at.nineyards.anyline.modules.barcode.BarcodeScanView;
-import at.nineyards.anyline.modules.barcode.NativeBarcodeResultListener;
 import at.nineyards.anyline.util.AssetUtil;
 import at.nineyards.anyline.util.TempFileUtil;
 import io.anyline.plugin.ScanResult;
@@ -90,6 +92,30 @@ public class AnylinePluginHelper {
 		}
 		return json;
 	}
+
+	public static int delayStartScanTime(JSONObject json){
+		if(json.has("viewPlugin")){
+			try {
+				JSONObject viewPlugin = json.getJSONObject("viewPlugin");
+				if(viewPlugin != null && viewPlugin.has("plugin")){
+
+					JSONObject plugin = viewPlugin.getJSONObject("plugin");
+					if(plugin != null && plugin.has("delayStartScanTime")){
+						return (plugin.getInt("delayStartScanTime"));
+
+
+					} else {
+						Log.d(TAG, "No Training Data");
+					}
+				}
+
+			}catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+
 	public static JSONObject jsonHelper(Anyline4Activity activity, ScanResult<?> scanResult, JSONObject jsonObject) {
 		try {
 			File imageFile = TempFileUtil.createTempFileCheckCache(activity,
@@ -114,12 +140,12 @@ public class AnylinePluginHelper {
 		return jsonObject;
 	}
 
-	public static JSONObject wrapBarcodeInJson(Barcode b) {
+	public static JSONObject wrapBarcodeInJson(FirebaseVisionBarcode b) {
 		JSONObject json = new JSONObject();
 
 		try {
-			json.put("value", b.rawValue);
-			json.put("format", findValidFormatForReference(b.format));
+			json.put("value", b.getDisplayValue());
+			json.put("format", findValidFormatForReference(b.getFormat()));
 		} catch (JSONException jsonException) {
 			//should not be possible
 			Log.e(TAG, "Error while putting image path to json.", jsonException);
@@ -173,15 +199,21 @@ public class AnylinePluginHelper {
 
 	}
 
-	public static List<Barcode> nativeBarcodeList(ScanView anylineScanView) {
-		final List<Barcode> barcodeList = new ArrayList<>();
+	public static List<FirebaseVisionBarcode> nativeBarcodeList(ScanView anylineScanView) {
+		final List<FirebaseVisionBarcode> barcodeList = new ArrayList<>();
 		anylineScanView.getCameraView().enableBarcodeDetection(new NativeBarcodeResultListener() {
 			@Override
-			public void onBarcodesReceived(SparseArray<Barcode> barcodes) {
-				if (barcodes.size() > 0) {
+			public void onFailure(String e) {
+
+			}
+
+			@Override
+			public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
+				if (barcodes != null && barcodes.size() > 0) {
+					// for demonstration purpose, we only show the latest found barcode (and only this one)
 					for (int i = 0; i < barcodes.size(); i++) {
-						if (!barcodeList.contains(barcodes.valueAt(i).rawValue)) {
-							barcodeList.add(barcodes.valueAt(i));
+						if (!barcodeList.contains(barcodes.get(i))) {
+							barcodeList.add(barcodes.get(i));
 						}
 					}
 

@@ -33,17 +33,18 @@ import java.util.UUID;
 import at.nineyards.anyline.camera.AnylineViewConfig;
 import at.nineyards.anyline.camera.CameraConfig;
 import at.nineyards.anyline.camera.CameraController;
+import at.nineyards.anyline.camera.NativeBarcodeResultListener;
 import at.nineyards.anyline.models.AnylineImage;
 import at.nineyards.anyline.modules.energy.EnergyResultListener;
 import at.nineyards.anyline.modules.energy.EnergyScanView;
 import at.nineyards.anyline.modules.energy.EnergyResult;
 import at.nineyards.anyline.util.TempFileUtil;
-import at.nineyards.anyline.modules.barcode.NativeBarcodeResultListener;
 import at.nineyards.anyline.modules.barcode.BarcodeScanView;
 
 import android.util.SparseArray;
 
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 
 
 public class EnergyActivity extends AnylineBaseActivity {
@@ -53,7 +54,7 @@ public class EnergyActivity extends AnylineBaseActivity {
     private RadioGroup radioGroup;
     private CordovaUIConfig cordovaUiConfig;
     private boolean nativeBarcodeEnabled;
-    private List<String> barcodeList;
+    private List<FirebaseVisionBarcode> barcodeList;
     private JSONArray jsonArray;
 
 
@@ -220,23 +221,28 @@ public class EnergyActivity extends AnylineBaseActivity {
     private void initAnyline() {
 
         if (nativeBarcodeEnabled) {
-            barcodeList = new ArrayList<String>();
+            barcodeList = new ArrayList<FirebaseVisionBarcode>();
             jsonArray = new JSONArray();
 
-            energyScanView.enableBarcodeDetection(new NativeBarcodeResultListener() {
-                @Override
-                public void onBarcodesReceived(SparseArray<Barcode> barcodes) {
-                    if (barcodes.size() > 0) {
-                        for (int i = 0; i < barcodes.size(); i++) {
-                            if (!barcodeList.contains(barcodes.valueAt(i).rawValue)) {
-                                barcodeList.add(barcodes.valueAt(i).rawValue);
-                                jsonArray.put(wrapBarcodeInJson(barcodes.valueAt(i)));
-                            }
-                        }
+			energyScanView.enableBarcodeDetection(new NativeBarcodeResultListener() {
+				@Override
+				public void onFailure(String e) {
 
-                    }
-                }
-            });
+				}
+
+				@Override
+				public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
+					if (barcodes != null && barcodes.size() > 0) {
+						for (int i = 0; i < barcodes.size(); i++) {
+							if (!barcodeList.contains(barcodes.get(i))) {
+								barcodeList.add(barcodes.get(i));
+								jsonArray.put(wrapBarcodeInJson(barcodes.get(i)));
+							}
+						}
+
+					}
+				}
+			});
         }
 
 
@@ -324,12 +330,12 @@ public class EnergyActivity extends AnylineBaseActivity {
         energyScanView.getAnylineController().setWorkerThreadUncaughtExceptionHandler(this);
     }
 
-    private JSONObject wrapBarcodeInJson(Barcode b) {
+    private JSONObject wrapBarcodeInJson(FirebaseVisionBarcode b) {
         JSONObject json = new JSONObject();
 
         try {
-            json.put("value", b.rawValue);
-            json.put("format", findValidFormatForReference(b.format));
+            json.put("value", b.getDisplayValue());
+            json.put("format", findValidFormatForReference(b.getFormat()));
         } catch (JSONException jsonException) {
             //should not be possible
             Log.e(TAG, "Error while putting image path to json.", jsonException);
