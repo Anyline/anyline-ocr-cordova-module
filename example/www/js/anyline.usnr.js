@@ -63,7 +63,8 @@ anylineUSNRViewConfig: {
                   "ocrPlugin":{
                       "scanMode": "AUTO",
                       "languages": ["www/assets/USNr.any"]
-                  }
+                  },
+          "delayStartScanTime" : 1000
         },
         "cutoutConfig": {
           "style": "rect",
