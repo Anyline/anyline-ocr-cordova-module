@@ -242,7 +242,7 @@ public class EnergyActivity extends AnylineBaseActivity {
 
 					}
 				}
-			});
+			}, null);
         }
 
 

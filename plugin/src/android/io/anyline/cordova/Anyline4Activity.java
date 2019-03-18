@@ -35,6 +35,8 @@ import io.anyline.plugin.barcode.BarcodeScanResult;
 import io.anyline.plugin.barcode.BarcodeScanViewPlugin;
 import io.anyline.plugin.id.DrivingLicenseConfig;
 import io.anyline.plugin.id.DrivingLicenseResult;
+import io.anyline.plugin.id.GermanIdFrontConfig;
+import io.anyline.plugin.id.GermanIdFrontResult;
 import io.anyline.plugin.id.ID;
 import io.anyline.plugin.id.IdScanPlugin;
 import io.anyline.plugin.id.IdScanViewPlugin;
@@ -242,6 +244,25 @@ public class Anyline4Activity extends AnylineBaseActivity {
 
 
 						});
+					} else if (((IdScanPlugin) scanViewPlugin.getScanPlugin()).getIdConfig() instanceof GermanIdFrontConfig) {
+						scanViewPlugin.addScanResultListener(new ScanResultListener<ScanResult<ID>>() {
+							@Override
+							public void onResult(ScanResult<ID> idScanResult) {
+								JSONObject jsonResult = ((GermanIdFrontResult) idScanResult.getResult()).toJSONObject();
+
+								try {
+									jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, idScanResult, jsonResult);
+								} catch (Exception e) {
+									Log.e(TAG, "Exception is: ", e);
+
+								}
+
+								setResult(scanViewPlugin, jsonResult);
+
+							}
+
+
+						});
 					}
 
 				} else if (scanViewPlugin instanceof OcrScanViewPlugin) {
@@ -302,7 +323,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 
 					anylineScanView.setCameraOpenListener(this);
 					if (nativeBarcodeEnabled) {
-						List<FirebaseVisionBarcode> barcodeList = AnylinePluginHelper.nativeBarcodeList(anylineScanView);
+						List<FirebaseVisionBarcode> barcodeList = AnylinePluginHelper.nativeBarcodeList(anylineScanView, null);
 						for(int i=0; i< barcodeList.size(); i++) {
 							jsonArray.put(AnylinePluginHelper.wrapBarcodeInJson(barcodeList.get(i)));
 						}

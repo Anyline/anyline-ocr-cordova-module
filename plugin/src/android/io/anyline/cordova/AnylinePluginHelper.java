@@ -25,6 +25,7 @@ import at.nineyards.anyline.modules.barcode.BarcodeScanView;
 import at.nineyards.anyline.util.AssetUtil;
 import at.nineyards.anyline.util.TempFileUtil;
 import io.anyline.plugin.ScanResult;
+import io.anyline.plugin.barcode.BarcodeFormat;
 import io.anyline.plugin.meter.MeterScanMode;
 import io.anyline.view.ScanView;
 
@@ -199,7 +200,7 @@ public class AnylinePluginHelper {
 
 	}
 
-	public static List<FirebaseVisionBarcode> nativeBarcodeList(ScanView anylineScanView) {
+	public static List<FirebaseVisionBarcode> nativeBarcodeList(ScanView anylineScanView, List<BarcodeFormat> barcodeFormats) {
 		final List<FirebaseVisionBarcode> barcodeList = new ArrayList<>();
 		anylineScanView.getCameraView().enableBarcodeDetection(new NativeBarcodeResultListener() {
 			@Override
@@ -219,7 +220,7 @@ public class AnylinePluginHelper {
 
 				}
 			}
-		});
+		}, barcodeFormats);
 		return barcodeList;
 	}
 
