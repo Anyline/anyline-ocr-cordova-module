@@ -54,7 +54,7 @@
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods -->
-        <framework src="Anyline" type="podspec" spec="~> 8.1"/>
+        <framework src="Anyline" type="podspec" spec="~> 9"/>
 
 
         <!-- Frameworks needed by Anyline SDK for iOS -->
