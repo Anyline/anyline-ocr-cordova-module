@@ -22,16 +22,17 @@ if (anyline === undefined) {
       }
   
       div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-              "<b>Name:</b> " + result.surNames + " " + result.givenNames + "<br/>" +
+              "<b>Name:</b> " + result.surname + " " + result.givenNames + "<br/>" +
               "<br/><b>Number:</b> " + result.documentNumber + " <b>" +
-              "<br/><b>Date of Birth:</b> " + result.dayOfBirth +
-              "<br/><b>Expiration Date:</b> " + result.expirationDate + "<br/>" +
-              "<br/><b>Issuing Date:</b> " + result.issuingDate + "<br/>" +
+              "<br/><b>Date of Birth:</b> " + result.dateOfBirth +
+              "<br/><b>Expiration Date:</b> " + result.dateOfExpiry + "<br/>" +
+              "<br/><b>Issuing Date:</b> " + result.dateOfIssue + "<br/>" +
               "<br/><b>Authority:</b> " + result.authority +
               "<br/><b>Categories:</b> " + result.categories + "<br/>" +
-              "<br/><b>Day of Birth Object:</b> " + result.dayOfBirthObject +
-              "<br/><b>Issuing Date Object:</b> " + result.issuingDateObject +
-               (result.expirationDateObject ? "<br/><b>Expiration Date Object:</b>" + result.expirationDateObject : "") + "<br/>" +
+              "<br/><b>Day of Birth Object:</b> " + result.dateOfBirthObject +
+              "<br/><b>Place Of Birth:</b> " + result.placeOfBirth +
+              "<br/><b>Issuing Date Object:</b> " + result.dateOfIssueObject +
+               (result.dateOfExpiryObject ? "<br/><b>Expiration Date Object:</b>" + result.dateOfExpiryObject : "") + "<br/>" +
   
               "<br/><b>Place of Birth:</b> " + result.placeOfBirth + "<br/>"
         + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"

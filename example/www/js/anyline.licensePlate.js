@@ -93,7 +93,8 @@ licenseKey:"eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRv
               "beepOnResult": true,
               "vibrateOnResult": true
           },
-          "cancelOnResult" : true
+          "cancelOnResult" : true,
+          "delayStartScanTime":2000
       }
   },
 

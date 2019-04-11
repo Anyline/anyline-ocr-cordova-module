@@ -4,15 +4,12 @@ import android.content.res.ColorStateList;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 
 import org.json.JSONArray;
@@ -21,7 +18,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import at.nineyards.anyline.AnylineDebugListener;
 import at.nineyards.anyline.camera.CameraController;
@@ -34,9 +30,9 @@ import io.anyline.plugin.ScanResultListener;
 import io.anyline.plugin.barcode.BarcodeScanResult;
 import io.anyline.plugin.barcode.BarcodeScanViewPlugin;
 import io.anyline.plugin.id.DrivingLicenseConfig;
-import io.anyline.plugin.id.DrivingLicenseResult;
+import io.anyline.plugin.id.DrivingLicenseIdentification;
 import io.anyline.plugin.id.GermanIdFrontConfig;
-import io.anyline.plugin.id.GermanIdFrontResult;
+import io.anyline.plugin.id.GermanIdFrontIdentification;
 import io.anyline.plugin.id.ID;
 import io.anyline.plugin.id.IdScanPlugin;
 import io.anyline.plugin.id.IdScanViewPlugin;
@@ -60,7 +56,6 @@ public class Anyline4Activity extends AnylineBaseActivity {
 	private RadioGroup radioGroup;
 	private CordovaUIConfig cordovaUiConfig;
 	private String cropAndTransformError;
-	private int delay = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,12 +79,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 	protected void onResume() {
 		super.onResume();
 		//start scanning
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				anylineScanView.start();
-			}
-		}, delay);
+		anylineScanView.start();
 
 
 	}
@@ -141,7 +131,6 @@ public class Anyline4Activity extends AnylineBaseActivity {
 			JSONObject json = new JSONObject(configJson);
 			//this is used for the OCR Plugin, when languages has to be added
 			json = AnylinePluginHelper.setLanguages(json,getApplicationContext());
-			delay = AnylinePluginHelper.delayStartScanTime(json);
 			anylineScanView.setScanConfig(json, licenseKey);
 			if(anylineScanView != null) {
 				scanViewPlugin = anylineScanView.getScanViewPlugin();
@@ -219,17 +208,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 						scanViewPlugin.addScanResultListener(new ScanResultListener<ScanResult<ID>>() {
 							@Override
 							public void onResult(ScanResult<ID> idScanResult) {
-								JSONObject jsonResult = ((DrivingLicenseResult) idScanResult.getResult()).toJSONObject();
-								//clean this
-								if(jsonResult.has("nr")){
-									try {
-										String documentNumber = jsonResult.getString("nr");
-										jsonResult.remove("nr");
-										jsonResult.put("documentNumber", documentNumber);
-									} catch (JSONException e) {
-										e.printStackTrace();
-									}
-								}
+								JSONObject jsonResult = ((DrivingLicenseIdentification) idScanResult.getResult()).toJSONObject();
 
 								try {
 									jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, idScanResult, jsonResult);
@@ -248,7 +227,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 						scanViewPlugin.addScanResultListener(new ScanResultListener<ScanResult<ID>>() {
 							@Override
 							public void onResult(ScanResult<ID> idScanResult) {
-								JSONObject jsonResult = ((GermanIdFrontResult) idScanResult.getResult()).toJSONObject();
+								JSONObject jsonResult = ((GermanIdFrontIdentification) idScanResult.getResult()).toJSONObject();
 
 								try {
 									jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, idScanResult, jsonResult);

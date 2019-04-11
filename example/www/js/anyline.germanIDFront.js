@@ -22,12 +22,12 @@ anyline.germanIdFront = {
     }
 
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-      "<b>Name:</b> " + result.surNames + " " + result.givenNames + "<br/>" + 
+      "<b>Name:</b> " + result.surname + " " + result.givenNames + "<br/>" +
       "<b>Number:</b> " + result.documentNumber + " <b>" +
-      "<br/>Day of Birth:</b> " + result.dayOfBirth + "<br/>" +
-      "<br/><b>Expiration Date:</b> " + result.expirationDate + "<br/>" +
-      "<br/><b>Day of Birth Date Object:</b> " + result.dayOfBirthObject +
-      "<br/><b>Expiration Date Object:</b> " + result.expirationDateObject +
+      "<br/>Day of Birth:</b> " + result.dateOfBirth + "<br/>" +
+      "<br/><b>Expiration Date:</b> " + result.dateOfExpiry + "<br/>" +
+      "<br/><b>Day of Birth Date Object:</b> " + result.dateOfBirthObject +
+      "<br/><b>Expiration Date Object:</b> " + result.dateOfExpiryObject +
       "<br/><b>Nationality:</b> " + result.nationality +
       "<br/><b>Card Access Number:</b> " + result.cardAccessNumber +
       "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
