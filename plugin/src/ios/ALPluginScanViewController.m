@@ -30,7 +30,6 @@
 
 @property (nonatomic, strong) NSMutableArray<NSDictionary *> *detectedBarcodes;
 
-@property (nonatomic) NSTimeInterval scanDelay;
 
 @end
 
@@ -50,7 +49,6 @@
         self.quality = 100;
         self.nativeBarcodeEnabled = NO;
         self.cropAndTransformErrorMessage = @"";
-        self.scanDelay = 0;
     }
     return self;
 }
@@ -108,12 +106,6 @@
         }
     }
     
-    double delayTime = [[self.anylineConfig valueForKeyPath:@"viewPlugin.plugin.delayStartScanTime"] doubleValue];
-    if (delayTime > 0) {
-        self.scanDelay = delayTime;
-    }
-    
-    
     [self.scanView startCamera];
     
     [self.view addSubview:self.scanView];
@@ -151,15 +143,13 @@
     
     [UIApplication sharedApplication].idleTimerDisabled = YES;
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC*self.scanDelay), dispatch_get_current_queue(), ^{
-        NSError *error;
-        BOOL success = [self.scanView.scanViewPlugin startAndReturnError:&error];
-        if(!success) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not start scanning" message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            [alert show];
-        }
-        
-    });
+    NSError *error;
+    
+    BOOL success = [self.scanView.scanViewPlugin startAndReturnError:&error];
+    if(!success) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not start scanning" message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }
     
     if(self.cordovaConfig.segmentModes){
         self.segment.frame = CGRectMake(self.scanView.scanViewPlugin.cutoutRect.origin.x + self.cordovaConfig.segmentXPositionOffset/2,
@@ -324,7 +314,7 @@
             break;
         }
         default:
-        break;
+            break;
     }
 }
 
@@ -347,19 +337,19 @@
     NSString *helpString = nil;
     switch (error) {
         case ALDocumentErrorNotSharp:
-        helpString = @"Document not Sharp";
-        break;
+            helpString = @"Document not Sharp";
+            break;
         case ALDocumentErrorSkewTooHigh:
-        helpString = @"Wrong Perspective";
-        break;
+            helpString = @"Wrong Perspective";
+            break;
         case ALDocumentErrorImageTooDark:
-        helpString = @"Too Dark";
-        break;
+            helpString = @"Too Dark";
+            break;
         case ALDocumentErrorShakeDetected:
-        helpString = @"Too much shaking";
-        break;
+            helpString = @"Too much shaking";
+            break;
         default:
-        break;
+            break;
     }
     
     // The error is not in the list above or a label is on screen at the moment
