@@ -64,8 +64,7 @@ licenseKey:"eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRv
           "plugin" : {
               "id" : "LicensePlate_ID",
               "licensePlatePlugin" : {
-              },
-              "delayStartScanTime" : 1000
+              }
           },
           "cutoutConfig" : {
               "style": "rect",
