@@ -22,12 +22,14 @@
     },
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "windows"
     ]
   },
   "dependencies": {
     "cordova-android": "^8.0.0",
     "cordova-ios": "^5.0.0",
+    "cordova-windows": "^7.0.0",
     "io-anyline-cordova": "file:../plugin"
   }
 }
