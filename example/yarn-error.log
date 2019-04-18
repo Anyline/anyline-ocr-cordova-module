@@ -1,0 +1,72 @@
+Arguments: 
+  /usr/local/Cellar/node/11.9.0/bin/node /usr/local/bin/yarn run cleanUp
+
+PATH: 
+  /Users/jonaslaux/Documents/google/google-cloud-sdk/bin:/usr/local/bin/:/Users/jonaslaux/golang/src/github.com/Azure/brigade/bin:/Users/jonaslaux/bin:/usr/local/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/usr/local/go/bin:/Applications/Wireshark.app/Contents/MacOS:/Users/jonaslaux/Documents/google/google-cloud-sdk/bin:/usr/local/bin/:/anaconda3/bin:/anaconda3/condabin:/Users/jonaslaux/golang/src/github.com/Azure/brigade/bin:/Users/jonaslaux/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Users/jonaslaux/Library/Android/sdk/tools:/Users/jonaslaux/Library/Android/sdk/platform-tools:/usr/local/bin:/Users/jonaslaux/Library/Android/sdk/tools:/Users/jonaslaux/Library/Android/sdk/platform-tools
+
+Yarn version: 
+  1.13.0
+
+Node version: 
+  11.9.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/jonaslaux/Documents/Anyline/Github/anyline-ocr-cordova-module/example/package.json: Unexpected token < in JSON at position 1405
+      at JSON.parse (<anonymous>)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:304:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:315:13
+
+npm manifest: 
+  {
+    "name": "anyline-cordova-example",
+    "version": "10.0.0",
+    "description": "Cordova plugin for implementing Anyline",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "reinstall": "cordova platform remove android && cordova plugin remove io-anyline-cordova && cordova platform add android@latest && cordova plugin add ../plugin",
+      "reinstall-ios": "cordova platform remove ios && cordova plugin remove io-anyline-cordova && cordova platform add ios@latest && cordova plugin add ../plugin",
+      "reinstall-win": "cordova platform remove windows && cordova plugin remove io-anyline-cordova && cordova platform add windows@latest && cordova plugin add ../plugin",
+      "overwrite": "rm -R ../src/android/io && rm -R ../src/android/res && cp -R platforms/android/src/io ../src/android/ && cp -R platforms/android/res ../src/android",
+      "overwrite-ios": "rm -R ../src/ios/io && rm -R ../src/ios/res && cp -R platforms/ios/src/io ../src/android/ && cp -R platforms/ios/res ../src/ios",
+      "OandR": "npm run overwrite && npm run reinstall",
+      "OandR-ios": "npm run overwrite-ios && npm run reinstall-ios",
+      "cleanUp": "cordova platform remove android && cordova platform remove ios && cordova platform remove windows && cordova plugin remove io-anyline-cordova"
+    },
+    "author": "Jonas Laux | Daniel Albertini",
+    "license": "ISC",
+    "cordova": {
+  <<<<<<< HEAD
+      "plugins": {},
+      "platforms": []
+    },
+    "dependencies": {}
+  =======
+      "plugins": {
+        "io-anyline-cordova": {}
+      },
+      "platforms": [
+        "ios",
+        "android",
+        "windows"
+      ]
+    },
+    "dependencies": {
+      "cordova-android": "^8.0.0",
+      "cordova-ios": "^5.0.0",
+      "cordova-windows": "^7.0.0",
+      "io-anyline-cordova": "file:../plugin"
+    }
+  >>>>>>> release/10
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
