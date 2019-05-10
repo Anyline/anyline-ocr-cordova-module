@@ -29,8 +29,16 @@ if (anyline === undefined) {
         "<br/><b>Expiration Date:</b> " + result.dateOfExpiry + "<br/>" +
         "<br/><b>Date of Birth Date Object:</b> " + result.dateOfBirthObject +
         "<br/><b>Expiration Date Object:</b> " + result.dateOfExpiryObject +
-        (result.dateOfIssue ? "<br/><b>Issuing Date:</b>" + result.dateOfIssue : "") + "<br/>" +
-        (result.vizAddress ? "<br/><b>Address:</b>" + result.vizAddress : "") + "<br/>" +
+        "</p>" + 
+        "<p>" +
+        (result.vizSurname ? "<br/><b>VIZ Surname:</b>" + result.vizSurname : "") + "<div/>" +
+        (result.vizGivenNames ? "<br/><b>VIZ Given Names:</b>" + result.vizGivenNames : "") + "<div/>" +
+        (result.vizDateOfIssue ? "<br/><b>VIZ Date of issue:</b>" + result.vizDateOfIssue : "") + "<div/>" +
+        (result.vizDateOfBirth ? "<br/><b>VIZ Date of birth:</b>" + result.vizDateOfBirth : "") + "<div/>" +
+        (result.vizDateOfExpiry ? "<br/><b>VIZ Date of Expiry:</b>" + result.vizDateOfExpiry : "") + "<div/>" +
+        (result.vizAddress ? "<br/><b>VIZ Address:</b>" + result.vizAddress : "") + "<div />" +
+        "</p>" + 
+        "<p>" +
         "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
         "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
         "<br/><i><b>Checksum:</b>" + result.allCheckDigitsValid + "</i>"+
