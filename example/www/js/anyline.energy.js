@@ -34,6 +34,7 @@ anyline.energy = {
 
     div.innerHTML = "<p>"
       + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
+      + "<img src=\"" + result.fullImagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
       + "<b>" + result.meterType + ":</b> " + result.reading
       + (detailsBarcodes ? "<br/><i><b>Detected Barcodes:</b> " + detailsBarcodes + "</i>" : "")
       + ((result.confidence && result.confidence >= 0) ? "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" : "")

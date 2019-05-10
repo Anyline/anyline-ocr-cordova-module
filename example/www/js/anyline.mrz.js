@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Anyline Cordova Plugin
  * anyline.mrz.js
  *
@@ -30,7 +30,7 @@ if (anyline === undefined) {
         "<br/><b>Date of Birth Date Object:</b> " + result.dateOfBirthObject +
         "<br/><b>Expiration Date Object:</b> " + result.dateOfExpiryObject +
         (result.dateOfIssue ? "<br/><b>Issuing Date:</b>" + result.dateOfIssue : "") + "<br/>" +
-        (result.address ? "<br/><b>Address:</b>" + result.address : "") + "<br/>" +
+        (result.vizAddress ? "<br/><b>Address:</b>" + result.vizAddress : "") + "<br/>" +
         "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
         "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
         "<br/><i><b>Checksum:</b>" + result.allCheckDigitsValid + "</i>"+
@@ -71,8 +71,8 @@ if (anyline === undefined) {
                       "strictMode" : true,
                       "cropAndTransformID" : false,
                       "mrzFieldScanOptions": {
-                                          "dateOfIssue" : "optional",
-                                          "address" : "optional"
+                                          "vizDateOfIssue" : "optional",
+                                          "vizAddress" : "optional"
                                       }
                   }
               }
