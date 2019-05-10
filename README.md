@@ -8,6 +8,9 @@
 
 Anyline provides an easy-to-use SDK for applications to enable Optical Character Recognition (OCR) on mobile devices.
 
+## Anyline Cordova Plugin Release Notes
+[Release Notes](https://documentation.anyline.com/toc/platforms/cordova/release_guide/index.html)
+
 ## Update to >= 5.0
 
 If you use this plugin with a equal or greater version then 5.0, you can use our new Anyline structure, which will provide the whole
