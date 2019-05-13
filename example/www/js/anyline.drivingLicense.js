@@ -34,12 +34,12 @@ if (anyline === undefined) {
               "<br/><b>Issuing Date Object:</b> " + result.dateOfIssueObject +
                (result.dateOfExpiryObject ? "<br/><b>Expiration Date Object:</b>" + result.dateOfExpiryObject : "") + "<br/>" +
   
-              "<br/><b>Place of Birth:</b> " + result.placeOfBirth + "<br/>"
         + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
         + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</p>"
         + div.innerHTML;
   
-      document.getElementById("details_scan_modes").removeAttribute("open");
+      docume
+nt.getElementById("details_scan_modes").removeAttribute("open");
       document.getElementById("details_results").setAttribute("open", "");
       window.scrollTo(0, 0);
     },
