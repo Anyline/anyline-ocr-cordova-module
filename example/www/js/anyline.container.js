@@ -152,7 +152,7 @@ anyline.container = {
     // pass the success and error callbacks, as well as the license key and the config to the plugin
     // see http://documentation.anyline.io/#anyline-config for config details
     // and http://documentation.anyline.io/#anylineOcrModule for module details
-
+    console.log(type);
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
       return;
     }
@@ -162,7 +162,7 @@ anyline.container = {
 
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
       this.licenseKey,
-      this.options
+      options
     ]);
   }
 };
