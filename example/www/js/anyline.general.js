@@ -9,7 +9,7 @@
 setTimeout(function () {
     localStorage.setItem("hasStartedAnyline", true);
     cordova.exec(
-        (sdkVersion) => {
+        function (sdkVersion) {
             localStorage.setItem("hasStartedAnyline", false);
             var div = document.getElementById('SDK');
             div.innerHTML = "<p>Anyline SDK Version: " + sdkVersion + "</p>"
