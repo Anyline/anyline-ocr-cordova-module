@@ -99,8 +99,55 @@ anyline.container = {
   },
 
 
+  anylineContainerVerticalViewConfig: {
+    "camera": {
+      "captureResolution": "1080p"
+    },
+    "flash": {
+      "mode": "manual",
+      "alignment": "bottom_right"
+    },
+    "viewPlugin": {
+      "plugin": {
+        "id": "CONTAINER_ID",
+        "ocrPlugin": {
+          "scanMode": "AUTO",
+          "languages": ["www/assets/USNr.any"],
+          "customCmdFile": "www/assets/container_scanner_vertical.ale"
+        }
+      },
+      "cutoutConfig": {
+        "style": "rect",
+        "maxWidthPercent": "10%",
+        "alignment": "top_half",
+        "ratioFromSize": {
+          "width": 9,
+          "height": 62
+        },
+        "outerColor": "000000",
+        "outerAlpha": 0.3,
+        "strokeWidth": 1,
+        "strokeColor": "FFFFFF",
+        "cornerRadius": 2,
+        "feedbackStrokeColor": "0099FF",
+      },
+      "scanFeedback": {
+        "animation": "traverse_multi",
+        "animationDuration": 250,
+        "style": "contour_rect",
+        "strokeWidth": 2,
+        "strokeColor": "0099FF",
+        "beepOnResult": true,
+        "vibrateOnResult": true,
+        "blinkAnimationOnResult": true
+      },
+      "cancelOnResult": true
+    }
+  },
 
-  scan: function () {
+
+
+  scan: function (type) {
     // start the Anyline OCR scanning
     // pass the success and error callbacks, as well as the license key and the config to the plugin
     // see http://documentation.anyline.io/#anyline-config for config details
@@ -111,9 +158,11 @@ anyline.container = {
     }
     changeLoadingState(true);
 
+    var options = (type === 'vertical') ? this.anylineContainerVerticalViewConfig : this.anylineContainerViewConfig;
+
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
       this.licenseKey,
-      this.anylineContainerViewConfig
+      this.options
     ]);
   }
 };

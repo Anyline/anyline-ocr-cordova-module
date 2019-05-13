@@ -67,6 +67,8 @@
                 <input type="button" value="German ID Front" onclick="anyline.germanIdFront.scan()"
                     class="formButton" disabled=true/>
                 <br />
+                <input type="button" value="German ID Front" onclick="anyline.barcode.scan('pdf417')"
+                    class="formButton" disabled=true/>
                 <p>
                 </p>
                 <h2>Anyline OCR</h2>
@@ -92,14 +94,16 @@
                 <br />
                 <input type="button" value="Universal Serial Number" onclick="anyline.usnr.scan()" class="formButton" disabled=true/>
                 <br />
-                <input type="button" value="Shipping Container" onclick="anyline.container.scan()" class="formButton" disabled=true/>
+                <input type="button" value="Shipping Container" onclick="anyline.container.scan('default')" class="formButton" disabled=true/>
+                <br />
+                <input type="button" value="Shipping Container Vertical" onclick="anyline.container.scan('vertical')" class="formButton" disabled=true/>
                 <br />
 
 
                 <hr>
                 <h2> Others </h2>
                 <p>
-                    <input type="button" value="Barcode" onclick="anyline.barcode.scan()" class="formButton" disabled=true/>
+                    <input type="button" value="Barcode" onclick="anyline.barcode.scan('default')" class="formButton" disabled=true/>
                     <br />
                     <input type="button" value="Document" onclick="anyline.document.scan()" class="formButton" disabled=true/>
                     <br />
