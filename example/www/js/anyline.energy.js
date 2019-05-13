@@ -10,7 +10,7 @@ if (anyline === undefined) {
 }
 anyline.energy = {
   onResult: function (result) {
-    localStorage.setItem("hasStartedAnyline", false);
+    changeLoadingState(false);
     //this is called for every energy scan result
     //the result is a json-object containing the reading the meter type and a path to a cropped and a full image.
 
@@ -48,7 +48,7 @@ anyline.energy = {
   },
 
   onError: function (error) {
-    localStorage.setItem("hasStartedAnyline", false);
+    changeLoadingState(false);
     //called if an error occurred or the user canceled the scanning
     if (error == "Canceled") {
       //do stuff when user has canceled
@@ -261,7 +261,7 @@ anyline.energy = {
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
       return;
     }
-    localStorage.setItem("hasStartedAnyline", true);
+    changeLoadingState(true);
 
     this.meterViewPluginConfig.viewPlugin.plugin.meterPlugin.scanMode = scanMode;
 
@@ -285,7 +285,7 @@ anyline.energy = {
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
       return;
     }
-    localStorage.setItem("hasStartedAnyline", true);
+    changeLoadingState(true);
     // start the Energy scanning for the given scan mode
     // pass the success and error callbacks, as well as the license key and the config to the plugin
     // see http://documentation.anyline.io/#anyline-config for config details
@@ -298,7 +298,7 @@ anyline.energy = {
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
       return;
     }
-    localStorage.setItem("hasStartedAnyline", true);
+    changeLoadingState(true);
     // start the Energy scanning for the given scan mode
     // pass the success and error callbacks, as well as the license key and the config to the plugin
     // see http://documentation.anyline.io/#anyline-config for config details
@@ -311,7 +311,7 @@ anyline.energy = {
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
       return;
     }
-    localStorage.setItem("hasStartedAnyline", true);
+    changeLoadingState(true);
 
     // start the Energy scanning for the given scan mode
     // pass the success and error callbacks, as well as the license key and the config to the plugin
@@ -323,7 +323,7 @@ anyline.energy = {
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
       return;
     }
-    localStorage.setItem("hasStartedAnyline", true);
+    changeLoadingState(true);
 
     // start the Energy scanning for the given scan mode
     // pass the success and error callbacks, as well as the license key and the config to the plugin

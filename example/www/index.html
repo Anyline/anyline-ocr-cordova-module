@@ -18,6 +18,15 @@
     <link rel="stylesheet" type="text/css" href="css/anyline.css">
     <title>Anyline Cordova Example</title>
     <script type="application/javascript">localStorage.setItem("hasStartedAnyline", true);</script>
+    <script type="application/javascript">
+        function changeLoadingState(isLoading = false) {
+            var buttons = document.getElementsByClassName('formButton');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = isLoading;
+            }
+            localStorage.setItem("hasStartedAnyline", isLoading)
+        }
+    </script>
 </head>
 
 <body>
@@ -30,60 +39,71 @@
             </summary>
             <h2> Meter Reading </h2>
             <p>
-                <input type="button" value="Analog/Digital Meter" onclick="anyline.energy.scan('AUTO_ANALOG_DIGITAL_METER')" />
+                <input type="button" value="Analog/Digital Meter"
+                    onclick="anyline.energy.scan('AUTO_ANALOG_DIGITAL_METER')" class="formButton" disabled=true/>
                 <br />
-                <input type="button" value="Analog Meter" onclick="anyline.energy.scanElectricAnalogSegment()" />
+                <input type="button" value="Analog Meter" onclick="anyline.energy.scanElectricAnalogSegment()"
+                    class="formButton" disabled=true/>
                 <br />
-                <input type="button" value="Digital Meter" onclick="anyline.energy.scanElectricDigitalSegment()" />
+                <input type="button" value="Digital Meter" onclick="anyline.energy.scanElectricDigitalSegment()"
+                    class="formButton" disabled=true/>
                 <br />
-                <input type="button" value="Serial Number" onclick="anyline.energy.scan('SERIAL_NUMBER')" />
+                <input type="button" value="Serial Number" onclick="anyline.energy.scan('SERIAL_NUMBER')"
+                    class="formButton" disabled=true/>
                 <br />
-                <input type="button" value="Dial Meter ALPHA" onclick="anyline.energy.scan('DIAL_METER')" />
+                <input type="button" value="Dial Meter ALPHA" onclick="anyline.energy.scan('DIAL_METER')"
+                    class="formButton" disabled=true/>
                 <br />
-                <input type="button" value="Dot Matrix Meter" onclick="anyline.energy.scan('DOT_MATRIX_METER')" />
+                <input type="button" value="Dot Matrix Meter" onclick="anyline.energy.scan('DOT_MATRIX_METER')"
+                    class="formButton" disabled=true/>
                 <br />
                 <hr>
                 <h2>ID</h2>
-                <input type="button" value="AUT/GER Driving License" onclick="anyline.drivingLicense.scan()" />
+                <input type="button" value="AUT/GER Driving License" onclick="anyline.drivingLicense.scan()"
+                    class="formButton" disabled=true/>
                 <br />
-                <input type="button" value="MRZ of Passport or ID" onclick="anyline.mrz.scan()" />
+                <input type="button" value="MRZ of Passport or ID" onclick="anyline.mrz.scan()" class="formButton" disabled=true/>
                 <br />
-                <input type="button" value="German ID Front" onclick="anyline.germanIdFront.scan()" />
+                <input type="button" value="German ID Front" onclick="anyline.germanIdFront.scan()"
+                    class="formButton" disabled=true/>
                 <br />
                 <p>
                 </p>
                 <h2>Anyline OCR</h2>
                 <p>
-                    <input type="button" value="IBAN" onclick="anyline.ocr.scanIban()" />
+                    <input type="button" value="IBAN" onclick="anyline.ocr.scanIban()" class="formButton" disabled=true/>
                     <br />
-                    <input type="button" value="Anyline Voucher Codes" onclick="anyline.ocr.scanAnylineVoucherCodes()" />
+                    <input type="button" value="Anyline Voucher Codes" onclick="anyline.ocr.scanAnylineVoucherCodes()"
+                        class="formButton" disabled=true/>
                     <br />
                 </p>
                 <hr>
                 <h2> Vehicles </h2>
                 <p>
-                    <input type="button" value="License Plates" onclick="anyline.licensePlate.scanLicensePlates('LICENSE_PLATE')" />
+                    <input type="button" value="License Plates"
+                        onclick="anyline.licensePlate.scanLicensePlates('LICENSE_PLATE')" class="formButton" disabled=true/>
                     <br />
                 </p>
 
                 <hr>
                 <h2>MRO</h2>
-                <input type="button" value="Vehicle Identification Nb." onclick="anyline.vin.scan()" />
+                <input type="button" value="Vehicle Identification Nb." onclick="anyline.vin.scan()"
+                    class="formButton" disabled=true/>
                 <br />
-                <input type="button" value="Universal Serial Number" onclick="anyline.usnr.scan()" />
+                <input type="button" value="Universal Serial Number" onclick="anyline.usnr.scan()" class="formButton" disabled=true/>
                 <br />
-                <input type="button" value="Shipping Container" onclick="anyline.container.scan()" />
+                <input type="button" value="Shipping Container" onclick="anyline.container.scan()" class="formButton" disabled=true/>
                 <br />
 
 
                 <hr>
                 <h2> Others </h2>
                 <p>
-                    <input type="button" value="Barcode" onclick="anyline.barcode.scan()" />
+                    <input type="button" value="Barcode" onclick="anyline.barcode.scan()" class="formButton" disabled=true/>
                     <br />
-                    <input type="button" value="Document" onclick="anyline.document.scan()" />
+                    <input type="button" value="Document" onclick="anyline.document.scan()" class="formButton" disabled=true/>
                     <br />
-                    <input type="button" value="Cattle Tag" onclick="anyline.ocr.scanCattleTag()" />
+                    <input type="button" value="Cattle Tag" onclick="anyline.ocr.scanCattleTag()" class="formButton" disabled=true/>
                     <br />
                 </p>
         </details>

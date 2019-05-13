@@ -10,7 +10,7 @@ if (anyline === undefined) {
 }
 anyline.usnr = {
   onResult: function (result) {
-    localStorage.setItem("hasStartedAnyline", false);
+    changeLoadingState(false);
     //this is called for every mrz scan result
     //the result is a json-object containing all the scaned values and check-digits
 
@@ -34,7 +34,7 @@ anyline.usnr = {
   },
 
   onError: function (error) {
-    localStorage.setItem("hasStartedAnyline", false);
+    changeLoadingState(false);
     //called if an error occurred or the user canceled the scanning
     if (error === "Canceled") {
       //do stuff when user has canceled
@@ -108,7 +108,7 @@ anylineUSNRViewConfig: {
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
       return;
     }
-    localStorage.setItem("hasStartedAnyline", true);
+    changeLoadingState(true);
 
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
           this.licenseKey,

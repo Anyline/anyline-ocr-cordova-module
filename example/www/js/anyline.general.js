@@ -7,15 +7,15 @@
 
 
 setTimeout(function () {
-    localStorage.setItem("hasStartedAnyline", true);
+    changeLoadingState(true);
     cordova.exec(
         function (sdkVersion) {
-            localStorage.setItem("hasStartedAnyline", false);
+            changeLoadingState(false);
             var div = document.getElementById('SDK');
             div.innerHTML = "<p>Anyline SDK Version: " + sdkVersion + "</p>"
         },
         function (err) {
-            localStorage.setItem("hasStartedAnyline", false);
+            changeLoadingState(false);
             console.error(err)
         },
         "AnylineSDK",

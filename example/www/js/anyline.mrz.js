@@ -10,7 +10,7 @@ if (anyline === undefined) {
   }
   anyline.mrz = {
     onResult: function (result) {
-      localStorage.setItem("hasStartedAnyline", false);
+      changeLoadingState(false);
       //this is called for every mrz scan result
       //the result is a json-object containing all the scaned values and check-digits
   
@@ -51,7 +51,7 @@ if (anyline === undefined) {
     },
   
     onError: function (error) {
-      localStorage.setItem("hasStartedAnyline", false);
+      changeLoadingState(false);
       //called if an error occurred or the user canceled the scanning
       if (error == "Canceled") {
         //do stuff when user has canceled
@@ -131,7 +131,7 @@ if (anyline === undefined) {
       if (localStorage.getItem("hasStartedAnyline") === 'true') {
         return;
       }
-      localStorage.setItem("hasStartedAnyline", true);
+      changeLoadingState(true);
       // start the MRZ scanning
       // pass the success and error callbacks, as well as the license key and the config to the plugin
       // see http://documentation.anyline.io/#anyline-config for config details
