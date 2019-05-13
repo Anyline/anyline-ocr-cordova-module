@@ -126,7 +126,7 @@ public class AnylinePluginHelper {
 
 			File imageFileFull = TempFileUtil.createTempFileCheckCache(activity, UUID.randomUUID().toString(), ".jpg");
 			scanResult.getFullImage().save(imageFileFull, 90);
-			jsonObject.put("fullImagePath", imageFile.getAbsolutePath());
+			jsonObject.put("fullImagePath", imageFileFull.getAbsolutePath());
 
 			jsonObject.put("outline", activity.jsonForOutline(scanResult.getOutline()));
 			jsonObject.put("confidence", scanResult.getConfidence());
