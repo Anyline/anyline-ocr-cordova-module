@@ -33,7 +33,7 @@ anyline.document = {
     },
 
     onError: function (error) {
-        changeLoadingState(
+        changeLoadingState(false);
         //called if an error occurred or the user canceled the scanning
         if (error == "Canceled") {
             //do stuff when user has canceled
