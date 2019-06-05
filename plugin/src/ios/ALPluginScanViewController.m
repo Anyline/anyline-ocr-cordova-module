@@ -87,21 +87,18 @@
     
     if ([self.scanView.scanViewPlugin isKindOfClass:[ALOCRScanViewPlugin class]]) {
         NSString *customCmdFile = [self.anylineConfig valueForKeyPath:@"viewPlugin.plugin.ocrPlugin.customCmdFile"];
+        if (!customCmdFile) {
+            customCmdFile = [self.anylineConfig valueForKeyPath:@"viewPlugin.plugin.ocrPlugin.ocrConfig.customCmdFile"];
+        }
         
         if (customCmdFile) {
-            //            ALOCRConfig *ocrConfig = (ALOCRConfig *)self.anylineConfig;
-            //            [ocrConfig setCustomCmdFilePath:customCmdFile];
-            //            self.anylineConfig = (NSDictionary *)ocrConfig;
-            NSString *fileName = [self.anylineConfig valueForKeyPath:@"viewPlugin.plugin.ocrPlugin.customCmdFile"];
-            if (fileName) {
-                NSString *cmdFileDirectoryPath = [fileName stringByDeletingLastPathComponent];
-                NSString *pathResource = [[fileName lastPathComponent] stringByDeletingPathExtension];
-                NSString *filePath =  [[NSBundle mainBundle] pathForResource:pathResource ofType:@"ale" inDirectory:cmdFileDirectoryPath];
-                
-                ALOCRConfig *ocrConfig = ((ALOCRScanViewPlugin *)self.scanView.scanViewPlugin).ocrScanPlugin.ocrConfig;
-                [ocrConfig setCustomCmdFilePath:filePath];
-                [((ALOCRScanViewPlugin *)self.scanView.scanViewPlugin).ocrScanPlugin setOCRConfig:ocrConfig error:nil];
-            }
+            NSString *cmdFileDirectoryPath = [customCmdFile stringByDeletingLastPathComponent];
+            NSString *pathResource = [[customCmdFile lastPathComponent] stringByDeletingPathExtension];
+            NSString *filePath =  [[NSBundle mainBundle] pathForResource:pathResource ofType:@"ale" inDirectory:cmdFileDirectoryPath];
+            
+            ALOCRConfig *ocrConfig = ((ALOCRScanViewPlugin *)self.scanView.scanViewPlugin).ocrScanPlugin.ocrConfig;
+            [ocrConfig setCustomCmdFilePath:filePath];
+            [((ALOCRScanViewPlugin *)self.scanView.scanViewPlugin).ocrScanPlugin setOCRConfig:ocrConfig error:nil];
             
         }
     }
