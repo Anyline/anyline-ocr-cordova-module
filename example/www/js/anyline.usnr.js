@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Anyline Cordova Plugin
  * anyline.ocr.js
  *
@@ -61,6 +61,9 @@ anylineUSNRViewConfig: {
         "plugin":{
             "id":"USNR_ID",
             "ocrPlugin":{
+                "ocrConfig" : {
+                    "scanMode" : "AUTO",
+                }
             },
           "delayStartScanTime" : 1000
         },
