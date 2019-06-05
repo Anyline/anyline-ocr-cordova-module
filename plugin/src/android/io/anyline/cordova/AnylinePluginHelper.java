@@ -34,6 +34,8 @@ import static org.apache.cordova.Whitelist.TAG;
 public class AnylinePluginHelper {
 
 	private static Toast notificationToast;
+	private static boolean nativeBarcodeEnabled = false;
+	private static List<FirebaseVisionBarcode> finalBarcodeList;
 
 	public static JSONObject setLanguages(JSONObject json, Context context){
 		if(json.has("viewPlugin")){
@@ -117,8 +119,42 @@ public class AnylinePluginHelper {
 		return 0;
 	}
 
+	public static void setNativeBarcodeMode(JSONObject jsonObject, ScanView anylineScanView){
+		boolean nativeBarcodeEnabledJson = false;
+		if (jsonObject.has("nativeBarcodeEnabled")) {
+			try {
+				nativeBarcodeEnabledJson = jsonObject.getBoolean("nativeBarcodeEnabled");
+				if(nativeBarcodeEnabledJson){
+					enableNativeBarcode(anylineScanView, null);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		nativeBarcodeEnabled = nativeBarcodeEnabledJson;
+	}
+
+	public static boolean getNativeBarcodeMode(){
+		return nativeBarcodeEnabled;
+	}
+
+	public static JSONArray arrayOfDetectedBarcodes() {
+
+		if (nativeBarcodeEnabled) {
+			//List<FirebaseVisionBarcode> finalBarcodeList = new ArrayList<>();
+			finalBarcodeList = AnylinePluginHelper.getNativeBarcodeList();
+			final JSONArray jsonArray = new JSONArray();
+			for (int i = 0; i < finalBarcodeList.size(); i++) {
+				jsonArray.put(AnylinePluginHelper.wrapBarcodeInJson(finalBarcodeList.get(i)));
+			}
+			return jsonArray;
+		}
+		return null;
+	}
+
 	public static JSONObject jsonHelper(Anyline4Activity activity, ScanResult<?> scanResult, JSONObject jsonObject) {
 		try {
+
 			File imageFile = TempFileUtil.createTempFileCheckCache(activity,
 					UUID.randomUUID().toString(), ".jpg");
 			scanResult.getCutoutImage().save(imageFile, 90);
@@ -130,6 +166,14 @@ public class AnylinePluginHelper {
 
 			jsonObject.put("outline", activity.jsonForOutline(scanResult.getOutline()));
 			jsonObject.put("confidence", scanResult.getConfidence());
+
+			if(nativeBarcodeEnabled) {
+				JSONArray barcodeArray = arrayOfDetectedBarcodes();
+
+				if (barcodeArray.length() > 0) {
+					jsonObject.put("detectedBarcodes", barcodeArray);
+				}
+			}
 
 		} catch (IOException e) {
 			Log.e(TAG, "Image file could not be saved.", e);
@@ -152,6 +196,33 @@ public class AnylinePluginHelper {
 			Log.e(TAG, "Error while putting image path to json.", jsonException);
 		}
 		return json;
+	}
+
+	private static void setNativeBarcodeList(List<FirebaseVisionBarcode> barcodes){
+		final List<FirebaseVisionBarcode> barcodeList = new ArrayList<>();
+		final List<String> barcodesDisplayedVal = new ArrayList<>();
+
+		if(barcodeList.size() == 0){
+			barcodeList.add(barcodes.get(0));
+		}
+
+		if (barcodes != null && barcodes.size() > 0) {
+			barcodesDisplayedVal.add(barcodes.get(0).getDisplayValue());
+
+			for(int i = 0; i<barcodes.size(); i++){
+				if(!barcodesDisplayedVal.contains(barcodes.get(i).getDisplayValue())){
+					barcodeList.add(barcodes.get(i));
+				}
+			}
+
+		}
+
+		finalBarcodeList = barcodeList;
+
+	}
+
+	private static List<FirebaseVisionBarcode> getNativeBarcodeList(){
+		return finalBarcodeList;
 	}
 
 	private static String findValidFormatForReference(int format) {
@@ -200,9 +271,7 @@ public class AnylinePluginHelper {
 
 	}
 
-	public static List<FirebaseVisionBarcode> nativeBarcodeList(ScanView anylineScanView, final List<BarcodeFormat> barcodeFormats) {
-		final List<FirebaseVisionBarcode> barcodeList = new ArrayList<>();
-		final List<String> barcodesDisplayedVal = new ArrayList<>();
+	public static void enableNativeBarcode(ScanView anylineScanView, final List<BarcodeFormat> barcodeFormats) {
 		anylineScanView.getCameraView().enableBarcodeDetection(new NativeBarcodeResultListener() {
 			@Override
 			public void onFailure(String e) {
@@ -211,23 +280,9 @@ public class AnylinePluginHelper {
 
 			@Override
 			public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
-				if(barcodeList.size() == 0){
-					barcodeList.add(barcodes.get(0));
-				}
-
-				if (barcodes != null && barcodes.size() > 0) {
-					barcodesDisplayedVal.add(barcodes.get(0).getDisplayValue());
-
-					for(int i = 0; i<barcodes.size(); i++){
-						if(!barcodesDisplayedVal.contains(barcodes.get(i).getDisplayValue())){
-							barcodeList.add(barcodes.get(i));
-						}
-					}
-
-				}
+				setNativeBarcodeList(barcodes);
 			}
 		}, barcodeFormats);
-		return barcodeList;
 	}
 
 	protected static void showToast(String st, Context context) {

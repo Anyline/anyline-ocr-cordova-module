@@ -60,9 +60,8 @@ anyline.vin = {
       "plugin": {
         "id": "VIN_ID",
         "ocrPlugin": {
-          "scanMode": "AUTO",
-          "languages": ["www/assets/vin.any"],
-          "customCmdFile": "www/assets/vin.ale"
+          "vinConfig":{
+          }
         }
       },
       "cutoutConfig": {

@@ -59,11 +59,9 @@ anylineUSNRViewConfig: {
       },
       "viewPlugin":{
         "plugin":{
-                  "id":"USNR_ID",
-                  "ocrPlugin":{
-                      "scanMode": "AUTO",
-                      "languages": ["www/assets/USNr.any"]
-                  },
+            "id":"USNR_ID",
+            "ocrPlugin":{
+            },
           "delayStartScanTime" : 1000
         },
         "cutoutConfig": {

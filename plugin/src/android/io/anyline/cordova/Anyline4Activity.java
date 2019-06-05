@@ -51,7 +51,7 @@ import io.anyline.view.ScanViewPlugin;
 public class Anyline4Activity extends AnylineBaseActivity {
 	private static final String TAG = Anyline4Activity.class.getSimpleName();
 
-	private ScanView anylineScanView;
+	public ScanView anylineScanView;
 	private ScanViewPlugin scanViewPlugin;
 	private RadioGroup radioGroup;
 	private CordovaUIConfig cordovaUiConfig;
@@ -138,6 +138,8 @@ public class Anyline4Activity extends AnylineBaseActivity {
 
 			if(scanViewPlugin != null) {
 
+				//set nativeBarcodeMode
+				AnylinePluginHelper.setNativeBarcodeMode(json, anylineScanView);
 				if (!(scanViewPlugin instanceof MeterScanViewPlugin)) {
 					setContentView(anylineScanView);
 				}
@@ -290,24 +292,24 @@ public class Anyline4Activity extends AnylineBaseActivity {
 
 				} else if (scanViewPlugin instanceof MeterScanViewPlugin) {
 					final JSONArray jsonArray = new JSONArray();
-					boolean nativeBarcodeEnabled = false;
+					//boolean nativeBarcodeEnabled = false;
 					if (json.has("reportingEnabled")) {
 						scanViewPlugin.setReportingEnabled(json.optBoolean("reportingEnabled", true));
 					}
-					if (json.has("nativeBarcodeEnabled")) {
-						nativeBarcodeEnabled = json.getBoolean("nativeBarcodeEnabled");
-					}
-					//create the radio button for the UI
+//					if (json.has("nativeBarcodeEnabled")) {
+//						nativeBarcodeEnabled = json.getBoolean("nativeBarcodeEnabled");
+//					}
+//					//create the radio button for the UI
 					createSegmentRadioButtonUI(json);
 
 					anylineScanView.setCameraOpenListener(this);
-					List<FirebaseVisionBarcode> barcodeList = new ArrayList<>();
-					if (nativeBarcodeEnabled) {
-						barcodeList = AnylinePluginHelper.nativeBarcodeList(anylineScanView, null);
+//					List<FirebaseVisionBarcode> barcodeList = new ArrayList<>();
+//					if (AnylinePluginHelper.isNativeBarcodeEnabled(json)) {
+//						barcodeList = AnylinePluginHelper.nativeBarcodeList(anylineScanView, null);
+//
+//					}
 
-					}
-
-					final List<FirebaseVisionBarcode> finalBarcodeList = barcodeList;
+					//final List<FirebaseVisionBarcode> finalBarcodeList = barcodeList;
 					scanViewPlugin.addScanResultListener(new ScanResultListener<MeterScanResult>() {
 						@Override
 						public void onResult(MeterScanResult meterScanResult) {
@@ -318,12 +320,12 @@ public class Anyline4Activity extends AnylineBaseActivity {
 
 								jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, meterScanResult, jsonResult);
 
-								for(int i = 0; i< finalBarcodeList.size(); i++) {
-									jsonArray.put(AnylinePluginHelper.wrapBarcodeInJson(finalBarcodeList.get(i)));
-								}
-								if (jsonArray.length() > 0) {
-									jsonResult.put("detectedBarcodes", jsonArray);
-								}
+//								for(int i = 0; i< finalBarcodeList.size(); i++) {
+//									jsonArray.put(AnylinePluginHelper.wrapBarcodeInJson(finalBarcodeList.get(i)));
+//								}
+//								if (jsonArray.length() > 0) {
+//									jsonResult.put("detectedBarcodes", jsonArray);
+//								}
 
 							} catch (Exception e) {
 								Log.e(TAG, "EXCEPTION", e);

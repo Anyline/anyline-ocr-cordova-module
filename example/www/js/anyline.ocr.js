@@ -59,8 +59,6 @@ anyline.ocr = {
       "plugin": {
         "id": "OCR_IBAN",
         "ocrPlugin": {
-          "scanMode": "LINE",
-          "languages": ["www/assets/USNr.any"],
           "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
           "minCharHeight": 25,
           "maxCharHeight": 65,
@@ -161,9 +159,8 @@ anyline.ocr = {
       "plugin": {
         "id": "OCR_COW",
         "ocrPlugin": {
-          "scanMode": "AUTO",
-          "languages": ["www/assets/USNr.any"],
-          "customCmdFile": "www/assets/cow_tag_scanner.ale"
+          "cattleTagConfig":{
+          }
         }
       },
       "cutoutConfig": {

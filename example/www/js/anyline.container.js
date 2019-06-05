@@ -61,9 +61,8 @@ anyline.container = {
       "plugin": {
         "id": "Container_ID",
         "ocrPlugin": {
-          "scanMode": "AUTO",
-          "languages": ["www/assets/USNr.any"],
-          "customCmdFile": "www/assets/container_scanner.ale"
+          "containerConfig":{
+           }
         }
       },
       "cutoutConfig": {
@@ -111,14 +110,14 @@ anyline.container = {
       "plugin": {
         "id": "CONTAINER_ID",
         "ocrPlugin": {
-          "scanMode": "AUTO",
-          "languages": ["www/assets/USNr.any"],
-          "customCmdFile": "www/assets/container_scanner_vertical.ale"
+          "containerConfig":{
+            "scanMode": "vertical"
+          }
         }
       },
       "cutoutConfig": {
         "style": "rect",
-        "maxWidthPercent": "10%",
+        "maxWidthPercent": "80%",
         "alignment": "top_half",
         "ratioFromSize": {
           "width": 9,
