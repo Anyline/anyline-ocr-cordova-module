@@ -60,6 +60,7 @@ anyline.ocr = {
         "id": "OCR_IBAN",
         "ocrPlugin": {
             "ocrConfig":{
+		"languages": ["www/assets/USNr.any"],
                 "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
                 "minCharHeight": 25,
                 "maxCharHeight": 65,
