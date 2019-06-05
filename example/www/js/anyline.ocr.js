@@ -59,11 +59,13 @@ anyline.ocr = {
       "plugin": {
         "id": "OCR_IBAN",
         "ocrPlugin": {
-          "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-          "minCharHeight": 25,
-          "maxCharHeight": 65,
-          "minConfidence": 70,
-          "validationRegex": "^[A-Z]{2}([0-9A-Z]\\s*){13,32}$"
+            "ocrConfig":{
+                "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+                "minCharHeight": 25,
+                "maxCharHeight": 65,
+                "minConfidence": 70,
+                "validationRegex": "^[A-Z]{2}([0-9A-Z]\\s*){13,32}$"
+            }
         }
       },
       "cutoutConfig": {
@@ -109,12 +111,13 @@ anyline.ocr = {
       "plugin": {
         "id": "OCR_VC",
         "ocrPlugin": {
-          "scanMode": "AUTO",
-          "languages": ["www/assets/anyline_capitals.traineddata"],
-          "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-          "validationRegex": "[A-Z0-9]{8}$",
-          "minConfidence": 85
-
+            "ocrConfig":{
+                "scanMode": "AUTO",
+                "languages": ["www/assets/anyline_capitals.traineddata"],
+                "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+                "validationRegex": "[A-Z0-9]{8}$",
+                "minConfidence": 85
+            }
         }
       },
       "cutoutConfig": {
