@@ -120,7 +120,7 @@ anyline.barcode = {
       "plugin": {
         "id": "Barcode_ID",
         "barcodePlugin": {
-          "barcodeFormatOptions": ["PDF417"]
+          "barcodeFormatOptions": ["PDF_417"]
         }
       },
       "cutoutConfig": {
