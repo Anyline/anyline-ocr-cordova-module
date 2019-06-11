@@ -38,8 +38,7 @@ if (anyline === undefined) {
         + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</p>"
         + div.innerHTML;
   
-      docume
-nt.getElementById("details_scan_modes").removeAttribute("open");
+      document.getElementById("details_scan_modes").removeAttribute("open");
       document.getElementById("details_results").setAttribute("open", "");
       window.scrollTo(0, 0);
     },
