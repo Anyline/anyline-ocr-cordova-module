@@ -20,7 +20,8 @@ onResult: function (result) {
     if (div.childElementCount >= 3) {
         div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
-    
+
+
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
     "<b>Name:</b> " + result.surname + " " + result.givenNames + "<br/>" + "<b>Type:</b> " + result.documentType +
     "<br/><b>Number:</b> " + result.documentNumber + " <b>" +
@@ -40,6 +41,32 @@ onResult: function (result) {
     (result.vizDateOfExpiry ? "<br/><b>VIZ Date of Expiry:</b> " + result.vizDateOfExpiry : "") + "<div/>" +
     (result.vizDateOfExpiryObject ? "<br/><b>VIZ Date of Expiry object:</b> " + result.vizDateOfExpiryObject : "") + "<div/>" +
     (result.vizAddress ? "<br/><b>VIZ Address:</b> " + result.vizAddress : "") + "<div />" +
+    "</p>" +
+
+    "<p>" +
+        "<br/><b>CONFIDENCE:</b>" +
+        "<br/><b>Surname:</b> " + result.fieldConfidences.surname +
+        "<br/><b>GivenNames :</b> " + result.fieldConfidences.givenNames +
+        "<br/><b>Sex:</b> " + result.fieldConfidences.sex +
+        "<br/><b>Personal Number:</b> " + result.fieldConfidences.personalNumber +
+        "<br/><b>Optional Data:</b> " + result.fieldConfidences.optionalData +
+        "<br/><b>Issuing Country Code:</b> " + result.fieldConfidences.issuingCountryCode +
+        "<br/><b>Document Type:</b> " + result.fieldConfidences.documentType +
+        "<br/><b>Document Number:</b> " + result.fieldConfidences.documentNumber +
+        "<br/><b>Date Of Expiry:</b> " + result.fieldConfidences.dateOfExpiry +
+        "<br/><b>Date Of Birth:</b> " + result.fieldConfidences.dateOfBirth +
+        "<br/><b>Check Digit Personal Number:</b> " + result.fieldConfidences.checkDigitPersonalNumber +
+        "<br/><b>Check Digit Final:</b> " + result.fieldConfidences.checkDigitFinal +
+        "<br/><b>Check Digit Document Number:</b> " + result.fieldConfidences.checkDigitDocumentNumber +
+        "<br/><b>Check Digit Date Of Expiry:</b> " + result.fieldConfidences.checkDigitDateOfExpiry +
+        "<br/><b>Check Digit Date Of Birth:</b> " + result.fieldConfidences.checkDigitDateOfBirth +
+        "<br/><b>Viz Date Of Issue :</b> " + result.fieldConfidences.vizDateOfIssue +
+        "<br/><b>viz Date Of Birth:</b> " + result.fieldConfidences.vizDateOfBirth +
+        "<br/><b>viz Date Of Expiry:</b> " + result.fieldConfidences.vizDateOfExpiry +
+        "<br/><b>viz Address:</b> " + result.fieldConfidences.vizAddress +
+        "<br/><b>viz GivenNames:</b> " + result.fieldConfidences.vizGivenNames +
+        "<br/><b>viz Surname:</b> " + result.fieldConfidences.vizSurname +
+
     "</p>" +
     "<p>" +
     "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
@@ -148,4 +175,5 @@ scan: function () {
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [licenseKey, this.anylineMRZViewConfig]);
 }
 };
+
 
