@@ -47,6 +47,12 @@ public class AnylinePluginHelper {
 					if(plugin != null && plugin.has("ocrPlugin")){
 						JSONObject ocrScanPlugin = plugin.getJSONObject("ocrPlugin");{
 							JSONArray tesseractArray = ocrScanPlugin.optJSONArray("languages");
+							if(tesseractArray == null){
+								if(ocrScanPlugin.has("ocrConfig")) {
+									JSONObject ocrConfig = ocrScanPlugin.getJSONObject("ocrConfig");
+									tesseractArray = ocrConfig.optJSONArray("languages");
+								}
+							}
 							JSONArray newLanguagesArray = new JSONArray();
 							if (tesseractArray != null) {
 								String[] languages = new String[tesseractArray.length()];
@@ -327,3 +333,4 @@ public class AnylinePluginHelper {
 		return jsonResult;
 	}
 }
+
