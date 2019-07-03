@@ -90,7 +90,7 @@ cordova.exec(onResult, onError, "AnylineSDK", "scan", config);
 - <b>scanMode</b>: "<i>scan</i>"
 - <b>config</b>: an array
     * <b>config[0]</b>: the license key
-    * <b>config[1]</b>: the [view config](https://documentation.anyline.com/toc/view_configuration/)
+    * <b>config[1]</b>: the [view config](https://documentation.anyline.com/toc/view_configuration/index.html)
 
 
 ##### OCR sample configuration
