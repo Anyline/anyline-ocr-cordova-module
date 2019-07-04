@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Anyline Cordova Plugin
  * anyline.ocr.js
  *
@@ -33,6 +33,18 @@ if (anyline === undefined) {
               "<br/><b>Place Of Birth:</b> " + result.placeOfBirth +
               "<br/><b>Issuing Date Object:</b> " + result.dateOfIssueObject +
                (result.dateOfExpiryObject ? "<br/><b>Expiration Date Object:</b>" + result.dateOfExpiryObject : "") + "<br/>" +
+         "<p>" +
+                "<br/><b>CONFIDENCE:</b>" +
+                "<br/><b>Document Number:</b> " + result.fieldConfidences.documentNumber +
+                "<br/><b>GivenNames :</b> " + result.fieldConfidences.givenNames +
+                "<br/><b>Surname:</b> " + result.fieldConfidences.surname +
+                "<br/><b>Date of Birth:</b> " + result.fieldConfidences.dateOfBirth +
+                "<br/><b>Expiration Date:</b> " + result.fieldConfidences.dateOfExpiry +
+                "<br/><b>Issuing Date:</b> " + result.fieldConfidences.dateOfIssue +
+                "<br/><b>Authority:</b> " + result.fieldConfidences.authority +
+                "<br/><b>Categories:</b> " + result.fieldConfidences.categories +
+                "<br/><b>Place Of Birth:</b> " + result.fieldConfidences.placeOfBirth +
+            "</p>" +
   
         + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
         + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</p>"
@@ -125,3 +137,4 @@ if (anyline === undefined) {
     },
   };
   
+

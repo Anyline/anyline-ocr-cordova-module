@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Anyline Cordova Plugin
  * anyline.mrz.js
  *
@@ -32,6 +32,16 @@ anyline.germanIdFront = {
       "<br/><b>Card Access Number:</b> " + result.cardAccessNumber +
       "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
       "<br/><i><b>Outline Points:</b>" + result.outline + "</i>" +
+      "<p>" +
+        "<br/><b>CONFIDENCE:</b>" +
+        "<br/><b>Surname:</b> " + result.fieldConfidences.surname +
+        "<br/><b>GivenNames :</b> " + result.fieldConfidences.givenNames +
+        "<br/><b>Document Number:</b> " + result.fieldConfidences.documentNumber +
+        "<br/><b>Date of Birth:</b> " + result.fieldConfidences.dateOfBirth +
+        "<br/><b>Expiration Date:</b> " + result.fieldConfidences.dateOfExpiry +
+        "<br/><b>Nationality:</b> " + result.fieldConfidences.nationality +
+        "<br/><b>Card Access Number:</b> " + result.fieldConfidences.cardAccessNumber +
+      "</p>" +
       "</p>" + div.innerHTML;
 
 
@@ -117,3 +127,4 @@ anyline.germanIdFront = {
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [licenseKey, this.anylineGermanIdFrontViewConfig]);
   }
 };
+
