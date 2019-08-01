@@ -59,7 +59,13 @@
                 <br />
                 <hr>
                 <h2>ID</h2>
-                <input type="button" value="AUT/GER Driving License" onclick="anyline.drivingLicense.scan()"
+                <input type="button" value="AT/DE/UK Driving License" onclick="anyline.drivingLicense.scan()"
+                    class="formButton" disabled=true/>
+                <br />
+                <input type="button" value="NL Driving License" onclick="anyline.drivingLicense.NL.scan()"
+                    class="formButton" disabled=true/>
+                <br />
+                <input type="button" value="BE Driving License" onclick="anyline.drivingLicense.BE.scan()"
                     class="formButton" disabled=true/>
                 <br />
                 <input type="button" value="MRZ of Passport or ID" onclick="anyline.mrz.scan()" class="formButton" disabled=true/>
@@ -141,6 +147,8 @@
     <script type="text/javascript" src="js/anyline.mrz.js"></script>
     <script type="text/javascript" src="js/anyline.ocr.js"></script>
     <script type="text/javascript" src="js/anyline.drivingLicense.js"></script>
+    <script type="text/javascript" src="js/anyline.drivingLicense.NL.js"></script>
+    <script type="text/javascript" src="js/anyline.drivingLicense.BE.js"></script>
     <script type="text/javascript" src="js/anyline.document.js"></script>
     <script type="text/javascript" src="js/anyline.licensePlate.js"></script>
     <script type="text/javascript" src="js/anyline.vin.js"></script>
