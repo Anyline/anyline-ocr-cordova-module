@@ -11,7 +11,7 @@
 #import "ALRoundedView.h"
 
 
-@interface ALPluginScanViewController ()<ALIDPluginDelegate,ALOCRScanPluginDelegate,ALBarcodeScanPluginDelegate,ALMeterScanPluginDelegate,ALLicensePlateScanPluginDelegate,ALDocumentScanPluginDelegate,AnylineNativeBarcodeDelegate, ALInfoDelegate, ALScanViewPluginDelegate, ALDocumentInfoDelegate>
+@interface ALPluginScanViewController ()<ALIDPluginDelegate,ALOCRScanPluginDelegate,ALBarcodeScanPluginDelegate,ALMeterScanPluginDelegate,ALLicensePlateScanPluginDelegate,ALDocumentScanPluginDelegate,AnylineNativeBarcodeDelegate, ALInfoDelegate, ALScanViewPluginDelegate, ALDocumentInfoDelegate, ALCompositeScanPluginDelegate>
 
 @property (nonatomic, strong) NSDictionary *anylineConfig;
 @property (nonatomic, weak) id<ALPluginScanViewControllerDelegate> delegate;
@@ -247,6 +247,16 @@
     [self.detectedBarcodes addObject:[ALPluginHelper dictionaryForBarcodeResults:self.detectedBarcodes
                                                                      barcodeType:barcodeType
                                                                       scanResult:scanResult]];
+}
+
+- (void)anylineCompositeScanPlugin:(ALAbstractScanViewPluginComposite *)anylineCompositeScanPlugin
+                     didFindResult:(ALCompositeResult *)scanResult {
+    NSDictionary *dictResult = [ALPluginHelper dictionaryForCompositeResult:scanResult
+                                                           detectedBarcodes:self.detectedBarcodes
+                                                                    quality:self.quality];
+    
+    [self handleResult:dictResult result:nil];
+    
 }
 
 /*
