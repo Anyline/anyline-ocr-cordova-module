@@ -214,6 +214,8 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
                             scan(Anyline4Activity.class, REQUEST_ANYLINE_4, data);
                         }
                     }
+            } else if (jsonConfig.has("serialViewPluginComposite")) {
+                scan(Anyline4Activity.class, REQUEST_ANYLINE_4, data);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
