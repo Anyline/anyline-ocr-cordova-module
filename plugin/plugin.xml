@@ -3,7 +3,7 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova"
-        version="11.0.0">
+        version="12.0.0">
 
     <name>AnylineSDK</name>
 
@@ -54,7 +54,7 @@
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods -->
-        <framework src="Anyline" type="podspec" spec="~> 11"/>
+        <framework src="Anyline" type="podspec" spec="~> 12"/>
 
 
         <!-- Frameworks needed by Anyline SDK for iOS -->
