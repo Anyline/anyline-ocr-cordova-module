@@ -21,12 +21,21 @@ onResult: function (result) {
         div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
     
-    // result["PLUGIN_ID_1"]
-    div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-    "<b>Result: </b> " + result.text
-    + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
-    + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</p>"
-    + div.innerHTML;
+    div.innerHTML = "<h2>LicensePlace Result</h2>" + "<p>" +
+    "<img src=\"" + result.LPT.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
+    "<b>Result (LicensePlate): </b> " + result.LPT.licensePlate + "<br/>" +
+    "<b>Country (LicensePlate): </b> " + result.LPT.country + "<br/>" +
+    "</p>" +
+    "<h2>DrivingLicense Result (snippet)</h2>" + "<p>" +
+    "<img src=\"" + result.DRIVING_LICENSE.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
+    "<b>Surname (DrivingLicense): </b> " + result.DRIVING_LICENSE.surname + "<br/>" +
+    "<b>GivenNames (DrivingLicense): </b> " + result.DRIVING_LICENSE.givenNames + "<br/>" +
+    "<b>Date of Birth (DrivingLicense): </b> " + result.DRIVING_LICENSE.dateOfBirth + "<br/>" +
+    "</p>" +
+    "<h2>Vehicle Identification Number Result</h2>" + "<p>" +
+    "<img src=\"" + result.VIN.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
+    "<b>Result (VIN): </b> " + result.VIN.text + "<br/>" +
+    "</p>" + div.innerHTML;
     
     document.getElementById("details_scan_modes").removeAttribute("open");
     document.getElementById("details_results").setAttribute("open", "");
@@ -61,120 +70,120 @@ serialScan: {
         "id": "LP_DL_VIN",
         "cancelOnResult": true,
         "viewPlugins": [
-                        {
-                        "viewPlugin": {
-                        "plugin": {
-                        "id": "LICENSE_PLATE",
-                        "licensePlatePlugin": {
-                        "scanMode": "AUTO"
-                        }
-                        },
-                        "cutoutConfig": {
-                        "style": "rect",
-                        "maxWidthPercent": "80%",
-                        "maxHeightPercent": "80%",
-                        "alignment": "top_half",
-                        "width": 720,
-                        "ratioFromSize": {
-                        "width": 2,
-                        "height": 1
-                        },
-                        "strokeWidth": 2,
-                        "cornerRadius": 10,
-                        "strokeColor": "FFFFFF",
-                        "outerColor": "000000",
-                        "outerAlpha": 0.3,
-                        "feedbackStrokeColor": "0099FF"
-                        },
-                        "scanFeedback": {
-                        "style": "rect",
-                        "strokeWidth": 2,
-                        "strokeColor": "0099FF",
-                        "fillColor": "330099FF",
-                        "cornerRadius": 0,
-                        "beepOnResult": true,
-                        "vibrateOnResult": true,
-                        "blinkAnimationOnResult": true
-                        },
-                        "cancelOnResult": true
-                        }
-                        },
-                        {
-                        "viewPlugin": {
-                        "plugin": {
-                        "id": "DRIVING_LICENSE",
-                        "idPlugin": {
-                        "drivingLicenseConfig": {
-                        "scanMode": "AUTO"
-                        }
-                        }
-                        },
-                        "cutoutConfig" : {
-                        "style": "rect",
-                        "maxWidthPercent": "99%",
-                        "maxHeightPercent": "100%",
-                        "alignment": "center",
-                        "ratioFromSize" : {
-                        "width": 560,
-                        "height": 354
-                        },
-                        "strokeWidth": 2,
-                        "cornerRadius": 4,
-                        "strokeColor": "FFFFFF",
-                        "outerColor": "000000",
-                        "outerAlpha": 0.3,
-                        "feedbackStrokeColor": "0099FF"
-                        },
-                        "scanFeedback" : {
-                        "fillColor" : "220099FF",
-                        "style": "CONTOUR_POINT",
-                        "strokeColor": "0099FF",
-                        "strokeWidth": 2,
-                        "blinkOnResult": true,
-                        "beepOnResult": true,
-                        "vibrateOnResult": true
-                        },
-                        "cancelOnResult": true
-                        }
-                        },
-                        {
-                        "viewPlugin": {
-                        "plugin": {
-                        "id": "VIN",
-                        "ocrPlugin": {
-                        "scanMode": "AUTO"
-                        }
-                        },
-                        "cutoutConfig": {
-                        "style": "rect",
-                        "maxWidthPercent": "70%",
-                        "alignment": "top_half",
-                        "ratioFromSize": {
-                        "width": 62,
-                        "height": 9
-                        },
-                        "outerColor": "000000",
-                        "outerAlpha": 0.3,
-                        "strokeWidth": 2,
-                        "strokeColor": "FFFFFF",
-                        "cornerRadius": 4,
-                        "feedbackStrokeColor": "0099FF"
-                        },
-                        "scanFeedback": {
-                        "animation": "traverse_multi",
-                        "animationDuration": 250,
-                        "style": "contour_rect",
-                        "strokeWidth": 2,
-                        "strokeColor": "0099FF",
-                        "fillColor": "220099FF",
-                        "beepOnResult": true,
-                        "vibrateOnResult": true,
-                        "blinkAnimationOnResult": true
-                        },
-                        "cancelOnResult": true
-                        }
-                        }
-                        ]
+        {
+          "viewPlugin": {
+            "plugin": {
+            "id": "LPT",
+            "licensePlatePlugin": {
+              "scanMode": "AUTO"
+            }
+            },
+            "cutoutConfig": {
+              "style": "rect",
+              "maxWidthPercent": "80%",
+              "maxHeightPercent": "80%",
+              "alignment": "top_half",
+              "width": 720,
+              "ratioFromSize": {
+                "width": 2,
+                "height": 1
+              },
+              "strokeWidth": 2,
+              "cornerRadius": 10,
+              "strokeColor": "FFFFFF",
+              "outerColor": "000000",
+              "outerAlpha": 0.3,
+              "feedbackStrokeColor": "0099FF"
+            },
+            "scanFeedback": {
+              "style": "rect",
+              "strokeWidth": 2,
+              "strokeColor": "0099FF",
+              "fillColor": "330099FF",
+              "cornerRadius": 0,
+              "beepOnResult": true,
+              "vibrateOnResult": true,
+              "blinkAnimationOnResult": true
+            },
+            "cancelOnResult": true
+          }
+        },
+        {
+          "viewPlugin": {
+          "plugin": {
+          "id": "DRIVING_LICENSE",
+          "idPlugin": {
+          "drivingLicenseConfig": {
+          "scanMode": "AUTO"
+          }
+          }
+          },
+          "cutoutConfig": {
+          "style": "rect",
+          "maxWidthPercent": "99%",
+          "maxHeightPercent": "100%",
+          "alignment": "center",
+          "ratioFromSize": {
+          "width": 560,
+          "height": 354
+          },
+          "strokeWidth": 2,
+          "cornerRadius": 4,
+          "strokeColor": "FFFFFF",
+          "outerColor": "000000",
+          "outerAlpha": 0.3,
+          "feedbackStrokeColor": "0099FF"
+          },
+          "scanFeedback": {
+          "fillColor": "220099FF",
+          "style": "CONTOUR_POINT",
+          "strokeColor": "0099FF",
+          "strokeWidth": 2,
+          "blinkOnResult": true,
+          "beepOnResult": true,
+          "vibrateOnResult": true
+          },
+          "cancelOnResult": true
+          }
+          },
+          {
+          "viewPlugin": {
+          "plugin": {
+          "id": "VIN",
+          "ocrPlugin": {
+          "scanMode": "AUTO"
+          }
+          },
+          "cutoutConfig": {
+          "style": "rect",
+          "maxWidthPercent": "70%",
+          "alignment": "top_half",
+          "ratioFromSize": {
+          "width": 62,
+          "height": 9
+          },
+          "outerColor": "000000",
+          "outerAlpha": 0.3,
+          "strokeWidth": 2,
+          "strokeColor": "FFFFFF",
+          "cornerRadius": 4,
+          "feedbackStrokeColor": "0099FF"
+          },
+          "scanFeedback": {
+          "animation": "traverse_multi",
+          "animationDuration": 250,
+          "style": "contour_rect",
+          "strokeWidth": 2,
+          "strokeColor": "0099FF",
+          "fillColor": "220099FF",
+          "beepOnResult": true,
+          "vibrateOnResult": true,
+          "blinkAnimationOnResult": true
+          },
+          "cancelOnResult": true
+          }
+          }
+        ]       
     }
 },
     
