@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Anyline Cordova Plugin
  * anyline.ocr.js
  *
@@ -117,7 +117,6 @@ anyline.container = {
       },
       "cutoutConfig": {
         "style": "rect",
-        "maxWidthPercent": "80%",
         "alignment": "top_half",
         "ratioFromSize": {
           "width": 9,
@@ -165,3 +164,4 @@ anyline.container = {
     ]);
   }
 };
+
