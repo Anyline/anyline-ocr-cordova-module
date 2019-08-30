@@ -219,13 +219,14 @@ anyline.ocr = {
   	    "plugin": {
   	      "id": "TIN_ID",
   	      "ocrPlugin": {
-  		"tinConfig": {
-
-  		}
+  		   "tinConfig": {
+            }
   	      }
   	    },
   	    "cutoutConfig": {
   	      "style": "rect",
+  	      "maxWidthPercent": "90%",
+          "maxHeightPercent": "70%",
   	      "alignment": "top_half",
   	      "strokeWidth": 1,
   	      "strokeColor": "FFFFFF",
@@ -300,3 +301,4 @@ anyline.ocr = {
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.anylineTinConfig]);
   }
 };
+

@@ -58,135 +58,137 @@ onError: function (error) {
 licenseKey: "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImlvc0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsICJtYWpvclZlcnNpb24iOiAiNCIsICJtYXhEYXlzTm90UmVwb3J0ZWQiOiAwLCAicGluZ1JlcG9ydGluZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiwgIldpbmRvd3MiIF0sICJzY29wZSI6IFsgIkFMTCIgXSwgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogZmFsc2UsICJzaG93V2F0ZXJtYXJrIjogdHJ1ZSwgInRvbGVyYW5jZURheXMiOiA5MCwgInZhbGlkIjogIjIwMjAtMTAtMjAiLCAid2luZG93c0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0gfQpJYzVHSWVpdTBUYmJoQjE4T2poeHllY1g3Q296NWorR1o2azVtanJTUUtxVFYrYWRKODk4MHA2QmZ6UVdoK1ZyCnF6UE4yTURuWnFNSTcwUk13NHFGV0VJek16Z1J2ZUg3ZzhYM3RHbUcyUTdzazh0Y1Q1Zk5aditNNmpTeXQ1WG4KM010Ry9yZnp2YVRiQlo5VnV5ektsVXdDakZVdVhqd2xIVm1QZS9hc2ljMkVpbWhMU2JTam9PN0Nzajhjd0ZNVApKZDJTTnBncmdQYUtSUzZrdlNFMEJJU3ltVnAvb1VIcm9xUGtlUWRxa2owQk1ZU3Z4VmM4L0p3L1RvdHNvY1IvCmxIWi93VG03UldGRDVhZXpIdjJDcjNVN1ArSW1KdkNUb3JCc3VUa3B6VzF1dHIvQlNkckI3dVJNVFpPOW84UjcKS1ZhaUlmNmZYSExQanBkbkpmQXdqUT09Cg==K",
     
 serialScan: {
-    "camera": {
-        "captureResolution": "1080p",
-        "pictureResolution": "1080p"
-    },
-    "flash": {
-        "mode": "manual",
-        "alignment": "top_right"
-    },
-    "serialViewPluginComposite": {
-        "id": "LP_DL_VIN",
-        "cancelOnResult": true,
-        "viewPlugins": [
-                        {
-                        "viewPlugin": {
-                        "plugin": {
-                        "id": "LPT",
-                        "licensePlatePlugin": {
-                        "scanMode": "AUTO"
+               "camera":{
+                  "captureResolution":"1080p",
+                  "pictureResolution":"1080p"
+               },
+               "flash":{
+                  "mode":"manual",
+                  "alignment":"top_right"
+               },
+               "serialViewPluginComposite":{
+                  "id":"LP_DL_VIN",
+                  "cancelOnResult":true,
+                  "viewPlugins":[
+                     {
+                        "viewPlugin":{
+                           "plugin":{
+                              "id":"LPT",
+                              "licensePlatePlugin":{
+                                 "scanMode":"AUTO"
+                              }
+                           },
+                           "cutoutConfig":{
+                              "style":"rect",
+                              "maxWidthPercent":"80%",
+                              "maxHeightPercent":"80%",
+                              "alignment":"top_half",
+                              "width":720,
+                              "ratioFromSize":{
+                                 "width":2,
+                                 "height":1
+                              },
+                              "strokeWidth":2,
+                              "cornerRadius":10,
+                              "strokeColor":"FFFFFF",
+                              "outerColor":"000000",
+                              "outerAlpha":0.3,
+                              "feedbackStrokeColor":"0099FF"
+                           },
+                           "scanFeedback":{
+                              "style":"rect",
+                              "strokeWidth":2,
+                              "strokeColor":"0099FF",
+                              "fillColor":"330099FF",
+                              "cornerRadius":0,
+                              "beepOnResult":true,
+                              "vibrateOnResult":true,
+                              "blinkAnimationOnResult":true
+                           },
+                           "cancelOnResult":true
                         }
-                        },
-                        "cutoutConfig": {
-                        "style": "rect",
-                        "maxWidthPercent": "80%",
-                        "maxHeightPercent": "80%",
-                        "alignment": "top_half",
-                        "width": 720,
-                        "ratioFromSize": {
-                        "width": 2,
-                        "height": 1
-                        },
-                        "strokeWidth": 2,
-                        "cornerRadius": 10,
-                        "strokeColor": "FFFFFF",
-                        "outerColor": "000000",
-                        "outerAlpha": 0.3,
-                        "feedbackStrokeColor": "0099FF"
-                        },
-                        "scanFeedback": {
-                        "style": "rect",
-                        "strokeWidth": 2,
-                        "strokeColor": "0099FF",
-                        "fillColor": "330099FF",
-                        "cornerRadius": 0,
-                        "beepOnResult": true,
-                        "vibrateOnResult": true,
-                        "blinkAnimationOnResult": true
-                        },
-                        "cancelOnResult": true
+                     },
+                     {
+                        "viewPlugin":{
+                           "plugin":{
+                              "id":"DRIVING_LICENSE",
+                              "idPlugin":{
+                                 "drivingLicenseConfig":{
+                                    "scanMode":"AUTO"
+                                 }
+                              }
+                           },
+                           "cutoutConfig":{
+                              "style":"rect",
+                              "maxWidthPercent":"99%",
+                              "maxHeightPercent":"100%",
+                              "alignment":"center",
+                              "ratioFromSize":{
+                                 "width":560,
+                                 "height":354
+                              },
+                              "strokeWidth":2,
+                              "cornerRadius":4,
+                              "strokeColor":"FFFFFF",
+                              "outerColor":"000000",
+                              "outerAlpha":0.3,
+                              "feedbackStrokeColor":"0099FF"
+                           },
+                           "scanFeedback":{
+                              "fillColor":"220099FF",
+                              "style":"CONTOUR_POINT",
+                              "strokeColor":"0099FF",
+                              "strokeWidth":2,
+                              "blinkOnResult":true,
+                              "beepOnResult":true,
+                              "vibrateOnResult":true
+                           },
+                           "cancelOnResult":true
                         }
-                        },
-                        {
-                        "viewPlugin": {
-                        "plugin": {
-                        "id": "DRIVING_LICENSE",
-                        "idPlugin": {
-                        "drivingLicenseConfig": {
-                        "scanMode": "AUTO"
+                     },
+                     {
+                        "viewPlugin":{
+                           "plugin":{
+                              "id":"VIN",
+                              "ocrPlugin":{
+                                 "vinConfig":{
+
+                                 }
+                              }
+
+                           },
+                           "cutoutConfig":{
+                              "style":"rect",
+                              "maxWidthPercent":"70%",
+                              "alignment":"top_half",
+                              "ratioFromSize":{
+                                 "width":62,
+                                 "height":9
+                              },
+                              "outerColor":"000000",
+                              "outerAlpha":0.3,
+                              "strokeWidth":2,
+                              "strokeColor":"FFFFFF",
+                              "cornerRadius":4,
+                              "feedbackStrokeColor":"0099FF"
+                           },
+                           "scanFeedback":{
+                              "animation":"traverse_multi",
+                              "animationDuration":250,
+                              "style":"contour_rect",
+                              "strokeWidth":2,
+                              "strokeColor":"0099FF",
+                              "fillColor":"220099FF",
+                              "beepOnResult":true,
+                              "vibrateOnResult":true,
+                              "blinkAnimationOnResult":true
+                           },
+                           "cancelOnResult":true
                         }
-                        }
-                        },
-                        "cutoutConfig": {
-                        "style": "rect",
-                        "maxWidthPercent": "99%",
-                        "maxHeightPercent": "100%",
-                        "alignment": "center",
-                        "ratioFromSize": {
-                        "width": 560,
-                        "height": 354
-                        },
-                        "strokeWidth": 2,
-                        "cornerRadius": 4,
-                        "strokeColor": "FFFFFF",
-                        "outerColor": "000000",
-                        "outerAlpha": 0.3,
-                        "feedbackStrokeColor": "0099FF"
-                        },
-                        "scanFeedback": {
-                        "fillColor": "220099FF",
-                        "style": "CONTOUR_POINT",
-                        "strokeColor": "0099FF",
-                        "strokeWidth": 2,
-                        "blinkOnResult": true,
-                        "beepOnResult": true,
-                        "vibrateOnResult": true
-                        },
-                        "cancelOnResult": true
-                        }
-                        },
-                        {
-                        "viewPlugin": {
-                        "plugin": {
-                        "id": "VIN",
-                        "ocrPlugin": {
-                            "ocrConfig":{
-                            }
-                        },
-                        },
-                        "cutoutConfig": {
-                        "style": "rect",
-                        "maxWidthPercent": "70%",
-                        "alignment": "top_half",
-                        "ratioFromSize": {
-                        "width": 62,
-                        "height": 9
-                        },
-                        "outerColor": "000000",
-                        "outerAlpha": 0.3,
-                        "strokeWidth": 2,
-                        "strokeColor": "FFFFFF",
-                        "cornerRadius": 4,
-                        "feedbackStrokeColor": "0099FF"
-                        },
-                        "scanFeedback": {
-                        "animation": "traverse_multi",
-                        "animationDuration": 250,
-                        "style": "contour_rect",
-                        "strokeWidth": 2,
-                        "strokeColor": "0099FF",
-                        "fillColor": "220099FF",
-                        "beepOnResult": true,
-                        "vibrateOnResult": true,
-                        "blinkAnimationOnResult": true
-                        },
-                        "cancelOnResult": true
-                        }
-                        }
-                        ]
-    }
-},
+                     }
+                  ]
+               }
+            },
     
 scan: function () {
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
@@ -201,3 +203,4 @@ scan: function () {
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.serialScan]);
 }
 };
+
