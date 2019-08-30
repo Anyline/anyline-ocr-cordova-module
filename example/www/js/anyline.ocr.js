@@ -207,6 +207,50 @@ anyline.ocr = {
     }
   },
 
+  anylineTinConfig:{
+  	  "camera": {
+  	    "captureResolution": "720"
+  	  },
+  	  "flash": {
+  	    "mode": "manual",
+  	    "alignment": "bottom_left"
+  	  },
+  	  "viewPlugin": {
+  	    "plugin": {
+  	      "id": "TIN_ID",
+  	      "ocrPlugin": {
+  		"tinConfig": {
+
+  		}
+  	      }
+  	    },
+  	    "cutoutConfig": {
+  	      "style": "rect",
+  	      "alignment": "top_half",
+  	      "strokeWidth": 1,
+  	      "strokeColor": "FFFFFF",
+  	      "cornerRadius": 2,
+  	      "outerColor": "000000",
+  	      "outerAlpha": 0.3,
+  	      "feedbackStrokeColor": "0099FF"
+  	    },
+  	    "scanFeedback": {
+  	      "animation": "traverse_multi",
+  	      "animationDuration": 250,
+  	      "style": "contour_rect",
+  	      "strokeWidth": 2,
+  	      "strokeColor": "0099FF",
+  	      "beepOnResult": false,
+  	      "vibrateOnResult": true,
+  	      "blinkAnimationOnResult": true,
+  	      "cancelOnResult": true
+  	    },
+  	    "cancelOnResult": true,
+  	    "reportingEnabled": true
+  	}
+},
+
+
   scanCattleTag: function () {
     if (localStorage.getItem("hasStartedAnyline") === 'true') {
       return;
@@ -242,5 +286,17 @@ anyline.ocr = {
     // and http://documentation.anyline.io/#anylineOcrModule for module details
 
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.anylineVoucherCodesViewConfig]);
+  },
+  scanTin: function () {
+    if (localStorage.getItem("hasStartedAnyline") === 'true') {
+      return;
+    }
+    changeLoadingState(true);
+    // start the Anyline OCR scanning
+    // pass the success and error callbacks, as well as the license key and the config to the plugin
+    // see http://documentation.anyline.io/#anyline-config for config details
+    // and http://documentation.anyline.io/#anylineOcrModule for module details
+
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.anylineTinConfig]);
   }
 };
