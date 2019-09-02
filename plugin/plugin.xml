@@ -7,6 +7,9 @@
 
     <name>AnylineSDK</name>
 
+    <js-module src="www/anyline.js" name="anyline">
+        <clobbers target="window.Anyline" />
+    </js-module>
 
     <!--Add Platform specific Files-->
     <platform name="ios">

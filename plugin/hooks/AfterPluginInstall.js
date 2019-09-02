@@ -8,8 +8,8 @@ module.exports = function(context) {
   let path = require('path');
 
   // Using the ConfigParser from Cordova to get the project name.
-  let cordova_util = context.requireCordovaModule("cordova-lib/src/cordova/util");
-  let ConfigParser = context.requireCordovaModule('cordova-common').ConfigParser;
+  let cordova_util = require("cordova-lib/src/cordova/util");
+  let ConfigParser = require('cordova-common').ConfigParser;
   let projectRoot = cordova_util.isCordova();
   let cordovaConfig = new ConfigParser(cordova_util.projectConfig(projectRoot));
   let projectName =  cordovaConfig.doc.findtext('./name');
