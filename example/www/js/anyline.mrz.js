@@ -106,7 +106,7 @@ anylineMRZViewConfig: {
             "id" : "IDPlugin_ID",
             "idPlugin" : {
                 "mrzConfig" : {
-                    "strictMode" : true,
+                    "strictMode" : false,
                     "cropAndTransformID" : false,
                     "mrzFieldScanOptions": {
                         "vizDateOfIssue" : "optional",
