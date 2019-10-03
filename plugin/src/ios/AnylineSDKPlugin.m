@@ -343,6 +343,7 @@
 
 - (void)presentViewController {
     dispatch_async(dispatch_get_main_queue(), ^{
+        self.baseScanViewController.modalPresentationStyle = UIModalPresentationFullScreen;
         if ([self.viewController respondsToSelector:@selector(presentViewController:animated:completion:)]) {
             [self.viewController presentViewController:self.baseScanViewController animated:YES completion:NULL];
         } else {
