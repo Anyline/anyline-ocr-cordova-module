@@ -204,7 +204,9 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             JSONObject jsonConfig = null;
             try {
                 jsonConfig = data.getJSONObject(1);
-                if(jsonConfig.has("viewPlugin")){
+                if (jsonConfig.has("documentScannerUI")) {
+                    scan(DocScanUIMainActivity.class, REQUEST_ANYLINE_4, data);
+                } else if(jsonConfig.has("viewPlugin")){
                     JSONObject viewPlugin = jsonConfig.getJSONObject("viewPlugin");
                     if(viewPlugin != null && viewPlugin.has("plugin")){
                         JSONObject plugin = viewPlugin.getJSONObject("plugin");
