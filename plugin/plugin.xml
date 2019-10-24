@@ -3,16 +3,17 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova"
-        version="14.1.0">
+        version="15.0.0">
 
     <name>AnylineSDK</name>
 
-    <js-module src="www/anyline.js" name="anyline">
-        <clobbers target="window.Anyline" />
-    </js-module>
-
     <!--Add Platform specific Files-->
     <platform name="ios">
+	
+		<js-module src="www/anyline.js" name="anyline">
+			<clobbers target="window.Anyline" />
+		</js-module>
+	
         <hook type="after_plugin_install" src="hooks/AfterPluginInstall.js"/>
         <plugins-plist key="AnylineSDK" string="AnylineSDKPlugin"/>
         <!-- feature tag in config.xml -->
@@ -68,6 +69,11 @@
 
     </platform>
     <platform name="android">
+	
+		<js-module src="www/anyline.js" name="anyline">
+			<clobbers target="window.Anyline" />
+		</js-module>
+	
         <!-- register plugin -->
         <framework custom="true" src="src/android/anyline.gradle" type="gradleReference"/>
 
