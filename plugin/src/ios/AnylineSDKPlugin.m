@@ -341,11 +341,23 @@
     self.cordovaUIConf = [[ALCordovaUIConfiguration alloc] initWithDictionary:self.anyline4Config];
 }
 
+/*
+(void)openDialog {
+
+    [self.viewController setModalPresentationStyle:UIModalPresentationFullScreen];
+
+    [self.parentViewController
+        presentViewController:self.viewController 
+        animated: NO completion:nil];
+}
+*/
+
 - (void)presentViewController {
     dispatch_async(dispatch_get_main_queue(), ^{
+        self.viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         self.baseScanViewController.modalPresentationStyle = UIModalPresentationFullScreen;
         if ([self.viewController respondsToSelector:@selector(presentViewController:animated:completion:)]) {
-            [self.viewController presentViewController:self.baseScanViewController animated:YES completion:NULL];
+            [self.viewController presentViewController:self.baseScanViewController animated:NO completion:NULL];
         } else {
             // ignore warning
             [self.viewController presentModalViewController:self.baseScanViewController animated:NO];
