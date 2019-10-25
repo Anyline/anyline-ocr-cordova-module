@@ -146,13 +146,13 @@
         <resource-file src="src/android/res/layout/activity_scan_scanview.xml"
                        target="res/layout/activity_scan_scanview.xml"/>
         <resource-file src="src/android/res/layout/activity_doc_scan_ui_main.xml"
-                       target="res/layout/activity_scan_scanview.xml"/>
+                       target="res/layout/activity_doc_scan_ui_main.xml"/>
         <resource-file src="src/android/res/layout/activity_doc_scan_ui_main_list_item.xml"
-                       target="res/layout/activity_scan_scanview.xml"/>
+                       target="res/layout/activity_doc_scan_ui_main_list_item.xml"/>
         <resource-file src="src/android/res/layout/cordova_activity_crop_view_ui.xml"
-                       target="res/layout/activity_scan_scanview.xml"/>
+                       target="res/layout/cordova_activity_crop_view_ui.xml"/>
         <resource-file src="src/android/res/layout/cordova_activity_document_scan_view_ui.xml"
-                       target="res/layout/activity_scan_scanview.xml"/>
+                       target="res/layout/cordova_activity_document_scan_view_ui.xml"/>
 
     </platform>
 
