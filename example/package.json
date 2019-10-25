@@ -17,12 +17,8 @@
   "author": "Jonas Laux | Daniel Albertini",
   "license": "ISC",
   "cordova": {
-    "plugins": {
-      "io-anyline-cordova": {}
-    },
+    "plugins": {},
     "platforms": []
   },
-  "dependencies": {
-    "cordova-ios": "^5.0.1"
-  }
+  "dependencies": {}
 }
