@@ -9,10 +9,7 @@ repositories{
 dependencies {
     implementation 'com.google.firebase:firebase-ml-vision:23.0.0'
     implementation 'com.google.firebase:firebase-ml-vision-face-model:17.0.2'
-    // implementation 'io.anyline:anylinesdk:14@aar'
-
-    // added for document scanner UI:
-    implementation (name:'anylinesdk-release-15-dev', ext:'aar')
+    implementation 'io.anyline:anylinesdk:15@aar'
 
     // needed for document scanner ui bottom sheet, includes also appcompat:
     implementation ('com.google.android.material:material:1.1.0-alpha10')

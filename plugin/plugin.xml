@@ -3,16 +3,17 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova"
-        version="14.1.0">
+        version="15.0.0">
 
     <name>AnylineSDK</name>
 
-    <js-module src="www/anyline.js" name="anyline">
-        <clobbers target="window.Anyline" />
-    </js-module>
-
     <!--Add Platform specific Files-->
     <platform name="ios">
+	
+		<js-module src="www/anyline.js" name="anyline">
+			<clobbers target="window.Anyline" />
+		</js-module>
+	
         <hook type="after_plugin_install" src="hooks/AfterPluginInstall.js"/>
         <plugins-plist key="AnylineSDK" string="AnylineSDKPlugin"/>
         <!-- feature tag in config.xml -->
@@ -68,6 +69,11 @@
 
     </platform>
     <platform name="android">
+	
+		<js-module src="www/anyline.js" name="anyline">
+			<clobbers target="window.Anyline" />
+		</js-module>
+	
         <!-- register plugin -->
         <framework custom="true" src="src/android/anyline.gradle" type="gradleReference"/>
 
@@ -106,6 +112,12 @@
                       android:theme="@android:style/Theme.Black.NoTitleBar" />
 	    <activity android:name="io.anyline.cordova.Anyline4Activity"
                       android:theme="@android:style/Theme.Black.NoTitleBar" />
+	    <activity android:name="io.anyline.cordova.CropViewUIActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
+	    <activity android:name="io.anyline.cordova.DocumentScanViewUIActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
+	    <activity android:name="io.anyline.cordova.DocScanUIMainActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
         </config-file>
 
         <!-- add plugin source code -->
@@ -123,17 +135,30 @@
         <source-file src="src/android/io/anyline/cordova/CordovaUIConfig.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/ResultReporter.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/Resources.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/CropViewUIActivity.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/DocumentScanViewUIActivity.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/DocScanUIMainActivity.java" target-dir="src/io/anyline/cordova"/>
 
         <resource-file src="src/android/res/values/anyline_sdk_plugin_strings.xml"
                        target="res/values/anyline_sdk_plugin_strings.xml"/>
         <resource-file src="src/android/res/values/anyline_sdk_plugin_colors.xml"
                        target="res/values/anyline_sdk_plugin_colors.xml"/>
+        <resource-file src="src/android/res/values/dimens.xml"
+                       target="res/values/dimens.xml"/>
         <resource-file src="src/android/res/values-de/anyline_sdk_plugin_strings.xml"
                        target="res/values-de/anyline_sdk_plugin_strings.xml"/>
         <resource-file src="src/android/res/layout/activity_scan_document.xml"
                        target="res/layout/activity_scan_document.xml"/>
         <resource-file src="src/android/res/layout/activity_scan_scanview.xml"
                        target="res/layout/activity_scan_scanview.xml"/>
+        <resource-file src="src/android/res/layout/activity_doc_scan_ui_main.xml"
+                       target="res/layout/activity_doc_scan_ui_main.xml"/>
+        <resource-file src="src/android/res/layout/activity_doc_scan_ui_main_list_item.xml"
+                       target="res/layout/activity_doc_scan_ui_main_list_item.xml"/>
+        <resource-file src="src/android/res/layout/cordova_activity_crop_view_ui.xml"
+                       target="res/layout/cordova_activity_crop_view_ui.xml"/>
+        <resource-file src="src/android/res/layout/cordova_activity_document_scan_view_ui.xml"
+                       target="res/layout/cordova_activity_document_scan_view_ui.xml"/>
 
     </platform>
 
