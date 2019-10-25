@@ -112,6 +112,12 @@
                       android:theme="@android:style/Theme.Black.NoTitleBar" />
 	    <activity android:name="io.anyline.cordova.Anyline4Activity"
                       android:theme="@android:style/Theme.Black.NoTitleBar" />
+	    <activity android:name="io.anyline.cordova.CropViewUIActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
+	    <activity android:name="io.anyline.cordova.DocumentScanViewUIActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
+	    <activity android:name="io.anyline.cordova.DocScanUIMainActivity"
+                      android:theme="@android:style/Theme.Black.NoTitleBar" />
         </config-file>
 
         <!-- add plugin source code -->
