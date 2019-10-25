@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.text.NumberFormat;
@@ -101,6 +102,7 @@ public class DocScanUIMainActivity extends AnylineBaseActivity {
 
                 // if "scan document" is called repeatedly the user will be warned that scan results from the previous pass will get lost:
                 if (fullImagePath != null && fullImagePath.length > 0) {
+/*                  later, if we have an Appcompat theme, we can use the Alertdialog instead of the toast:
                     AlertDialog.Builder builder = new AlertDialog.Builder(DocScanUIMainActivity.this);
 
                     builder.setTitle(getResources().getString(R.string.confirm));
@@ -117,6 +119,9 @@ public class DocScanUIMainActivity extends AnylineBaseActivity {
 
                     AlertDialog alert = builder.create();
                     alert.show();
+*/
+                    Toast.makeText(DocScanUIMainActivity.this, getResources().getString(R.string.existing_scans_will_be_overwritten_msg), Toast.LENGTH_LONG).show();
+                    callDocumentScanViewUIActivity();
                 } else {
                     callDocumentScanViewUIActivity();
                 }
@@ -151,8 +156,6 @@ public class DocScanUIMainActivity extends AnylineBaseActivity {
         ImageListViewArrayAdapter adapter = new ImageListViewArrayAdapter(this, fullImagePath);
         imageListView.setAdapter(adapter);
     }
-
-
 
 
     public class ImageListViewArrayAdapter extends ArrayAdapter<String> {
