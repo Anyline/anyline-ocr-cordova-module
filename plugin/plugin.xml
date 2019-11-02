@@ -58,8 +58,15 @@
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods -->
-        <framework src="Anyline" type="podspec" spec="~> 15"/>
-
+        <podspec>
+            <config>
+                <source url="https://github.com/CocoaPods/Specs.git"/>
+            </config>
+            <pods>
+                <pod name="Anyline" spec="~> 15" />
+            </pods>
+        </podspec>
+ 
 
         <!-- Frameworks needed by Anyline SDK for iOS -->
         <framework src="libz.tbd"/>
