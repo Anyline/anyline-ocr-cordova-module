@@ -3,7 +3,7 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova"
-        version="15.0.0">
+        version="15.1.0">
 
     <name>AnylineSDK</name>
 
@@ -63,7 +63,7 @@
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
             <pods>
-                <pod name="Anyline" spec="~> 15" />
+                <pod name="Anyline" spec="~> 15.1" />
             </pods>
         </podspec>
  
