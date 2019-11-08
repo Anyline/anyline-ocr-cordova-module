@@ -189,6 +189,7 @@
         <js-module src="src/windows/scanview.js" name="ScanView">
             <clobbers target="anyline.sdk" />
         </js-module>
+        <asset src="src/windows/assets" target="plugins/io-anyline-cordova/src/windows/assets" />
         <asset src="src/windows/css" target="css" />
         <asset src="src/windows/js" target="js" />
 		<asset src="src/windows/img" target="img" />
