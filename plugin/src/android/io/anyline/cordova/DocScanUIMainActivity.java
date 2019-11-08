@@ -87,14 +87,15 @@ public class DocScanUIMainActivity extends AnylineBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doc_scan_ui_main);
+        setContentView(getResources().getIdentifier("activity_doc_scan_ui_main", "layout", getPackageName()));
 
         licenseKey = getIntent().getExtras().getString(AnylinePlugin.EXTRA_LICENSE_KEY, "");
         configJson = getIntent().getExtras().getString(AnylinePlugin.EXTRA_CONFIG_JSON, "");
 
-        imageListView = findViewById(R.id.list);
+        imageListView = findViewById(getResources().getIdentifier("list", "id", getPackageName()));
 
-        btScan = findViewById(R.id.btScan);
+
+        btScan = findViewById(getResources().getIdentifier("btScan", "id", getPackageName()));
         btScan.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -163,9 +164,9 @@ public class DocScanUIMainActivity extends AnylineBaseActivity {
         private int layout;
 
         public ImageListViewArrayAdapter(Context context, String[] values) {
-            super(context, R.layout.activity_doc_scan_ui_main_list_item, values);
+            super(context, getResources().getIdentifier("activity_doc_scan_ui_main_list_item", "layout", getPackageName()), values);
             this.values = values;
-            layout = R.layout.activity_doc_scan_ui_main_list_item;
+            layout = getResources().getIdentifier("activity_doc_scan_ui_main_list_item", "layout", getPackageName());
         }
 
         private class ViewHolder {
@@ -184,10 +185,10 @@ public class DocScanUIMainActivity extends AnylineBaseActivity {
                 convertView = inflater.inflate(layout, parent, false);
                 viewHolder = new ViewHolder();
 
-                viewHolder.ivFullImage = (ImageView) convertView.findViewById(R.id.ivFullImage);
-                viewHolder.ivCroppedImage = (ImageView) convertView.findViewById(R.id.ivCroppedImage);
-                viewHolder.tvSizeFullImage = convertView.findViewById(R.id.tvSizeFullImage);
-                viewHolder.tvSizeCroppedImage = convertView.findViewById(R.id.tvSizeCroppedImage);
+                viewHolder.ivFullImage = convertView.findViewById(getResources().getIdentifier("ivFullImage", "id", getPackageName()));
+                viewHolder.ivCroppedImage = convertView.findViewById(getResources().getIdentifier("ivCroppedImage", "id", getPackageName()));
+                viewHolder.tvSizeFullImage = convertView.findViewById(getResources().getIdentifier("tvSizeFullImage", "id", getPackageName()));
+                viewHolder.tvSizeCroppedImage = convertView.findViewById(getResources().getIdentifier("tvSizeCroppedImage", "id", getPackageName()));
 
                 convertView.setTag(viewHolder);
             } else {
@@ -280,7 +281,6 @@ public class DocScanUIMainActivity extends AnylineBaseActivity {
         return (NumberFormat.getInstance(getResources().getConfiguration().locale).format(bitMapOption.outWidth) + " x " +
                 NumberFormat.getInstance(getResources().getConfiguration().locale).format(bitMapOption.outHeight));
     }
-
 
 
     @Override

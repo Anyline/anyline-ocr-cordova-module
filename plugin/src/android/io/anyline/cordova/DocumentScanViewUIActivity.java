@@ -32,7 +32,7 @@ public class DocumentScanViewUIActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cordova_activity_document_scan_view_ui);
+        setContentView(getResources().getIdentifier("cordova_activity_document_scan_view_ui", "layout", getPackageName()));
 
         // license and configuration are required for initialization of the documentScanViewUI:
         String licenseKey = getIntent().getExtras().getString("License");
@@ -47,7 +47,7 @@ public class DocumentScanViewUIActivity extends Activity {
         }
 
         // init the documentScanViewUI from the layout file:
-        documentScanViewUI = findViewById(R.id.document_scan_view_ui);
+        documentScanViewUI = findViewById(getResources().getIdentifier("document_scan_view_ui", "id", getPackageName()));
 
         // initialize the documentScanViewConfig from a scan-view config file:
         DocumentScanViewConfig documentScanViewConfig = new DocumentScanViewConfig(this, "www/assets/document_scan_view_config.json");

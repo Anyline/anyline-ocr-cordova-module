@@ -30,8 +30,7 @@ public class CropViewUIActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cordova_activity_crop_view_ui);
-
+        setContentView(getResources().getIdentifier("cordova_activity_crop_view_ui", "layout", getPackageName()));
         // corners and the fullImageFilePath are required parameters for cropViewUI - calling activity has to pass it:
         final ArrayList<PointF> corners = getIntent().getExtras().getParcelableArrayList(DocScanUIMainActivity.EXTRA_CORNERS);
         final String fullImagefilePath = getIntent().getExtras().getString(DocScanUIMainActivity.EXTRA_FULL_IMAGE_PATH);
@@ -71,4 +70,3 @@ public class CropViewUIActivity extends Activity {
     }
 
 }
-
