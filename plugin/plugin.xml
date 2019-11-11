@@ -57,17 +57,14 @@
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods -->
-        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 15.1"/>
-
-        <!-- <podspec>
+        <podspec>
             <config>
-                <source url="https://github.com/Anyline/anyline-ocr-examples-ios.git" />
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
-            <pods use-frameworks="true">
+            <pods>
                 <pod name="Anyline" type="podspec" spec="~> 15.1" />
             </pods>
-        </podspec> -->
+        </podspec>
 
 
         <!-- Frameworks needed by Anyline SDK for iOS -->
