@@ -2,6 +2,7 @@
 <widget id="io.anyline.examples.cordova" version="15.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Anyline Cordova Example</name>
     <preference name="deployment-target" value="10.0" />
+    <preference name="UseSwiftLanguageVersion" value="4.2" />
     <preference name="BackupWebStorage" value="local" />
     <preference name="Orientation" value="portrait" />
     <preference name="windows-target-version" value="10.0" />
