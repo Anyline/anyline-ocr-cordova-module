@@ -169,6 +169,21 @@ This can happen, when the Cocoapod installation is not correctly linked. You can
 pod install
 ```
 
+If Anyline was not installed via pods, please make sure that your Podfile (./platform/ios/Podfile) contains the following line within your build target: 
+```
+pod 'Anyline', '~> 15.1’
+```
+
+#### Access to app denied | missing architectures 
+
+Please make sure that your XCode Project has the build setting "Valid Architectures" set. This has to be set in your Build Target and in the Pods build target. 
+
+Project Settings --> Build Settings --> Search for Valid Architecture --> Add the following value: "$(inherited) arm64 arm64e armv7 armv7s"
+
+```
+"VALID_ARCHS" = "$(inherited) arm64 arm64e armv7 armv7s"
+```
+
 ## Additional Functions
 
 #### getLicenseExpiryDate
