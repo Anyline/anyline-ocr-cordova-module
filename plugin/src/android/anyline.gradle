@@ -1,4 +1,5 @@
 repositories{
+    google()
     jcenter()
     maven { url 'https://anylinesdk.blob.core.windows.net/maven/'}
     flatDir {
