@@ -2,7 +2,6 @@ package io.anyline.cordova;
 
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,8 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import io.anyline.examples.cordova.R;
 import io.anyline.view.ScanPage;
 
 
@@ -121,7 +118,8 @@ public class DocScanUIMainActivity extends AnylineBaseActivity {
                     AlertDialog alert = builder.create();
                     alert.show();
 */
-                    Toast.makeText(DocScanUIMainActivity.this, getResources().getString(R.string.existing_scans_will_be_overwritten_msg), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(DocScanUIMainActivity.this, getResources().getString(R.string.existing_scans_will_be_overwritten_msg), Toast.LENGTH_LONG).show();
+                    Toast.makeText(DocScanUIMainActivity.this, getResources().getIdentifier("existing_scans_will_be_overwritten_msg", "string", getPackageName()), Toast.LENGTH_LONG).show();
                     callDocumentScanViewUIActivity();
                 } else {
                     callDocumentScanViewUIActivity();

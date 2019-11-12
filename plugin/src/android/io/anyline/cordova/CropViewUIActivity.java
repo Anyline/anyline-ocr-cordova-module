@@ -17,7 +17,6 @@ import android.os.Bundle;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
-import io.anyline.examples.cordova.R;
 import io.anyline.view.CropViewUI;
 import io.anyline.view.DocumentScanViewConfig;
 

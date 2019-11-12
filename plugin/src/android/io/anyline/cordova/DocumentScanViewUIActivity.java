@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
-import io.anyline.examples.cordova.R;
 import io.anyline.view.DocumentScanViewConfig;
 import io.anyline.view.DocumentScanViewUI;
 import io.anyline.view.ScanPage;
