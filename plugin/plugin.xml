@@ -3,7 +3,7 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova"
-        version="15.1.0">
+        version="15.2.0">
 
     <name>AnylineSDK</name>
 
@@ -14,7 +14,6 @@
 			<clobbers target="window.Anyline" />
 		</js-module>
 	
-        <hook type="after_plugin_install" src="hooks/AfterPluginInstall.js"/>
         <plugins-plist key="AnylineSDK" string="AnylineSDKPlugin"/>
         <!-- feature tag in config.xml -->
         <config-file parent="/widget" target="config.xml">
@@ -51,22 +50,25 @@
         <source-file src="src/ios/ALRoundedView.m"/>
         <header-file src="src/ios/ALCordovaUIConfiguration.h"/>
         <source-file src="src/ios/ALCordovaUIConfiguration.m"/>
-        <!--License Plates-->
+        <source-file src="src/ios/placeholderSwiftFile.swift"/>
 
         <!-- Anyline Framework & Resource Bundle locally -->
         <!-- <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>-->
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods -->
-        <podspec>
+        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 15.1"/>
+
+        <!-- <podspec>
             <config>
+                <source url="https://github.com/Anyline/anyline-ocr-examples-ios.git" />
                 <source url="https://github.com/CocoaPods/Specs.git"/>
             </config>
-            <pods>
-                <pod name="Anyline" spec="~> 15.1" />
+            <pods use-frameworks="true">
+                <pod name="Anyline" type="podspec" spec="~> 15.1" />
             </pods>
-        </podspec>
- 
+        </podspec> -->
+
 
         <!-- Frameworks needed by Anyline SDK for iOS -->
         <framework src="libz.tbd"/>
