@@ -17,7 +17,7 @@ module.exports = {
         /*Anyline.JS.Util.Debug.verbosity = 4;
         
         Anyline.JS.Util.Debug.onlog = function (args) {
-            console.log(args.toString());
+            printLog(args.toString());
         }*/
 
         baseConfig = config;
@@ -28,7 +28,7 @@ module.exports = {
         scanViewController.setMemoryCollectionMode(2);
 
         scanViewController.onnotifyexception = function (args) {
-            console.log(args);
+            printLog(args);
         }
 
         createPreview(config.doneButton);
@@ -46,22 +46,22 @@ module.exports = {
 
                 scanViewController.startScanning();
             } catch (e) {
-                console.error(e);
+                printError(e);
                 onError(e);
             }
-            console.log("started scanning");
+            printLog("started scanning");
         }
 
         // stop scanning here
         scanViewController.captureManager.onpreviewstopped = function (args) {
             const argsString = args.toString();
-            console.log('onPreviewStopped', argsString);
+            printLog('onPreviewStopped', argsString);
         }
 
         // stop scanning also here (if possible)
         scanViewController.captureManager.onpreviewerror = function (args) {
             const argsString = args.toString();
-            console.error('onPreviewError', argsString);
+            printError('onPreviewError', argsString);
             closeCamera();
             destroyPreview();
             delete scanViewController;
@@ -94,7 +94,7 @@ module.exports = {
         // handle errors
         scanViewController.onnotifyexception = function (args) {
             const argsString = args.toString();
-            console.error('onNotifyExcepction', argsString);
+            printError('onNotifyExcepction', argsString);
             closeCamera();
             destroyPreview();
             delete scanViewController;
@@ -104,7 +104,7 @@ module.exports = {
         // handle scan result
         scanViewController.onnotifyscanresult = function (args) {
             const argsString = args.toString();
-            console.log(argsString);
+            printLog(argsString);
             //return;
             closeCamera();
             destroyPreview();
@@ -206,7 +206,7 @@ function createPreview(cancelButton) {
                 // flash is enabled:
                 if (success == true) {
                     flashButton.innerHTML = TORCH_ON;
-                    console.log("Torch enabled.");
+                    printLog("Torch enabled.");
                 }
             } else {
                 var success = scanViewController.disableFlash();
@@ -214,7 +214,7 @@ function createPreview(cancelButton) {
                 // flash is disabled:
                 if (success == true) {
                     flashButton.innerHTML = TORCH_OFF;
-                    console.log("Torch disabled.");
+                    printLog("Torch disabled.");
                 }
             }
         }
@@ -236,7 +236,7 @@ function createPreview(cancelButton) {
     });
     webview.addEventListener("MSWebViewScriptNotify", eventInfo => {
         var rectInfo = eventInfo.value;
-        console.log(rectInfo);
+        printLog(rectInfo);
 
         var obj = JSON.parse(rectInfo);
 
@@ -273,7 +273,7 @@ function destroyPreview() {
         scanViewController.onnotifyscanresult = null;
     }
     catch (exception) {
-        console.log(exception);
+        printLog(exception);
     }
 }
 
@@ -365,14 +365,14 @@ function focus() {
         if (scanViewController != null) {
             if (scanViewController.captureManager.mediaCapture.videoDeviceController.focusControl.supported == true) {
                 scanViewController.captureManager.mediaCapture.videoDeviceController.focusControl.focusAsync();
-                //console.log("Focused successfully.");
+                //printLog("Focused successfully.");
             } else {
-                //console.log("Focus is not supported on this device.");
+                //printLog("Focus is not supported on this device.");
             }
         }
     }
     catch (exception) {
-        console.log("Unable to focus: " + exception);
+        printLog("Unable to focus: " + exception);
     }
 }
 
@@ -382,7 +382,7 @@ function openCamera() {
         const videoElement = document.getElementById("anylineVideoElement");
 
         if (videoElement == null) {
-            console.error("VideoElement not found!");
+            printError("VideoElement not found!");
         }
 
         videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
@@ -396,7 +396,7 @@ function openCamera() {
             };
         }
         catch (ex) {
-            console.log(ex);
+            printLog(ex);
         }
     });
 
@@ -425,7 +425,7 @@ function closeCamera() {
     webUIApp.removeEventListener('enteredbackground', msVisibilityChangeHandler);
 
     scanViewController.captureManager.terminateCamera().then(function (success) {
-        console.log("Stopped: " + success);
+        printLog("Stopped: " + success);
     });
 }
 
@@ -522,4 +522,16 @@ function calcVideoRelation() {
     }
     scanViewController.updateForSize(canvasElement.width, canvasElement.height);
     updateFlashButton();
+}
+
+function printLog(message) {
+	if(console.log === 'function') {
+		console.log(message);
+	}
+}
+
+function printError(message) {
+	if(console.error === 'function') {
+		console.error(message);
+	}
 }
