@@ -68,34 +68,22 @@ module.exports = {
             onError(argsString);
         }
 
-        scanViewController.onnotifyupdatecutout = (args) => {
-            const argsString = args.toString();
-            const functionName = argsString.split('(')[0];
-            const functionArgs = argsString.split('(')[1].split(')')[0];
-            window[functionName](JSON.parse(functionArgs));
-        }
-
-        scanViewController.onnotifyclearvisualfeedback = (args) => {
-            const argsString = args.toString();
-            window['setCutoutBorders'](argsString);
-            window['clearVF']();
-        }
-
         // Event triggered if screen is rotated
         scanViewController.captureManager.onpreviewrotated = () => {
             calcVideoRelation();
         }
-        
+
         scanViewController.onnotifyupdatevisualfeedback = function (args) {
             if (args) {
 
                 const argsString = args.toString();
                 const functionName = argsString.split('(')[0];
-                const functionArgs = argsString.split('(')[1].split(')')[0];
-                if (functionName === 'setCutoutBorders') {
-                    window[functionName](functionArgs.replace(/['"]+/g, ''));
-                } else {
-                    window[functionName](JSON.parse(functionArgs));
+                if (functionName === 'publish') {
+                    const webViewUI = document.getElementById("webViewReactUI");
+                    if (webViewUI != undefined) {
+                        const asyncOp = webViewUI.invokeScriptAsync("eval", argsString);
+                        asyncOp.start();
+                    }
                 }
             }
         }
@@ -116,6 +104,8 @@ module.exports = {
         // handle scan result
         scanViewController.onnotifyscanresult = function (args) {
             const argsString = args.toString();
+            console.log(argsString);
+            //return;
             closeCamera();
             destroyPreview();
             delete scanViewController;
@@ -151,12 +141,6 @@ function createPreview(cancelButton) {
     }
 
     // Scripts
-    if (!document.getElementById("anylineCutoutScript")) {
-        includeScript(urlutil.makeAbsolute("/www/js/cutout.js"), 'anylineCutoutScript');
-    }
-    if (!document.getElementById("anylineVFScript")) {
-        includeScript(urlutil.makeAbsolute("/www/js/visualFeedback.js"), 'anylineVFScript');
-    }
     if (!document.getElementById("anylineUtilScript")) {
         includeScript(urlutil.makeAbsolute("/www/js/util.js"), 'anylineUtilScript');
     }
@@ -178,13 +162,22 @@ function createPreview(cancelButton) {
         onErrorGlobal('Canceled');
     }
     anylineRoot.appendChild(cancelBtnElement);
-    
+
     // Cutout
     const backgroundElement = document.createElement('div');
+    backgroundElement.style.left = 0 + 'px';
+    backgroundElement.style.top = 0 + 'px';
     backgroundElement.id = "anylineBackground";
-    const cutoutElement = document.createElement('div');
-    cutoutElement.id = "anylineCutout";
-    backgroundElement.appendChild(cutoutElement)
+
+    var webview = document.createElement('x-ms-webview');
+    webview.id = "webViewReactUI";
+    webview.style.background = "transparent";
+    webview.setAttribute("height", "100%");
+    webview.setAttribute("width", "100%");
+    webview.settings.isScriptNotifyAllowed = true;
+    webview.navigate('ms-appx-web:///www/plugins/io-anyline-cordova/src/windows/assets/ui/index.html');
+
+    backgroundElement.appendChild(webview)
 
     // Canvas
     const canvasElement = document.createElement('canvas');
@@ -232,14 +225,35 @@ function createPreview(cancelButton) {
     [videoElement, backgroundElement, canvasElement].forEach(function (element) {
         anylineRoot.appendChild(element);
     });
+
     document.body.appendChild(anylineRoot);
     disableZoomAndScroll();
+
+    webview.addEventListener("MSWebViewNavigationCompleted", () => {
+        var cutoutConfig = scanViewController.makeSetupCutoutFromConfig();
+        const asyncOp = webview.invokeScriptAsync("eval", cutoutConfig);
+        asyncOp.start();
+    });
+    webview.addEventListener("MSWebViewScriptNotify", eventInfo => {
+        var rectInfo = eventInfo.value;
+        console.log(rectInfo);
+
+        var obj = JSON.parse(rectInfo);
+
+        // Update Cutout from SDK
+        scanViewController.updateJSCutout(obj.rect.x, obj.rect.y, obj.rect.width, obj.rect.height);
+
+        const canvasElement = document.getElementById("anylineCanvas");
+        if (canvasElement != undefined) {
+            scanViewController.updateForSize(canvasElement.width, canvasElement.height);
+        }
+    });
+
 }
 
 function destroyPreview() {
 
-    try
-    {
+    try {
         // Root Element
         var _anylineCanvas = document.getElementById("anylineCanvas");
         if (_anylineCanvas != null) {
@@ -255,8 +269,6 @@ function destroyPreview() {
 
         //Events
         scanViewController.onnotifyupdatevisualfeedback = null;
-        scanViewController.onnotifyclearvisualfeedback = null;
-        scanViewController.onnotifyupdatecutout = null;
         scanViewController.onnotifyexception = null;
         scanViewController.onnotifyscanresult = null;
     }
@@ -364,9 +376,6 @@ function focus() {
     }
 }
 
-// Visual Feedback
-let VFRender = null;
-
 // starts the camera (only works after init is called because the config must already be loaded etc.)
 function openCamera() {
     scanViewController.captureManager.initializeCamera().then(function (result) {
@@ -378,12 +387,6 @@ function openCamera() {
 
         videoElement.src = URL.createObjectURL(scanViewController.captureManager.mediaCapture, { oneTimeOnly: true });
         try {
-            videoElement.onplay = function () {
-                console.log("Playing.");
-                VFRender = setInterval(function () {
-                    updateFrames();
-                }, 100);
-            };
             videoElement.play();
 
             // tap to focus
@@ -418,7 +421,6 @@ function closeCamera() {
         videoElement.src = null;
     }
 
-    clearInterval(VFRender);
     window.removeEventListener('resize', calcVideoRelation);
     webUIApp.removeEventListener('enteredbackground', msVisibilityChangeHandler);
 
@@ -501,17 +503,6 @@ function calcVideoRelation() {
         flashElement.style.opacity = scanViewController.captureManager.mediaCapture.videoDeviceController.flashControl.supported ? 1.0 : 0.3;
     }
 
-    // mirror preview & VF when the camera is front-facing
-    if (scanViewController.captureManager.isPreviewMirrored) {
-
-        var mirror = "-moz-transform: scale(-1, 1); \
-                                -webkit-transform: scale(-1, 1); -o-transform: scale(-1, 1); \
-                                transform: scale(-1, 1); filter: FlipH;";
-
-        videoElement.style.cssText = mirror;
-        canvasElement.style.cssText = mirror;
-    }
-
     if (windowRelation < camRelation) {
         // Video
         videoElement.style.height = window.innerHeight + 'px';
@@ -520,17 +511,6 @@ function calcVideoRelation() {
         // Canvas
         canvasElement.height = window.innerHeight;
         canvasElement.width = window.innerHeight * camRelation;
-
-        const overflowWidth = window.innerHeight * camRelation - window.innerWidth;
-
-        videoElement.style.top = 0;
-        backgroundElement.style.top = 0;
-        canvasElement.style.top = 0;
-        var ow = -(overflowWidth / 2) + 'px';
-        videoElement.style.left = ow;
-        backgroundElement.style.left = ow;
-        canvasElement.style.left = ow;
-
     } else {
         // Video
         videoElement.style.width = window.innerWidth + 'px';
@@ -539,24 +519,7 @@ function calcVideoRelation() {
         // Canvas
         canvasElement.width = window.innerWidth;
         canvasElement.height = window.innerWidth / camRelation;
-
-        const overflowHeight = window.innerWidth / camRelation - window.innerHeight;
-
-        videoElement.style.left = 0 + 'px';
-        backgroundElement.style.left = 0 + 'px';
-        canvasElement.style.left = 0 + 'px';
-        var oh = -(overflowHeight / 2) + 'px';
-        backgroundElement.style.top = oh;
-
-        videoElement.style.top = oh;
-
     }
-
-    // Update Cutout from SDK
-    var w = window.innerWidth;
-    var h = window.innerHeight;
-    scanViewController.updateForSize(w, h);
-
+    scanViewController.updateForSize(canvasElement.width, canvasElement.height);
     updateFlashButton();
-
 }
