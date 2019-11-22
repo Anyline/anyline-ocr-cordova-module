@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Anyline Cordova Plugin
  * anyline.barcode.js
  *
@@ -110,7 +110,10 @@ anyline.barcode = {
 
   barcodePDF417Config: {
     "camera": {
-      "captureResolution": "1080p"
+      "captureResolution": "1080p",
+      "zoomGesture": "false",
+      "zoomRatio": "1",
+      "maxZoomRatio": "0"
     },
     "flash": {
       "mode": "auto",
