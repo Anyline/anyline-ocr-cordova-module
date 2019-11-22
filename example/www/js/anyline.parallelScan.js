@@ -48,28 +48,6 @@ onResult: function (result) {
         + "<br/><i><b>Outline Points:</b> " + result.USNR_ID.outline + "</i>" + "</p>"
         + div.innerHTML;
 
-
-
-
-/*
-    div.innerHTML = "<h2>LicensePlace Result</h2>" + "<p>" +
-    "<img src=\"" + result.LPT.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-    "<b>Result (LicensePlate): </b> " + result.LPT.licensePlate + "<br/>" +
-    "<b>Country (LicensePlate): </b> " + result.LPT.country + "<br/>" +
-    "</p>" +
-    "<h2>DrivingLicense Result (snippet)</h2>" + "<p>" +
-    "<img src=\"" + result.DRIVING_LICENSE.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-    "<b>Surname (DrivingLicense): </b> " + result.DRIVING_LICENSE.surname + "<br/>" +
-    "<b>GivenNames (DrivingLicense): </b> " + result.DRIVING_LICENSE.givenNames + "<br/>" +
-    "<b>Date of Birth (DrivingLicense): </b> " + result.DRIVING_LICENSE.dateOfBirth + "<br/>" +
-    "</p>" +
-    "<h2>Vehicle Identification Number Result</h2>" + "<p>" +
-    "<img src=\"" + result.VIN.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-    "<b>Result (VIN): </b> " + result.VIN.text + "<br/>" +
-    "</p>" + div.innerHTML;
-
-*/
-
     document.getElementById("details_scan_modes").removeAttribute("open");
     document.getElementById("details_results").setAttribute("open", "");
     window.scrollTo(0, 0);
