@@ -103,20 +103,6 @@
                     android:value="barcode"/>
         </config-file>
         <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml">
-            <activity android:name="io.anyline.cordova.BarcodeActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" 
-                      android:screenOrientation="portrait"/>
-            <activity android:name="io.anyline.cordova.MrzActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" 
-                      android:screenOrientation="portrait"/>
-            <activity android:name="io.anyline.cordova.EnergyActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" />
-            <activity android:name="io.anyline.cordova.AnylineOcrActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" />
-            <activity android:name="io.anyline.cordova.LicensePlateActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" />
-            <activity android:name="io.anyline.cordova.DocumentActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" />
 	    <activity android:name="io.anyline.cordova.Document4Activity"
                       android:theme="@android:style/Theme.Black.NoTitleBar" />
 	    <activity android:name="io.anyline.cordova.Anyline4Activity"
@@ -132,14 +118,8 @@
         <!-- add plugin source code -->
 	    <source-file src="src/android/io/anyline/cordova/Anyline4Activity.java" target-dir="src/io/anyline/cordova"/>        
 	    <source-file src="src/android/io/anyline/cordova/AnylineBaseActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/AnylineOcrActivity.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/AnylinePlugin.java" target-dir="src/io/anyline/cordova"/>
 	    <source-file src="src/android/io/anyline/cordova/AnylinePluginHelper.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/BarcodeActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/MrzActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/EnergyActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/LicensePlateActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/DocumentActivity.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/Document4Activity.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/CordovaUIConfig.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/ResultReporter.java" target-dir="src/io/anyline/cordova"/>

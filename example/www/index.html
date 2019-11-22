@@ -6,10 +6,10 @@
  Copyright (c) 2016 Anyline GmbH
  -->
 <html>
-    
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        
+
         <meta name="format-detection" content="telephone=no">
             <meta name="msapplication-tap-highlight" content="no">
                 <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1,
@@ -28,10 +28,10 @@
                                 }
                             </script>
     </head>
-    
+
     <body>
         <h1>Anyline Cordova</h1>
-        
+
         <div id="navigation">
             <details id="details_scan_modes" open>
                 <summary class="summary1">
@@ -88,7 +88,7 @@
                 <input type="button" value="Tire Identification Nb." onclick="anyline.ocr.scanTin()"
                 class="formButton" disabled=true/>
                 </p>
-                
+
                 <hr>
                 <h2>MRO</h2>
                 <input type="button" value="Vehicle Identification Nb." onclick="anyline.vin.scan()"
@@ -100,8 +100,8 @@
                 <br />
                 <input type="button" value="Shipping Container Vertical" onclick="anyline.container.scan('vertical')" class="formButton" disabled=true/>
                 <br />
-                
-                
+
+
                 <hr>
                 <h2> Others </h2>
                 <p>
@@ -118,10 +118,12 @@
                 <p>
                 <input type="button" value="Serial Scanning" onclick="anyline.serialScan.scan()" class="formButton" disabled=true/>
                 <br />
+                <input type="button" value="Parallel Scanning" onclick="anyline.parallelScan.scan()" class="formButton" disabled=true/>
+                <br />
                 </p>
             </details>
-            
-            
+
+
             <hr>
             <details id="details_results">
                 <summary class="summary1">
@@ -129,7 +131,7 @@
                 </summary>
                 <p>
                 <div id="results">
-                    
+
                 </div>
                 </p>
             </details>
@@ -142,7 +144,7 @@
                 </div>
             </div>
         </div>
-        
+
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/anyline.general.js"></script>
         <script type="text/javascript" src="js/anyline.barcode.js"></script>
@@ -160,6 +162,7 @@
         <script type="text/javascript" src="js/anyline.container.js"></script>
         <script type="text/javascript" src="js/anyline.germanIDFront.js"></script>
         <script type="text/javascript" src="js/anyline.serialScan.js"></script>
+        <script type="text/javascript" src="js/anyline.parallelScan.js"></script>
     </body>
-    
+
 </html>

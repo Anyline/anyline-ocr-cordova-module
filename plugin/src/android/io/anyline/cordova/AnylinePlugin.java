@@ -24,7 +24,7 @@ import org.json.JSONObject;
 
 import at.nineyards.anyline.AnylineController;
 import at.nineyards.anyline.models.AnylineImage;
-import at.nineyards.anyline.modules.energy.EnergyScanView;
+import io.anyline.plugin.meter.MeterScanMode;
 
 
 public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnResultListener {
@@ -106,82 +106,6 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
 
     private void startScanning(String action, JSONArray args) {
         switch (action) {
-            case "AUTO_ANALOG_DIGITAL_METER":
-                scanEnergy(args, EnergyScanView.ScanMode.AUTO_ANALOG_DIGITAL_METER);
-                break;
-            case "DIAL_METER":
-                scanEnergy(args, EnergyScanView.ScanMode.DIAL_METER);
-                break;
-            case "DIGITAL_METER":
-                scanEnergy(args, EnergyScanView.ScanMode.DIGITAL_METER);
-                break;
-            case "ANALOG_METER":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
-                break;
-            case "scanBarcode":
-            case "BARCODE":
-                scan(BarcodeActivity.class, REQUEST_BARCODE, args);
-                break;
-            case "scanMRZ":
-            case "MRZ":
-                scan(MrzActivity.class, REQUEST_MRZ, args);
-                break;
-            case "DOCUMENT":
-                scan(DocumentActivity.class, REQUEST_DOCUMENT, args);
-                break;
-            case "scanElectricMeter":
-            case "ELECTRIC_METER":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
-                break;
-            case "ELECTRIC_METER_5_1":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
-                break;
-            case "ANALOG_METER_4":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
-                break;
-            case "ANALOG_METER_7":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
-                break;
-            case "ANALOG_METER_WHITE":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
-                break;
-            case "scanGasMeter":
-            case "GAS_METER":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
-                break;
-            case "GAS_METER_6":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
-                break;
-            case "WATER_METER_WHITE":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
-                break;
-            case "WATER_METER_BLACK":
-                scanEnergy(args, EnergyScanView.ScanMode.ANALOG_METER);
-                break;
-            case "HEAT_METER_4":
-                scanEnergy(args, EnergyScanView.ScanMode.HEAT_METER_4);
-                break;
-            case "HEAT_METER_5":
-                scanEnergy(args, EnergyScanView.ScanMode.HEAT_METER_5);
-                break;
-            case "HEAT_METER_6":
-                scanEnergy(args, EnergyScanView.ScanMode.HEAT_METER_6);
-                break;
-            case "SERIAL_NUMBER":
-                scanEnergy(args, EnergyScanView.ScanMode.SERIAL_NUMBER);
-                break;
-            case "DOT_MATRIX_METER":
-                scanEnergy(args, EnergyScanView.ScanMode.DOT_MATRIX_METER);
-                break;
-            case "ANYLINE_OCR":
-                scan(AnylineOcrActivity.class, REQUEST_ANYLINE_OCR, args);
-                break;
-            case "LICENSE_PLATE":
-                scan(LicensePlateActivity.class, REQUEST_LICENSE_PLATE, args);
-                break;
-            case "DRIVING_LICENSE":
-                scan(AnylineOcrActivity.class, REQUEST_ANYLINE_OCR, args);
-                break;
             case "scan":
                 scanAnyline4(args);
                 break;
@@ -193,10 +117,6 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
 
     private void scan(Class<?> activityToStart, int requestCode, JSONArray data) {
         scan(activityToStart, requestCode, data, null);
-    }
-
-    private void scanEnergy(JSONArray data, EnergyScanView.ScanMode modeEnum) {
-        scan(EnergyActivity.class, REQUEST_METER, data, modeEnum.name());
     }
 
     private void scanAnyline4(JSONArray data){
@@ -216,7 +136,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
                             scan(Anyline4Activity.class, REQUEST_ANYLINE_4, data);
                         }
                     }
-            } else if (jsonConfig.has("serialViewPluginComposite")) {
+            } else if (jsonConfig.has("serialViewPluginComposite") || jsonConfig.has("parallelViewPluginComposite")) {
                 scan(Anyline4Activity.class, REQUEST_ANYLINE_4, data);
                 }
             } catch (JSONException e) {

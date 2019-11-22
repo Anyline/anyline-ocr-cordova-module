@@ -25,7 +25,7 @@ import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.core.RunFailure;
 import at.nineyards.anyline.core.Vector_Contour;
 import at.nineyards.anyline.core.exception_error_codes;
-import at.nineyards.anyline.modules.mrz.Identification;
+//import at.nineyards.anyline.modules.mrz.Identification;
 import io.anyline.plugin.ScanResult;
 import io.anyline.plugin.ScanResultListener;
 import io.anyline.plugin.barcode.BarcodeScanResult;
@@ -38,6 +38,7 @@ import io.anyline.plugin.id.ID;
 import io.anyline.plugin.id.IdScanPlugin;
 import io.anyline.plugin.id.IdScanViewPlugin;
 import io.anyline.plugin.id.MrzConfig;
+import io.anyline.plugin.id.MrzIdentification;
 import io.anyline.plugin.licenseplate.LicensePlateScanResult;
 import io.anyline.plugin.licenseplate.LicensePlateScanViewPlugin;
 import io.anyline.plugin.meter.MeterScanMode;
@@ -46,6 +47,7 @@ import io.anyline.plugin.meter.MeterScanViewPlugin;
 import io.anyline.plugin.ocr.OcrScanResult;
 import io.anyline.plugin.ocr.OcrScanViewPlugin;
 import io.anyline.view.AbstractBaseScanViewPlugin;
+import io.anyline.view.ParallelScanViewComposite;
 import io.anyline.view.ScanView;
 import io.anyline.view.SerialScanViewComposite;
 
@@ -134,7 +136,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 			// this is used for the OCR Plugin, when languages has to be added
 			json = AnylinePluginHelper.setLanguages(json, getApplicationContext());
 
-			if (json.has("serialViewPluginComposite")) {
+			if (json.has("serialViewPluginComposite") || json.has("parallelViewPluginComposite")) {
 				anylineScanView.initComposite(json, licenseKey); // for composite
 				scanViewPlugin = anylineScanView.getScanViewPlugin();
 			} else {
@@ -152,7 +154,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 					setContentView(anylineScanView);
 				}
 
-				if (scanViewPlugin instanceof SerialScanViewComposite) {
+				if (scanViewPlugin instanceof SerialScanViewComposite || scanViewPlugin instanceof ParallelScanViewComposite) {
 					scanViewPlugin.addScanResultListener(new ScanResultListener() {
 						@Override
 						public void onResult(ScanResult result) {
@@ -161,7 +163,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 
 							for (ScanResult subResult : (Collection<ScanResult>) result.getResult()) {
 
-								Log.i ("a4a", "sss ++++++++++++++++++++ plugin id: " + subResult.getPluginId());
+								//Log.i ("a4a", "sss ++++++++++++++++++++ plugin id: " + subResult.getPluginId());
 
 								if (subResult instanceof LicensePlateScanResult) {
 									JSONObject jsonLPResult = new JSONObject();
@@ -176,8 +178,8 @@ public class Anyline4Activity extends AnylineBaseActivity {
 									} catch (JSONException e) {
 										e.printStackTrace();
 									}
-								} else if (subResult.getResult() instanceof Identification) {
-									JSONObject jsonIdResult = ((Identification) subResult.getResult()).toJSONObject();
+								} else if (subResult.getResult() instanceof MrzIdentification) {
+									JSONObject jsonIdResult = ((MrzIdentification) subResult.getResult()).toJSONObject();
 									try {
 										if (jsonIdResult.get("issuingCountryCode").equals("D")
 											&& jsonIdResult.get("documentType").equals("ID")) {
@@ -290,7 +292,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 						scanViewPlugin.addScanResultListener(new ScanResultListener<ScanResult<ID>>() {
 							@Override
 							public void onResult(ScanResult<ID> idScanResult) {
-								JSONObject jsonResult = ((Identification) idScanResult.getResult()).toJSONObject();
+								JSONObject jsonResult = ((MrzIdentification) idScanResult.getResult()).toJSONObject();
 								if (jsonResult.has("issuingCountryCode")) {
 									try {
 										if(jsonResult.get("issuingCountryCode").equals("D") && jsonResult.get("documentType").equals("ID")){

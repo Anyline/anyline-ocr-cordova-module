@@ -6,7 +6,7 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.os.Environment;
+//import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -24,19 +24,13 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import androidx.core.content.ContextCompat;
-import at.nineyards.anyline.camera.AnylineViewConfig;
-import at.nineyards.anyline.camera.CameraConfig;
 import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.camera.CameraOpenListener;
 import at.nineyards.anyline.models.AnylineImage;
-import at.nineyards.anyline.modules.document.DocumentResultListener;
-import at.nineyards.anyline.modules.document.DocumentResult;
-import at.nineyards.anyline.modules.document.DocumentScanView;
 import at.nineyards.anyline.util.TempFileUtil;
 import io.anyline.plugin.ScanResult;
 import io.anyline.plugin.document.DocumentScanResultListener;
@@ -49,7 +43,7 @@ import io.anyline.view.ScanView;
 public class Document4Activity extends AnylineBaseActivity implements CameraOpenListener {
 
 	private static final long ERROR_MESSAGE_DELAY = 2000;
-	private static final String TAG = DocumentActivity.class.getSimpleName();
+	private static final String TAG = Document4Activity.class.getSimpleName();
 	private ScanView documentScanView;
 	private Toast notificationToast;
 	private ImageView imageViewResult;
