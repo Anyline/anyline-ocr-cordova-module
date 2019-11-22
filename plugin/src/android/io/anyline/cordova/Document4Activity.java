@@ -6,7 +6,7 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.os.Bundle;
-//import android.support.v4.content.ContextCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import androidx.core.content.ContextCompat;
 import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.camera.CameraOpenListener;
 import at.nineyards.anyline.models.AnylineImage;

@@ -25,7 +25,6 @@ import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.core.RunFailure;
 import at.nineyards.anyline.core.Vector_Contour;
 import at.nineyards.anyline.core.exception_error_codes;
-//import at.nineyards.anyline.modules.mrz.Identification;
 import io.anyline.plugin.ScanResult;
 import io.anyline.plugin.ScanResultListener;
 import io.anyline.plugin.barcode.BarcodeScanResult;

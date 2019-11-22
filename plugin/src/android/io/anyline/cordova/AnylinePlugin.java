@@ -11,7 +11,6 @@ package io.anyline.cordova;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
@@ -23,8 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import at.nineyards.anyline.AnylineController;
-import at.nineyards.anyline.models.AnylineImage;
-import io.anyline.plugin.meter.MeterScanMode;
 
 
 public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnResultListener {
@@ -67,9 +64,9 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 try {
-                    if(mAction.equals("CHECK_LICENSE")){
+                    if (mAction.equals("CHECK_LICENSE")) {
                         getLicenseExpirationDate(mArgs.getString(0));
-                    } else if(mAction.equals("GET_SDK_VERSION")) {
+                    } else if (mAction.equals("GET_SDK_VERSION")) {
                         getSDKVersion();
                     } else {
                         checkPermission();
@@ -93,9 +90,8 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     }
 
     public void onRequestPermissionResult(int requestCode, String[] permissions,
-                                          int[] grantResults) throws JSONException
-    {
-        for(int r:grantResults) {
+                                          int[] grantResults) throws JSONException {
+        for (int r : grantResults) {
             if (r == PackageManager.PERMISSION_DENIED) {
                 this.mCallbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, "Camera permission denied"));
                 return;
@@ -111,7 +107,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
                 break;
             default:
                 this.mCallbackContext.error(Resources.getString(cordova.getActivity(),
-                        "error_unkown_scan_mode") + " " + action);
+                                                                "error_unkown_scan_mode") + " " + action);
         }
     }
 
@@ -119,25 +115,23 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
         scan(activityToStart, requestCode, data, null);
     }
 
-    private void scanAnyline4(JSONArray data){
-        if(data.length() > 1){
+    private void scanAnyline4(JSONArray data) {
+        if (data.length() > 1) {
             JSONObject jsonConfig = null;
             try {
                 jsonConfig = data.getJSONObject(1);
-                if (jsonConfig.has("documentScannerUI")) {
-                    scan(DocScanUIMainActivity.class, REQUEST_ANYLINE_4, data);
-                } else if(jsonConfig.has("viewPlugin")){
+                if (jsonConfig.has("viewPlugin")) {
                     JSONObject viewPlugin = jsonConfig.getJSONObject("viewPlugin");
-                    if(viewPlugin != null && viewPlugin.has("plugin")){
+                    if (viewPlugin != null && viewPlugin.has("plugin")) {
                         JSONObject plugin = viewPlugin.getJSONObject("plugin");
-                        if(plugin != null && plugin.has("documentPlugin")){
+                        if (plugin != null && plugin.has("documentPlugin")) {
                             scan(Document4Activity.class, REQUEST_ANYLINE_4, data);
-                        }else{
+                        } else {
                             scan(Anyline4Activity.class, REQUEST_ANYLINE_4, data);
                         }
                     }
-            } else if (jsonConfig.has("serialViewPluginComposite") || jsonConfig.has("parallelViewPluginComposite")) {
-                scan(Anyline4Activity.class, REQUEST_ANYLINE_4, data);
+                } else if (jsonConfig.has("serialViewPluginComposite") || jsonConfig.has("parallelViewPluginComposite")) {
+                    scan(Anyline4Activity.class, REQUEST_ANYLINE_4, data);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -219,7 +213,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
 
     private void getLicenseExpirationDate(String license) {
         String validDate = AnylineController.getLicenseExpirationDate(license);
-        onResult(validDate,true);
+        onResult(validDate, true);
     }
 
     private void getSDKVersion() {
