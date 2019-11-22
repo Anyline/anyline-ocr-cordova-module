@@ -1,7 +1,7 @@
 repositories{
     google()
     jcenter()
-    maven { url 'https://anylinesdk.blob.core.windows.net/maven/'}
+    maven { url 'https://anylinesdk.blob.core.windows.net/testing/'}
     flatDir {
         dirs 'libs'
     }
@@ -12,7 +12,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-vision-face-model:17.0.2'
     implementation 'io.anyline:anylinesdk:16@aar'
 //    implementation (name: 'anylinesdk-release-16', ext: 'aar')
-
 }
 
 android {
