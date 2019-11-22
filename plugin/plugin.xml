@@ -22,7 +22,7 @@
             </feature>
         </config-file>
         <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
-            <string>Allow Anyline to access you camera?</string>
+            <string>Allow Anyline to access your camera?</string>
         </config-file>
 
         <!-- Anyline SDK Cordova Plugin Source for iOS -->
@@ -32,25 +32,10 @@
         <source-file src="src/ios/ALPluginHelper.m"/>
         <header-file src="src/ios/ALPluginScanViewController.h"/>
         <source-file src="src/ios/ALPluginScanViewController.m"/>
-        <header-file src="src/ios/AnylineBaseScanViewController.h"/>
-        <source-file src="src/ios/AnylineBaseScanViewController.m"/>
-        <header-file src="src/ios/AnylineBarcodeScanViewController.h"/>
-        <source-file src="src/ios/AnylineBarcodeScanViewController.m"/>
-        <header-file src="src/ios/AnylineMRZScanViewController.h"/>
-        <source-file src="src/ios/AnylineMRZScanViewController.m"/>
-        <header-file src="src/ios/AnylineEnergyScanViewController.h"/>
-        <source-file src="src/ios/AnylineEnergyScanViewController.m"/>
-        <header-file src="src/ios/AnylineLicensePlateViewController.h"/>
-        <source-file src="src/ios/AnylineLicensePlateViewController.m"/>
-        <header-file src="src/ios/AnylineOCRScanViewController.h"/>
-        <source-file src="src/ios/AnylineOCRScanViewController.m"/>
-        <header-file src="src/ios/AnylineDocumentScanViewController.h"/>
-        <source-file src="src/ios/AnylineDocumentScanViewController.m"/>
         <header-file src="src/ios/ALRoundedView.h"/>
         <source-file src="src/ios/ALRoundedView.m"/>
         <header-file src="src/ios/ALCordovaUIConfiguration.h"/>
         <source-file src="src/ios/ALCordovaUIConfiguration.m"/>
-        <source-file src="src/ios/placeholderSwiftFile.swift"/>
 
         <!-- Anyline Framework & Resource Bundle locally -->
         <!-- <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>-->
