@@ -20,7 +20,38 @@ onResult: function (result) {
     if (div.childElementCount >= 3) {
         div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
-    
+
+
+      if (result.METER_PLUGIN.detectedBarcodes) {
+        var detailsBarcodes = "";
+        for (var i = 0; i < result.METER_PLUGIN.detectedBarcodes.length; i++) {
+          detailsBarcodes += result.METER_PLUGIN.detectedBarcodes[i].value;
+          detailsBarcodes += " (" + result.METER_PLUGIN.detectedBarcodes[i].format + ")";
+          if (i < result.METER_PLUGIN.detectedBarcodes.length - 1) {
+            detailsBarcodes += ", ";
+          }
+        }
+      }
+
+      div.innerHTML = "<h2>Energy Result</h2>" + "<p>"
+        + "<img src=\"" + result.METER_PLUGIN.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
+        + "<img src=\"" + result.METER_PLUGIN.fullImagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
+        + "<b>" + result.METER_PLUGIN.meterType + ":</b> " + result.METER_PLUGIN.reading
+        + (detailsBarcodes ? "<br/><i><b>Detected Barcodes:</b> " + detailsBarcodes + "</i>" : "")
+        + ((result.METER_PLUGIN.confidence && result.METER_PLUGIN.confidence >= 0) ? "<br/><i><b>Confidence:</b> " + result.METER_PLUGIN.confidence + "</i>" : "")
+        + "<br/><i><b>Outline Points:</b> " + result.METER_PLUGIN.outline + "</i>"
+        + "</p>"
+        + "<h2>Universal Serial Number Result</h2>" + "<p>"
+        + "<img src=\"" + result.USNR_ID.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
+        + "<b>Result: </b> " + result.USNR_ID.text
+        + "<br/><i><b>Confidence:</b> " + result.USNR_ID.confidence + "</i>"
+        + "<br/><i><b>Outline Points:</b> " + result.USNR_ID.outline + "</i>" + "</p>"
+        + div.innerHTML;
+
+
+
+
+/*
     div.innerHTML = "<h2>LicensePlace Result</h2>" + "<p>" +
     "<img src=\"" + result.LPT.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
     "<b>Result (LicensePlate): </b> " + result.LPT.licensePlate + "<br/>" +
@@ -36,7 +67,9 @@ onResult: function (result) {
     "<img src=\"" + result.VIN.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
     "<b>Result (VIN): </b> " + result.VIN.text + "<br/>" +
     "</p>" + div.innerHTML;
-    
+
+*/
+
     document.getElementById("details_scan_modes").removeAttribute("open");
     document.getElementById("details_results").setAttribute("open", "");
     window.scrollTo(0, 0);
@@ -59,132 +92,95 @@ licenseKey: "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmR
     
 parallelScan: {
   "camera": {
-     "captureResolution": "1080p",
-   },
-   "flash": {
-     "mode": "manual",
-     "alignment": "top_right"
-   },
-   "parallelViewPluginComposite": {
-     "id": "DOUBLE_TARIFF_SEQUENTIAL",
-     "cancelOnResult": true,
-     "viewPlugins": [
-       {
-         "viewPlugin": {
-           "plugin": {
-             "id": "LPT",
-             "licensePlatePlugin": {
-               "scanMode": "AUTO"
-             }
-           },
-           "cutoutConfig": {
-             "style": "rect",
-             "maxWidthPercent": "80%",
-             "maxHeightPercent": "80%",
-             "alignment": "top_half",
-             "width": 720,
-             "ratioFromSize": {
-               "width": 2,
-               "height": 1
-             },
-             "strokeWidth": 2,
-             "cornerRadius": 10,
-             "strokeColor": "FFFFFF",
-             "outerColor": "000000",
-             "outerAlpha": 0.3,
-             "feedbackStrokeColor": "0099FF"
-           },
-           "scanFeedback": {
-             "style": "rect",
-             "strokeWidth": 2,
-             "strokeColor": "0099FF",
-             "fillColor": "330099FF",
-             "cornerRadius": 0,
-             "beepOnResult": true,
-             "vibrateOnResult": true,
-             "blinkAnimationOnResult": true
-           },
-           "cancelOnResult": true
-         }
-       },
-
-       {
-         "viewPlugin": {
-           "plugin": {
-             "id": "DRIVING_LICENSE",
-             "idPlugin": {
-               "drivingLicenseConfig": {
-                 "scanMode": "AUTO"
-               }
-             }
-           },
-           "cutoutConfig": {
-             "style": "rect",
-             "maxWidthPercent": "99%",
-             "maxHeightPercent": "100%",
-             "alignment": "center",
-             "ratioFromSize": {
-               "width": 560,
-               "height": 354
-             },
-             "strokeWidth": 2,
-             "cornerRadius": 4,
-             "strokeColor": "FFFFFF",
-             "outerColor": "000000",
-             "outerAlpha": 0.3,
-             "feedbackStrokeColor": "0099FF"
-           },
-           "scanFeedback": {
-             "fillColor": "220099FF",
-             "style": "CONTOUR_POINT",
-             "strokeColor": "0099FF",
-             "strokeWidth": 2,
-             "blinkOnResult": true,
-             "beepOnResult": true,
-             "vibrateOnResult": true
-           },
-           "cancelOnResult": true
-         }
-       },
-       {
-         "viewPlugin": {
-           "plugin": {
-             "id": "VIN",
-             "ocrPlugin": {
-               "scanMode": "AUTO"
-             }
-           },
-           "cutoutConfig": {
-             "style": "rect",
-             "maxWidthPercent": "70%",
-             "alignment": "bottom_half",
-             "ratioFromSize": {
-               "width": 62,
-               "height": 9
-             },
-             "outerColor": "000000",
-             "outerAlpha": 0.3,
-             "strokeWidth": 2,
-             "strokeColor": "FFFFFF",
-             "cornerRadius": 4,
-             "feedbackStrokeColor": "0099FF"
-           },
-           "scanFeedback": {
-             "animation": "traverse_multi",
-             "animationDuration": 250,
-             "style": "contour_rect",
-             "strokeWidth": 2,
-             "strokeColor": "0099FF",
-             "fillColor": "220099FF",
-             "beepOnResult": true,
-             "vibrateOnResult": true,
-             "blinkAnimationOnResult": true
-           },
-           "cancelOnResult": true
-         }
-       }
-     ]
-   }
+    "captureResolution": "1080p"
+  },
+  "flash": {
+    "mode": "manual",
+    "alignment": "top_right"
+  },
+  "parallelViewPluginComposite": {
+    "id": "DOUBLE_TARIFF_SEQUENTIAL",
+    "cancelOnResult": true,
+    "viewPlugins": [
+      {
+        "viewPlugin": {
+          "plugin": {
+            "id": "METER_PLUGIN",
+            "meterPlugin": {
+              "scanMode": "AUTO_ANALOG_DIGITAL_METER"
+            }
+          },
+          "cutoutConfig": {
+            "style": "rect",
+            "alignment": "top",
+            "strokeWidth": 2,
+            "strokeColor": "FFFFFF",
+            "cornerRadius": 4,
+            "outerColor": "000000",
+            "outerAlpha": 0.5,
+            "feedbackStrokeColor": "0099FF",
+            "offset": {
+              "x": 0,
+              "y": 120
+            }
+          },
+          "scanFeedback": {
+            "style": "CONTOUR_RECT",
+            "strokeColor": "0099FF",
+            "strokeWidth": 2,
+            "fillColor": "220099FF",
+            "cornerRadius": 2,
+            "redrawTimeout": 200,
+            "animationDuration": 75,
+            "blinkOnResult": true,
+            "beepOnResult": true,
+            "vibrateOnResult": true
+          },
+          "cancelOnResult": true
+        }
+      },
+      {
+        "viewPlugin": {
+          "plugin": {
+            "id": "USNR_ID",
+            "ocrPlugin": {
+              "ocrConfig": {}
+            },
+            "delayStartScanTime": 1000
+          },
+          "cutoutConfig": {
+            "style": "rect",
+            "width": 720,
+            "alignment": "center",
+            "maxWidthPercent": "80%",
+            "ratioFromSize": {
+              "width": 720,
+              "height": 144
+            },
+            "strokeWidth": 2,
+            "strokeColor": "FFFFFF",
+            "cornerRadius": 4,
+            "outerColor": "000000",
+            "outerAlpha": 0.5,
+            "feedbackStrokeColor": "0099FF",
+            "offset": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "scanFeedback": {
+            "style": "CONTOUR_RECT",
+            "strokeColor": "0099FF",
+            "fillColor": "220099FF",
+            "beepOnResult": true,
+            "vibrateOnResult": true,
+            "blinkAnimationOnResult": true
+          },
+          "cancelOnResult": true
+        }
+      }
+    ]
+  }
             },
     
 scan: function () {
