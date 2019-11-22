@@ -30,7 +30,5 @@
     <string name="document_processing">Verarbeitung</string>
     <string name="document_processing_picture_please_wait">Bild wird verarbeitet, bitte warten.</string>
 
-    <string name="scan_document">Scanne Dokument</string>
-    <string name="existing_scans_will_be_overwritten_msg">Bisherigen Scans werden gelöscht wenn neue Scans durchgeführt werden</string>
 
 </resources>

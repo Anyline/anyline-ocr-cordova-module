@@ -103,20 +103,6 @@
                     android:value="barcode"/>
         </config-file>
         <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml">
-            <activity android:name="io.anyline.cordova.BarcodeActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" 
-                      android:screenOrientation="portrait"/>
-            <activity android:name="io.anyline.cordova.MrzActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" 
-                      android:screenOrientation="portrait"/>
-            <activity android:name="io.anyline.cordova.EnergyActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" />
-            <activity android:name="io.anyline.cordova.AnylineOcrActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" />
-            <activity android:name="io.anyline.cordova.LicensePlateActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" />
-            <activity android:name="io.anyline.cordova.DocumentActivity"
-                      android:theme="@android:style/Theme.Black.NoTitleBar" />
 	    <activity android:name="io.anyline.cordova.Document4Activity"
                       android:theme="@android:style/Theme.Black.NoTitleBar" />
 	    <activity android:name="io.anyline.cordova.Anyline4Activity"
@@ -132,42 +118,24 @@
         <!-- add plugin source code -->
 	    <source-file src="src/android/io/anyline/cordova/Anyline4Activity.java" target-dir="src/io/anyline/cordova"/>        
 	    <source-file src="src/android/io/anyline/cordova/AnylineBaseActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/AnylineOcrActivity.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/AnylinePlugin.java" target-dir="src/io/anyline/cordova"/>
 	    <source-file src="src/android/io/anyline/cordova/AnylinePluginHelper.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/BarcodeActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/MrzActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/EnergyActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/LicensePlateActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/DocumentActivity.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/Document4Activity.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/CordovaUIConfig.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/ResultReporter.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/Resources.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/CropViewUIActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/DocumentScanViewUIActivity.java" target-dir="src/io/anyline/cordova"/>
-        <source-file src="src/android/io/anyline/cordova/DocScanUIMainActivity.java" target-dir="src/io/anyline/cordova"/>
+
 
         <resource-file src="src/android/res/values/anyline_sdk_plugin_strings.xml"
                        target="res/values/anyline_sdk_plugin_strings.xml"/>
         <resource-file src="src/android/res/values/anyline_sdk_plugin_colors.xml"
                        target="res/values/anyline_sdk_plugin_colors.xml"/>
-        <resource-file src="src/android/res/values/dimens.xml"
-                       target="res/values/dimens.xml"/>
         <resource-file src="src/android/res/values-de/anyline_sdk_plugin_strings.xml"
                        target="res/values-de/anyline_sdk_plugin_strings.xml"/>
         <resource-file src="src/android/res/layout/activity_scan_document.xml"
                        target="res/layout/activity_scan_document.xml"/>
         <resource-file src="src/android/res/layout/activity_scan_scanview.xml"
                        target="res/layout/activity_scan_scanview.xml"/>
-        <resource-file src="src/android/res/layout/activity_doc_scan_ui_main.xml"
-                       target="res/layout/activity_doc_scan_ui_main.xml"/>
-        <resource-file src="src/android/res/layout/activity_doc_scan_ui_main_list_item.xml"
-                       target="res/layout/activity_doc_scan_ui_main_list_item.xml"/>
-        <resource-file src="src/android/res/layout/cordova_activity_crop_view_ui.xml"
-                       target="res/layout/cordova_activity_crop_view_ui.xml"/>
-        <resource-file src="src/android/res/layout/cordova_activity_document_scan_view_ui.xml"
-                       target="res/layout/cordova_activity_document_scan_view_ui.xml"/>
 
     </platform>
 

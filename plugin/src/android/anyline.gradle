@@ -8,22 +8,16 @@ repositories{
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-ml-vision:23.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision:19.0.2'
     implementation 'com.google.firebase:firebase-ml-vision-face-model:17.0.2'
-    implementation 'io.anyline:anylinesdk:15@aar'
-
-    // needed for document scanner ui bottom sheet, includes also appcompat:
-    implementation ('com.google.android.material:material:1.1.0-alpha10')
-
-    implementation 'androidx.multidex:multidex:2.0.1'
+//    implementation 'io.anyline:anylinesdk:15@aar'
+    implementation (name: 'anylinesdk-release-16-RC3', ext: 'aar')
 
 }
 
 android {
 
   defaultConfig {
-      multiDexEnabled true
-
       ndk {
       abiFilters "armeabi-v7a", "x86", "arm64-v8a"
     } 
