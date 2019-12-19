@@ -538,6 +538,12 @@ public class Anyline4Activity extends AnylineBaseActivity {
 					View button = group.findViewById(checkedId);
 					String mode = modes.get(group.indexOfChild(button));
 					((MeterScanViewPlugin) scanViewPlugin).setScanMode(MeterScanMode.valueOf(mode));
+					anylineScanView.stop();
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					anylineScanView.start();
 				}
 			});
