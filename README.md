@@ -12,6 +12,10 @@ Anyline provides an easy-to-use SDK for applications to enable Optical Character
 - Cordova [Documentation]( https://documentation.anyline.com/toc/platforms/cordova/getting_started.html)
 - Newest Anyline Cordova [Release Notes](https://documentation.anyline.com/toc/platforms/cordova/release_guide/index.html)
 
+## Attention - Update to AndroidX!
+
+As of version 19 (March 2020), Anyline will use <b>AndroidX</b> libraries, which may lead to conflicts in case you are still using support libraries. Please consider updating your project to also use AndroidX, as we will not have support for conflicts caused by these dependencies.
+
 ## Update to >= 5.0
 
 If you use this plugin with a equal or greater version then 5.0, you can use our new Anyline structure, which will provide the whole
