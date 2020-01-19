@@ -4,6 +4,8 @@
 #import "ALCordovaUIConfiguration.h"
 #import "ALPluginScanViewController.h"
 
+#import "ScannerController.h"
+
 
 @interface AnylineSDKPlugin()<ALPluginScanViewControllerDelegate>
 
@@ -20,6 +22,20 @@
 
 
 @implementation AnylineSDKPlugin
+
+- (void)scanMX:(CDVInvokedUrlCommand *)command {
+    //replace this
+    [self processCommandArgumentsAnyline4:command];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        UIStoryboard* sb = [UIStoryboard storyboardWithName:@"MXStoryBoard" bundle:nil];
+        ScannerController *mxVC = [sb instantiateViewControllerWithIdentifier:@"MXScannerController"];
+        [mxVC setLicenseKey:self.licensekey];
+        self.baseScanViewController = mxVC;
+        [self presentViewController];
+    });
+}
 
 - (void)scan:(CDVInvokedUrlCommand *)command {
     [self processCommandArgumentsAnyline4:command];

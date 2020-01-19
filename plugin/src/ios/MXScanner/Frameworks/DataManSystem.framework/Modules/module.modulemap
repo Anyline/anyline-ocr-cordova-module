@@ -1,0 +1,6 @@
+framework module DataManSystem {
+  umbrella header "DataManSystem.h"
+
+  export *
+  module * { export * }
+}

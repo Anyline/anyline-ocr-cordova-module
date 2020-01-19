@@ -24,6 +24,9 @@
         <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
             <string>Allow Anyline to access your camera?</string>
         </config-file>
+        <config-file target="*-Info.plist" parent="NSPhotoLibraryAddUsageDescription">
+            <string>Allow Anyline to access add PhotoLibrary?</string>
+        </config-file>
 
         <!-- Anyline SDK Cordova Plugin Source for iOS -->
         <header-file src="src/ios/AnylineSDKPlugin.h"/>
@@ -36,6 +39,13 @@
         <source-file src="src/ios/ALRoundedView.m"/>
         <header-file src="src/ios/ALCordovaUIConfiguration.h"/>
         <source-file src="src/ios/ALCordovaUIConfiguration.m"/>
+        
+        <source-file src="src/ios/MXScanner"/>
+        <!-- <source-file src="src/ios/MXScanner" target-dir="MXScanner"/> -->
+        
+        <resource-file src="src/ios/MXScanner/MXAssets.xcassets" />
+        <resource-file src="src/ios/MXScanner/MWBScannerImages.xcassets" />
+        <resource-file src="src/ios/MXScanner/MXStoryBoard.storyboard"/>
 
         <!-- Anyline Framework & Resource Bundle locally -->
         <!-- <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>-->
@@ -43,7 +53,10 @@
 
         <!-- Anyline Framework & Resource Bundle CocoaPods -->
         <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 17"/>
+        <!-- <framework src="ZHPopupView" type="podspec"/> -->
 
+        
+        
         <!-- <podspec>
             <config>
                 <source url="https://github.com/Anyline/anyline-ocr-examples-ios.git" />
@@ -51,6 +64,7 @@
             </config>
             <pods use-frameworks="true">
                 <pod name="Anyline" type="podspec" spec="~> 17" />
+                <pod name="ZHPopupView" type="podspec"/>
             </pods>
         </podspec> -->
 
@@ -60,7 +74,22 @@
         <framework src="libc++.tbd"/>
         <framework src="AssetsLibrary.framework"/>
         <framework src="Accelerate.framework"/>
-
+        
+        <framework src="ExternalAccessory.framework"/>
+        <framework src="DataManSDK.a"/>
+        <framework src="WebKit.framework"/>
+        <framework src="CoreLocation.framework"/>
+        <framework src="CoreGraphics.framework"/>
+        <framework src="AudioToolbox.framework"/>
+        <framework src="SystemConfiguration.framework"/>
+        <framework src="MediaPlayer.framework"/>
+        <framework src="AVFoundation.framework"/>
+        <framework src="CoreMedia.framework"/>
+        <framework src="CoreVideo.framework"/>
+        <framework src="Security.framework"/>
+        <framework src="Pods_MXSampleApp.framework"/>
+        
+        
     </platform>
     <platform name="android">
 	
