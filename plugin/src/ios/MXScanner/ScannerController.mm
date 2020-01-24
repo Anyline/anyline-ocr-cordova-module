@@ -9,9 +9,6 @@
 #import "ScannerController.h"
 #import <Anyline/Anyline.h>
 #import <AssetsLibrary/AssetsLibrary.h>
-#import "opencv.hpp"
-#import "ALImage+PrivateHeader.h"
-#import "ALDataFeedbackService.h"
 #import <ZHPopupView/ZHPopupView.h>
 #import "ALCognexDevice.h"
 #include <stdio.h>
@@ -103,19 +100,40 @@
     
     
     [self.deviceController addObserver:self forKeyPath:@"isConnected" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    // add observer for app resume
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                    selector:@selector(appBecameActive)
+                                                        name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+// handle app resume
+-(void) appBecameActive {
+    [self.deviceController reconnectDevice];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIApplicationDidBecomeActiveNotification
+                                                  object:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    if(self.deviceController.isConnected) {
-        [_btnScan setTitle:@"START SCANNING" forState:UIControlStateNormal];
-        [_btnScan setEnabled:YES];
-        [_lblConnection setText:@"  Connected  "];
-        [_lblConnection setBackgroundColor:[UIColor colorWithRed:0.00 green:0.39 blue:0.00 alpha:1.0]];
-    } else {
-        [_btnScan setEnabled:NO];
-        [_lblConnection setText:@"  Disconnected  "];
-        [_lblConnection setBackgroundColor:[UIColor redColor]];
+    
+    if ([keyPath isEqualToString:@"isConnected"]) {
+        if([self.deviceController.isConnected isEqual:@(YES)]) {
+            [_btnScan setTitle:@"START SCANNING" forState:UIControlStateNormal];
+            [_btnScan setEnabled:YES];
+            [_lblConnection setText:@"  Connected  "];
+            [_lblConnection setBackgroundColor:[UIColor colorWithRed:0.00 green:0.39 blue:0.00 alpha:1.0]];
+        } else {
+            [_btnScan setEnabled:NO];
+            [_lblConnection setText:@"  Disconnected  "];
+            [_lblConnection setBackgroundColor:[UIColor redColor]];
+        }
     }
+    
 
 }
 
@@ -246,10 +264,6 @@ BOOL issScanning = NO;
 - (void)anylineOCRScanPlugin:(ALOCRScanPlugin *)anylineOCRScanPlugin didFindResult:(ALOCRResult *)result {
     self.lblCode.text = result.result;
     
-    [ALDataFeedbackService uploadBinaryPayload:UIImageJPEGRepresentation(_ivPreview.image, 0.5)
-                                  scannedValue:result.result
-                                      bundleID:NSBundle.mainBundle.bundleIdentifier];
-    
     [self triggerScanFeedback];
 }
 
@@ -257,5 +271,6 @@ BOOL issScanning = NO;
     AudioServicesPlaySystemSound(_beepSound);
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
+
 
 @end

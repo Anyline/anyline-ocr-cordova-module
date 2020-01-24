@@ -35,6 +35,7 @@ CMBReaderDevice *readerDevice;
         _imagerQ = dispatch_queue_create("cognex.imager.queue", 0);
         self.preview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
         self.preview.contentMode = UIViewContentModeScaleAspectFit;
+        _isConnected = @(NO);
     }
     return self;
 }
@@ -45,25 +46,25 @@ CMBReaderDevice *readerDevice;
     [readerDevice setSymbology:CMBSymbologyDataMatrix enabled:YES completion:^(NSError *error){
         if (error)
         {
-            NSLog(@"FALIED TO ENABLE [Symbology_DataMatrix], %@", error.description);
+            NSLog(@"FAILED TO ENABLE [Symbology_DataMatrix], %@", error.description);
         }
     }];
     [readerDevice setSymbology:CMBSymbologyQR enabled:YES completion:^(NSError *error){
         if (error)
         {
-            NSLog(@"FALIED TO ENABLE [Symbology_QR], %@", error.description);
+            NSLog(@"FAILED TO ENABLE [Symbology_QR], %@", error.description);
         }
     }];
     [readerDevice setSymbology:CMBSymbologyC128 enabled:YES completion:^(NSError *error){
         if (error)
         {
-            NSLog(@"FALIED TO ENABLE [Symbology_C128], %@", error.description);
+            NSLog(@"FAILED TO ENABLE [Symbology_C128], %@", error.description);
         }
     }];
     [readerDevice setSymbology:CMBSymbologyUpcEan enabled:YES completion:^(NSError *error){
         if (error)
         {
-            NSLog(@"FALIED TO ENABLE [Symbology_UpcEan], %@", error.description);
+            NSLog(@"FAILED TO ENABLE [Symbology_UpcEan], %@", error.description);
         }
     }];
 }
@@ -129,7 +130,7 @@ CMBReaderDevice *readerDevice;
 
 - (void)startFillingImageBuffer {
     NSLog(@"%@: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
-    __weak __block typeof(self) welf = self;
+//    __weak __block typeof(self) welf = self;
     self.getNewImage = YES;
     self.imagerTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 repeats:YES block:^(NSTimer * _Nonnull timer) {
         [self tryToFillImageBuffer];
@@ -219,7 +220,7 @@ CMBReaderDevice *readerDevice;
             readerDevice = [CMBReaderDevice readerOfMXDevice];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                readerDevice.delegate = self;
+                [readerDevice setDelegate:self];
                 readerDevice.dataManSystem.delegate = self;
                 [self connectToReaderDevice];
             });
@@ -245,13 +246,27 @@ CMBReaderDevice *readerDevice;
                 self.isConnected = @(NO);
                 return;
             }
-            readerDevice.delegate = self;
+            [readerDevice setDelegate:self];
             readerDevice.dataManSystem.delegate = self;
             self.isConnected = @(YES);
         }];
     } else if (readerDevice.connectionState != CMBConnectionStateConnected) {
         NSLog(@"readerDevice.connectionState != CMBConnectionStateConnected");
-        self.isConnected = @(YES);
+        self.isConnected = @(NO);
+    }
+}
+
+
+- (void)reconnectDevice {
+    if (readerDevice != nil
+        && readerDevice.availability == CMBReaderAvailibilityAvailable
+        && readerDevice.connectionState != CMBConnectionStateConnecting && readerDevice.connectionState != CMBConnectionStateConnected)
+    {
+        [readerDevice connectWithCompletion:^(NSError *error) {
+            if (error) {
+                // handle connection error
+            }
+        }];
     }
 }
 

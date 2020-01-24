@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)startReader;
 - (void)setupDevice;
 - (void)disconnectReaderDevice;
+- (void)reconnectDevice;
 @end
 
 NS_ASSUME_NONNULL_END

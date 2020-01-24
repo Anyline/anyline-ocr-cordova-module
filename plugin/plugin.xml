@@ -27,6 +27,14 @@
         <config-file target="*-Info.plist" parent="NSPhotoLibraryAddUsageDescription">
             <string>Allow Anyline to access add PhotoLibrary?</string>
         </config-file>
+        
+        <config-file target="*-Info.plist" parent="UISupportedExternalAccessoryProtocols">
+        <array>
+            <string>com.cognex.dmcc</string>
+            <string>com.demo.data</string>
+        </array>
+        </config-file>
+        
 
         <!-- Anyline SDK Cordova Plugin Source for iOS -->
         <header-file src="src/ios/AnylineSDKPlugin.h"/>
@@ -38,12 +46,37 @@
         <header-file src="src/ios/ALRoundedView.h"/>
         <source-file src="src/ios/ALRoundedView.m"/>
         <header-file src="src/ios/ALCordovaUIConfiguration.h"/>
-        <source-file src="src/ios/ALCordovaUIConfiguration.m"/>
+        <source-file src="src/ios/ALCordovaUIConfiguration.m" />
+                
+        <header-file src="src/ios/MXScanner/ScannerController.h" />
+        <source-file src="src/ios/MXScanner/ScannerController.mm" />
         
-        <source-file src="src/ios/MXScanner"/>
-        <!-- <source-file src="src/ios/MXScanner" target-dir="MXScanner"/> -->
+        <header-file src="src/ios/MXScanner/ALCognexDevice.h" />
+        <source-file src="src/ios/MXScanner/ALCognexDevice.m" />
         
-        <resource-file src="src/ios/MXScanner/MXAssets.xcassets" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/CDMDataManSystem.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/CDMDataManSystemDelegate.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/CDMEADiscoverer.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/CDMResponse.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/CMBReaderDevice.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/CMBReadResult.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/CMBReadResults.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/CNMCogNamerDevice.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/CNMCogNamerDeviceType.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/CNMEthernetSystemDiscoverer.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/CNMSystemDiscoveredDelegate.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/DataManSDK.h" />
+
+        <header-file src="src/ios/MXScanner/Frameworks/XMLParser/CDMXMLParser.h" />
+        <source-file src="src/ios/MXScanner/Frameworks/XMLParser/CDMXMLParser.m" />
+        <header-file src="src/ios/MXScanner/Frameworks/XMLParser/DMQSXmlResultParser.h" />
+        <source-file src="src/ios/MXScanner/Frameworks/XMLParser/DMQSXmlResultParser.m" />
+        
+        <Framework src="src/ios/MXScanner/Frameworks/DataManSystem.framework" />
+        <!-- Framework src="src/ios/MXScanner/Frameworks/DataManSDK.a" / -->
+        <source-file src="src/ios/MXScanner/Frameworks/DataManSDK.a" target-dir="lib" framework="true" />
+        <!-- framework src="src/ios/MXScanner/Frameworks/DataManSDK.a"   embed="true" custom="true" / -->
+        
         <resource-file src="src/ios/MXScanner/MWBScannerImages.xcassets" />
         <resource-file src="src/ios/MXScanner/MXStoryBoard.storyboard"/>
 
@@ -53,6 +86,7 @@
 
         <!-- Anyline Framework & Resource Bundle CocoaPods -->
         <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 17"/>
+        <framework src="ZHPopupView" type="podspec" spec ="~> 0.1.1"/>
         <!-- <framework src="ZHPopupView" type="podspec"/> -->
 
         
@@ -87,7 +121,7 @@
         <framework src="CoreMedia.framework"/>
         <framework src="CoreVideo.framework"/>
         <framework src="Security.framework"/>
-        <framework src="Pods_MXSampleApp.framework"/>
+        <!-- framework src="Pods_MXSampleApp.framework"/ -->
         
         
     </platform>
