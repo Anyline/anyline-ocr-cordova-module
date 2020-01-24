@@ -7,11 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ALPluginScanViewController.h"
 
 @interface ScannerController : UIViewController
 
-- (instancetype)initWithLicenseKey:(NSString *)licenseKey;
-- (void)setLicenseKey:(NSString *)licenseKey;
+- (instancetype)initWithLicensekey:(NSString *)licensekey
+                     configuration:(NSDictionary *)anylineConfig
+              cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                          delegate:(id<ALPluginScanViewControllerDelegate>)delegate;
+
+- (void)setupWithLicensekey:(NSString *)licensekey
+              configuration:(NSDictionary *)anylineConfig
+       cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                   delegate:(id<ALPluginScanViewControllerDelegate>)delegate;
 
 @property (weak, nonatomic) IBOutlet UIImageView *ivPreview;
 @property (weak, nonatomic) IBOutlet UILabel *lblCode;

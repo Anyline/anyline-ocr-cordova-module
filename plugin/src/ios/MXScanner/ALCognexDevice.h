@@ -1,3 +1,4 @@
+
 //
 //  ALCognexDevice.h
 //  MXSampleApp
@@ -12,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol CognexDeviceDelegate <NSObject>
 - (void)deviceIsReadyToScan;
+- (void)receivedNewImage:(UIImage *)image;
 @end
 
 @interface ALCognexDevice : NSObject
@@ -19,9 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSNumber * isConnected;
 @property (nonatomic, strong) id <CognexDeviceDelegate> delegate;
 - (void)startReader;
+- (void)stopFillingImageBuffer;
 - (void)setupDevice;
 - (void)disconnectReaderDevice;
 - (void)reconnectDevice;
+
 @end
 
 NS_ASSUME_NONNULL_END

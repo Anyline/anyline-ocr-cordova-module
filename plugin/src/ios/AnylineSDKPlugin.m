@@ -31,7 +31,10 @@
         
         UIStoryboard* sb = [UIStoryboard storyboardWithName:@"MXStoryBoard" bundle:nil];
         ScannerController *mxVC = [sb instantiateViewControllerWithIdentifier:@"MXScannerController"];
-        [mxVC setLicenseKey:self.licensekey];
+        [mxVC setupWithLicensekey:self.licensekey
+                   configuration:self.anyline4Config
+            cordovaConfiguration:self.cordovaUIConf
+                        delegate:self];
         self.baseScanViewController = mxVC;
         [self presentViewController];
     });

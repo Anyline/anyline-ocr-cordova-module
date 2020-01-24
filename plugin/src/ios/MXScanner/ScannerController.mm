@@ -12,7 +12,7 @@
 #import <ZHPopupView/ZHPopupView.h>
 #import "ALCognexDevice.h"
 #include <stdio.h>
-
+#import "ALPluginHelper.h"
 
 @interface ScannerController () <ALOCRScanPluginDelegate, ALImageProvider, ALInfoDelegate, CognexDeviceDelegate>
 
@@ -30,18 +30,45 @@
 
 @property (nonatomic, strong) dispatch_queue_t anylineQ;
 
-@property (nonatomic, strong) NSString * licenseKey;
+@property (nonatomic, strong) NSDictionary *anylineConfig;
+@property (nonatomic, weak) id<ALPluginScanViewControllerDelegate> delegate;
+@property (nonatomic, strong) NSString *licensekey;
+@property (nonatomic, strong) ALCordovaUIConfiguration *cordovaConfig;
+
+@property (weak, nonatomic) IBOutlet UIButton *btnCancel;
+@property (weak, nonatomic) IBOutlet UIButton *btnDummyResult;
 
 @end
 
 @implementation ScannerController
 
-- (instancetype)initWithLicenseKey:(NSString *)licenseKey {
+- (instancetype)initWithLicensekey:(NSString *)licensekey
+       configuration:(NSDictionary *)anylineConfig
+cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                          delegate:(id<ALPluginScanViewControllerDelegate>)delegate {
+    
     self = [super init];
-    if (self) {
-        _licenseKey = licenseKey;
+    if(self) {
+        _licensekey = licensekey;
+        _delegate = delegate;
+        _anylineConfig = anylineConfig;
+        _cordovaConfig = cordovaConf;
+        
+//        self.quality = 100;
+//        self.nativeBarcodeEnabled = NO;
+//        self.cropAndTransformErrorMessage = @"";
     }
     return self;
+}
+
+- (void)setupWithLicensekey:(NSString *)licensekey
+              configuration:(NSDictionary *)anylineConfig
+       cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                   delegate:(id<ALPluginScanViewControllerDelegate>)delegate {
+    _licensekey = licensekey;
+    _delegate = delegate;
+    _anylineConfig = anylineConfig;
+    _cordovaConfig = cordovaConf;
 }
 
 - (void)viewDidLoad {
@@ -51,7 +78,7 @@
     
     
     self.deviceController = [[ALCognexDevice alloc] init];
-    
+    self.deviceController.delegate = self;
 
     
     self.readyForNextFrame = NO;
@@ -73,6 +100,31 @@
     [_btnScan.layer setBorderColor:[UIColor colorWithRed:0.99 green:0.73 blue:0.07 alpha:1.0].CGColor];
     [_btnScan.layer setBorderWidth:1];
     
+
+    UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnCancel addTarget:self
+               action:@selector(onCancel:)
+     forControlEvents:UIControlEventTouchUpInside];
+    [btnCancel setTitle:@"Cancel" forState:UIControlStateNormal];
+    btnCancel.tintColor = UIColor.whiteColor;
+    btnCancel.frame = _btnScan.frame;
+    btnCancel.frame = CGRectOffset(_btnScan.frame, 0.0, _btnScan.frame.size.height + 10);
+    
+    btnCancel.backgroundColor = UIColor.redColor;
+    self.btnCancel = btnCancel;
+    [self.view addSubview:self.btnCancel];
+    
+    UIButton *btnDummyResult = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnDummyResult addTarget:self
+               action:@selector(onDebugResult:)
+     forControlEvents:UIControlEventTouchUpInside];
+    [btnDummyResult setTitle:@"Debug Result" forState:UIControlStateNormal];
+    btnDummyResult.tintColor = UIColor.whiteColor;
+    btnDummyResult.frame = CGRectOffset(btnCancel.frame, 0.0, -btnCancel.frame.size.height - 10);
+    btnDummyResult.backgroundColor = UIColor.greenColor;
+    self.btnDummyResult = btnDummyResult;
+    [self.view addSubview:self.btnDummyResult];
+    
     ALOCRConfig *config = [[ALOCRConfig alloc] init];
     
 //    NSString *cmdPath = [[ALCoreController frameworkBundle] pathForResource:@"bmw" ofType:@"ale"];
@@ -83,7 +135,7 @@
 //    [config setLanguages:@[langPath,] error:nil];
     
     NSError *error = nil;
-    self.scanPlugin = [[ALOCRScanPlugin alloc] initWithPluginID:@"Cognex_Scanning" licenseKey:self.licenseKey
+    self.scanPlugin = [[ALOCRScanPlugin alloc] initWithPluginID:@"Cognex_Scanning" licenseKey:self.licensekey
                                                        delegate:self
                                                       ocrConfig:config
                                                           error:&error];
@@ -119,6 +171,34 @@
                                                   object:nil];
 }
 
+-(void)onCancel:(id)sender {
+    [self stopScan];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.delegate pluginScanViewController:nil didStopScanning:sender];
+    }];
+}
+
+-(void)onDebugResult:(id)sender {
+    [self stopScan];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.delegate pluginScanViewController:nil didScan:[self createResultDict:@"DEBUG RESULT STRING" image:self.lastImage] continueScanning:NO];
+    }];
+}
+
+- (NSDictionary *)createResultDict:(NSString *)result image:(UIImage*)image {
+    
+    NSMutableDictionary *dictResult = [NSMutableDictionary dictionaryWithCapacity:2];
+    
+    [dictResult setObject:result forKey:@"text"];
+    
+    if (image) {
+        NSString *imagePath = [ALPluginHelper saveImageToFileSystem:image compressionQuality:1.0];
+         [dictResult setValue:imagePath forKey:@"imagePath"];
+    }
+    
+    return dictResult;
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     
     if ([keyPath isEqualToString:@"isConnected"]) {
@@ -144,6 +224,9 @@
     [self.view addSubview:self.deviceController.preview];
     NSAssert(self.deviceController.preview, @"No preview");
     [self.deviceController.preview setFrame:self.view.bounds];
+    
+//    _btnCancel.frame = CGRectMake(_btnCancel.frame.origin.x, self.view.frame.size.height - 2.15 *_btnCancel.frame.size.height -10, _btnCancel.frame.size.width, _btnCancel.frame.size.height);
+//    [self.view bringSubviewToFront:_btnCancel];
 }
 
 
@@ -186,6 +269,7 @@ BOOL issScanning = NO;
 
 
 - (void)stopScan {
+    [self.deviceController stopFillingImageBuffer];
     [self.scanPlugin stopAndReturnError:nil];
 }
 
@@ -196,10 +280,6 @@ BOOL issScanning = NO;
 //    NSAssert(success, @"Start went wrong: %@",error.debugDescription);
 }
 
-
-- (void)setLicenseKey:(NSString *)licenseKey {
-    _licenseKey = licenseKey;
-}
 
 #pragma mark - Anyline Delegates
 
@@ -213,7 +293,7 @@ BOOL issScanning = NO;
 
 - (void)fetchImage:(ALImageProviderBlock)completionHandler {
     
-    /*
+    
     dispatch_async(_anylineQ, ^{
     
         {
@@ -231,9 +311,9 @@ BOOL issScanning = NO;
         }
             self.lastImage = self.imageBuffer;
     
-        dispatch_async(_imagerQ, ^{
-            [self fillImageBuffer];
-        });
+//        dispatch_async(_imagerQ, ^{
+//            [self fillImageBuffer];
+//        });
         
 #ifdef DEBUG
     NSTimeInterval executionTime = [[NSDate date] timeIntervalSinceDate:imgdate];
@@ -250,7 +330,12 @@ BOOL issScanning = NO;
             completionHandler(alimg ,nil);
         });
     });
-                                                             */
+                                                             
+}
+
+
+- (void)receivedNewImage:(UIImage *)image {
+    self.imageBuffer = image;
 }
 
 - (void)anylineScanPlugin:(ALAbstractScanPlugin *)anylineScanPlugin reportInfo:(ALScanInfo *)info {

@@ -165,6 +165,11 @@ CMBReaderDevice *readerDevice;
     self.currentImage = img;
     NSLog(@"%@", img);
     NSLog(@"%@", NSStringFromCGSize(img.size));
+    
+    if (self.delegate) {
+        [self.delegate receivedNewImage:img];
+    }
+
     self.preview.image = img;
     self.getNewImage = YES;
 }
