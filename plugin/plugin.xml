@@ -110,7 +110,6 @@
         <framework src="Accelerate.framework"/>
         
         <framework src="ExternalAccessory.framework"/>
-        <framework src="DataManSDK.a"/>
         <framework src="WebKit.framework"/>
         <framework src="CoreLocation.framework"/>
         <framework src="CoreGraphics.framework"/>
