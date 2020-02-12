@@ -246,6 +246,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 										jsonMeterResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, subResult,
 																						 jsonMeterResult);
 										jsonResult.put(subResult.getPluginId(), jsonMeterResult);
+										AnylinePluginHelper.clearFinalBarcodeList();    // otherwise the barcode from a previous scan could be shown if new scan does not include barcode
 
 									} catch (Exception e) {
 										Log.e(TAG, "EXCEPTION", e);
@@ -454,6 +455,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 							}
 
 							setResult(scanViewPlugin, jsonResult);
+							AnylinePluginHelper.clearFinalBarcodeList();    // otherwise the barcode from a previous scan could be shown if new scan does not include barcode
 						}
 					});
 				}
