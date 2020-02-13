@@ -49,4 +49,22 @@
  */
 @property (readwrite) CMBSymbology symbology;
 
+/**
+ * Get parsed result in form of 'formatted text', mainly suited for demonstration purpose if the result is parsable with the enabled {@link CMBResultParser}
+ * It would return text with rows consisted of key/values pairs, like: (ABC) 123456, where ABC is a key, and 123456 is a value.
+ * @return parsed result as NSString or null
+ */
+@property (readwrite) NSString * parsedText;
+
+/**
+ * Get parsed result as JSON string when a {@link CMBResultParser} is enabled, containing general info about parsed data, and fields array.
+ * @return result JSON as NSString or null
+ */
+@property (readwrite) NSString * parsedJSON;
+
+/**
+ * GS1 value of the result
+ * @return true, if the barcode is GS1 standard
+ */
+@property (readwrite) BOOL isGS1;
 @end

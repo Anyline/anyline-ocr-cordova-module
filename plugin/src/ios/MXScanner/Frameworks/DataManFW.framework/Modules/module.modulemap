@@ -1,0 +1,6 @@
+framework module DataManFW {
+  umbrella header "DataManFW.h"
+
+  export *
+  module * { export * }
+}

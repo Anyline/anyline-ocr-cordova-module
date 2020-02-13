@@ -1,5 +1,5 @@
 //
-//  ReaderDevice.h
+//  CMBReaderDevice.h
 //  MX_SDK_FW
 //
 //  Created by Gyula Hatalyak on 09/01/17.
@@ -71,7 +71,8 @@ typedef enum : NSUInteger {
     CMBSymbologyC25,
     CMBSymbologyC39ConvertToC32,
     CMBSymbologyOcr,
-    CMBSymbologyFourStateRmc
+    CMBSymbologyFourStateRmc,
+    CMBSymbologyTelepen
 } CMBSymbology;
 
 /**
@@ -84,6 +85,20 @@ typedef enum : NSUInteger {
 } CMBReaderAvailibility;
 
 @class CMBReaderDevice;
+
+/**
+ * Enum values for {@link CMBReaderDevice} parser
+ */
+typedef enum : NSUInteger {
+    CMBResultParserNone,
+    CMBResultParserAuto,
+    CMBResultParserAAMVA,
+    CMBResultParserGS1,
+    CMBResultParserHIBC,
+    CMBResultParserISBT128,
+    CMBResultParserIUID,
+    CMBResultParserSCM
+} CMBResultParser;
 
 /**
  * Delagate protocol for receiving events from a {@link CMBReaderDevice} object
@@ -113,8 +128,8 @@ typedef enum : NSUInteger {
 @end
 
 /**
- * Represents a Phone Camera or MX barcode reader
- * You should instantiate this class using readerOfDeviceCameraWithCameraMode... or readerOfMXDevice class level methods.
+ * Represents a Phone Camera or MX barcode reader.
+ * You should instantiate this class using #readerOfDeviceCameraWithCameraMode:previewOptions:previewView: or #readerOfMXDevice class level methods.
  */
 @interface CMBReaderDevice : NSObject
 
@@ -148,27 +163,77 @@ typedef enum : NSUInteger {
 @property (readwrite) BOOL SVGResultEnabled;
 
 /**
- * Delagte object to receive events from the {@link CMBReaderDevice} object
+ * Optionally set a {@link CMBResultParser} to be applied to a successful read result that is parsable with the specified setting
+ * @see CMBResultParser
+ */
+@property (readwrite) CMBResultParser parser;
+
+/**
+ * Delegate object to receive events from the {@link CMBReaderDevice} object
  * @see CMBReaderDeviceDelegate
  */
 @property (weak) id<CMBReaderDeviceDelegate> delegate;
 
 /**
- * Creates a {@link ReaderDevice} object for a connected MX barcode reader.
- * @return The newly created {@link ReaderDevice} object.
+ * Creates a {@link CMBReaderDevice} object for a connected MX barcode reader.
+ * @return The newly created {@link CMBReaderDevice} object.
  */
 + (instancetype) readerOfMXDevice;
 
 /**
-* Creates a {@link ReaderDevice} object for a Phone Camera barcode reader.
-* @param cameraMode		The {@link CDMCameraMode} when using the Mobile device camera.
-* @param previewOptions	The {@link CDMPreviewOption} when using the Mobile device camera.
-* @param previewContainer	The container where the camera preview will be placed.
-* @return					The newly created {@link ReaderDevice} object.
+ * Creates a {@link CMBReaderDevice} object for a Phone Camera barcode reader.
+ * @param cameraMode        The {@link CDMDataManSystem::CDMCameraMode} when using the Mobile device camera.
+ * @param previewOptions    The {@link CDMPreviewOption} when using the Mobile device camera.
+ * @return                    The newly created {@link CMBReaderDevice} object.
+ */
++ (instancetype) readerOfDeviceCameraWithCameraMode:(CDMCameraMode)cameraMode
+                                     previewOptions:(CDMPreviewOption)previewOptions;
+
+/**
+* Creates a {@link CMBReaderDevice} object for a Phone Camera barcode reader.
+* @param cameraMode        The {@link CDMDataManSystem::CDMCameraMode} when using the Mobile device camera.
+* @param previewOptions    The {@link CDMPreviewOption} when using the Mobile device camera.
+* @param previewContainer    The container where the camera preview will be placed.
+* @return                    The newly created {@link CMBReaderDevice} object.
 */
 + (instancetype) readerOfDeviceCameraWithCameraMode:(CDMCameraMode)cameraMode
                                      previewOptions:(CDMPreviewOption)previewOptions
                                         previewView:(UIView*)previewContainer;
+
+/**
+ * Creates a {@link CMBReaderDevice} object for a Phone Camera barcode reader.
+ * @param cameraMode        The {@link CDMDataManSystem::CDMCameraMode} when using the Mobile device camera.
+ * @param previewOptions    The {@link CDMPreviewOption} when using the Mobile device camera.
+ * @param previewContainer    The container where the camera preview will be placed.
+ * @param registrationKey The registration key for the Phone Camera license.
+ * @return                    The newly created {@link CMBReaderDevice} object.
+ */
++ (instancetype) readerOfDeviceCameraWithCameraMode:(CDMCameraMode)cameraMode
+                                     previewOptions:(CDMPreviewOption)previewOptions
+                                        previewView:(UIView*)previewContainer
+                                    registrationKey:(NSString*)registrationKey;
+
+/**
+ * Creates a {@link CMBReaderDevice} object for a Phone Camera barcode reader.
+ * @param cameraMode        The {@link CDMDataManSystem::CDMCameraMode} when using the Mobile device camera.
+ * @param previewOptions    The {@link CDMPreviewOption} when using the Mobile device camera.
+ * @param previewContainer    The container where the camera preview will be placed.
+ * @param registrationKey    The registration key for the Phone Camera license.
+ * @param customData    The custom data used when licensing for custom tracking.
+ * @return                    The newly created {@link CMBReaderDevice} object.
+ */
++ (instancetype) readerOfDeviceCameraWithCameraMode:(CDMCameraMode)cameraMode
+                                     previewOptions:(CDMPreviewOption)previewOptions
+                                        previewView:(UIView*)previewContainer
+                                    registrationKey:(NSString*)registrationKey
+                                        customData:(NSString*)customData;
+/**
+ Sets the container where the camera preview will be placed.
+ @param previewContainer The container where the camera preview will be placed.
+ @param completionBlock The block will contain an error when used on connector other than the Phone Camera
+ Method is only supported for Phone Camera
+ */
+- (void)setCameraPreviewContainer:(UIView*) previewContainer completion:(void (^)(NSError *error))completionBlock;
 
 /**
  * Connects to the barcode reader.
@@ -190,12 +255,6 @@ typedef enum : NSUInteger {
  * Stops triggering
  */
 - (void) stopScanning;
-
-/**
- * Sets the previewContainer where the camera view is displayed.
- * @param previewContainer The container where the camera preview will be placed.
- */
-- (void) setPreviewContainer:(UIView*)previewContainer;
 
 /**
  * Retrieves the current battery percentage level of the reader.
@@ -246,7 +305,7 @@ typedef enum : NSUInteger {
 - (void) beep;
 
 /**
- * Returns the DataManSystem instance for this ReaderDevice
+ * Returns the DataManSystem instance for this CMBReaderDevice
  * @return {@link CDMDataManSystem} instance
  */
 - (CDMDataManSystem *)dataManSystem;

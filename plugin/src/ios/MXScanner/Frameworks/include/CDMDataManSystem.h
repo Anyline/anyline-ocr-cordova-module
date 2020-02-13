@@ -239,7 +239,11 @@ typedef NS_OPTIONS(NSInteger, CDMResultTypes)
     /**
      *  Represents code quality information in xml format
      */
-    kCDMResultTypeCodeQualityData = 64
+    kCDMResultTypeCodeQualityData = 64,
+    /**
+     *  Represents code content information in xml format
+     */
+    kCDMResultTypeXmlContent = 128
 };
 
 /**
@@ -253,13 +257,85 @@ typedef NS_ENUM(NSInteger, CDMConnectionState) {
 };
 
 /**
- *  Specifies the device types a CDMDataManSystem instance.
+ *  Specifies the device types of a CDMDataManSystem instance.
  */
 typedef enum : NSUInteger {
     DataManDeviceClass_MX,
     DataManDeviceClass_Network,
     DataManDeviceClass_PhoneCamera
 } DataManDeviceClass;
+
+/**
+ * Specifies the preview/illumination mode when using the Mobile device camera.
+ */
+typedef NS_ENUM(NSInteger, CDMCameraMode)
+{
+    /**
+     * Use camera with no aimer. Preview is on, illumination is available.
+     */
+    kCDMCameraModeNoAimer = 0,
+    /**
+     * Use camera with a basic aimer (e.g., StingRay). Preview is off, illumination is not available.
+     */
+    kCDMCameraModePassiveAimer = 1,
+    /**
+     * Use camera with an active aimer (e.g., MX-100). Preview is off, illumination is available.
+     */
+    kCDMCameraModeActiveAimer = 2,
+    /**
+     * Use mobile device front camera. Preview is on, illumination is not available.
+     */
+    kCDMCameraModeFrontCamera = 3
+};
+
+/**
+ * Controls the preview/scanning options when using the Mobile device camera.
+ * Preview defaults are set by the {@link CDMCameraMode} but can be overridden.
+ * Multiple options can be OR'd together.
+ */
+typedef NS_OPTIONS(NSInteger, CDMPreviewOption)
+{
+    /**
+     * Use defaults (no overrides).
+     */
+    kCDMPreviewOptionDefaults = 0,
+    /**
+     * Disable zoom feature (removes zoom button from preview).
+     */
+    kCDMPreviewOptionNoZoomBtn = 1,
+    /**
+     * Disable illumination (removes illumination button from preview).
+     */
+    kCDMPreviewOptionNoIllumBtn = 2,
+    /**
+     * Enables the simulated hardware trigger (the volume down button).
+     */
+    kCDMPreviewOptionHwTrigger = 4,
+    /**
+     * When scanning starts, the preview is displayed but decoding is paused until a trigger (either the on screen button or the volume down button, if enabled) is pressed.
+     */
+    kCDMPreviewOptionPaused = 8,
+    /**
+     * Force the preview to be displayed, even if off by default (e.g., when using kCDMCameraModePassiveAimer or kCDMCameraModeActiveAimer).
+     */
+    kCDMPreviewOptionAlwaysShow = 16,
+    /**
+     * Affects only kCDMCameraModeActiveAimer, reads the settings from the ActiveAimer after the app has been resumed.
+     */
+    kCDMPreviewOptionPessimisticCaching = 32,
+    /**
+     * Use higher resolution if the device supports it. Default is 1280x720, with this param 1920x1080 will be used.
+     */
+    kCDMPreviewOptionHighResolution = 64,
+    /**
+     * Use higher framerate if the device supports it. Default is 30 FPS, with this param 60 FPS will be used.
+     */
+    kCDMPreviewOptionHighFrameRate = 128,
+    /**
+     * Show close button in partial view.
+     */
+    kCDMPreviewOptionShowCloseBtn = 256
+};
 
 /**
  *  Represents a remote DataMan system.
@@ -347,66 +423,12 @@ This factory method constructs a new DataMan system with an ethernet connector c
 + (CDMDataManSystem *)dataManSystemOfExternalAccessoryWithDelegate:(id<CDMDataManSystemDelegate>)delegate;
 
 /**
-* Specifies the preview/illumination mode when using the Mobile device camera.
-*/
-typedef NS_ENUM(NSInteger, CDMCameraMode)
-{
-    /**
-     * Use camera with no aimer. Preview is on, illumination is available.
-     */
-    kCDMCameraModeNoAimer = 0,
-    /**
-     * Use camera with a basic aimer (e.g., StingRay). Preview is off, illumination is not available.
-     */
-    kCDMCameraModePassiveAimer = 1,
-    /**
-     * Use camera with an active aimer (e.g., MX-100). Preview is off, illumination is available.
-     */
-    kCDMCameraModeActiveAimer = 2,
-    /**
-     * Use mobile device front camera. Preview is on, illumination is not available.
-     */
-    kCDMCameraModeFrontCamera = 3
-};
-
-/**
- * Controls the preview/scanning options when using the Mobile device camera.
- * Preview defaults are set by the {@link CDMCameraMode} but can be overridden.
- * Multiple options can be OR'd together.
- */
-typedef NS_OPTIONS(NSInteger, CDMPreviewOption)
-{
-    /**
-     * Use defaults (no overrides).
-     */
-    kCDMPreviewOptionDefaults = 0,
-    /**
-     * Disable zoom feature (removes zoom button from preview).
-     */
-    kCDMPreviewOptionNoZoomBtn = 1,
-    /**
-     * Disable illumination (removes illumination button from preview).
-     */
-    kCDMPreviewOptionNoIllumBtn = 2,
-    /**
-     * Enables the simulated hardware trigger (the volume down button).
-     */
-    kCDMPreviewOptionHwTrigger = 4,
-    /**
-     * When scanning starts, the preview is displayed but decoding is paused until a trigger (either the on screen button or the volume down button, if enabled) is pressed.
-     */
-    kCDMPreviewOptionPaused = 8,
-    /**
-     * Force the preview to be displayed, even if off by default (e.g., when using kCDMCameraModePassiveAimer or kCDMCameraModeActiveAimer).
-     */
-    kCDMPreviewOptionAlwaysShow = 16
-};
-
-/**
  Constructs a DataMan system with iOS camera. To properly detect and connect to the device, be sure to declare NSCameraUsageDescription key with Cognex DMCC protocol (com.cognex.dmcc) item in Info.plist.
- @param previewView Camera preview will be attached on that view, can be null (in which case, camera preview will be streamed in the image delegate).
+ @param cameraMode Check {@link CDMCameraMode} for possible values.
+ @param previewOptions Check {@link CDMPreviewOption} for possible values.
+ @param previewView Camera preview will be attached on that view, can be null (in which case, camera preview will be in full screen).
  @param delegate The delegate where the messages will be sent to
- @return DataMan system with external accessory connection configured or nil, if the accessory is not a CDM device
+ @return DataMan system using the devices built in camera
  
  @see CDMDataManSystemDelegate
  */
@@ -415,7 +437,62 @@ typedef NS_OPTIONS(NSInteger, CDMPreviewOption)
                               nullablePreviewView:(UIView*)previewView
                                          delegate:(id<CDMDataManSystemDelegate>)delegate;
 
-- (void) setPreviewContainer:(UIView*) previewContainer;
+/**
+ Constructs a DataMan system with iOS camera. To properly detect and connect to the device, be sure to declare NSCameraUsageDescription key with Cognex DMCC protocol (com.cognex.dmcc) item in Info.plist.
+ @param cameraMode Check {@link CDMCameraMode} for possible values.
+ @param previewOptions Check {@link CDMPreviewOption} for possible values.
+ @param delegate The delegate where the messages will be sent to
+ @return DataMan system using the devices built in camera
+ 
+ @see CDMDataManSystemDelegate
+ */
++ (CDMDataManSystem *)dataManSystemWithCameraMode:(CDMCameraMode)cameraMode
+                                   previewOptions:(CDMPreviewOption)previewOptions
+                                         delegate:(id<CDMDataManSystemDelegate>)delegate;
+
+/**
+ Constructs a DataMan system with iOS camera. To properly detect and connect to the device, be sure to declare NSCameraUsageDescription key with Cognex DMCC protocol (com.cognex.dmcc) item in Info.plist.
+ @param cameraMode Check {@link CDMCameraMode} for possible values.
+ @param previewOptions Check {@link CDMPreviewOption} for possible values.
+ @param previewView Camera preview will be attached on that view, can be null (in which case, camera preview will be in full screen).
+ @param registrationKey The license key for registering the camera scanner.
+ @param delegate The delegate where the messages will be sent to
+ @return DataMan system using the devices built in camera
+ 
+ @see CDMDataManSystemDelegate
+ */
++ (CDMDataManSystem *)dataManSystemWithCameraMode:(CDMCameraMode)cameraMode
+                                   previewOptions:(CDMPreviewOption)previewOptions
+                              nullablePreviewView:(UIView*)previewView
+                                  registrationKey:(NSString*)registrationKey
+                                         delegate:(id<CDMDataManSystemDelegate>)delegate;
+
+/**
+ Constructs a DataMan system with iOS camera. To properly detect and connect to the device, be sure to declare NSCameraUsageDescription key with Cognex DMCC protocol (com.cognex.dmcc) item in Info.plist.
+ @param cameraMode Check {@link CDMCameraMode} for possible values.
+ @param previewOptions Check {@link CDMPreviewOption} for possible values.
+ @param previewView Camera preview will be attached on that view, can be null (in which case, camera preview will be in full screen).
+ @param registrationKey The license key for registering the camera scanner.
+ @param customData Custom string to be send to the licensing server for tracking purposes.
+ @param delegate The delegate where the messages will be sent to
+ @return DataMan system using the devices built in camera
+ 
+ @see CDMDataManSystemDelegate
+ */
++ (CDMDataManSystem *)dataManSystemWithCameraMode:(CDMCameraMode)cameraMode
+                                   previewOptions:(CDMPreviewOption)previewOptions
+                              nullablePreviewView:(UIView*)previewView
+                                  registrationKey:(NSString*)registrationKey
+                                      customData:(NSString*)customData
+                                         delegate:(id<CDMDataManSystemDelegate>)delegate;
+
+/**
+ Sets the container where the camera preview will be placed.
+ @param previewContainer The container where the camera preview will be placed.
+ @param completionBlock The block will contain an error when used on connector other than the Phone Camera
+ Method is only supported for Phone Camera
+ */
+- (void)setCameraPreviewContainer:(UIView*) previewContainer completion:(void (^)(NSError *error))completionBlock;
 
 ///---------------------------------------------------------------------------------------
 /// @name Instance methods
@@ -494,7 +571,7 @@ typedef NS_OPTIONS(NSInteger, CDMPreviewOption)
  * @param complete A callback that will be called when all the commands are sent
  * @return YES, if the system is connected and the command can be sent, NO otherwise
  */
-- (BOOL)sendBatchCommands:(NSArray *)commands completed:(void(^)())complete;
+- (BOOL)sendBatchCommands:(NSArray *)commands completed:(void(^)(void))complete;
 
 /** 
 Changes whether the DataMan system accepts incoming messages or not. It does not effect an already connected device.

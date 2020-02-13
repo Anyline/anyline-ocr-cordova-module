@@ -1,0 +1,14 @@
+module DataManFW_Private {
+    
+    // Here is the list of your private headers.
+    umbrella header "DataManFW_Private.h"
+    
+//    header "CMBReaderDevicePrivate.h"
+//    header "CMBReadResultsPrivate.h"
+//    header "CMBReadResultPrivate.h"
+//    header "CDMStreamConnectorPrivate.h"
+//    header "CNMEthernetSystemDiscoverer.m"
+
+    export *
+    module * { export * }
+}

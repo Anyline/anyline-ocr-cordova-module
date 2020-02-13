@@ -50,10 +50,8 @@
                 
         <header-file src="src/ios/MXScanner/ScannerController.h" />
         <source-file src="src/ios/MXScanner/ScannerController.mm" />
-        
-        <header-file src="src/ios/MXScanner/ALCognexDevice.h" />
-        <source-file src="src/ios/MXScanner/ALCognexDevice.m" />
-        
+       
+        <header-file src="src/ios/MXScanner/Frameworks/include/BarcodeScanner.h" /> 
         <header-file src="src/ios/MXScanner/Frameworks/include/CDMDataManSystem.h" />
         <header-file src="src/ios/MXScanner/Frameworks/include/CDMDataManSystemDelegate.h" />
         <header-file src="src/ios/MXScanner/Frameworks/include/CDMEADiscoverer.h" />
@@ -66,16 +64,62 @@
         <header-file src="src/ios/MXScanner/Frameworks/include/CNMEthernetSystemDiscoverer.h" />
         <header-file src="src/ios/MXScanner/Frameworks/include/CNMSystemDiscoveredDelegate.h" />
         <header-file src="src/ios/MXScanner/Frameworks/include/DataManSDK.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/MWOverlay.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/MWParser.h" />
+        <header-file src="src/ios/MXScanner/Frameworks/include/MWResult.h" />
 
         <header-file src="src/ios/MXScanner/Frameworks/XMLParser/CDMXMLParser.h" />
         <source-file src="src/ios/MXScanner/Frameworks/XMLParser/CDMXMLParser.m" />
         <header-file src="src/ios/MXScanner/Frameworks/XMLParser/DMQSXmlResultParser.h" />
         <source-file src="src/ios/MXScanner/Frameworks/XMLParser/DMQSXmlResultParser.m" />
+
+        <!-- opencv headers -->
+        <!-- <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv.hpp" target-dir="lib/opencv" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv/cv.h" target-dir="lib/opencv/opencv" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv/cv.hpp" target-dir="lib/opencv/opencv" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv/cvaux.h" target-dir="lib/opencv/opencv" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv/cvaux.hpp" target-dir="lib/opencv/opencv" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv/cvwimage.h" target-dir="lib/opencv/opencv" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv/cxcore.h" target-dir="lib/opencv/opencv" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv/cxcore.hpp" target-dir="lib/opencv/opencv" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv/cxeigen.hpp" target-dir="lib/opencv/opencv" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv/cxmisc.h" target-dir="lib/opencv/opencv" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv/highgui.h" target-dir="lib/opencv/opencv" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv/ml.h" target-dir="lib/opencv/opencv" />
+
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/calib3d/calib3d_c.h" target-dir="lib/opencv/opencv2" /> -->
+        <!--header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/calib3d/calib3d.hpp" / -->
+        <!-- <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/calib3d.hpp" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/core" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/core.hpp" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/cvconfig.h" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/features2d" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/features2d.hpp" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/flann" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/flann.hpp" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/imgcodecs" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/imgcodecs.hpp" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/imgproc" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/ml" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/ml.hpp" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/opencv_modules.hpp" target-dir="lib/opencv/opencv2" />
+        <!-- <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/opencv.hpp" /> -->
+        <!-- <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/photo" target-dir="lib/opencv/opencv2" />
+        <header-file src="src/ios/MXScanner/Frameworks/opencv/opencv2/photo.hpp" target-dir="lib/opencv/opencv2" /> -->
+
+        <!-- -->
+
+
+
         
-        <Framework src="src/ios/MXScanner/Frameworks/DataManSystem.framework" />
-        <!-- Framework src="src/ios/MXScanner/Frameworks/DataManSDK.a" / -->
-        <source-file src="src/ios/MXScanner/Frameworks/DataManSDK.a" target-dir="lib" framework="true" />
-        <!-- framework src="src/ios/MXScanner/Frameworks/DataManSDK.a"   embed="true" custom="true" / -->
+        <!-- <Framework src="src/ios/MXScanner/Frameworks/DataManSystem.framework" />
+        <Framework src="src/ios/MXScanner/Frameworks/DataManFW.framework" /> -->
+        
+
+        <!-- <source-file src="src/ios/MXScanner/Frameworks/DataManFW.framework" target-dir="lib" framework="true" /> -->
+        <!-- <source-file src="src/ios/MXScanner/Frameworks/DataManSystem.framework" target-dir="lib" framework="true" /> -->
+    
+        <source-file src="src/ios/MXScanner/Frameworks/libDataManSDK.a" target-dir="lib" framework="true" />
         
         <resource-file src="src/ios/MXScanner/MWBScannerImages.xcassets" />
         <resource-file src="src/ios/MXScanner/MXStoryBoard.storyboard"/>
@@ -86,7 +130,9 @@
 
         <!-- Anyline Framework & Resource Bundle CocoaPods -->
         <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 17"/>
-        <framework src="ZHPopupView" type="podspec" spec ="~> 0.1.1"/>
+        <framework src="ZHPopupView" type="podspec" spec ="~> 0.1.1" />
+
+        
         <!-- <framework src="ZHPopupView" type="podspec"/> -->
 
         

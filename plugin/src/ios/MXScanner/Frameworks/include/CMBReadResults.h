@@ -20,8 +20,13 @@
 @property (readonly) NSString *XML;
 
 /**
- * Returns an array of {@link CMBReadResult} objects
+ * Returns an array of {@link CMBReadResult} objects including the main result
  */
 @property (readonly) NSArray *readResults;
+
+/**
+ * Returns an array of {@link CMBReadResult} objects excluding the main result
+ */
+@property (readonly) NSArray *subReadResults;
 
 @end

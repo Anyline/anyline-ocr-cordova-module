@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, CDMTransferDirection)
  * @param dataManSystem The DataMan system that is sending the delegate
  * @param readString String sent by the connected system
  * @param resultId Identifier of the result. This value can be used to match the read string with other result types, like images, image graphics or XML results.
- @warning To receive this event from the device you will need change the value of the CDMDataManSystem#resultTypes property to include #kCDMResultTypeReadString value
+ @warning To receive this event from the device you need to change the value of the CDMDataManSystem#resultTypes property to include CDMDataManSystem#kCDMResultTypeReadString value
  @see CDMDataManSystem
  @see CDMResultTypes
  */
@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, CDMTransferDirection)
  * @param dataManSystem The DataMan system that is sending the delegate
  * @param image Image sent by the connected system
  * @param resultId Identifier of the result. This value can be used to match the image with other result types, like read strings, image graphics or XML results.
- @warning To receive this event from the device you will need change the value of the CDMDataManSystem#resultTypes property to include #kCDMResultTypeImage value
+ @warning To receive this event from the device you need to change the value of the CDMDataManSystem#resultTypes property to include CDMDataManSystem#kCDMResultTypeImage value
  @see CDMDataManSystem
  @see CDMResultTypes
  */
@@ -72,7 +72,7 @@ typedef NS_ENUM(NSInteger, CDMTransferDirection)
  * Occurs when the connected remote system sends XML statistics.
  * @param dataManSystem The DataMan system that is sending the delegate
  * @param xml XML statistics sent by the connected system
- @warning To receive this event from the device you will need change the value of the CDMDataManSystem#resultTypes property to include #kCDMResultTypeXmlStatistics value
+ @warning To receive this event from the device you need to change the value of the CDMDataManSystem#resultTypes property to include CDMDataManSystem#kCDMResultTypeXmlStatistics value
  @see CDMDataManSystem
  @see CDMResultTypes
  */
@@ -83,7 +83,7 @@ Occurs when the connected remote system sends XML results.
 @param dataManSystem The DataMan system that is sending the delegate
 @param xml XML results sent by the connected system
 @param resultId Identifier of the result. This value can be used to match the result XML with other result types, like images, image graphics or read strings.
-@warning To receive this event from the device you will need change the value of the CDMDataManSystem#resultTypes property to include #kCDMResultTypeReadXml value
+@warning To receive this event from the device you need to change the value of the CDMDataManSystem#resultTypes property to include CDMDataManSystem#kCDMResultTypeReadXml value
 @see CDMDataManSystem
 @see CDMResultTypes
  */
@@ -94,7 +94,7 @@ Occurs when the connected remote system sends XML results.
  * @param dataManSystem The DataMan system that is sending the delegate
  * @param graphics Image graphics sent by the connected system
  * @param resultId Identifier of the result. This value can be used to match the image graphics with other result types, like read strings, image or XML results.
-@warning To receive this event from the device you will need change the value of the CDMDataManSystem#resultTypes property to include #kCDMResultTypeImageGraphics value
+@warning To receive this event from the device you need to change the value of the CDMDataManSystem#resultTypes property to include CDMDataManSystem#kCDMResultTypeImageGraphics value
 @see CDMDataManSystem
 @see CDMResultTypes
  */
@@ -104,7 +104,7 @@ Occurs when the connected remote system sends XML results.
  * Occurs when the connected remote system reports training results.
  * @param dataManSystem The DataMan system that is sending the delegate
  * @param trainingResult Training result
- @warning To receive this event from the device you will need change the value of the CDMDataManSystem#resultTypes property to include #kCDMResultTypeTrainingResults value
+ @warning To receive this event from the device you need to change the value of the CDMDataManSystem#resultTypes property to include CDMDataManSystem#kCDMResultTypeTrainingResults value
  @see CDMDataManSystem
  @see CDMResultTypes
  */
