@@ -247,6 +247,7 @@ anyline.energy = {
         "outerAlpha": 0.3
       },
       "scanFeedback": {
+        "style": "CONTOUR_RECT",
         "blinkOnResult": true,
         "beepOnResult": true,
         "vibrateOnResult": true

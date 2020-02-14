@@ -218,6 +218,14 @@ anyline.ocr = {
           "imageOff": "flash_off"
       },
       "viewPlugin" : {
+
+          "plugin": {
+            "id": "TIN",
+            "ocrPlugin": {
+              "tinConfig":{
+              }
+            }
+          },
           "cutoutConfig" : {
               "style": "rect",
               "width": 720,
@@ -244,7 +252,7 @@ anyline.ocr = {
               "vibrateOnResult": true,
               "blinkAnimationOnResult": true
           },
-          "cancelOnResult" : false
+          "cancelOnResult" : true
       }
   },
 
