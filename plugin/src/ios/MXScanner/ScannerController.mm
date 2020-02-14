@@ -121,18 +121,18 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
     NSURL *audioPath = [frameworkBundle URLForResource:@"beep" withExtension:@"wav" subdirectory:@"sounds"];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)audioPath, &_beepSound);
     
-//    UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [btnCancel addTarget:self
-//               action:@selector(onCancel:)
-//     forControlEvents:UIControlEventTouchUpInside];
-//    [btnCancel setTitle:@"Cancel" forState:UIControlStateNormal];
-//    btnCancel.tintColor = UIColor.whiteColor;
-//    btnCancel.frame = _btnScan.frame;
-//    btnCancel.frame = CGRectOffset(_btnScan.frame, 0.0, _btnScan.frame.size.height + 10);
-//
-//    btnCancel.backgroundColor = UIColor.redColor;
-//    self.btnCancel = btnCancel;
-//    [self.view addSubview:self.btnCancel];
+    UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnCancel addTarget:self
+               action:@selector(onCancel:)
+     forControlEvents:UIControlEventTouchUpInside];
+    [btnCancel setTitle:@"Cancel" forState:UIControlStateNormal];
+    btnCancel.tintColor = UIColor.whiteColor;
+    btnCancel.frame = _btnScan.frame;
+    btnCancel.frame = CGRectOffset(_btnScan.frame, 0.0, _btnScan.frame.size.height + 10);
+
+    btnCancel.backgroundColor = UIColor.redColor;
+    self.btnCancel = btnCancel;
+    [self.view addSubview:self.btnCancel];
 //
 //    UIButton *btnDummyResult = [UIButton buttonWithType:UIButtonTypeCustom];
 //    [btnDummyResult addTarget:self
