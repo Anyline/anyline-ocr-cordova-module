@@ -8,8 +8,6 @@
 
 #import "ScannerController.h"
 #import <DataManFW/DataManFW.h>
-#import "CDMXMLParser.h"
-#import "DMQSXmlResultParser.h"
 #import <Anyline/Anyline.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <ZHPopupView/ZHPopupView.h>
