@@ -55,6 +55,9 @@
         <framework src="src/ios/MXScanner/Frameworks/DataManFW.framework" embed="true" custom="true" />
         <source-file src="src/ios/MXScanner/Frameworks/libDataManSDK.a" target-dir="lib" framework="true" />
         
+        <resource-file src="src/ios/MXScanner/Assets/BMW_det_class_6.any" />
+        <resource-file src="src/ios/MXScanner/Assets/bmw.ale" />
+        
         <resource-file src="src/ios/MXScanner/Frameworks/include" />
         <resource-file src="src/ios/MXScanner/MWBScannerImages.xcassets" />
         <resource-file src="src/ios/MXScanner/MXStoryBoard.storyboard"/>

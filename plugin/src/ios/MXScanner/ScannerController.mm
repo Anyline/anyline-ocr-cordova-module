@@ -98,6 +98,46 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
     [_btnScan.layer setBorderColor:[UIColor colorWithRed:0.99 green:0.73 blue:0.07 alpha:1.0].CGColor];
     [_btnScan.layer setBorderWidth:1];
     
+    [_btnScan setTitle:@"(NOT CONNECTED)" forState:UIControlStateDisabled];
+    [_btnScan setEnabled:NO];
+    
+    [_btnScan setBackgroundColor:[UIColor colorWithRed:0.98 green:0.86 blue:0.01 alpha:1.0]];
+    [_btnScan setTintColor:[UIColor blackColor]];
+    [_btnScan.layer setCornerRadius:10];
+    [_btnScan setClipsToBounds:YES];
+    [_btnScan.layer setBorderColor:[UIColor colorWithRed:0.99 green:0.73 blue:0.07 alpha:1.0].CGColor];
+    [_btnScan.layer setBorderWidth:1];
+    
+    
+    UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeCustom];
+        btnCancel.frame = _btnScan.frame;
+
+    //TODO: fix this with anchors
+    btnCancel.frame = CGRectOffset(btnCancel.frame, 0, -50);
+    
+    [btnCancel addTarget:self
+               action:@selector(onCancel:)
+     forControlEvents:UIControlEventTouchUpInside];
+    
+    [btnCancel setTitle:@"Cancel" forState:UIControlStateNormal];
+    btnCancel.tintColor = UIColor.whiteColor;
+    btnCancel.backgroundColor = UIColor.redColor;
+    [btnCancel.layer setBorderColor:UIColor.redColor.CGColor];
+    [btnCancel.layer setBorderWidth:1];
+    
+    [btnCancel.layer setCornerRadius:10];
+    [btnCancel setClipsToBounds:YES];
+    self.btnCancel = btnCancel;
+    [self.view addSubview:self.btnCancel];
+    
+    //TODO: fix this anchor (related to btnScan)
+    [self.btnCancel.bottomAnchor
+     constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor
+     constant:100.0].active = YES;
+
+
+    
+    
     ALOCRConfig *config = [[ALOCRConfig alloc] init];
     NSString *cmdPath = [[NSBundle mainBundle] pathForResource:@"bmw" ofType:@"ale"];
     config.customCmdFilePath =cmdPath;
@@ -120,30 +160,6 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
     NSBundle *frameworkBundle = [ALCoreController frameworkBundle];
     NSURL *audioPath = [frameworkBundle URLForResource:@"beep" withExtension:@"wav" subdirectory:@"sounds"];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)audioPath, &_beepSound);
-    
-    UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnCancel addTarget:self
-               action:@selector(onCancel:)
-     forControlEvents:UIControlEventTouchUpInside];
-    [btnCancel setTitle:@"Cancel" forState:UIControlStateNormal];
-    btnCancel.tintColor = UIColor.whiteColor;
-    btnCancel.frame = _btnScan.frame;
-    btnCancel.frame = CGRectOffset(_btnScan.frame, 0.0, _btnScan.frame.size.height + 10);
-
-    btnCancel.backgroundColor = UIColor.redColor;
-    self.btnCancel = btnCancel;
-    [self.view addSubview:self.btnCancel];
-//
-//    UIButton *btnDummyResult = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [btnDummyResult addTarget:self
-//               action:@selector(onDebugResult:)
-//     forControlEvents:UIControlEventTouchUpInside];
-//    [btnDummyResult setTitle:@"Debug Result" forState:UIControlStateNormal];
-//    btnDummyResult.tintColor = UIColor.whiteColor;
-//    btnDummyResult.frame = CGRectOffset(btnCancel.frame, 0.0, -btnCancel.frame.size.height - 10);
-//    btnDummyResult.backgroundColor = UIColor.greenColor;
-//    self.btnDummyResult = btnDummyResult;
-//    [self.view addSubview:self.btnDummyResult];
 
 }
 
@@ -401,7 +417,7 @@ BOOL issScanning = NO;
                                    callback:^(CDMResponse *response) {
                                        UIImage *img =  [UIImage imageWithData:response.binaryPayload];
                                        self.imageBuffer = img;
-                                       _ivPreview.image = img;
+                                       self.ivPreview.image = img;
                                         //TODO: if the image has to be saved in the gallery
 //                                       UIImageWriteToSavedPhotosAlbum(img,nil,nil,nil);
                                        NSTimeInterval executionTime = [[NSDate date] timeIntervalSinceDate:methodStart];
@@ -411,7 +427,7 @@ BOOL issScanning = NO;
 - (void)fetchImage:(ALImageProviderBlock)completionHandler {
     dispatch_async(_anylineQ, ^{
         if(self.lastImage == nil) {
-            dispatch_async(_imagerQ, ^{
+            dispatch_async(self.imagerQ, ^{
                 [self fillImageBuffer];
             });
         }
@@ -426,7 +442,7 @@ BOOL issScanning = NO;
         }
         
         NSDate * imgdate = [NSDate date];
-        while(self.lastImage == self.imageBuffer) {
+        while(self.lastImage == self.imageBuffer || !self.imageBuffer) {
             [NSThread sleepForTimeInterval:0.02];
         }
             self.lastImage = self.imageBuffer;
@@ -436,9 +452,12 @@ BOOL issScanning = NO;
         });
         
 #ifdef DEBUG
-    NSTimeInterval executionTime = [[NSDate date] timeIntervalSinceDate:imgdate];
-    //NSLog(@"wait time = %f", executionTime);
+        NSTimeInterval executionTime = [[NSDate date] timeIntervalSinceDate:imgdate];
+        //NSLog(@"wait time = %f", executionTime);
 #endif
+//        if (!self.lastImage) {
+//            return;
+//        }
         ALImage * alimg = [[ALImage alloc] initWithUIImage:self.lastImage];
         self.lastScandate = [NSDate date];
         
@@ -487,6 +506,7 @@ BOOL issScanning = NO;
 
 -(void)onCancel:(id)sender {
     [self stopScan];
+    [self disconnectReaderDevice];
     [self dismissViewControllerAnimated:YES completion:^{
         [self.delegate pluginScanViewController:nil didStopScanning:sender];
     }];
@@ -498,6 +518,7 @@ BOOL issScanning = NO;
 
 - (void)finishWithResult:(NSString *)result image:(UIImage *)image {
     [self stopScan];
+    [self disconnectReaderDevice];
     [self dismissViewControllerAnimated:YES completion:^{
         [self.delegate pluginScanViewController:nil didScan:[self createResultDict:result image:image] continueScanning:NO];
     }];
