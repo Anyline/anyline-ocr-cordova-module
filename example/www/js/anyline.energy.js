@@ -205,56 +205,60 @@ anyline.energy = {
 
   dialConfig:
   {
-    "camera": {
-      "captureResolution": "720p"
-    },
-    "flash": {
-      "mode": "manual",
-      "alignment": "top_left",
-    },
-    "viewPlugin": {
-      "plugin": {
-        "id": "DIAL_METER",
-        "meterPlugin": {
-          "scanMode": "DIAL_METER"
-        }
-      },
-      "cutout": {
-        "style": "rect",
-        "maxWidthPercent": "90%",
-        "maxHeightPercent": "90%",
-        "alignment": "top_half",
-        "ratioFromSize": {
-          "width": 125,
-          "height": 85
+        "camera": {
+            "captureResolution": "720p"
         },
-        "offset": {
-          "x": 0,
-          "y": 15
+        "flash": {
+            "mode": "manual",
+            "alignment": "top_left",
         },
-        "cropPadding": {
-          "x": 0,
-          "y": 0
+        "viewPlugin": {
+            "plugin": {
+                "id": "DIAL_METER",
+                "meterPlugin": {
+                    "scanMode": "DIAL_METER"
+                }
+            },
+            "cutoutConfig": {
+                "style": "rect",
+                "maxWidthPercent": "90%",
+                "maxHeightPercent": "90%",
+                "alignment": "top_half",
+                "ratioFromSize": {
+                    "width": 125,
+                    "height": 85
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 15
+                },
+                "cropPadding": {
+                    "x": 0,
+                    "y": 0
+                },
+                "cropOffset": {
+                    "x": 0,
+                    "y": 0
+                },
+                "strokeWidth": 2,
+                "cornerRadius": 4,
+                "strokeColor": "FFFFFF",
+                "outerColor": "000000",
+                "outerAlpha": 0.3,
+	            "feedbackStrokeColor": "0099FF"
+            },
+            "scanFeedback": {
+	        "style": "CONTOUR_RECT",
+        	"strokeColor": "0099FF",
+	        "fillColor": "220099FF",
+                "blinkOnResult": true,
+                "beepOnResult": true,
+                "vibrateOnResult": true
+            },
+            "cancelOnResult": true,
         },
-        "cropOffset": {
-          "x": 0,
-          "y": 0
-        },
-        "strokeWidth": 2,
-        "cornerRadius": 4,
-        "strokeColor": "FFFFFF",
-        "outerColor": "000000",
-        "outerAlpha": 0.3
-      },
-      "scanFeedback": {
-        "style": "CONTOUR_RECT",
-        "blinkOnResult": true,
-        "beepOnResult": true,
-        "vibrateOnResult": true
-      },
-      "cancelOnResult": true,
-    },
-    "nativeBarcodeEnabled": true
+        "nativeBarcodeEnabled": true
+
   },
 
   scan: function (scanMode) {
@@ -279,7 +283,12 @@ anyline.energy = {
     // see http://documentation.anyline.io/#anyline-config for config details
     // and http://documentation.anyline.io/#energy for energy-module details
 
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.meterViewPluginConfig]);
+    if (scanMode == 'DIAL_METER') {
+        cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.dialConfig]);
+    }
+    else {
+        cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.meterViewPluginConfig]);
+    }
   },
 
   scanElectricAnalogSegment: function () {
