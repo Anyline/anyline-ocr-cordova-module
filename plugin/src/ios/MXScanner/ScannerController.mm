@@ -88,6 +88,7 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
     [_lblConnection setText:@"  Disconnected  "];
 
     
+    //Setup Cancel button
     [_btnScan setTitle:@"(NOT CONNECTED)" forState:UIControlStateDisabled];
     [_btnScan setEnabled:NO];
     
@@ -108,13 +109,9 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
     [_btnScan.layer setBorderColor:[UIColor colorWithRed:0.99 green:0.73 blue:0.07 alpha:1.0].CGColor];
     [_btnScan.layer setBorderWidth:1];
     
-    
+    //Setup Cancel button
     UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeCustom];
         btnCancel.frame = _btnScan.frame;
-
-    //TODO: fix this with anchors
-    btnCancel.frame = CGRectOffset(btnCancel.frame, 0, -50);
-    
     [btnCancel addTarget:self
                action:@selector(onCancel:)
      forControlEvents:UIControlEventTouchUpInside];
@@ -130,37 +127,53 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
     self.btnCancel = btnCancel;
     [self.view addSubview:self.btnCancel];
     
-    //TODO: fix this anchor (related to btnScan)
+    //Add anchors and constraints to self.btnCancel
+    _btnCancel.translatesAutoresizingMaskIntoConstraints = NO;
     [self.btnCancel.bottomAnchor
-     constraintEqualToAnchor:self.view.layoutMarginsGuide.bottomAnchor
-     constant:100.0].active = YES;
-
-
+     constraintEqualToAnchor:_btnScan.topAnchor
+     constant:-7.5
+     ].active = YES;
+    [self.btnCancel.heightAnchor constraintEqualToAnchor:_btnScan.heightAnchor multiplier:1.0].active = YES;
+    [self.btnCancel.widthAnchor constraintEqualToAnchor:_btnScan.widthAnchor multiplier:1.0].active = YES;
     
-    
+    NSLayoutConstraint *centreHorizontallyConstraint = [NSLayoutConstraint
+                                          constraintWithItem:self.btnCancel
+                                          attribute:NSLayoutAttributeCenterX
+                                          relatedBy:NSLayoutRelationEqual
+                                          toItem:self.view
+                                          attribute:NSLayoutAttributeCenterX
+                                          multiplier:1.0
+                                          constant:0];
+    [self.view addConstraint:centreHorizontallyConstraint];
+
+    //Setup Anyline scanPlugin to process provided frames
+    [self setupAnyline];
+
+}
+
+- (void)setupAnyline {
     ALOCRConfig *config = [[ALOCRConfig alloc] init];
     NSString *cmdPath = [[NSBundle mainBundle] pathForResource:@"bmw" ofType:@"ale"];
     config.customCmdFilePath =cmdPath;
     NSString *langPath = [[NSBundle mainBundle] pathForResource:@"BMW_det_class_6" ofType:@"any"];
     [config setLanguages:@[langPath] error:nil];
-    
+
     NSError *error = nil;
     self.scanPlugin = [[ALOCRScanPlugin alloc] initWithPluginID:@"Cognex_Scanning"
-                                                     licenseKey:self.licensekey
-                                                       delegate:self
-                                                      ocrConfig:config
-                                                          error:&error];
+                                                    licenseKey:self.licensekey
+                                                      delegate:self
+                                                     ocrConfig:config
+                                                         error:&error];
     if( error ) {
-        NSLog(@"Error launching SDK: %@", error);
-        [self presentError:error.debugDescription];
+       NSLog(@"Error launching SDK: %@", error);
+       [self presentError:error.debugDescription];
     }
-    
+
     [self.scanPlugin addInfoDelegate:self];
-    
+
     NSBundle *frameworkBundle = [ALCoreController frameworkBundle];
     NSURL *audioPath = [frameworkBundle URLForResource:@"beep" withExtension:@"wav" subdirectory:@"sounds"];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)audioPath, &_beepSound);
-
 }
 
 -(void)viewWillAppear:(BOOL)animated {
