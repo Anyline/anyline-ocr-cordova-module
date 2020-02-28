@@ -21,8 +21,8 @@
 @property (nonatomic, strong) ALOCRScanPlugin *scanPlugin;
 @property (nonatomic, assign) BOOL readyForNextFrame;
 @property (nonatomic, strong) ALImageProviderBlock completionBlock;
-@property (weak, nonatomic) IBOutlet UIImageView *debugImage;
-@property (weak, nonatomic) IBOutlet UIImageView *debugImage2;
+//@property (weak, nonatomic) IBOutlet UIImageView *debugImage;
+//@property (weak, nonatomic) IBOutlet UIImageView *debugImage2;
 
 @property (nonatomic, strong) ALCutoutView *overlay;
 
@@ -148,7 +148,16 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
 
     //Setup Anyline scanPlugin to process provided frames
     [self setupAnyline];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(initDevice)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [self disconnectReaderDevice];
+    [super viewDidAppear:animated];
 }
 
 - (void)setupAnyline {
@@ -179,6 +188,13 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self initDevice];
+    
+}
+
+
+- (void)dealloc {
+    NSLog(@"Dealloc Cognex Scanner Controller");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void) initDevice {
@@ -403,7 +419,11 @@ BOOL issScanning = NO;
         [_btnScan setEnabled:YES];
         [_lblConnection setText:@"  Connected  "];
         [_lblConnection setBackgroundColor:[UIColor colorWithRed:0.00 green:0.39 blue:0.00 alpha:1.0]];
-    }else{
+//    } else if (readerDevice.connectionState == CMBConnectionStateDisconnected) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self connectToReaderDevice];
+//        });
+    } else{
         [_btnScan setEnabled:NO];
         [_lblConnection setText:@"  Disconnected  "];
         [_lblConnection setBackgroundColor:[UIColor redColor]];
@@ -485,11 +505,7 @@ BOOL issScanning = NO;
 }
 
 - (void)anylineScanPlugin:(ALAbstractScanPlugin *)anylineScanPlugin reportInfo:(ALScanInfo *)info {
-    if ([info.variableName isEqualToString:kThresholdedImageVariableName]) {
-        self.debugImage.image = [(ALImage *)info.value uiImage];
-    } else if ([info.variableName isEqualToString:@"$tfImage"]) {
-        self.debugImage2.image = [(ALImage *)info.value uiImage];
-    }
+
 }
 
 - (void)anylineOCRScanPlugin:(ALOCRScanPlugin *)anylineOCRScanPlugin didFindResult:(ALOCRResult *)result {
