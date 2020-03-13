@@ -68,10 +68,39 @@ onResult: function (result) {
         "<br/><b>viz Surname:</b> " + result.fieldConfidences.vizSurname +
 
     "</p>" +
+    
     "<p>" +
-    "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
-    "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" +
-    "<br/><i><b>Checksum:</b> " + result.allCheckDigitsValid + "</i>"+
+        "<br/><b>NFC DataGroup1:</b>" +
+        "<br/><b>Date Of Birth:</b> " + result.dataGroup1.dateOfBirth +
+        "<br/><b>Date Of Expiry :</b> " + result.dataGroup1.dateOfExpiry +
+        "<br/><b>documentNumber:</b> " + result.dataGroup1.documentNumber +
+        "<br/><b>documentType:</b> " + result.dataGroup1.documentType +
+        "<br/><b>firstName:</b> " + result.dataGroup1.firstName +
+        "<br/><b>gender:</b> " + result.dataGroup1.gender +
+        "<br/><b>issuingStateCode:</b> " + result.dataGroup1.issuingStateCode +
+        "<br/><b>Document Number:</b> " + result.dataGroup1.documentNumber +
+        "<br/><b>lastName:</b> " + result.dataGroup1.lastName +
+        "<br/><b>nationality:</b> " + result.dataGroup1.nationality +
+    
+    
+        "<br/><b>NFC DataGroup2:</b>" +
+        "<img src=\"" + result.dataGroup2.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
+    
+        "<br/><b>NFC SOB:</b>" +
+        "<br/><b>issuerCertificationAuthority:</b> " + result.sod.issuerCertificationAuthority +
+        "<br/><b>issuerCountry:</b> " + result.sod.issuerCountry +
+        "<br/><b>issuerOrganization:</b> " + result.sod.issuerOrganization +
+        "<br/><b>issuerOrganizationalUnit:</b> " + result.sod.issuerOrganizationalUnit +
+        "<br/><b>ldsHashAlgorithm:</b> " + result.sod.ldsHashAlgorithm +
+        "<br/><b>signatureAlgorithm:</b> " + result.sod.signatureAlgorithm +
+        "<br/><b>validFromString:</b> " + result.sod.validFromString +
+        "<br/><b>validUntilString:</b> " + result.sod.validUntilString +
+    "</p>" +
+    
+    "<p>" +
+    "<br/><i><b>MRZ Confidence:</b> " + result.confidence + "</i>" +
+    "<br/><i><b>MRZ Outline Points:</b> " + result.outline + "</i>" +
+    "<br/><i><b>MRZ Checksum:</b> " + result.allCheckDigitsValid + "</i>"+
     "</p>" + div.innerHTML;
     
     
@@ -86,7 +115,7 @@ onError: function (error) {
     if (error == "Canceled") {
         //do stuff when user has canceled
         // this can be used as an indicator that the user finished the scanning if canclelOnResult is false
-        console.log("MRZ scanning canceled");
+        console.log("MRZ+NFC scanning canceled");
         return;
     }
     
@@ -163,7 +192,7 @@ scan: function () {
     // see http://documentation.anyline.io/#anyline-config for config details
     // and http://documentation.anyline.io/#mrz for module details
     
-    var licenseKey = "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImlvc0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsICJtYWpvclZlcnNpb24iOiAiNCIsICJtYXhEYXlzTm90UmVwb3J0ZWQiOiAwLCAicGluZ1JlcG9ydGluZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiwgIldpbmRvd3MiIF0sICJzY29wZSI6IFsgIkFMTCIgXSwgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogZmFsc2UsICJzaG93V2F0ZXJtYXJrIjogdHJ1ZSwgInRvbGVyYW5jZURheXMiOiA5MCwgInZhbGlkIjogIjIwMjAtMTAtMjAiLCAid2luZG93c0lkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0gfQpJYzVHSWVpdTBUYmJoQjE4T2poeHllY1g3Q296NWorR1o2azVtanJTUUtxVFYrYWRKODk4MHA2QmZ6UVdoK1ZyCnF6UE4yTURuWnFNSTcwUk13NHFGV0VJek16Z1J2ZUg3ZzhYM3RHbUcyUTdzazh0Y1Q1Zk5aditNNmpTeXQ1WG4KM010Ry9yZnp2YVRiQlo5VnV5ektsVXdDakZVdVhqd2xIVm1QZS9hc2ljMkVpbWhMU2JTam9PN0Nzajhjd0ZNVApKZDJTTnBncmdQYUtSUzZrdlNFMEJJU3ltVnAvb1VIcm9xUGtlUWRxa2owQk1ZU3Z4VmM4L0p3L1RvdHNvY1IvCmxIWi93VG03UldGRDVhZXpIdjJDcjNVN1ArSW1KdkNUb3JCc3VUa3B6VzF1dHIvQlNkckI3dVJNVFpPOW84UjcKS1ZhaUlmNmZYSExQanBkbkpmQXdqUT09Cg==";
+    var licenseKey = "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImltYWdlUmVwb3J0Q2FjaGluZyI6IGZhbHNlLCAiaW9zSWRlbnRpZmllciI6IFsgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YS5iZXRhIiwgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIgXSwgImxpY2Vuc2VLZXlWZXJzaW9uIjogMiwgIm1ham9yVmVyc2lvbiI6ICI0IiwgIm1heERheXNOb3RSZXBvcnRlZCI6IDAsICJwaW5nUmVwb3J0aW5nIjogdHJ1ZSwgInBsYXRmb3JtIjogWyAiaU9TIiwgIkFuZHJvaWQiLCAiV2luZG93cyIgXSwgInNjb3BlIjogWyAiQUxMIiBdLCAic2hvd1BvcFVwQWZ0ZXJFeHBpcnkiOiB0cnVlLCAic2hvd1dhdGVybWFyayI6IHRydWUsICJ0b2xlcmFuY2VEYXlzIjogOTAsICJ2YWxpZCI6ICIyMDIwLTEwLTIwIiwgIndpbmRvd3NJZGVudGlmaWVyIjogWyAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIiBdIH0KRnoxUmNxbUJ0YVRBRVl6NlNFQlhPRWxlLzlXNFVOVlJjdEJjTVhDTGVQMlRGV0dUTDdzWlB1WnJnTWkwOHlFVwpTUlp6emVNNTN2UnRoLzFVMGd5TGxzVmF0clZTd0lCMkRQbmxldnpUK3VHcGdRUUorS2w5N1dRRmljUlJ0di9VCnFjMU5md3RRMWVQREtMR05XaVZwbU94a2xIUzJ3OWV5c0ZHRHo4M20xRDZ5V2s0SkJ2MG9zOWhvak02bUtsU0MKVDZQYnJZcTkycFZRenFNUFdhZ3FoTXpvdGRDNE1YcktJY3FQbTBhc3FxRXM2VzkrM1d6aWI4NjRaSDVrM1ZqRgp3UGIzaVZqWW9aTVZFYVFGK1pQUmFoU3ZhNEhhMnhKakt0NXpkWTVtbkFKb1ZyaGVmNGYzNlFDME5ncnlkT0w3CkNFYzZxMk5acUNKSjhPLzBUT2trNmc9PQo";
     
     
     

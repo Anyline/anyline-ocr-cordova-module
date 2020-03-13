@@ -9,8 +9,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ALNFCScanViewController : ALPluginScanViewController
+@interface ALNFCScanViewController : UIViewController
 
+@property (nonatomic, assign) BOOL nativeBarcodeEnabled;
+
+@property (nonatomic, strong) NSString *cropAndTransformErrorMessage;
+
+@property (nonatomic, assign) NSUInteger quality;
+
+- (instancetype)initWithLicensekey:(NSString *)licensekey
+                     configuration:(NSDictionary *)anylineConfig
+              cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                          delegate:(id<ALPluginScanViewControllerDelegate>)delegate;
 @end
 
 NS_ASSUME_NONNULL_END

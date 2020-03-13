@@ -7,6 +7,7 @@
 
 #import "ALNFCScanViewController.h"
 #import <Anyline/Anyline.h>
+#import "ALPluginHelper.h"
 
 
 API_AVAILABLE(ios(13.0))
@@ -18,17 +19,50 @@ API_AVAILABLE(ios(13.0))
 @property (nonatomic, strong) ALNFCDetector *nfcDetector;
 @property (nullable, nonatomic, strong) UIView *hintView;
 
+@property (nonatomic,strong) UIButton *doneButton;
+
+
 //keep the last values we read from the MRZ so we can retry reading NFC if NFC failed for reasons other than getting these details wrong
 @property NSString *passportNumberForNFC;
 @property NSDate *dateOfBirth;
 @property NSDate *dateOfExpiry;
+@property (nonatomic, strong) NSDictionary *anylineConfig;
+@property (nonatomic, weak) id<ALPluginScanViewControllerDelegate> delegate;
+@property (nonatomic, strong) NSString *licensekey;
+@property (nonatomic, strong) ALCordovaUIConfiguration *cordovaConfig;
+@property (nonatomic, strong) NSMutableDictionary *anylineResult;
+@property (nonatomic, strong) NSMutableArray<NSDictionary *> *detectedBarcodes;
 
 @end
 
 @implementation ALNFCScanViewController
 
+- (instancetype)initWithLicensekey:(NSString *)licensekey
+                     configuration:(NSDictionary *)anylineConfig
+              cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                          delegate:(id<ALPluginScanViewControllerDelegate>)delegate {
+    self = [super init];
+    if(self) {
+        _licensekey = licensekey;
+        _delegate = delegate;
+        _anylineConfig = anylineConfig;
+        _cordovaConfig = cordovaConf;
+        
+        self.quality = 100;
+        self.nativeBarcodeEnabled = NO;
+        self.cropAndTransformErrorMessage = @"";
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.anylineResult = [[NSMutableDictionary alloc] init];
+    self.detectedBarcodes = [NSMutableArray array];
+       
+    self.doneButton = [ALPluginHelper createButtonForViewController:self config:self.cordovaConfig];
+    
     self.title = @"Passport NFC";
     CGFloat hintMargin = 7;
     // Set the background color to black to have a nicer transition
@@ -54,26 +88,33 @@ API_AVAILABLE(ios(13.0))
     // Initializing the scan view. It's a UIView subclass. We set the frame to fill the whole screen
     CGRect frame = [self scanViewFrame];
     
-    ALMRZConfig *mrzConfig = [[ALMRZConfig alloc] init];
-    //we want to be quite confident of these fields to ensure we can read the NFC with them
-    ALMRZFieldConfidences *fieldConfidences = [[ALMRZFieldConfidences alloc] init];
-    fieldConfidences.documentNumber = 90;
-    fieldConfidences.dateOfBirth = 90;
-    fieldConfidences.dateOfExpiry = 90;
-    mrzConfig.idFieldConfidences = fieldConfidences;
+    NSDictionary *mrzConfigDict = [self.anylineConfig valueForKeyPath:@"viewPlugin.plugin.nfcPlugin.mrzConfig"];
     
-    //Create fieldScanOptions to configure individual scannable fields
-    ALMRZFieldScanOptions *scanOptions = [[ALMRZFieldScanOptions alloc] init];
-    scanOptions.vizAddress = ALDefault;
-    scanOptions.vizDateOfIssue = ALDefault;
-    scanOptions.vizSurname = ALDefault;
-    scanOptions.vizGivenNames = ALDefault;
-    scanOptions.vizDateOfBirth = ALDefault;
-    scanOptions.vizDateOfExpiry = ALDefault;
-    
-    //Set scanOptions for MRZConfig
-    mrzConfig.idFieldScanOptions = scanOptions;
-    
+    ALMRZConfig *mrzConfig;
+    if (mrzConfigDict) {
+        mrzConfig = [[ALMRZConfig alloc] initWithJsonDictionary:mrzConfigDict];
+    } else {
+        mrzConfig = [[ALMRZConfig alloc] init];
+        //we want to be quite confident of these fields to ensure we can read the NFC with them
+        ALMRZFieldConfidences *fieldConfidences = [[ALMRZFieldConfidences alloc] init];
+        fieldConfidences.documentNumber = 90;
+        fieldConfidences.dateOfBirth = 90;
+        fieldConfidences.dateOfExpiry = 90;
+        mrzConfig.idFieldConfidences = fieldConfidences;
+        
+        //Create fieldScanOptions to configure individual scannable fields
+        ALMRZFieldScanOptions *scanOptions = [[ALMRZFieldScanOptions alloc] init];
+        scanOptions.vizAddress = ALDefault;
+        scanOptions.vizDateOfIssue = ALDefault;
+        scanOptions.vizSurname = ALDefault;
+        scanOptions.vizGivenNames = ALDefault;
+        scanOptions.vizDateOfBirth = ALDefault;
+        scanOptions.vizDateOfExpiry = ALDefault;
+
+        //Set scanOptions for MRZConfig
+        mrzConfig.idFieldScanOptions = scanOptions;
+    }
+         
     NSError *error = nil;
 
     //Init the anyline ID ScanPlugin with an ID, Licensekey, the delegate,
@@ -164,6 +205,9 @@ API_AVAILABLE(ios(13.0))
  */
 - (void)anylineIDScanPlugin:(ALIDScanPlugin *)anylineIDScanPlugin didFindResult:(ALIDResult *)scanResult {
     ALMRZIdentification *identification = (ALMRZIdentification*)scanResult.result;
+    
+    self.anylineResult = [[ALPluginHelper dictionaryForIDResult:scanResult detectedBarcodes:self.detectedBarcodes outline:self.scanView.scanViewPlugin.outline quality:_quality] mutableCopy];
+    
     NSString *passportNumber = [[identification documentNumber] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSDate *dateOfBirth = [identification dateOfBirthObject];
     NSDate *dateOfExpiry = [identification dateOfExpiryObject];
@@ -191,32 +235,8 @@ API_AVAILABLE(ios(13.0))
  To display data as it is read instead of waiting until everything has been read, we could also implement nfcSucceededWithDataGroup1: or nfcSucceededWithDataGroup2: */
 - (void)nfcSucceededWithResult:(ALNFCResult * _Nonnull)nfcResult  API_AVAILABLE(ios(13.0)){
     dispatch_async(dispatch_get_main_queue(), ^{
-        
-        NSMutableString *nfcResultString = [NSMutableString string];
-        [nfcResultString appendString:[NSString stringWithFormat:@"Issuing State Code: %@\n", nfcResult.dataGroup1.issuingStateCode]];
-        [nfcResultString appendString:[NSString stringWithFormat:@"Document Number: %@\n", nfcResult.dataGroup1.documentNumber]];
-        [nfcResultString appendString:[NSString stringWithFormat:@"Date of Expiry: %@\n", [self stringForDate:nfcResult.dataGroup1.dateOfExpiry]]];
-        [nfcResultString appendString:[NSString stringWithFormat:@"Gender: %@\n", nfcResult.dataGroup1.gender]];
-        [nfcResultString appendString:[NSString stringWithFormat:@"Nationality: %@\n", nfcResult.dataGroup1.nationality]];
-        [nfcResultString appendString:[NSString stringWithFormat:@"Last Name: %@\n", nfcResult.dataGroup1.lastName]];
-        [nfcResultString appendString:[NSString stringWithFormat:@"First Name: %@\n", nfcResult.dataGroup1.firstName]];
-        [nfcResultString appendString:[NSString stringWithFormat:@"Date of Birth: %@",  [self stringForDate:nfcResult.dataGroup1.dateOfBirth]]];
-        
-//        [super anylineDidFindResult:nfcResultString barcodeResult:@"" image:nfcResult.dataGroup2.faceImage scanPlugin:nil viewPlugin:nil completion:^{
-//            NSMutableArray <ALResultEntry*> *resultData = [[NSMutableArray alloc] init];
-//            [resultData addObject:[[ALResultEntry alloc] initWithTitle:@"Issuing State Code" value:nfcResult.dataGroup1.issuingStateCode]];
-//            [resultData addObject:[[ALResultEntry alloc] initWithTitle:@"Document Number" value:nfcResult.dataGroup1.documentNumber]];
-//            [resultData addObject:[self resultEntryWithDate:nfcResult.dataGroup1.dateOfExpiry dateString:nil title:@"Date of Expiry"]];
-//            [resultData addObject:[[ALResultEntry alloc] initWithTitle:@"Gender" value:nfcResult.dataGroup1.gender]];
-//            [resultData addObject:[[ALResultEntry alloc] initWithTitle:@"Nationality" value:nfcResult.dataGroup1.nationality]];
-//            [resultData addObject:[[ALResultEntry alloc] initWithTitle:@"Last Name" value:nfcResult.dataGroup1.lastName]];
-//            [resultData addObject:[[ALResultEntry alloc] initWithTitle:@"First Name" value:nfcResult.dataGroup1.firstName]];
-//            [resultData addObject:[self resultEntryWithDate:nfcResult.dataGroup1.dateOfBirth dateString:nil title:@"Date of Birth"]];
-//            NSMutableDictionary *resultDataDict = [[NSMutableDictionary alloc] init];
-//            [resultDataDict setObject:resultData forKey:@"NFC"];
-//            ALResultViewController *vc = [[ALResultViewController alloc] initWithResultDataDictionary:resultDataDict image:nfcResult.dataGroup2.faceImage optionalImageTitle:@"Detected Face Image" optionalImage:nil];
-//            [self.navigationController pushViewController:vc animated:YES];
-//        }];
+        [self.anylineResult setObject:[ALPluginHelper dictionaryForNFCResult:nfcResult quality:self.quality] forKey:@"nfcResult"];
+        [self handleResult:self.anylineResult result:nil];
     });
 }
 
@@ -238,23 +258,6 @@ API_AVAILABLE(ios(13.0))
 }
 
 
-//- (ALResultEntry *)resultEntryWithDate:(NSDate *)date dateString:(NSString *)dateString title:(NSString *)title {
-//    BOOL isAvailable = [self checkDateIfAvailable:date dateString:dateString];
-//    if (!isAvailable) {
-//        return [[ALResultEntry alloc] initWithTitle:title value:nil];
-//    }
-//
-//    NSString *value = [self stringForDate:date];
-//    return [[ALResultEntry alloc] initWithTitle:title value:value isAvailable:isAvailable];
-//}
-
-- (BOOL)checkDateIfAvailable:(NSDate *)date dateString:(NSString *)dateString {
-    if (!date && dateString.length == 0) {
-        return NO;
-    }
-    return YES;
-}
-
 - (NSString *)stringForDate:(NSDate *)date {
     if (!date) {
         return @"Date not valid";
@@ -268,7 +271,9 @@ API_AVAILABLE(ios(13.0))
     return [dateFormatter stringFromDate:date];
 }
 
-
+- (void)anylineScanViewPlugin:(ALAbstractScanViewPlugin *)anylineScanViewPlugin updatedCutout:(CGRect)cutoutRect {
+    [self updateHintPosition:cutoutRect.origin.y + self.scanView.frame.origin.y - 50];
+}
 - (void)startPlugin:(ALAbstractScanViewPlugin *)plugin {
     NSError *error;
     BOOL success = [plugin startAndReturnError:&error];
@@ -290,6 +295,25 @@ API_AVAILABLE(ios(13.0))
     CGRect frame = [[UIScreen mainScreen] bounds];
       frame = CGRectMake(frame.origin.x, frame.origin.y + CGRectGetMaxY(self.navigationController.navigationBar.frame), frame.size.width, frame.size.height - CGRectGetMaxY(self.navigationController.navigationBar.frame));
     return frame;
+}
+
+- (void)handleResult:(NSDictionary *)dictResult result:(ALScanResult *)scanResult {
+    
+    [self.delegate pluginScanViewController:nil
+                                    didScan:dictResult
+                           continueScanning:!self.scanView.scanViewPlugin.scanViewPluginConfig.cancelOnResult];
+    
+    if (self.scanView.scanViewPlugin.scanViewPluginConfig.cancelOnResult) {
+        [self dismissViewControllerAnimated:YES completion:NULL];
+    }
+    self.detectedBarcodes = [NSMutableArray array];
+}
+
+- (void)doneButtonPressed:(id)sender {
+    [self.scanView.scanViewPlugin stopAndReturnError:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.delegate pluginScanViewController:nil didStopScanning:sender];
+    }];
 }
 
 @end

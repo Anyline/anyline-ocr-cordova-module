@@ -19,10 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *cropAndTransformErrorMessage;
 
 @property (nonatomic, assign) NSUInteger quality;
-@property (nonatomic, strong) NSDictionary *anylineConfig;
-@property (nonatomic, weak) id<ALPluginScanViewControllerDelegate> delegate;
-@property (nonatomic, strong) NSString *licensekey;
-@property (nonatomic, strong) ALCordovaUIConfiguration *cordovaConfig;
+
 
 - (instancetype)initWithLicensekey:(NSString*)licensekey
                      configuration:(NSDictionary *)anylineConfig

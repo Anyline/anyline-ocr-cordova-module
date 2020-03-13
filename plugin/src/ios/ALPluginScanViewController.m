@@ -25,7 +25,10 @@
 
 @property (nonatomic, strong) NSMutableArray<NSDictionary *> *detectedBarcodes;
 
-
+@property (nonatomic, strong) NSDictionary *anylineConfig;
+@property (nonatomic, weak) id<ALPluginScanViewControllerDelegate> delegate;
+@property (nonatomic, strong) NSString *licensekey;
+@property (nonatomic, strong) ALCordovaUIConfiguration *cordovaConfig;
 @end
 
 @implementation ALPluginScanViewController
