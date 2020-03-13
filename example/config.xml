@@ -9,4 +9,20 @@
     <content src="index.html" />
     <access origin="*" />
     <icon src="www/img/ic_launcher.png" />
+    <platform name="ios">
+        <config-file parent="NFCReaderUsageDescription" target="*-Info.plist">
+            <string>Please allow NFC access to read passports</string>
+        </config-file>
+        <config-file parent="com.apple.developer.nfc.readersession.iso7816.select-identifiers" target="*-Info.plist">
+            <array>
+                <string>A0000002471001</string>
+            </array>
+        </config-file>
+        <config-file parent="com.apple.developer.nfc.readersession.formats" target="Entitlements-*.plist">
+            <array>
+                <string>NDEF</string>
+                <string>TAG</string>
+            </array>
+        </config-file>
+    </platform>
 </widget>

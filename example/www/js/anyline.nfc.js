@@ -8,19 +8,18 @@
 if (anyline === undefined) {
     var anyline = {};
 }
-anyline.mrz = {
+anyline.nfc = {
 onResult: function (result) {
     changeLoadingState(false);
     //this is called for every mrz scan result
     //the result is a json-object containing all the scaned values and check-digits
     
-    console.log("MRZ result: " + JSON.stringify(result));
+    console.log("MRZ+NFC result: " + JSON.stringify(result));
     var div = document.getElementById('results');
     
     if (div.childElementCount >= 3) {
         div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
-
 
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
     "<b>Name:</b> " + result.surname + " " + result.givenNames + "<br/>" + "<b>Type:</b> " + result.documentType +
@@ -68,40 +67,28 @@ onResult: function (result) {
         "<br/><b>viz Surname:</b> " + result.fieldConfidences.vizSurname +
 
     "</p>" +
-    
     "<p>" +
-        "<br/><b>NFC DataGroup1:</b>" +
-        "<br/><b>Date Of Birth:</b> " + result.dataGroup1.dateOfBirth +
-        "<br/><b>Date Of Expiry :</b> " + result.dataGroup1.dateOfExpiry +
-        "<br/><b>documentNumber:</b> " + result.dataGroup1.documentNumber +
-        "<br/><b>documentType:</b> " + result.dataGroup1.documentType +
-        "<br/><b>firstName:</b> " + result.dataGroup1.firstName +
-        "<br/><b>gender:</b> " + result.dataGroup1.gender +
-        "<br/><b>issuingStateCode:</b> " + result.dataGroup1.issuingStateCode +
-        "<br/><b>Document Number:</b> " + result.dataGroup1.documentNumber +
-        "<br/><b>lastName:</b> " + result.dataGroup1.lastName +
-        "<br/><b>nationality:</b> " + result.dataGroup1.nationality +
+        "<br/><b>nfcResult DataGroup1:</b>" +
+        "<br/><b>Date Of Birth:</b> " + result.nfcResult.dataGroup1.dateOfBirth +
+        "<br/><b>Date Of Expiry :</b> " + result.nfcResult.dataGroup1.dateOfExpiry +
+        "<br/><b>documentNumber:</b> " + result.nfcResult.dataGroup1.documentNumber +
+        "<br/><b>documentType:</b> " + result.nfcResult.dataGroup1.documentType +
+        "<br/><b>firstName:</b> " + result.nfcResult.dataGroup1.firstName +
+        "<br/><b>gender:</b> " + result.nfcResult.dataGroup1.gender +
+        "<br/><b>issuingStateCode:</b> " + result.nfcResult.dataGroup1.issuingStateCode +
+        "<br/><b>Document Number:</b> " + result.nfcResult.dataGroup1.documentNumber +
+        "<br/><b>lastName:</b> " + result.nfcResult.dataGroup1.lastName +
+        "<br/><b>nationality:</b> " + result.nfcResult.dataGroup1.nationality +
     
-    
-        "<br/><b>NFC DataGroup2:</b>" +
-        "<img src=\"" + result.dataGroup2.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-    
-        "<br/><b>NFC SOB:</b>" +
-        "<br/><b>issuerCertificationAuthority:</b> " + result.sod.issuerCertificationAuthority +
-        "<br/><b>issuerCountry:</b> " + result.sod.issuerCountry +
-        "<br/><b>issuerOrganization:</b> " + result.sod.issuerOrganization +
-        "<br/><b>issuerOrganizationalUnit:</b> " + result.sod.issuerOrganizationalUnit +
-        "<br/><b>ldsHashAlgorithm:</b> " + result.sod.ldsHashAlgorithm +
-        "<br/><b>signatureAlgorithm:</b> " + result.sod.signatureAlgorithm +
-        "<br/><b>validFromString:</b> " + result.sod.validFromString +
-        "<br/><b>validUntilString:</b> " + result.sod.validUntilString +
+        "<br/><b>nfcResult DataGroup2: NFC Image</b>" +
+        "<img src=\"" + result.nfcResult.dataGroup2.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
     "</p>" +
-    
     "<p>" +
     "<br/><i><b>MRZ Confidence:</b> " + result.confidence + "</i>" +
     "<br/><i><b>MRZ Outline Points:</b> " + result.outline + "</i>" +
     "<br/><i><b>MRZ Checksum:</b> " + result.allCheckDigitsValid + "</i>"+
-    "</p>" + div.innerHTML;
+    "</p>"
+    + div.innerHTML;
     
     
     document.getElementById("details_scan_modes").removeAttribute("open");
@@ -135,8 +122,6 @@ anylineMRZAndNFCViewConfig: {
 		    "id": "ID_NFC",
 		    "nfcPlugin": {
 		      "mrzConfig": {
-		        "faceDetection": true,
-		        "cropAndTransformID": false
 		      }
 		    }
   		},
@@ -192,7 +177,7 @@ scan: function () {
     // see http://documentation.anyline.io/#anyline-config for config details
     // and http://documentation.anyline.io/#mrz for module details
     
-    var licenseKey = "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImltYWdlUmVwb3J0Q2FjaGluZyI6IGZhbHNlLCAiaW9zSWRlbnRpZmllciI6IFsgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YS5iZXRhIiwgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIgXSwgImxpY2Vuc2VLZXlWZXJzaW9uIjogMiwgIm1ham9yVmVyc2lvbiI6ICI0IiwgIm1heERheXNOb3RSZXBvcnRlZCI6IDAsICJwaW5nUmVwb3J0aW5nIjogdHJ1ZSwgInBsYXRmb3JtIjogWyAiaU9TIiwgIkFuZHJvaWQiLCAiV2luZG93cyIgXSwgInNjb3BlIjogWyAiQUxMIiBdLCAic2hvd1BvcFVwQWZ0ZXJFeHBpcnkiOiB0cnVlLCAic2hvd1dhdGVybWFyayI6IHRydWUsICJ0b2xlcmFuY2VEYXlzIjogOTAsICJ2YWxpZCI6ICIyMDIwLTEwLTIwIiwgIndpbmRvd3NJZGVudGlmaWVyIjogWyAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIiBdIH0KRnoxUmNxbUJ0YVRBRVl6NlNFQlhPRWxlLzlXNFVOVlJjdEJjTVhDTGVQMlRGV0dUTDdzWlB1WnJnTWkwOHlFVwpTUlp6emVNNTN2UnRoLzFVMGd5TGxzVmF0clZTd0lCMkRQbmxldnpUK3VHcGdRUUorS2w5N1dRRmljUlJ0di9VCnFjMU5md3RRMWVQREtMR05XaVZwbU94a2xIUzJ3OWV5c0ZHRHo4M20xRDZ5V2s0SkJ2MG9zOWhvak02bUtsU0MKVDZQYnJZcTkycFZRenFNUFdhZ3FoTXpvdGRDNE1YcktJY3FQbTBhc3FxRXM2VzkrM1d6aWI4NjRaSDVrM1ZqRgp3UGIzaVZqWW9aTVZFYVFGK1pQUmFoU3ZhNEhhMnhKakt0NXpkWTVtbkFKb1ZyaGVmNGYzNlFDME5ncnlkT0w3CkNFYzZxMk5acUNKSjhPLzBUT2trNmc9PQo";
+    var licenseKey = "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvcHQtb3V0IiwgImltYWdlUmVwb3J0Q2FjaGluZyI6IGZhbHNlLCAiaW9zSWRlbnRpZmllciI6IFsgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YS5iZXRhIiwgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIgXSwgImxpY2Vuc2VLZXlWZXJzaW9uIjogMiwgIm1ham9yVmVyc2lvbiI6ICI0IiwgIm1heERheXNOb3RSZXBvcnRlZCI6IDAsICJwaW5nUmVwb3J0aW5nIjogdHJ1ZSwgInBsYXRmb3JtIjogWyAiaU9TIiwgIkFuZHJvaWQiLCAiV2luZG93cyIgXSwgInNjb3BlIjogWyAiQUxMIiBdLCAic2hvd1BvcFVwQWZ0ZXJFeHBpcnkiOiB0cnVlLCAic2hvd1dhdGVybWFyayI6IHRydWUsICJ0b2xlcmFuY2VEYXlzIjogOTAsICJ2YWxpZCI6ICIyMDIwLTEwLTIwIiwgIndpbmRvd3NJZGVudGlmaWVyIjogWyAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIiBdIH0KRnoxUmNxbUJ0YVRBRVl6NlNFQlhPRWxlLzlXNFVOVlJjdEJjTVhDTGVQMlRGV0dUTDdzWlB1WnJnTWkwOHlFVwpTUlp6emVNNTN2UnRoLzFVMGd5TGxzVmF0clZTd0lCMkRQbmxldnpUK3VHcGdRUUorS2w5N1dRRmljUlJ0di9VCnFjMU5md3RRMWVQREtMR05XaVZwbU94a2xIUzJ3OWV5c0ZHRHo4M20xRDZ5V2s0SkJ2MG9zOWhvak02bUtsU0MKVDZQYnJZcTkycFZRenFNUFdhZ3FoTXpvdGRDNE1YcktJY3FQbTBhc3FxRXM2VzkrM1d6aWI4NjRaSDVrM1ZqRgp3UGIzaVZqWW9aTVZFYVFGK1pQUmFoU3ZhNEhhMnhKakt0NXpkWTVtbkFKb1ZyaGVmNGYzNlFDME5ncnlkT0w3CkNFYzZxMk5acUNKSjhPLzBUT2trNmc9PQo=";
     
     
     
