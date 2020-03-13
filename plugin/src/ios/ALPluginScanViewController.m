@@ -13,11 +13,6 @@
 
 @interface ALPluginScanViewController ()<ALIDPluginDelegate,ALOCRScanPluginDelegate,ALBarcodeScanPluginDelegate,ALMeterScanPluginDelegate,ALLicensePlateScanPluginDelegate,ALDocumentScanPluginDelegate,AnylineNativeBarcodeDelegate, ALInfoDelegate, ALScanViewPluginDelegate, ALDocumentInfoDelegate, ALCompositeScanPluginDelegate>
 
-@property (nonatomic, strong) NSDictionary *anylineConfig;
-@property (nonatomic, weak) id<ALPluginScanViewControllerDelegate> delegate;
-@property (nonatomic, strong) NSString *licensekey;
-@property (nonatomic, strong) ALCordovaUIConfiguration *cordovaConfig;
-
 @property (nonatomic,strong) UIButton *doneButton;
 @property (nonatomic,strong) UILabel *scannedLabel;
 

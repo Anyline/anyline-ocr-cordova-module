@@ -3,6 +3,7 @@
 #import <Anyline/Anyline.h>
 #import "ALCordovaUIConfiguration.h"
 #import "ALPluginScanViewController.h"
+#import "ALNFCScanViewController.h"
 
 
 @interface AnylineSDKPlugin()<ALPluginScanViewControllerDelegate>
@@ -24,12 +25,25 @@
 - (void)scan:(CDVInvokedUrlCommand *)command {
     [self processCommandArgumentsAnyline4:command];
     
+    NSString *customCmdFile = [self.anyline4Config valueForKeyPath:@"viewPlugin.plugin.nfcPlugin"];
+    
+    
+    
     [self.commandDelegate runInBackground:^{
-        ALPluginScanViewController *pluginScanViewController =
-        [[ALPluginScanViewController alloc] initWithLicensekey:self.licensekey
-                                                 configuration:self.anyline4Config
-                                          cordovaConfiguration:self.cordovaUIConf
-                                                      delegate:self];
+        ALPluginScanViewController *pluginScanViewController;
+        if (customCmdFile) {
+            pluginScanViewController = [[ALNFCScanViewController alloc] initWithLicensekey:self.licensekey
+                                                     configuration:self.anyline4Config
+                                              cordovaConfiguration:self.cordovaUIConf
+                                                          delegate:self];
+            
+        } else {
+            pluginScanViewController = [[ALPluginScanViewController alloc] initWithLicensekey:self.licensekey
+                                                     configuration:self.anyline4Config
+                                              cordovaConfiguration:self.cordovaUIConf
+                                                          delegate:self];
+            
+        }
         
         if([self.anyline4Config valueForKey:@"quality"]){
             pluginScanViewController.quality = [[self.anyline4Config valueForKey:@"quality"] integerValue];
@@ -42,6 +56,10 @@
         
         if ([self.anyline4Config valueForKey:@"nativeBarcodeEnabled"]) {
             pluginScanViewController.nativeBarcodeEnabled = [[self.anyline4Config objectForKey:@"nativeBarcodeEnabled"] boolValue];
+        }
+        
+        if ([self.anyline4Config valueForKey:@"nativeBarcodeEnabled"]) {
+            
         }
         
         self.baseScanViewController = pluginScanViewController;

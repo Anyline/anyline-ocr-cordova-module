@@ -36,7 +36,9 @@
         <source-file src="src/ios/ALRoundedView.m"/>
         <header-file src="src/ios/ALCordovaUIConfiguration.h"/>
         <source-file src="src/ios/ALCordovaUIConfiguration.m"/>
-
+        <header-file src="src/ios/ALNFCScanViewController.h"/>
+        <source-file src="src/ios/ALNFCScanViewController.m"/>
+        
         <!-- Anyline Framework & Resource Bundle locally -->
         <!-- <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>-->
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
