@@ -38,6 +38,9 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *btnCancel;
 @property (weak, nonatomic) IBOutlet UIButton *btnDummyResult;
+@property (weak, nonatomic) IBOutlet UILabel *lblBattery;
+
+@property (nonatomic, strong) NSTimer *batterLevelTimer;
 
 @end
 
@@ -145,6 +148,31 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
                                           multiplier:1.0
                                           constant:0];
     [self.view addConstraint:centreHorizontallyConstraint];
+    
+    
+    //Setup Battery Label
+    UILabel *lblBattery = [[UILabel alloc] init];
+    lblBattery.frame = _lblConnection.frame;
+
+    CGRect labelFrame = [lblBattery frame];
+    labelFrame.origin.x = 5;
+    labelFrame.origin.y = self.view.frame.origin.y + CGRectGetMaxY(self.navigationController.navigationBar.frame) + 10;
+    labelFrame.size.width = 50;
+    [lblBattery setFrame:labelFrame];
+    
+    [lblBattery setText:@"- %"];
+    lblBattery.tintColor = UIColor.whiteColor;
+    lblBattery.backgroundColor = UIColor.redColor;
+    [lblBattery.layer setBorderColor:UIColor.redColor.CGColor];
+    [lblBattery.layer setBorderWidth:1];
+    [lblBattery.layer setCornerRadius:8];
+    
+    [lblBattery setClipsToBounds:YES];
+    lblBattery.font = _lblConnection.font;
+    lblBattery.textAlignment = NSTextAlignmentCenter;
+    
+    self.lblBattery = lblBattery;
+    [self.view addSubview:self.lblBattery];
 
     //Setup Anyline scanPlugin to process provided frames
     [self setupAnyline];
@@ -188,6 +216,7 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self initDevice];
+    self.lblBattery.center = CGPointMake(self.lblBattery.center.x, _lblConnection.center.y);
     
 }
 
@@ -195,6 +224,7 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
 - (void)dealloc {
     NSLog(@"Dealloc Cognex Scanner Controller");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.batterLevelTimer invalidate];
 }
 
 -(void) initDevice {
@@ -276,6 +306,12 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
             NSLog(@"FALIED TO ENABLE [Symbology_UpcEan], %@", error.description);
         }
     }];
+    [self configureCognexSettings:^(CDMResponse *response) { }];
+    
+    [self batteryLevel:^(CDMResponse *response) {
+        [self.batterLevelTimer invalidate];
+        [self setupBatteryLevelTimer];
+    }];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -348,6 +384,63 @@ BOOL issScanning = NO;
     }];
 }
 
+- (void)configureCognexSettings:(void(^)(CDMResponse *response))callback {
+    [readerDevice.dataManSystem sendCommand:@"SET BUTTON.ACTION 0 0" withCallback:^(CDMResponse *response) {
+        [readerDevice.dataManSystem sendCommand:@"SET BUTTON.ACTION 1 0" withCallback:^(CDMResponse *response) {
+            [readerDevice.dataManSystem sendCommand:@"SET BUTTON.ACTION 2 0" withCallback:^(CDMResponse *response) {
+                [readerDevice.dataManSystem sendCommand:@"SET POWER.POWEROFF-TIMEOUT 1200" withCallback:^(CDMResponse *response) {
+                    callback(response);
+                }];
+            }];
+        }];
+    }];
+}
+
+- (void)setupBatteryLevelTimer {
+    //Check battery level every 30 seconds
+    self.batterLevelTimer = [NSTimer scheduledTimerWithTimeInterval:30.0f
+                                                             target:self
+                                                           selector:@selector(batteryLevel:)
+                                                           userInfo:nil
+                                                            repeats:YES];
+}
+
+- (void)batteryLevel:(void(^)(CDMResponse *response))callback {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //TODO: This will crash with timer -  fix me
+        [readerDevice.dataManSystem sendCommand:@"GET BATTERY.CHARGE" withCallback:^(CDMResponse *response) {
+            [self updateBatteryLevelLabel:response.payload];
+            callback(response);
+        }];
+    });
+}
+
+- (void)updateBatteryLevelLabel:(NSString *)batteryLevel {
+    if (!batteryLevel) {
+        batteryLevel = @"-";
+        [self updateBatteryLevelLabelColor:UIColor.systemRedColor];
+    } else {
+        int intValue = [batteryLevel intValue];
+        if (intValue >= 80) {
+            [self updateBatteryLevelLabelColor:UIColor.systemGreenColor];
+        } else if (intValue >= 20) {
+            [self updateBatteryLevelLabelColor:UIColor.yellowColor];
+        } else {
+            [self updateBatteryLevelLabelColor:UIColor.systemRedColor];
+        }
+    }
+    self.lblBattery.text = [NSString stringWithFormat:@"%@ %%", batteryLevel];
+    
+}
+
+- (void)updateBatteryLevelLabelColor:(UIColor *)color {
+    self.lblBattery.backgroundColor = color;
+    [self.lblBattery.layer setBorderColor:color.CGColor];
+
+    
+}
+
+
 - (void)stopScan {
 //    [self stopFillingImageBuffer];
     [self.scanPlugin stopAndReturnError:nil];
@@ -382,13 +475,16 @@ BOOL issScanning = NO;
 - (void)dataManSystemDidConnect:(CDMDataManSystem *)dataManSystem {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self loadSettings];
+
         
-        [_btnScan setTitle:@"START SCANNING" forState:UIControlStateNormal];
+        [self->_btnScan setTitle:@"START SCANNING" forState:UIControlStateNormal];
         issScanning = NO;
         
-        [_btnScan setEnabled:YES];
-        [_lblConnection setText:@"  Connected  "];
-        [_lblConnection setBackgroundColor:[UIColor colorWithRed:0.00 green:0.39 blue:0.00 alpha:1.0]];
+        [self->_btnScan setEnabled:YES];
+        [self->_lblConnection setText:@"  Connected  "];
+        [self->_lblConnection setBackgroundColor:[UIColor colorWithRed:0.00 green:0.39 blue:0.00 alpha:1.0]];
+        
+        [self toggleScanner:nil];
     });
 }
 
