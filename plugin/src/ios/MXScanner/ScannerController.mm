@@ -162,6 +162,7 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
     
     [lblBattery setText:@"- %"];
     lblBattery.tintColor = UIColor.whiteColor;
+    lblBattery.textColor = UIColor.whiteColor;
     lblBattery.backgroundColor = UIColor.redColor;
     [lblBattery.layer setBorderColor:UIColor.redColor.CGColor];
     [lblBattery.layer setBorderWidth:1];
@@ -260,7 +261,7 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
 
                 [self->_btnScan setEnabled:NO];
                 [self->_lblConnection setText:@"  Disconnected  "];
-                [self->_lblConnection setBackgroundColor:[UIColor redColor]];
+                [self->_lblConnection setBackgroundColor:[UIColor systemRedColor]];
             }
             readerDevice.delegate = self;
             readerDevice.dataManSystem.delegate = self;
@@ -269,7 +270,7 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
     } else if (readerDevice.connectionState != CMBConnectionStateConnected){
         [_btnScan setEnabled:NO];
         [_lblConnection setText:@"  Disconnected  "];
-        [_lblConnection setBackgroundColor:[UIColor redColor]];
+        [_lblConnection setBackgroundColor:[UIColor systemRedColor]];
     }
 
 }
@@ -309,7 +310,7 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
     [self configureCognexSettings:^(CDMResponse *response) { }];
     
     [self batteryLevel:^(CDMResponse *response) {
-        [self.batterLevelTimer invalidate];
+        [self updateBatteryLevelLabel:response.payload];
         [self setupBatteryLevelTimer];
     }];
 }
@@ -397,21 +398,29 @@ BOOL issScanning = NO;
 }
 
 - (void)setupBatteryLevelTimer {
-    //Check battery level every 30 seconds
-    self.batterLevelTimer = [NSTimer scheduledTimerWithTimeInterval:30.0f
-                                                             target:self
-                                                           selector:@selector(batteryLevel:)
-                                                           userInfo:nil
-                                                            repeats:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //Check battery level every 30 seconds
+        NSTimeInterval timerDelay = 30.0;
+        [self.batterLevelTimer invalidate];
+        self.batterLevelTimer = nil;
+        self->_batterLevelTimer = [NSTimer scheduledTimerWithTimeInterval:timerDelay target:self selector:@selector(batteryTimerTask:) userInfo:nil repeats:YES];
+    });
+    
+}
+
+- (void)batteryTimerTask:(NSTimer *)timer {
+    [self batteryLevel:^(CDMResponse *response) {
+        [self updateBatteryLevelLabel:response.payload];
+    }];
 }
 
 - (void)batteryLevel:(void(^)(CDMResponse *response))callback {
     dispatch_async(dispatch_get_main_queue(), ^{
-        //TODO: This will crash with timer -  fix me
-        [readerDevice.dataManSystem sendCommand:@"GET BATTERY.CHARGE" withCallback:^(CDMResponse *response) {
-            [self updateBatteryLevelLabel:response.payload];
-            callback(response);
-        }];
+        if (readerDevice && readerDevice.dataManSystem) {
+            [readerDevice.dataManSystem sendCommand:@"GET BATTERY.CHARGE" withCallback:^(CDMResponse *response) {
+                callback(response);
+            }];
+        }
     });
 }
 
@@ -424,7 +433,7 @@ BOOL issScanning = NO;
         if (intValue >= 80) {
             [self updateBatteryLevelLabelColor:UIColor.systemGreenColor];
         } else if (intValue >= 20) {
-            [self updateBatteryLevelLabelColor:UIColor.yellowColor];
+            [self updateBatteryLevelLabelColor:UIColor.systemOrangeColor];
         } else {
             [self updateBatteryLevelLabelColor:UIColor.systemRedColor];
         }
@@ -482,7 +491,7 @@ BOOL issScanning = NO;
         
         [self->_btnScan setEnabled:YES];
         [self->_lblConnection setText:@"  Connected  "];
-        [self->_lblConnection setBackgroundColor:[UIColor colorWithRed:0.00 green:0.39 blue:0.00 alpha:1.0]];
+        [self->_lblConnection setBackgroundColor:UIColor.systemGreenColor];
         
         [self toggleScanner:nil];
     });
@@ -495,9 +504,9 @@ BOOL issScanning = NO;
  */
 - (void)dataManSystemDidDisconnect:(CDMDataManSystem *)dataManSystem withError:(NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_btnScan setEnabled:NO];
-        [_lblConnection setText:@"  Disconnected  "];
-        [_lblConnection setBackgroundColor:[UIColor redColor]];
+        [self->_btnScan setEnabled:NO];
+        [self->_lblConnection setText:@"  Disconnected  "];
+        [self->_lblConnection setBackgroundColor:[UIColor systemRedColor]];
     });
     
 }
@@ -514,7 +523,8 @@ BOOL issScanning = NO;
 
         [_btnScan setEnabled:YES];
         [_lblConnection setText:@"  Connected  "];
-        [_lblConnection setBackgroundColor:[UIColor colorWithRed:0.00 green:0.39 blue:0.00 alpha:1.0]];
+        [_lblConnection setBackgroundColor:UIColor.systemGreenColor];
+        
 //    } else if (readerDevice.connectionState == CMBConnectionStateDisconnected) {
 //        dispatch_async(dispatch_get_main_queue(), ^{
 //            [self connectToReaderDevice];
@@ -522,7 +532,7 @@ BOOL issScanning = NO;
     } else{
         [_btnScan setEnabled:NO];
         [_lblConnection setText:@"  Disconnected  "];
-        [_lblConnection setBackgroundColor:[UIColor redColor]];
+        [_lblConnection setBackgroundColor:[UIColor systemRedColor]];
     }
 }
 
