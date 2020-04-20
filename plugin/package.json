@@ -1,6 +1,6 @@
 {
   "name": "io-anyline-cordova-mx-scanner",
-  "version": "18.1.0",
+  "version": "20.0.0",
   "description": "The cordova plugin for the Anyline SDK",
   "cordova": {
     "id": "io-anyline-cordova",

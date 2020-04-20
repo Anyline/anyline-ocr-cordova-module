@@ -10,7 +10,7 @@
 @interface ALCognexMXConfiguration : NSObject
 
 // Power Settings
-@property (nonatomic) int  powerTimeout; //seconds [30-240060] => default: 1200
+@property (nonatomic) int  powerTimeout; //seconds [30-24000] => default: 1200
 // Camera Settings
 @property (nonatomic,assign) NSString *cameraExposureUSAutoMode; //Auto mode [OFF | ON] => default: OFF
 @property (nonatomic) int cameraExposureUSTarget;   //target pixel value [0-255] => default: 128
