@@ -50,6 +50,9 @@
                 
         <header-file src="src/ios/MXScanner/ScannerController.h" />
         <source-file src="src/ios/MXScanner/ScannerController.mm" />
+        
+        <header-file src="src/ios/MXScanner/ALCognexMXConfiguration.h" />
+        <source-file src="src/ios/MXScanner/ALCognexMXConfiguration.m" />
 
         <!-- Cognex Dataman Frameworks -->
         <framework src="src/ios/MXScanner/Frameworks/DataManFW.framework" embed="true" custom="true" />

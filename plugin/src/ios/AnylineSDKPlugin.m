@@ -3,6 +3,7 @@
 #import <Anyline/Anyline.h>
 #import "ALCordovaUIConfiguration.h"
 #import "ALPluginScanViewController.h"
+#import "ALCognexMXConfiguration.h"
 
 #import "ScannerController.h"
 
@@ -16,6 +17,7 @@
 @property (nonatomic, strong) NSString *licensekey;
 
 @property (nonatomic, strong) ALCordovaUIConfiguration *cordovaUIConf;
+@property (nonatomic, strong) ALCognexMXConfiguration *cognexMXConf;
 @property (nonatomic, strong) NSDictionary *anyline4Config;
 
 @end
@@ -24,17 +26,16 @@
 @implementation AnylineSDKPlugin
 
 - (void)scanMX:(CDVInvokedUrlCommand *)command {
-    //replace this
-    [self processCommandArgumentsAnyline4:command];
-    
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self processCommandArgumentsAnyline4:command];
         
         UIStoryboard* sb = [UIStoryboard storyboardWithName:@"MXStoryBoard" bundle:nil];
         ScannerController *mxVC = [sb instantiateViewControllerWithIdentifier:@"MXScannerController"];
         [mxVC setupWithLicensekey:self.licensekey
                    configuration:self.anyline4Config
-            cordovaConfiguration:self.cordovaUIConf
-                        delegate:self];
+             cordovaConfiguration:self.cordovaUIConf
+                  mxConfiguration:self.cognexMXConf
+                         delegate:self];
         self.baseScanViewController = mxVC;
         [self presentViewController];
     });
@@ -96,6 +97,8 @@
     self.conf = [[ALScanViewPluginConfig alloc] initWithDictionary:options];
     
     self.cordovaUIConf = [[ALCordovaUIConfiguration alloc] initWithDictionary:options];
+    
+    self.cognexMXConf = [[ALCognexMXConfiguration alloc] initWithDictionary:options];
 }
 
 - (void)processCommandArgumentsAnyline4:(CDVInvokedUrlCommand *)command {
@@ -105,6 +108,7 @@
     self.anyline4Config = [command.arguments objectAtIndex:1];
     
     self.cordovaUIConf = [[ALCordovaUIConfiguration alloc] initWithDictionary:self.anyline4Config];
+    self.cognexMXConf = [[ALCognexMXConfiguration alloc] initWithDictionary:self.anyline4Config];
 }
 
 - (void)presentViewController {

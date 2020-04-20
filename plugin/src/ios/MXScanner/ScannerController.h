@@ -8,17 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import "ALPluginScanViewController.h"
+#import "ALCognexMXConfiguration.h"
 
 @interface ScannerController : UIViewController
 
 - (instancetype)initWithLicensekey:(NSString *)licensekey
                      configuration:(NSDictionary *)anylineConfig
               cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                   mxConfiguration:(ALCognexMXConfiguration *)mxConf
                           delegate:(id<ALPluginScanViewControllerDelegate>)delegate;
 
 - (void)setupWithLicensekey:(NSString *)licensekey
               configuration:(NSDictionary *)anylineConfig
        cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+            mxConfiguration:(ALCognexMXConfiguration *)mxConf
                    delegate:(id<ALPluginScanViewControllerDelegate>)delegate;
 
 @property (weak, nonatomic) IBOutlet UIImageView *ivPreview;

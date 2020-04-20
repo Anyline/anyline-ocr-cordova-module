@@ -13,6 +13,7 @@
 #import <ZHPopupView/ZHPopupView.h>
 #include <stdio.h>
 #import <Foundation/Foundation.h>
+#import "ALCognexMXConfiguration.h"
 
 #import "ALPluginHelper.h"
 
@@ -35,6 +36,7 @@
 @property (nonatomic, weak) id<ALPluginScanViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSString *licensekey;
 @property (nonatomic, strong) ALCordovaUIConfiguration *cordovaConfig;
+@property (nonatomic, strong) ALCognexMXConfiguration *mxConfig;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnCancel;
 @property (weak, nonatomic) IBOutlet UIButton *btnDummyResult;
@@ -49,8 +51,9 @@
 CMBReaderDevice *readerDevice;
 
 - (instancetype)initWithLicensekey:(NSString *)licensekey
-       configuration:(NSDictionary *)anylineConfig
-cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                     configuration:(NSDictionary *)anylineConfig
+              cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                   mxConfiguration:(ALCognexMXConfiguration *)mxConf
                           delegate:(id<ALPluginScanViewControllerDelegate>)delegate {
     
     self = [super init];
@@ -59,6 +62,7 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
         _delegate = delegate;
         _anylineConfig = anylineConfig;
         _cordovaConfig = cordovaConf;
+        _mxConfig = mxConf;
         
 //        self.quality = 100;
 //        self.nativeBarcodeEnabled = NO;
@@ -70,11 +74,13 @@ cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
 - (void)setupWithLicensekey:(NSString *)licensekey
               configuration:(NSDictionary *)anylineConfig
        cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+            mxConfiguration:(ALCognexMXConfiguration *)mxConf
                    delegate:(id<ALPluginScanViewControllerDelegate>)delegate {
     _licensekey = licensekey;
     _delegate = delegate;
     _anylineConfig = anylineConfig;
     _cordovaConfig = cordovaConf;
+    _mxConfig = mxConf;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -358,16 +364,24 @@ BOOL issScanning = NO;
 }
 
 - (void) startScan {
-    [readerDevice.dataManSystem sendCommand:@"SET CAMERA.EXPOSURE-US OFF 128 400 50" withCallback:^(CDMResponse *response) {
+    NSString *setCameraExposureUS = [NSString stringWithFormat:@"SET CAMERA.EXPOSURE-US %@ %d %d %d", self.mxConfig.cameraExposureUSAutoMode, self.mxConfig.cameraExposureUSTarget, self.mxConfig.cameraExposureUSExposure, self.mxConfig.cameraExposureUSGain];
+    
+    [readerDevice.dataManSystem sendCommand:setCameraExposureUS withCallback:^(CDMResponse *response) {
         [readerDevice.dataManSystem sendCommand:@"GET CAMERA.EXPOSURE-US" withCallback:^(CDMResponse *response) {
             NSLog(@"Exposure-US: %@",response.payload);
-            [readerDevice.dataManSystem sendCommand:@"SET CAMERA.EXPOSURE 400" withCallback:^(CDMResponse *response) {
+            NSString *setCameraExposure = [NSString stringWithFormat:@"SET CAMERA.EXPOSURE %d", self.mxConfig.cameraExposure];
+            
+            [readerDevice.dataManSystem sendCommand:setCameraExposure withCallback:^(CDMResponse *response) {
                 [readerDevice.dataManSystem sendCommand:@"GET CAMERA.EXPOSURE" withCallback:^(CDMResponse *response) {
                     NSLog(@"Exposure: %@",response.payload);
-                    [readerDevice.dataManSystem sendCommand:@"SET CAMERA.GAIN 6.0" withCallback:^(CDMResponse *response) {
+                    NSString *setCameraGain = [NSString stringWithFormat:@"SET CAMERA.GAIN %f", self.mxConfig.cameraGain];
+                    
+                    [readerDevice.dataManSystem sendCommand:setCameraGain withCallback:^(CDMResponse *response) {
                         [readerDevice.dataManSystem sendCommand:@"GET CAMERA.GAIN" withCallback:^(CDMResponse *response) {
                             NSLog(@"GAIN: %@",response.payload);
-                            [readerDevice.dataManSystem sendCommand:@"SET FOCUS.POWER 13.0" withCallback:^(CDMResponse *response) {
+                            NSString *setFocusPower = [NSString stringWithFormat:@"SET FOCUS.POWER %f", self.mxConfig.focusPower];
+                            
+                            [readerDevice.dataManSystem sendCommand:setFocusPower withCallback:^(CDMResponse *response) {
                                 [readerDevice.dataManSystem sendCommand:@"GET FOCUS.POWER" withCallback:^(CDMResponse *response) {
                                     NSLog(@"FOCUS POWER: %@",response.payload);
                                     [self.scanPlugin stopAndReturnError:nil];
@@ -389,7 +403,9 @@ BOOL issScanning = NO;
     [readerDevice.dataManSystem sendCommand:@"SET BUTTON.ACTION 0 0" withCallback:^(CDMResponse *response) {
         [readerDevice.dataManSystem sendCommand:@"SET BUTTON.ACTION 1 0" withCallback:^(CDMResponse *response) {
             [readerDevice.dataManSystem sendCommand:@"SET BUTTON.ACTION 2 0" withCallback:^(CDMResponse *response) {
-                [readerDevice.dataManSystem sendCommand:@"SET POWER.POWEROFF-TIMEOUT 1200" withCallback:^(CDMResponse *response) {
+                NSString *setPowerOffTimeout = [NSString stringWithFormat:@"SET POWER.POWEROFF-TIMEOUT %d", self.mxConfig.powerTimeout];
+                
+                [readerDevice.dataManSystem sendCommand:setPowerOffTimeout withCallback:^(CDMResponse *response) {
                     callback(response);
                 }];
             }];
