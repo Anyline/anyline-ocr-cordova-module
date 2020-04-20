@@ -541,6 +541,8 @@ BOOL issScanning = NO;
         [_lblConnection setText:@"  Connected  "];
         [_lblConnection setBackgroundColor:UIColor.systemGreenColor];
         
+        [self toggleScanner:nil];
+        
 //    } else if (readerDevice.connectionState == CMBConnectionStateDisconnected) {
 //        dispatch_async(dispatch_get_main_queue(), ^{
 //            [self connectToReaderDevice];

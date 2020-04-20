@@ -3,7 +3,7 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova-mx-scanner"
-        version="18.1.0">
+        version="20.0.0">
 
     <name>AnylineSDK</name>
 
@@ -70,7 +70,7 @@
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods -->
-        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 18.1"/>
+        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 20"/>
         <framework src="ZHPopupView" type="podspec" spec ="~> 0.1.1" />
         <framework src="CocoaAsyncSocket" type="podspec" spec ="~> 7.6.3" />
     
