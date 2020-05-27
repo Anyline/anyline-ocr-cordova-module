@@ -31,13 +31,20 @@ module.exports = {
             printLog(args);
         }
 
-        createPreview(config.doneButton);
+        try {
+            scanViewController.setup(licenseKey, mode, JSON.stringify(config), ocrConfig);
+        } catch (e) {
+            printError(e);
+            onError(e);
+            return;
+        }
 
+        createPreview(config.doneButton);
+        
         if (ocrConfig || ocrConfig !== '') {
             ocrConfig = JSON.stringify(ocrConfig);
         }
 
-        scanViewController.setup(licenseKey, mode, JSON.stringify(config), ocrConfig);
 
         // start scanning here
         scanViewController.captureManager.onpreviewstarted = function (args) {
@@ -241,7 +248,9 @@ function createPreview(cancelButton) {
         var obj = JSON.parse(rectInfo);
 
         // Update Cutout from SDK
-        scanViewController.updateJSCutout(obj.rect.x, obj.rect.y, obj.rect.width, obj.rect.height);
+		for( let cutout in obj ){
+			scanViewController.updateJSCutout(obj[cutout].x, obj[cutout].y, obj[cutout].width, obj[cutout].height);
+		}
 
         const canvasElement = document.getElementById("anylineCanvas");
         if (canvasElement != undefined) {
