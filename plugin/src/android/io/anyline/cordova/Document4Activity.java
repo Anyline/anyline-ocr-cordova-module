@@ -32,17 +32,19 @@ import java.util.UUID;
 import android.support.v4.content.ContextCompat;
 import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.camera.CameraOpenListener;
+import at.nineyards.anyline.core.LicenseException;
 import at.nineyards.anyline.models.AnylineImage;
 import at.nineyards.anyline.util.TempFileUtil;
 import io.anyline.plugin.ScanResult;
 import io.anyline.plugin.document.DocumentScanResultListener;
 import io.anyline.plugin.document.DocumentScanViewPlugin;
+import io.anyline.view.LicenseKeyExceptionListener;
 import io.anyline.view.ScanView;
 
 /**
  * Example activity for the Anyline-Document-Detection-Module
  */
-public class Document4Activity extends AnylineBaseActivity implements CameraOpenListener {
+public class Document4Activity extends AnylineBaseActivity implements CameraOpenListener, LicenseKeyExceptionListener {
 
     private static final long ERROR_MESSAGE_DELAY = 2000;
     private static final String TAG = Document4Activity.class.getSimpleName();
@@ -553,4 +555,11 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
         // This is useful to present an alternative way to enter the required data if no camera exists.
         throw new RuntimeException(e);
     }
+
+    @Override
+    public void licenseKeyCheck(LicenseException licenseCheck) {
+        finishWithError(licenseCheck.getLocalizedMessage());
+    }
+
+
 }

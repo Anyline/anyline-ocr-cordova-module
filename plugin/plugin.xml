@@ -123,6 +123,8 @@
                        target="res/layout/activity_scan_document.xml"/>
         <resource-file src="src/android/res/layout/activity_scan_scanview.xml"
                        target="res/layout/activity_scan_scanview.xml"/>
+        <resource-file src="src/android/res/drawable/manual_picture.png"
+                       target="res/drawable/manual_picture.png"/>
 
     </platform>
 

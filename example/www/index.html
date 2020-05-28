@@ -27,11 +27,31 @@
                                     localStorage.setItem("hasStartedAnyline", isLoading)
                                 }
                             </script>
+                            <script type="application/javascript">
+                                function showMrzIfiOS() {
+                                    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+                                    // Windows Phone must come first because its UA also contains "Android"
+                                    if (/windows phone/i.test(userAgent)) {
+                                        document.getElementById(1234).style.display = 'none';
+                                        }
+
+                                    if (/android/i.test(userAgent)) {
+                                        document.getElementById(1234).style.display = 'none';
+                                        }
+
+                                    // iOS detection from: http://stackoverflow.com/a/9039885/177710
+                                    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                                        document.getElementById(1234).style.display = 'block';
+                                        }
+                                }
+                            </script>
     </head>
-    
+
+    <body onload="javascript:showMrzIfiOS()">
     <body>
         <h1>Anyline Cordova</h1>
-        
+
         <div id="navigation">
             <details id="details_scan_modes" open>
                 <summary class="summary1">
@@ -64,7 +84,7 @@
                 <br />
                 <input type="button" value="MRZ of Passport or ID" onclick="anyline.mrz.scan()" class="formButton" disabled=true/>
                 <br />
-                <input type="button" value="MRZ+NFC (iOS)" onclick="anyline.nfc.scan()" class="formButton" disabled=true/>
+                <input type="button" value="MRZ+NFC (iOS)" onclick="anyline.nfc.scan()" class="formButton" disabled=true id="1234" onload="showMrz()" />
                 <br />
                 <input type="button" value="German ID Front" onclick="anyline.germanIdFront.scan()"
                 class="formButton" disabled=true/>
