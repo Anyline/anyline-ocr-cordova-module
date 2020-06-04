@@ -90,7 +90,12 @@ anyline.document = {
             },
             "cancelOnResult": true
         },
-        quality: 90
+      	"document": {
+  	    "manualCaptureButton": {
+  		"buttonColor": "0099ff"
+  	    }
+  	},
+      quality: 90
     },
 
     scan: function () {

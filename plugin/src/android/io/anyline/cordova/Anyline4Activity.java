@@ -22,6 +22,7 @@ import java.util.List;
 
 import at.nineyards.anyline.AnylineDebugListener;
 import at.nineyards.anyline.camera.CameraController;
+import at.nineyards.anyline.core.LicenseException;
 import at.nineyards.anyline.core.RunFailure;
 import at.nineyards.anyline.core.Vector_Contour;
 import at.nineyards.anyline.core.exception_error_codes;
@@ -46,12 +47,13 @@ import io.anyline.plugin.meter.MeterScanViewPlugin;
 import io.anyline.plugin.ocr.OcrScanResult;
 import io.anyline.plugin.ocr.OcrScanViewPlugin;
 import io.anyline.view.AbstractBaseScanViewPlugin;
+import io.anyline.view.LicenseKeyExceptionListener;
 import io.anyline.view.ParallelScanViewComposite;
 import io.anyline.view.ScanView;
 import io.anyline.view.SerialScanViewComposite;
 
 
-public class Anyline4Activity extends AnylineBaseActivity {
+public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyExceptionListener {
 	private static final String TAG = Anyline4Activity.class.getSimpleName();
 
 	public ScanView anylineScanView;
@@ -477,8 +479,7 @@ public class Anyline4Activity extends AnylineBaseActivity {
 			@Override
 			public void run() {
 				if (radioGroup != null) {
-					//Rect rect = anylineScanView.getScanViewPlugin().getCutoutImageOnSurface();
-					Rect rect = ((MeterScanViewPlugin) scanViewPlugin).getCutoutRectOnVisibleView();
+					Rect rect = ((MeterScanViewPlugin) scanViewPlugin).getCutoutRect().rectOnVisibleView;
 
 					RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) radioGroup.getLayoutParams();
 					lp.setMargins(rect.left + cordovaUiConfig.getOffsetX(), rect.top + cordovaUiConfig.getOffsetY(), 0, 0);
@@ -563,5 +564,11 @@ public class Anyline4Activity extends AnylineBaseActivity {
 		setContentView(relativeLayout, matchParentParams);
 
 	}
+
+	@Override
+	public void licenseKeyCheck(LicenseException licenseCheck) {
+		finishWithError(licenseCheck.getLocalizedMessage());
+	}
+
 
 }
