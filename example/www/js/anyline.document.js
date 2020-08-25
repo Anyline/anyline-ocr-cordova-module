@@ -88,7 +88,7 @@ anyline.document = {
                 "vibrateOnResult": true,
                 "blinkAnimationOnResult": true
             },
-            "cancelOnResult": false
+            "cancelOnResult": true
         },
       	"document": {
   	    "manualCaptureButton": {
