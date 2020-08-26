@@ -3,10 +3,12 @@ package io.anyline.cordova;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -159,6 +161,7 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
         documentScanView.getScanViewPlugin().addScanResultListener(new DocumentScanResultListener() {
             @Override
             public void onResult(ScanResult documentResult) {
+                Log.i(TAG, "******** On Result");
 
                 // handle the result document images here
                 if (progressDialog != null && progressDialog.isShowing()) {
@@ -169,27 +172,7 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                 AnylineImage transformedImage = (AnylineImage) documentResult.getResult();
                 AnylineImage fullFrame = documentResult.getFullImage();
 
-
-                // resize display view based on larger side of document, and display document
-                int widthDP, heightDP;
-                Bitmap bmpTransformedImage = transformedImage.getBitmap();
-
-                if (bmpTransformedImage.getHeight() > bmpTransformedImage.getWidth()) {
-                    widthDP = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
-                    heightDP = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 160, getResources().getDisplayMetrics());
-                    //Add a comment to this line
-
-                    imageViewResult.getLayoutParams().width = widthDP;
-                    imageViewResult.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                } else {
-                    widthDP = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 160, getResources().getDisplayMetrics());
-                    heightDP = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
-
-                    imageViewResult.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    imageViewResult.getLayoutParams().height = heightDP;
-                }
-
-                imageViewResult.setImageBitmap(Bitmap.createScaledBitmap(transformedImage.getBitmap(), widthDP, heightDP, false));
+                imageViewResultSetImageBitmap(transformedImage);
 
                 /**
                  * IMPORTANT: cache provided frames here, and release them at the end of this onResult. Because
@@ -247,7 +230,10 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                 JSONObject jsonObject;
                 try {
                     jsonObject = new JSONObject(configJson);
-                    cancelOnResult = jsonObject.getBoolean("cancelOnResult");
+                    // cancelOnResult is defined in section viewPlugin, so get it from there:
+                    JSONObject viewPluginJson = jsonObject.optJSONObject("viewPlugin");
+
+                    cancelOnResult = viewPluginJson.getBoolean("cancelOnResult");
                 } catch (Exception e) {
                     Log.d(TAG, e.getLocalizedMessage());
                 }
@@ -315,14 +301,44 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
             @Override
             public void onTakePictureSuccess() {
                 // this is called after the image has been captured from the camera and is about to be processed
+                // handle the result document images here
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+
+                // do not display error messages while "processing picture" progress dialog is shown:
+                errorMessageLayout.setVisibility(View.GONE);
+
                 progressDialog = ProgressDialog.show(Document4Activity.this, getString(
                         getResources().getIdentifier("document_processing_picture_header", "string", getPackageName())),
                                                      getString(
                                                              getResources().getIdentifier("document_processing_picture", "string", getPackageName())),
                                                      true);
 
-                if (errorMessageAnimator != null && errorMessageAnimator.isRunning()) {
+                // there is a bug in the sdk that onTakePictureSuccess is called but onResult not.
+                // so implement a workaround: hide the progressDialog after 2 seconds, the phone will continue scanning
 
+                final Handler handler1 = new Handler();
+                final Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                    }
+                };
+
+                progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        handler1.removeCallbacks(runnable);
+                    }
+                });
+
+                handler1.postDelayed(runnable, 2000);
+                // workaround end
+
+                if (errorMessageAnimator != null && errorMessageAnimator.isRunning()) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -330,8 +346,8 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                             errorMessageLayout.setVisibility(View.GONE);
                         }
                     });
-
                 }
+
             }
 
             @Override
@@ -376,6 +392,8 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                     progressDialog.dismiss();
                 }
 
+                imageViewResultSetImageBitmap(anylineImage);
+
                 // save fullFrame
                 try {
                     File imageFile = TempFileUtil.createTempFileCheckCache(Document4Activity.this, UUID.randomUUID().toString(), ".jpg");
@@ -399,7 +417,10 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                 JSONObject jsonObject;
                 try {
                     jsonObject = new JSONObject(configJson);
-                    cancelOnResult = jsonObject.getBoolean("cancelOnResult");
+                    // cancelOnResult is defined in section viewPlugin, so get it from there:
+                    JSONObject viewPluginJson = jsonObject.optJSONObject("viewPlugin");
+
+                    cancelOnResult = viewPluginJson.getBoolean("cancelOnResult");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -411,6 +432,7 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                 } else {
                     btnCapture.setClickable(true);
                     ResultReporter.onResult(jsonResult, false);
+                    documentScanView.start();
                 }
             }
 
@@ -424,6 +446,29 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
 
         // optionally stop the scan once a valid result was returned
         // documentScanView.setCancelOnResult(cancelOnResult);
+
+    }
+
+    private void imageViewResultSetImageBitmap(AnylineImage anylineImage) {
+        // resize display view based on larger side of document, and display document
+        int widthDP, heightDP;
+        Bitmap bmpTransformedImage = anylineImage.getBitmap();
+
+        if (bmpTransformedImage.getHeight() > bmpTransformedImage.getWidth()) {
+            widthDP = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+            heightDP = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 160, getResources().getDisplayMetrics());
+
+            imageViewResult.getLayoutParams().width = widthDP;
+            imageViewResult.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        } else {
+            widthDP = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 160, getResources().getDisplayMetrics());
+            heightDP = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+
+            imageViewResult.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            imageViewResult.getLayoutParams().height = heightDP;
+        }
+
+        imageViewResult.setImageBitmap(Bitmap.createScaledBitmap(anylineImage.getBitmap(), widthDP, heightDP, false));
 
     }
 
