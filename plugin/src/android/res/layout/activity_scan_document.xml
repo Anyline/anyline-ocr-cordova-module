@@ -39,6 +39,20 @@
         android:scaleType="centerInside"
         android:src="@drawable/manual_picture" />
 
+    <ImageButton
+        android:id="@+id/finish"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="false"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        android:background="#00000000"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/right_arrow" />
+
     <FrameLayout
         android:id="@+id/error_message_layout"
         android:layout_width="match_parent"

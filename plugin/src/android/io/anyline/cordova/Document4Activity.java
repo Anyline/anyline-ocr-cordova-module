@@ -61,15 +61,18 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
     private int quality = 100;
     private Runnable errorMessageCleanup;
     private ImageButton btnCapture;
+    private ImageButton btnFinish;
     JSONObject jsonResult;
+    private Boolean cancelOnResult = true;
+
 
     private android.os.Handler handler = new android.os.Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getResources().getIdentifier("activity_scan_document", "layout", getPackageName()));
-
 
         // takes care of fading the error message out after some time with no error reported from the SDK
         errorMessageCleanup = new Runnable() {
@@ -92,7 +95,6 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                     }
                 }
                 handler.postDelayed(errorMessageCleanup, ERROR_MESSAGE_DELAY);
-
             }
         };
 
@@ -115,11 +117,23 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
             documentScanView.setScanConfig(json, licenseKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.i(TAG, "**************** Exception: " + e);
+            Log.i(TAG, "Exception: " + e);
+        }
+
+        cancelOnResult = true;
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(configJson);
+            // cancelOnResult is defined in section viewPlugin, so get it from there:
+            JSONObject viewPluginJson = jsonObject.optJSONObject("viewPlugin");
+
+            cancelOnResult = viewPluginJson.getBoolean("cancelOnResult");
+        } catch (Exception e) {
+            Log.d(TAG, e.getLocalizedMessage());
         }
 
         btnCapture = findViewById(getResources().getIdentifier("capture", "id", getPackageName()));
-
+        btnFinish = findViewById(getResources().getIdentifier("finish", "id", getPackageName()));
         // get Document specific Configs
         if (json.has("document")) {
             try {
@@ -133,7 +147,6 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                     if (manCapBtnConf.has("buttonColor")) {
                         //btnCapture.setBackgroundColor(Color.parseColor("#" + manCapBtnConf.getString("buttonColor")));
                         btnCapture.setColorFilter(Color.parseColor("#" + manCapBtnConf.getString("buttonColor")));
-
                     }
 
                     // init Manual Capture Button
@@ -144,6 +157,8 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                         public void onClick(View v) {
                             btnCapture.setClickable(false);
                             documentScanView.stop();
+                            Log.i(TAG, "manualScan documentScanView.stop()");
+
                             ((DocumentScanViewPlugin) documentScanView.getScanViewPlugin()).triggerPictureCornerDetection();
                         }
                     });
@@ -152,6 +167,27 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                     btnCapture.setVisibility(View.GONE);
                 }
 
+                // show finish Button only if defined in config and if continuous scanning (cancelOnResult = false):
+                if (documentConfig.has("finishedButton") && !cancelOnResult) {
+                    JSONObject finishedBtnConf = documentConfig.getJSONObject("finishedButton");
+
+                    if (finishedBtnConf.has("buttonColor")) {
+                        btnFinish.setColorFilter(Color.parseColor("#" + finishedBtnConf.getString("buttonColor")));
+                    }
+
+                    // init finish Button
+                    btnFinish.setVisibility(View.VISIBLE);
+                    btnFinish.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                        }
+                    });
+
+                } else {
+                    btnFinish.setVisibility(View.GONE);
+                }
             } catch (JSONException e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -198,11 +234,10 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                     File imageFile = TempFileUtil.createTempFileCheckCache(Document4Activity.this,
                                                                            UUID.randomUUID().toString(), ".jpg");
                     transformedImage.save(imageFile, quality);
-                    showToast(getString(
-                            getResources().getIdentifier("document_image_saved_to", "string", getPackageName())) + " " + imageFile.getAbsolutePath());
+//                    showToast(getString(
+//                            getResources().getIdentifier("document_image_saved_to", "string", getPackageName())) + " " + imageFile.getAbsolutePath());
 
                     jsonResult.put("imagePath", imageFile.getAbsolutePath());
-
 
                     // Save the Full Frame Image
                     if (fullFrame != null) {
@@ -225,19 +260,6 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                 transformedImage.release();
                 fullFrame.release();
 
-                Boolean cancelOnResult = true;
-
-                JSONObject jsonObject;
-                try {
-                    jsonObject = new JSONObject(configJson);
-                    // cancelOnResult is defined in section viewPlugin, so get it from there:
-                    JSONObject viewPluginJson = jsonObject.optJSONObject("viewPlugin");
-
-                    cancelOnResult = viewPluginJson.getBoolean("cancelOnResult");
-                } catch (Exception e) {
-                    Log.d(TAG, e.getLocalizedMessage());
-                }
-
                 if (cancelOnResult) {
                     ResultReporter.onResult(jsonResult, true);
                     setResult(AnylinePlugin.RESULT_OK);
@@ -247,7 +269,6 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                     ResultReporter.onResult(jsonResult, false);
                 }
             }
-
 
             @Override
             public void onPreviewProcessingSuccess(AnylineImage anylineImage) {
@@ -317,7 +338,6 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
 
                 // there is a bug in the sdk that onTakePictureSuccess is called but onResult not.
                 // so implement a workaround: hide the progressDialog after 2 seconds, the phone will continue scanning
-
                 final Handler handler1 = new Handler();
                 final Runnable runnable = new Runnable() {
                     @Override
@@ -363,6 +383,8 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
 
                 // save fullFrame
                 //JSONObject
+                Log.i(TAG, "manualScan onPictureCornersDetected");
+
                 jsonResult = new JSONObject();
 
                 try {
@@ -371,6 +393,7 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                     //manualResult.put("fullImagePath", imageFile.getAbsolutePath());
                     jsonResult.put("fullImagePath", imageFile.getAbsolutePath());
                     jsonResult.put("outline", jsonForOutline(list));
+                    Log.i(TAG, "manualScan try: save full image success");
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
@@ -391,6 +414,7 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+                Log.i(TAG, "manualScan onPictureTransformed");
 
                 imageViewResultSetImageBitmap(anylineImage);
 
@@ -404,6 +428,7 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                     //                        // Only show toast if user has specified it should be shown
                     //                        showToast(getString(getResources().getIdentifier("document_image_saved_to", "string", getPackageName())) + " " + imageFile.getAbsolutePath());
                     //                    }
+                    Log.i(TAG, "manualScan try: save cropped image success");
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -413,18 +438,6 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
 
                 anylineImage.release();
 
-                Boolean cancelOnResult = true;
-                JSONObject jsonObject;
-                try {
-                    jsonObject = new JSONObject(configJson);
-                    // cancelOnResult is defined in section viewPlugin, so get it from there:
-                    JSONObject viewPluginJson = jsonObject.optJSONObject("viewPlugin");
-
-                    cancelOnResult = viewPluginJson.getBoolean("cancelOnResult");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
                 if (cancelOnResult) {
                     ResultReporter.onResult(jsonResult, true);
                     setResult(AnylinePlugin.RESULT_OK);
@@ -433,6 +446,7 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
                     btnCapture.setClickable(true);
                     ResultReporter.onResult(jsonResult, false);
                     documentScanView.start();
+                    Log.i(TAG, "manualScan documentScanView.start()");
                 }
             }
 
@@ -443,7 +457,6 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
             }
 
         });
-
         // optionally stop the scan once a valid result was returned
         // documentScanView.setCancelOnResult(cancelOnResult);
 
@@ -604,6 +617,5 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
     public void licenseKeyCheck(LicenseException licenseCheck) {
         finishWithError(licenseCheck.getLocalizedMessage());
     }
-
 
 }
