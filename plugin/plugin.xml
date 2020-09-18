@@ -125,6 +125,8 @@
                        target="res/layout/activity_scan_scanview.xml"/>
         <resource-file src="src/android/res/drawable/manual_picture.png"
                        target="res/drawable/manual_picture.png"/>
+        <resource-file src="src/android/res/drawable/right_arrow.png"
+                       target="res/drawable/right_arrow.png"/>
 
     </platform>
 
