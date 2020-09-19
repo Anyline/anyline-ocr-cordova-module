@@ -39,6 +39,7 @@ import io.anyline.plugin.id.Identification;
 import io.anyline.plugin.id.MrzConfig;
 import io.anyline.plugin.id.MrzIdentification;
 import io.anyline.plugin.id.TemplateConfig;
+import io.anyline.plugin.id.UniversalIdConfig;
 import io.anyline.plugin.licenseplate.LicensePlateScanResult;
 import io.anyline.plugin.licenseplate.LicensePlateScanViewPlugin;
 import io.anyline.plugin.meter.MeterScanMode;
@@ -365,7 +366,7 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
 
 
                         });
-                    } else if (((IdScanPlugin) ((IdScanViewPlugin) scanViewPlugin).getScanPlugin()).getIdConfig() instanceof TemplateConfig) {
+                    } else if (((IdScanPlugin) ((IdScanViewPlugin) scanViewPlugin).getScanPlugin()).getIdConfig() instanceof UniversalIdConfig) {
                         scanViewPlugin.addScanResultListener(new ScanResultListener<ScanResult<ID>>() {
                             @Override
                             public void onResult(ScanResult<ID> idScanResult) {
