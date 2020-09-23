@@ -26,6 +26,4 @@
             </array>
         </config-file>
     </platform>
-    <plugin name="io-anyline-cordova" spec="../plugin" />
-    <engine name="ios" spec="~5.1.1" />
 </widget>
