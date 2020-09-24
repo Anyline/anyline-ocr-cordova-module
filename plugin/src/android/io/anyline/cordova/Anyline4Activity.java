@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
@@ -38,7 +39,6 @@ import io.anyline.plugin.id.IdScanViewPlugin;
 import io.anyline.plugin.id.Identification;
 import io.anyline.plugin.id.MrzConfig;
 import io.anyline.plugin.id.MrzIdentification;
-import io.anyline.plugin.id.TemplateConfig;
 import io.anyline.plugin.id.UniversalIdConfig;
 import io.anyline.plugin.licenseplate.LicensePlateScanResult;
 import io.anyline.plugin.licenseplate.LicensePlateScanViewPlugin;
@@ -62,13 +62,17 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
     private RadioGroup radioGroup;
     private CordovaUIConfig cordovaUiConfig;
     private String cropAndTransformError;
+    private Boolean isFirstCameraOpen; // only if camera is opened the first time get coordinates of the cutout to avoid flickering when switching between analog and digital
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        isFirstCameraOpen=true;
+
         //init the scan view
         anylineScanView = new ScanView(this, null);
-
 
         try {
             //start initialize anyline
@@ -498,13 +502,19 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
             @Override
             public void run() {
                 if (radioGroup != null) {
-                    Rect rect = ((MeterScanViewPlugin) scanViewPlugin).getCutoutRect().rectOnVisibleView;
-
-                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) radioGroup.getLayoutParams();
-                    lp.setMargins(rect.left + cordovaUiConfig.getOffsetX(), rect.top + cordovaUiConfig.getOffsetY(), 0, 0);
-                    radioGroup.setLayoutParams(lp);
-
-                    radioGroup.setVisibility(View.VISIBLE);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            if (isFirstCameraOpen) {
+                                isFirstCameraOpen = false;
+                                Rect rect = ((MeterScanViewPlugin) scanViewPlugin).getCutoutRect().rectOnVisibleView;
+                                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) radioGroup.getLayoutParams();
+                                lp.setMargins(rect.left + cordovaUiConfig.getOffsetX(), rect.top + cordovaUiConfig.getOffsetY(), 0, 0);
+                                radioGroup.setLayoutParams(lp);
+                                radioGroup.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }, 600);
                 }
             }
         });
@@ -560,6 +570,7 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                     View button = group.findViewById(checkedId);
                     String mode = modes.get(group.indexOfChild(button));
                     ((MeterScanViewPlugin) scanViewPlugin).setScanMode(MeterScanMode.valueOf(mode));
+                    anylineScanView.releaseCameraInBackground();
                     anylineScanView.stop();
                     try {
                         Thread.sleep(200);
