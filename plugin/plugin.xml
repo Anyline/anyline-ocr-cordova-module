@@ -3,7 +3,7 @@
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="io-anyline-cordova"
-        version="23.0.0">
+        version="24.0.0">
 
     <name>AnylineSDK</name>
 
@@ -44,7 +44,7 @@
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods -->
-        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 23"/>
+        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 24"/>
 
         <!-- <podspec>
             <config>
@@ -125,6 +125,8 @@
                        target="res/layout/activity_scan_scanview.xml"/>
         <resource-file src="src/android/res/drawable/manual_picture.png"
                        target="res/drawable/manual_picture.png"/>
+        <resource-file src="src/android/res/drawable/right_arrow.png"
+                       target="res/drawable/right_arrow.png"/>
 
     </platform>
 

@@ -88,13 +88,16 @@ anyline.document = {
                 "vibrateOnResult": true,
                 "blinkAnimationOnResult": true
             },
-            "cancelOnResult": true
+            "cancelOnResult": false
         },
       	"document": {
-  	    "manualCaptureButton": {
-  		"buttonColor": "0099ff"
-  	    }
-  	},
+  	        "manualCaptureButton": {
+  		        "buttonColor": "0099ff"
+  	        },
+  	        "finishedButton": {
+  		        "buttonColor": "0099ff"
+  	        },
+  	    },
       quality: 90
     },
 
