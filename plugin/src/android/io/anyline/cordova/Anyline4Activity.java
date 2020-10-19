@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import at.nineyards.anyline.AnylineDebugListener;
 import at.nineyards.anyline.camera.CameraController;
@@ -27,6 +28,7 @@ import at.nineyards.anyline.core.Vector_Contour;
 import at.nineyards.anyline.core.exception_error_codes;
 import io.anyline.plugin.ScanResult;
 import io.anyline.plugin.ScanResultListener;
+import io.anyline.plugin.barcode.Barcode;
 import io.anyline.plugin.barcode.BarcodeScanResult;
 import io.anyline.plugin.barcode.BarcodeScanViewPlugin;
 import io.anyline.plugin.id.DrivingLicenseConfig;
@@ -235,8 +237,12 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                                 } else if (subResult instanceof BarcodeScanResult) {
                                     JSONObject jsonBcResult = new JSONObject();
                                     try {
-                                        jsonBcResult.put("value", subResult.getResult());
-                                        jsonBcResult.put("format", ((BarcodeScanResult) subResult).getBarcodeFormat());
+                                        List<Barcode> barcodeList = (List<Barcode>) subResult.getResult();
+                                        for (int i=0; i<barcodeList.size(); i++) {
+                                            jsonBcResult.put("value " + i, barcodeList.get(i).getValue());
+                                            jsonBcResult.put("format " + i, (barcodeList.get(i) .getBarcodeFormat()));
+                                        }
+
                                         jsonBcResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, subResult,
                                                                                       jsonBcResult);
                                         jsonResult.put(subResult.getPluginId(), jsonBcResult);
@@ -421,9 +427,11 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                         public void onResult(BarcodeScanResult barcodeScanResult) {
                             JSONObject jsonResult = new JSONObject();
                             try {
-
-                                jsonResult.put("value", barcodeScanResult.getResult());
-                                jsonResult.put("format", barcodeScanResult.getBarcodeFormat());
+                                List<Barcode> barcodeList = barcodeScanResult.getResult();
+                                for (int i=0; i<barcodeList.size(); i++) {
+                                    jsonResult.put("value " + i, barcodeList.get(i).getValue());
+                                    jsonResult.put("format " + i, (barcodeList.get(i) .getBarcodeFormat()));
+                                }
                                 jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, barcodeScanResult, jsonResult);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -602,3 +610,4 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
 
 
 }
+
