@@ -24,7 +24,7 @@ anyline.barcode = {
        var detailsBarcodes = "";
        for (var i = 0; i < result.multiBarcodes.length; i++) {
          detailsBarcodes += result.multiBarcodes[i].value;
-         detailsBarcodes += " (" + result.multiBarcodes[i].format + ")";
+         detailsBarcodes += " (" + result.multiBarcodes[i].barcodeFormat + ")";
          if (i < result.multiBarcodes.length - 1) {
            detailsBarcodes += ", ";
          }
@@ -40,8 +40,7 @@ anyline.barcode = {
 
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/>"
       + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</br>"
-      + (detailsBarcodes ? "<br/><i><b>Detected Barcodes:</b> " + detailsBarcodes + "</i>" : "")
-      + "<b>Barcode:</b> " + result.value + "</br>" + "<b>Format </b> " + result.format + "</p>" +
+      + (detailsBarcodes ? "<br/><i><b>Detected Barcodes:</b> " + detailsBarcodes + "</i>" : "<b>Barcode:</b> " + result.value + "</br>" + "<b>Format </b> " + result.format + "</p>")+
       div.innerHTML;
 
     document.getElementById("details_scan_modes").removeAttribute("open");
