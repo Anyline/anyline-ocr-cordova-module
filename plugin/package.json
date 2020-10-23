@@ -1,13 +1,12 @@
 {
   "name": "io-anyline-cordova",
-  "version": "24.1.0",
+  "version": "25.0.0",
   "description": "The cordova plugin for the Anyline SDK",
   "cordova": {
     "id": "io-anyline-cordova",
     "platforms": [
       "ios",
-      "android",
-      "windows"
+      "android"
     ]
   },
   "keywords": [
