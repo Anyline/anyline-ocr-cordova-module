@@ -18,16 +18,29 @@ anyline.barcode = {
     //this is called with result of the barcode module
     //the result is a string containing the barcode
 
-    var div = document.getElementById('results');
-    console.log("Barcode result: " + JSON.stringify(result));
 
-    if (div.childElementCount >= 3) {
-      div.removeChild(div.childNodes[div.childElementCount - 1]);
-    }
+
+     if (result.multiBarcodes) {
+       var detailsBarcodes = "";
+       for (var i = 0; i < result.multiBarcodes.length; i++) {
+         detailsBarcodes += result.multiBarcodes[i].value;
+         detailsBarcodes += " (" + result.multiBarcodes[i].barcodeFormat + ")";
+         if (i < result.multiBarcodes.length - 1) {
+           detailsBarcodes += ", ";
+         }
+       }
+     }
+
+      var div = document.getElementById('results');
+         console.log("Barcode result: " + JSON.stringify(result));
+
+         if (div.childElementCount >= 3) {
+           div.removeChild(div.childNodes[div.childElementCount - 1]);
+         }
 
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/>"
       + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</br>"
-      + "<b>Barcode:</b> " + result.value + "</br>" + "<b>Format </b> " + result.format + "</p>" +
+      + (detailsBarcodes ? "<br/><i><b>Detected Barcodes:</b> " + detailsBarcodes + "</i>" : "<b>Barcode:</b> " + result.value + "</br>" + "<b>Format </b> " + result.format + "</p>")+
       div.innerHTML;
 
     document.getElementById("details_scan_modes").removeAttribute("open");
@@ -60,7 +73,7 @@ anyline.barcode = {
       "plugin": {
         "id": "Barcode_ID",
         "barcodePlugin": {
-          // "barcodeFormatOptions" : ["CODABAR", "EAN_13", "UPC_A"]
+           "barcodeFormatOptions" : ["CODABAR", "EAN_13", "UPC_A"]
         }
       },
       "cutoutConfig": {
@@ -182,7 +195,9 @@ anyline.barcode = {
     }
     changeLoadingState(true);
 
+
     var licenseKey = "ewogICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsCiAgImRlYnVnUmVwb3J0aW5nIjogIm9wdC1vdXQiLAogICJpbWFnZVJlcG9ydENhY2hpbmciOiBmYWxzZSwKICAibWFqb3JWZXJzaW9uIjogIjI1IiwKICAibWF4RGF5c05vdFJlcG9ydGVkIjogNSwKICAiYWR2YW5jZWRCYXJjb2RlIjogdHJ1ZSwKICAibXVsdGlCYXJjb2RlIjogdHJ1ZSwKICAic3VwcG9ydGVkQmFyY29kZUZvcm1hdHMiOiBbCiAgICAiQUxMIgogIF0sCiAgInBpbmdSZXBvcnRpbmciOiB0cnVlLAogICJwbGF0Zm9ybSI6IFsKICAgICJpT1MiLAogICAgIkFuZHJvaWQiLAogICAgIldpbmRvd3MiCiAgXSwKICAic2NvcGUiOiBbCiAgICAiQUxMIgogIF0sCiAgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogdHJ1ZSwKICAic2hvd1dhdGVybWFyayI6IHRydWUsCiAgInRvbGVyYW5jZURheXMiOiA5MCwKICAidmFsaWQiOiAiMjAyMS0wNS0zMCIsCiAgImlvc0lkZW50aWZpZXIiOiBbCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhLmJldGEiLAogICAgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIKICBdLAogICJhbmRyb2lkSWRlbnRpZmllciI6IFsKICAgICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiCiAgXSwKICAid2luZG93c0lkZW50aWZpZXIiOiBbCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIgogIF0KfQpWaEJrYjJpL1JmcTc4c0FyRlByWHAwcXZHb2s3N3VLa2lDaUlGUEMyclliYzhKNm9IeFkvb2hJQUU0UzhTYVByQkh4dmozVDZGaXVrcjhoa05zVEtBUXoxNTk3RHdVeWpRaWJKNHBSNWVhMGdkZzhpempjdVdNaXdNVDVpdWNnSzFicWZtemxjSnpEdGRQWnh5MXpmd2N4L1hPU1RyOGxIcTVkRElBdUJSNmpVSlBacWl1bnI5ZGZ3K3Uzd1BqR24yZHhVMkFENzIwNlo4OTNDbktIQnFqV25JYTVmcXQrcUVVWGYxZ3RwR1JzaytMK0NqR0U0Yk9lSU1CbVdhK3NDVzZuTUV5RjlSYkxFMmMrbkQwdmpTVVI1U281YWh1S2NheGVmOEIxbDNFYldyTFhUL1h1OVJZUDcrK1lYZDhyejlKcTgwbXMrMzVWUXRvdFVoUlBWSWc9PQ==";
+
     var options = (type === 'pdf417') ? this.barcodePDF417Config : this.barcodeConfig;
 
 
