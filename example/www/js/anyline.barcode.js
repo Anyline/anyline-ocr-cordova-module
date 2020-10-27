@@ -20,12 +20,12 @@ anyline.barcode = {
 
 
 
-     if (result.multiBarcodes) {
+     if (result.barcodes) {
        var detailsBarcodes = "";
-       for (var i = 0; i < result.multiBarcodes.length; i++) {
-         detailsBarcodes += result.multiBarcodes[i].value;
-         detailsBarcodes += " (" + result.multiBarcodes[i].barcodeFormat + ")";
-         if (i < result.multiBarcodes.length - 1) {
+       for (var i = 0; i < result.barcodes.length; i++) {
+         detailsBarcodes += result.barcodes[i].value;
+         detailsBarcodes += " (" + result.barcodes[i].barcodeFormat + ")";
+         if (i < result.barcodes.length - 1) {
            detailsBarcodes += ", ";
          }
        }
@@ -73,7 +73,8 @@ anyline.barcode = {
       "plugin": {
         "id": "Barcode_ID",
         "barcodePlugin": {
-           "barcodeFormatOptions" : ["CODABAR", "EAN_13", "UPC_A"]
+           "barcodeFormatOptions" : ["CODABAR", "EAN_13", "UPC_A"],
+           "multiBarcode": false,
         }
       },
       "cutoutConfig": {
@@ -195,9 +196,7 @@ anyline.barcode = {
     }
     changeLoadingState(true);
 
-
     var licenseKey = "ewogICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsCiAgImRlYnVnUmVwb3J0aW5nIjogIm9wdC1vdXQiLAogICJpbWFnZVJlcG9ydENhY2hpbmciOiBmYWxzZSwKICAibWFqb3JWZXJzaW9uIjogIjI1IiwKICAibWF4RGF5c05vdFJlcG9ydGVkIjogNSwKICAiYWR2YW5jZWRCYXJjb2RlIjogdHJ1ZSwKICAibXVsdGlCYXJjb2RlIjogdHJ1ZSwKICAic3VwcG9ydGVkQmFyY29kZUZvcm1hdHMiOiBbCiAgICAiQUxMIgogIF0sCiAgInBpbmdSZXBvcnRpbmciOiB0cnVlLAogICJwbGF0Zm9ybSI6IFsKICAgICJpT1MiLAogICAgIkFuZHJvaWQiLAogICAgIldpbmRvd3MiCiAgXSwKICAic2NvcGUiOiBbCiAgICAiQUxMIgogIF0sCiAgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogdHJ1ZSwKICAic2hvd1dhdGVybWFyayI6IHRydWUsCiAgInRvbGVyYW5jZURheXMiOiA5MCwKICAidmFsaWQiOiAiMjAyMS0wNS0zMCIsCiAgImlvc0lkZW50aWZpZXIiOiBbCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhLmJldGEiLAogICAgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIKICBdLAogICJhbmRyb2lkSWRlbnRpZmllciI6IFsKICAgICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiCiAgXSwKICAid2luZG93c0lkZW50aWZpZXIiOiBbCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIgogIF0KfQpWaEJrYjJpL1JmcTc4c0FyRlByWHAwcXZHb2s3N3VLa2lDaUlGUEMyclliYzhKNm9IeFkvb2hJQUU0UzhTYVByQkh4dmozVDZGaXVrcjhoa05zVEtBUXoxNTk3RHdVeWpRaWJKNHBSNWVhMGdkZzhpempjdVdNaXdNVDVpdWNnSzFicWZtemxjSnpEdGRQWnh5MXpmd2N4L1hPU1RyOGxIcTVkRElBdUJSNmpVSlBacWl1bnI5ZGZ3K3Uzd1BqR24yZHhVMkFENzIwNlo4OTNDbktIQnFqV25JYTVmcXQrcUVVWGYxZ3RwR1JzaytMK0NqR0U0Yk9lSU1CbVdhK3NDVzZuTUV5RjlSYkxFMmMrbkQwdmpTVVI1U281YWh1S2NheGVmOEIxbDNFYldyTFhUL1h1OVJZUDcrK1lYZDhyejlKcTgwbXMrMzVWUXRvdFVoUlBWSWc9PQ==";
-
     var options = (type === 'pdf417') ? this.barcodePDF417Config : this.barcodeConfig;
 
 
@@ -205,3 +204,4 @@ anyline.barcode = {
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [licenseKey, options]);
   }
 };
+

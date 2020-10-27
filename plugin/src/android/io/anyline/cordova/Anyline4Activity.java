@@ -179,7 +179,7 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                                         jsonLPResult.put("country", licensePlateResult.getCountry());
                                         jsonLPResult.put("licensePlate", licensePlateResult.getResult());
                                         jsonLPResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, licensePlateResult,
-                                                                                      jsonLPResult);
+                                                jsonLPResult);
 
                                         jsonResult.put(subResult.getPluginId(), jsonLPResult);
                                     } catch (JSONException e) {
@@ -189,7 +189,7 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                                     JSONObject jsonIdResult = ((MrzIdentification) subResult.getResult()).toJSONObject();
                                     try {
                                         if (jsonIdResult.get("issuingCountryCode").equals("D")
-                                            && jsonIdResult.get("documentType").equals("ID")) {
+                                                && jsonIdResult.get("documentType").equals("ID")) {
                                             if (jsonIdResult.get("issuingCountryCode").equals("D")) {
                                                 jsonIdResult.put("address", jsonResult.get("address"));
                                             } else {
@@ -197,7 +197,7 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                                             }
                                         }
                                         jsonIdResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, subResult,
-                                                                                      jsonIdResult);
+                                                jsonIdResult);
 
                                         jsonResult.put(subResult.getPluginId(), jsonIdResult);
                                     } catch (JSONException e) {
@@ -208,7 +208,7 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                                             .toJSONObject();
                                     try {
                                         jsonIdResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, subResult,
-                                                                                      jsonIdResult);
+                                                jsonIdResult);
 
                                         jsonResult.put(subResult.getPluginId(), jsonIdResult);
                                     } catch (JSONException e) {
@@ -218,7 +218,7 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                                     JSONObject jsonIdResult = ((GermanIdFrontIdentification) subResult.getResult()).toJSONObject();
                                     try {
                                         jsonIdResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, subResult,
-                                                                                      jsonIdResult);
+                                                jsonIdResult);
 
                                         jsonResult.put(subResult.getPluginId(), jsonIdResult);
                                     } catch (JSONException e) {
@@ -229,7 +229,7 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                                     try {
                                         jsonOcrResult.put("text", (((OcrScanResult) subResult).getResult()).trim());
                                         jsonOcrResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, subResult,
-                                                                                       jsonOcrResult);
+                                                jsonOcrResult);
                                         jsonResult.put(subResult.getPluginId(), jsonOcrResult);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -260,7 +260,7 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                                                 ((MeterScanResult) subResult).getScanMode(), jsonMeterResult);
                                         jsonMeterResult.put("reading", subResult.getResult());
                                         jsonMeterResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, subResult,
-                                                                                         jsonMeterResult);
+                                                jsonMeterResult);
                                         jsonResult.put(subResult.getPluginId(), jsonMeterResult);
                                         AnylinePluginHelper.clearFinalBarcodeList();    // otherwise the barcode from a previous scan could be shown if new scan does not include barcode
 
@@ -391,7 +391,7 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
 
                                 try {
                                     jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, idScanResult,
-                                                                                jsonResult);
+                                            jsonResult);
                                 } catch (Exception e) {
                                     Log.e(TAG, "Exception is: ", e);
 
@@ -434,17 +434,18 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                                 List<Barcode> barcodeList = barcodeScanResult.getResult();
 
                                 JSONArray barcodeArray = new JSONArray();
-                                if(barcodeList.size() > 1) {
+                                if(barcodeList!= null && barcodeList.size() > 0) {
                                     for (int i = 0; i < barcodeList.size(); i++) {
                                         barcodeArray.put(barcodeList.get(i).toJSONObject());
                                     }
                                     JSONObject finalObject = new JSONObject();
-                                    finalObject.put("multiBarcodes", barcodeArray);
+                                    finalObject.put("barcodes", barcodeArray);
                                     jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, barcodeScanResult, finalObject);
-                                }else{
-                                    jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, barcodeScanResult, barcodeList.get(0).toJSONObject());
-
                                 }
+                                //else{
+                                //    jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, barcodeScanResult, barcodeList.get(0).toJSONObject());
+
+                               // }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -622,3 +623,4 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
 
 
 }
+
