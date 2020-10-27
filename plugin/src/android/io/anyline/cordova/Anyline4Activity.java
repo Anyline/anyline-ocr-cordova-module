@@ -434,17 +434,18 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                                 List<Barcode> barcodeList = barcodeScanResult.getResult();
 
                                 JSONArray barcodeArray = new JSONArray();
-                                if(barcodeList.size() > 1) {
+                                if(barcodeList!= null && barcodeList.size() > 0) {
                                     for (int i = 0; i < barcodeList.size(); i++) {
                                         barcodeArray.put(barcodeList.get(i).toJSONObject());
                                     }
                                     JSONObject finalObject = new JSONObject();
-                                    finalObject.put("multiBarcodes", barcodeArray);
+                                    finalObject.put("barcodes", barcodeArray);
                                     jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, barcodeScanResult, finalObject);
-                                }else{
-                                    jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, barcodeScanResult, barcodeList.get(0).toJSONObject());
-
                                 }
+                                //else{
+                                //    jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, barcodeScanResult, barcodeList.get(0).toJSONObject());
+
+                               // }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

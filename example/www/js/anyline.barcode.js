@@ -20,12 +20,12 @@ anyline.barcode = {
 
 
 
-     if (result.multiBarcodes) {
+     if (result.barcodes) {
        var detailsBarcodes = "";
-       for (var i = 0; i < result.multiBarcodes.length; i++) {
-         detailsBarcodes += result.multiBarcodes[i].value;
-         detailsBarcodes += " (" + result.multiBarcodes[i].barcodeFormat + ")";
-         if (i < result.multiBarcodes.length - 1) {
+       for (var i = 0; i < result.barcodes.length; i++) {
+         detailsBarcodes += result.barcodes[i].value;
+         detailsBarcodes += " (" + result.barcodes[i].barcodeFormat + ")";
+         if (i < result.barcodes.length - 1) {
            detailsBarcodes += ", ";
          }
        }
