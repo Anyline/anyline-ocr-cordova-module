@@ -24,7 +24,7 @@ anyline.barcode = {
        var detailsBarcodes = "";
        for (var i = 0; i < result.barcodes.length; i++) {
          detailsBarcodes += result.barcodes[i].value;
-         detailsBarcodes += " (" + result.barcodes[i].barcodeFormat + ")";
+         detailsBarcodes += " (" + result.barcodes[i].format + ")";
          if (i < result.barcodes.length - 1) {
            detailsBarcodes += ", ";
          }
@@ -73,9 +73,7 @@ anyline.barcode = {
       "plugin": {
         "id": "Barcode_ID",
         "barcodePlugin": {
-           "barcodeFormatOptions" : ["CODABAR", "EAN_13", "UPC_A"],
-           "multiBarcode": false,
-        }
+           "barcodeFormatOptions" : ["CODABAR", "EAN_13", "UPC_A"]        }
       },
       "cutoutConfig": {
         "style": "rect",
