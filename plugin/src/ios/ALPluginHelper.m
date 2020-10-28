@@ -76,7 +76,7 @@
                       @"AUTO_ANALOG_DIGITAL_METER" : @(ALAutoAnalogDigitalMeter),
                       @"DIAL_METER" : @(ALDialMeter),
                       @"ANALOG_METER" : @(ALAnalogMeter),
-                      @"BARCODE" : @(ALBarcode),
+                      @"BARCODE" : @(ALMeterBarcode),
                       @"SERIAL_NUMBER" : @(ALSerialNumber),
                       @"DOT_MATRIX_METER" : @(ALDotMatrixMeter),
                       @"DIGITAL_METER" : @(ALDigitalMeter),
@@ -387,7 +387,7 @@
     [formatter setDateFormat:@"yyyy.MM.dd"];
     
     if ([scanResult.result isKindOfClass:[ALUniversalIDIdentification class]]) {
-        ALUniversalIDIdentification *identification = (ALTemplateIdentification *)scanResult.result;
+        ALUniversalIDIdentification *identification = (ALUniversalIDIdentification *)scanResult.result;
         
         [[identification fieldNames] enumerateObjectsUsingBlock:^(NSString *fieldName, NSUInteger idx, BOOL *stop) {
             [dictResult setValue:[identification valueForField:fieldName] forKey:fieldName];
@@ -594,13 +594,14 @@
     
     NSMutableDictionary *dictResult = [NSMutableDictionary dictionaryWithCapacity:2];
     
-    [dictResult setObject:(NSString *)scanResult.result forKey:@"value"];
-    if (!scanResult.barcodeFormat) {
-        [dictResult setObject:@"Unknown" forKey:@"barcodeFormat"];
-    } else {
-        [dictResult setObject:[ALPluginHelper stringFromBarcodeFormat:scanResult.barcodeFormat] forKey:@"barcodeFormat"];
+    NSMutableArray *barcodeArray = [[NSMutableArray alloc] init];
+    
+    
+    for(ALBarcode *barcode in scanResult.result) {
+        [barcodeArray addObject:[barcode toJSONString]];
     }
     
+    [dictResult setValue:barcodeArray forKey:@"barcodes"];
     
     NSString *imagePath = [ALPluginHelper saveImageToFileSystem:scanResult.image compressionQuality:dividedCompRate];
     
