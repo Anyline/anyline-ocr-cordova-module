@@ -598,7 +598,10 @@
     
     
     for(ALBarcode *barcode in scanResult.result) {
-        [barcodeArray addObject:[barcode toJSONString]];
+        [barcodeArray addObject:@{
+            @"value":barcode.value,
+            @"barcodeFormat": [ALBarcodeResult barcodeStringForFormat:barcode.barcodeFormat]
+        }];
     }
     
     [dictResult setValue:barcodeArray forKey:@"barcodes"];
