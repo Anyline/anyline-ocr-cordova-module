@@ -40,7 +40,7 @@ anyline.barcode = {
 
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/>"
       + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</br>"
-      + (detailsBarcodes ? "<br/><i><b>Detected Barcodes:</b> " + detailsBarcodes + "</i>" : "<b>Barcode:</b> " + result.value + "</br>" + "<b>Format </b> " + result.format + "</p>")+
+      + (detailsBarcodes ? "<br/><i><b>Detected Barcodes:</b> " + detailsBarcodes + "</i>" : "<b>Barcode:</b> " + result.value + "</br>" + "<b>Format </b> " + result.barcodeFormat + "</p>")+
       div.innerHTML;
 
     document.getElementById("details_scan_modes").removeAttribute("open");
@@ -73,9 +73,9 @@ anyline.barcode = {
       "plugin": {
         "id": "Barcode_ID",
         "barcodePlugin": {
-           "barcodeFormatOptions" : ["CODABAR", "EAN_13", "UPC_A"],
-           "multiBarcode": false,
-        }
+        "barcodeFormatOptions": ["UPC_E", "EAN_13", "UPC_A", "EAN_8", "AZTEC", "CODABAR", "CODE_11", "CODE_32", "CODE_39", "CODE_93", "CODE_128", "DATABAR", "DATA_MATRIX", "GS1_QR_CODE", "GS1_128", "ITF", "ISBT_128", "MSI", "MICRO_QR", "MICRO_PDF", "PDF_417", "POST_UK",
+                    "QR_CODE", "RSS_14", "RSS_EXPANDED", "TRIOPTIC", "USPS_4CB", "US_PLANET", "US_POSTNET"]
+                   }
       },
       "cutoutConfig": {
         "style": "rect",
@@ -196,7 +196,7 @@ anyline.barcode = {
     }
     changeLoadingState(true);
 
-    var licenseKey = "eyAiYWR2YW5jZWRCYXJjb2RlIjogdHJ1ZSwgImFsbG93ZWRCYXJjb2RlcyI6ICJFQU58UVJfQ09ERSIsICJhbmRyb2lkSWRlbnRpZmllciI6IFsgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIgXSwgImRlYnVnUmVwb3J0aW5nIjogIm9uIiwgImltYWdlUmVwb3J0Q2FjaGluZyI6IGZhbHNlLCAibGljZW5zZUtleVZlcnNpb24iOiAyLCAibWFqb3JWZXJzaW9uIjogIjIwIiwgIm1heERheXNOb3RSZXBvcnRlZCI6IDAsICJtdWx0aUJhcmNvZGUiOiB0cnVlLCAicGluZ1JlcG9ydGluZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiwgIldpbmRvd3MiIF0sICJzY29wZSI6IFsgIkFMTCIgXSwgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogZmFsc2UsICJzaG93V2F0ZXJtYXJrIjogZmFsc2UsICJ0b2xlcmFuY2VEYXlzIjogMCwgInZhbGlkIjogIjIwMjAtMTItMTIiIH0KeDByaU5GNWtWNWhHVEtqZGF0SWl4VjB4WnU0UEgrdGRFaUtHTURrUUNTVTlpTm5xVTlQNWlMaFRFRkVWU2RvLwplVnJCUWdsWTZmLzBQQjh4RkU3dmhEVlgrWUg1bkR2SDdBQmE1NlBpVHpCalFhak1XU3llQU44Mjc1UmtkTnZDCjZxaGdvZGwxN2djQndMbDRnbzVWcGhJY0lVZjFsU3BJeWgxdkRMN1pvV2lWS2J3U3JuTUl2Z0pwREUvMCtxaysKU2dxaG9PNkJRZ0Y4dmFLaStuYWxSRzMzcHBHU09kdlRNTWxVWUNjVnpNZ3Btd1BMVmszelljNTBJKzdVSU9JTgpZZXF1cUFXd2FXQXdFUVZ6aHVEb0Fva2xZWWVvbkM0N3ZCUHl4eDZCTkxyL2ozMG5PWk93UmtMcnFxM0l5OE02CnNpZE5IVklzRzFpQTBvcmdDL1cwZFE9PQo=";
+    var licenseKey = "ewogICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsCiAgImRlYnVnUmVwb3J0aW5nIjogIm9wdC1vdXQiLAogICJpbWFnZVJlcG9ydENhY2hpbmciOiBmYWxzZSwKICAibWFqb3JWZXJzaW9uIjogIjI1IiwKICAibWF4RGF5c05vdFJlcG9ydGVkIjogNSwKICAiYWR2YW5jZWRCYXJjb2RlIjogdHJ1ZSwKICAibXVsdGlCYXJjb2RlIjogdHJ1ZSwKICAic3VwcG9ydGVkQmFyY29kZUZvcm1hdHMiOiBbCiAgICAiQUxMIgogIF0sCiAgInBpbmdSZXBvcnRpbmciOiB0cnVlLAogICJwbGF0Zm9ybSI6IFsKICAgICJpT1MiLAogICAgIkFuZHJvaWQiLAogICAgIldpbmRvd3MiCiAgXSwKICAic2NvcGUiOiBbCiAgICAiQUxMIgogIF0sCiAgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogdHJ1ZSwKICAic2hvd1dhdGVybWFyayI6IHRydWUsCiAgInRvbGVyYW5jZURheXMiOiA5MCwKICAidmFsaWQiOiAiMjAyMS0wNS0zMCIsCiAgImlvc0lkZW50aWZpZXIiOiBbCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhLmJldGEiLAogICAgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIKICBdLAogICJhbmRyb2lkSWRlbnRpZmllciI6IFsKICAgICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiCiAgXSwKICAid2luZG93c0lkZW50aWZpZXIiOiBbCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIgogIF0KfQpWaEJrYjJpL1JmcTc4c0FyRlByWHAwcXZHb2s3N3VLa2lDaUlGUEMyclliYzhKNm9IeFkvb2hJQUU0UzhTYVByQkh4dmozVDZGaXVrcjhoa05zVEtBUXoxNTk3RHdVeWpRaWJKNHBSNWVhMGdkZzhpempjdVdNaXdNVDVpdWNnSzFicWZtemxjSnpEdGRQWnh5MXpmd2N4L1hPU1RyOGxIcTVkRElBdUJSNmpVSlBacWl1bnI5ZGZ3K3Uzd1BqR24yZHhVMkFENzIwNlo4OTNDbktIQnFqV25JYTVmcXQrcUVVWGYxZ3RwR1JzaytMK0NqR0U0Yk9lSU1CbVdhK3NDVzZuTUV5RjlSYkxFMmMrbkQwdmpTVVI1U281YWh1S2NheGVmOEIxbDNFYldyTFhUL1h1OVJZUDcrK1lYZDhyejlKcTgwbXMrMzVWUXRvdFVoUlBWSWc9PQ==";
     var options = (type === 'pdf417') ? this.barcodePDF417Config : this.barcodeConfig;
 
 
