@@ -18,16 +18,29 @@ anyline.barcode = {
     //this is called with result of the barcode module
     //the result is a string containing the barcode
 
-    var div = document.getElementById('results');
-    console.log("Barcode result: " + JSON.stringify(result));
 
-    if (div.childElementCount >= 3) {
-      div.removeChild(div.childNodes[div.childElementCount - 1]);
-    }
+
+     if (result.barcodes) {
+       var detailsBarcodes = "";
+       for (var i = 0; i < result.barcodes.length; i++) {
+         detailsBarcodes += result.barcodes[i].value;
+         detailsBarcodes += " (" + result.barcodes[i].barcodeFormat + ")";
+         if (i < result.barcodes.length - 1) {
+           detailsBarcodes += ", ";
+         }
+       }
+     }
+
+      var div = document.getElementById('results');
+         console.log("Barcode result: " + JSON.stringify(result));
+
+         if (div.childElementCount >= 3) {
+           div.removeChild(div.childNodes[div.childElementCount - 1]);
+         }
 
     div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/>"
       + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</br>"
-      + "<b>Barcode:</b> " + result.value + "</br>" + "<b>Format </b> " + result.format + "</p>" +
+      + (detailsBarcodes ? "<br/><i><b>Detected Barcodes:</b> " + detailsBarcodes + "</i>" : "<b>Barcode:</b> " + result.value + "</br>" + "<b>Format </b> " + result.barcodeFormat + "</p>")+
       div.innerHTML;
 
     document.getElementById("details_scan_modes").removeAttribute("open");
@@ -60,8 +73,9 @@ anyline.barcode = {
       "plugin": {
         "id": "Barcode_ID",
         "barcodePlugin": {
-          // "barcodeFormatOptions" : ["CODABAR", "EAN_13", "UPC_A"]
-        }
+        "barcodeFormatOptions": ["UPC_E", "EAN_13", "UPC_A", "EAN_8", "AZTEC", "CODABAR", "CODE_11", "CODE_32", "CODE_39", "CODE_93", "CODE_128", "DATABAR", "DATA_MATRIX", "GS1_QR_CODE", "GS1_128", "ITF", "ISBT_128", "MSI", "MICRO_QR", "MICRO_PDF", "PDF_417", "POST_UK",
+                    "QR_CODE", "RSS_14", "RSS_EXPANDED", "TRIOPTIC", "USPS_4CB", "US_PLANET", "US_POSTNET"]
+                   }
       },
       "cutoutConfig": {
         "style": "rect",
@@ -190,3 +204,4 @@ anyline.barcode = {
     cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [licenseKey, options]);
   }
 };
+
