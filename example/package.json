@@ -20,6 +20,8 @@
     "plugins": {},
     "platforms": []
   },
-  "dependencies": {},
+  "dependencies": {
+    "io-anyline-cordova": "file:../plugin"
+  },
   "devDependencies": {}
 }
