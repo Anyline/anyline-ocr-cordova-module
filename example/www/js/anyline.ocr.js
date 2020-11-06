@@ -61,7 +61,6 @@ anyline.ocr = {
         "ocrPlugin": {
             "ocrConfig":{
                 "scanMode": "LINE",
-                "languages": ["www/assets/USNr.any"],
                 "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
                 "minCharHeight": 25,
                 "maxCharHeight": 65,
@@ -115,7 +114,6 @@ anyline.ocr = {
         "ocrPlugin": {
             "ocrConfig":{
                 "scanMode": "AUTO",
-                "languages": ["www/assets/anyline_capitals.traineddata"],
                 "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
                 "validationRegex": "[A-Z0-9]{8}$",
                 "minConfidence": 70
