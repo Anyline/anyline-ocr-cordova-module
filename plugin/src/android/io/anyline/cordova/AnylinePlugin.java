@@ -212,7 +212,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     }
 
     private void getLicenseExpirationDate(String license) {
-        String validDate = AnylineController.getLicenseExpirationDate(license);
+        String validDate = AnylineController.getLicenseExpirationDate(); //license);
         onResult(validDate, true);
     }
 
