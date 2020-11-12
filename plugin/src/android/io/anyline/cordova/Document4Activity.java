@@ -112,7 +112,11 @@ public class Document4Activity extends AnylineBaseActivity implements CameraOpen
         documentScanView.setCameraOpenListener(this);
         // the view can be configured via a json file in the assets, and this config is set here
 
-        AnylineSDK.init(licenseKey, this);
+        try {
+            AnylineSDK.init(licenseKey, this);
+        } catch (Exception e) {
+            finishWithError(Resources.getString(this, "error_license_init"));
+        }
 
         JSONObject json = null;
         try {

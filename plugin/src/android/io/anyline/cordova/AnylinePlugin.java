@@ -183,11 +183,11 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         ResultReporter.setListener(null);
+        Log.i(TAG, "onActivityResult: result code, request code: " + resultCode + "  " + requestCode);
         if (resultCode == RESULT_OK) {
             //nothing todo, handeled with ResultReporter
         } else if (resultCode == RESULT_CANCELED) {
             this.mCallbackContext.error("Canceled");
-
         } else if (resultCode == RESULT_ERROR) {
             this.mCallbackContext.error(data.getStringExtra(EXTRA_ERROR_MESSAGE));
         }
@@ -212,7 +212,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     }
 
     private void getLicenseExpirationDate(String license) {
-        String validDate = AnylineController.getLicenseExpirationDate(); //license);
+        String validDate = AnylineController.getLicenseExpirationDate();
         onResult(validDate, true);
     }
 
