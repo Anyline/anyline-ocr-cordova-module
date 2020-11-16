@@ -115,13 +115,22 @@ API_AVAILABLE(ios(13.0))
         mrzConfig.idFieldScanOptions = scanOptions;
     }
          
+    NSError *licenseError = nil;
+    //Initialize the Anyline License
+    [AnylineSDK setupWithLicenseKey:self.licensekey error:&licenseError];
+    if (licenseError) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self.delegate pluginScanViewController:nil didStopScanning:self error:licenseError];
+        }];
+    }
+    
     NSError *error = nil;
 
     //Init the anyline ID ScanPlugin with an ID, Licensekey, the delegate,
     //  the MRZConfig (which will configure the scan Plugin for MRZ scanning), and an error
-    self.mrzScanPlugin = [[ALIDScanPlugin alloc] initWithPluginID:@"ModuleID" licenseKey:self.licensekey delegate:self idConfig:mrzConfig error:&error];
+    self.mrzScanPlugin = [[ALIDScanPlugin alloc] initWithPluginID:@"ModuleID" delegate:self idConfig:mrzConfig error:&error];
     if (@available(iOS 13.0, *)) {
-        self.nfcDetector=[[ALNFCDetector alloc] initWithLicenseKey:self.licensekey delegate:self];
+        self.nfcDetector=[[ALNFCDetector alloc] initWithDelegate:self];
     } else {
         // Fallback on earlier versions
     }
