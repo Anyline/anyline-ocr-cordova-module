@@ -54,14 +54,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSError *error = nil;
+    NSError *licenseError = nil;
+    //Initialize the Anyline License
+    [AnylineSDK setupWithLicenseKey:self.licensekey error:&licenseError];
+    if (licenseError) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self.delegate pluginScanViewController:self didStopScanning:self error:licenseError];
+        }];
+    }
     
+    
+    NSError *error = nil;
     
     self.scanView = [ALScanView scanViewForFrame:self.view.bounds
                                       configDict:self.anylineConfig
-                                      licenseKey:self.licensekey
                                         delegate:self
                                            error:&error];
+    if (error) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self.delegate pluginScanViewController:self didStopScanning:self error:error];
+        }];
+    }
     
     if ([self.scanView.scanViewPlugin isKindOfClass:[ALDocumentScanViewPlugin class]]) {
         [(ALDocumentScanViewPlugin *)self.scanView.scanViewPlugin addScanViewPluginDelegate:self];
