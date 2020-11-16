@@ -93,7 +93,7 @@
     CDVPluginResult *pluginResult;
 
     NSString *license = [command.arguments objectAtIndex:0];
-    NSString *licenseExpDate = [ALCoreController licenseExpirationDateForLicense:license error:nil];
+    NSString *licenseExpDate = [ALCoreController licenseExpirationDateForLicense:license];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:licenseExpDate];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -150,6 +150,12 @@
 - (void)pluginScanViewController:(nonnull ALPluginScanViewController *)pluginScanViewController
                  didStopScanning:(nonnull id)sender {
     [self handleDidStopScanning];
+}
+
+- (void)pluginScanViewController:(nonnull ALPluginScanViewController *)pluginScanViewController
+                 didStopScanning:(nonnull id)sender
+                           error:(NSError *)error {
+    [self handleDidStopScanning:error.localizedDescription];
 }
 
 - (void)handleDidScanWithResult:(id)scanResult
