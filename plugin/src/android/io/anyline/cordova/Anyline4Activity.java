@@ -147,7 +147,7 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
 
             try {
                 AnylineSDK.init(licenseKey, this);
-            } catch (Exception e) {
+            } catch (LicenseException e) {
                 finishWithError(Resources.getString(this, "error_license_init"));
             }
 
