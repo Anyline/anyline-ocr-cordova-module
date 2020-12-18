@@ -20,9 +20,12 @@
     "plugins": {
       "io-anyline-cordova": {}
     },
-    "platforms": []
+    "platforms": [
+      "android"
+    ]
   },
   "dependencies": {
+    "cordova-android": "^9.0.0",
     "io-anyline-cordova": "file:../plugin"
   },
   "devDependencies": {}
