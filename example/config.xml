@@ -26,5 +26,4 @@
             </array>
         </config-file>
     </platform>
-    <plugin name="io-anyline-cordova" spec="../plugin" />
 </widget>
