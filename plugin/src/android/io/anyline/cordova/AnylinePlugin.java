@@ -22,6 +22,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import at.nineyards.anyline.AnylineController;
+import at.nineyards.anyline.core.LicenseException;
+import io.anyline.AnylineSDK;
 
 
 public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnResultListener {
@@ -212,6 +214,12 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     }
 
     private void getLicenseExpirationDate(String license) {
+        try {
+            AnylineSDK.init(license, cordova.getActivity());
+        } catch (LicenseException e) {
+            e.printStackTrace();
+        }
+
         String validDate = AnylineController.getLicenseExpirationDate();
         onResult(validDate, true);
     }
