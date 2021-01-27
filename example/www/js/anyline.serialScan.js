@@ -21,7 +21,7 @@ onResult: function (result) {
         div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
     
-    div.innerHTML = "<h2>LicensePlace Result</h2>" + "<p>" +
+    div.innerHTML = "<h2>LicensePlate Result</h2>" + "<p>" +
     "<img src=\"" + result.LPT.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
     "<b>Result (LicensePlate): </b> " + result.LPT.licensePlate + "<br/>" +
     "<b>Country (LicensePlate): </b> " + result.LPT.country + "<br/>" +
