@@ -27,7 +27,6 @@ import at.nineyards.anyline.core.RunFailure;
 import at.nineyards.anyline.core.Vector_Contour;
 import at.nineyards.anyline.core.exception_error_codes;
 import io.anyline.AnylineSDK;
-import io.anyline.examples.cordova.R;
 import io.anyline.plugin.ScanResult;
 import io.anyline.plugin.ScanResultListener;
 import io.anyline.plugin.barcode.Barcode;
