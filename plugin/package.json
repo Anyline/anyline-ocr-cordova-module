@@ -1,9 +1,9 @@
 {
-  "name": "io-anyline-cordova",
+  "name": "io-anyline-cordova-nopods",
   "version": "28.1.0",
   "description": "The cordova plugin for the Anyline SDK",
   "cordova": {
-    "id": "io-anyline-cordova",
+    "id": "io-anyline-cordova-nopods",
     "platforms": [
       "ios",
       "android"
