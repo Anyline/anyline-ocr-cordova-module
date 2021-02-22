@@ -83,7 +83,7 @@ public class AnylinePluginHelper {
 									Log.v(TAG, "Copy traineddata duration: " + (System.currentTimeMillis() - start));
 								}
 								//ocrConfig.setLanguages(languages);
-
+								ocrScanPlugin.remove("languages");
 								ocrScanPlugin.put("languages", newLanguagesArray);
 
 							} else {
