@@ -90,9 +90,12 @@ public class AnylinePluginHelper {
 									Log.v(TAG, "Copy traineddata duration: " + (System.currentTimeMillis() - start));
 								}
 								//ocrConfig.setLanguages(languages);
-								ocrScanPlugin.remove("languages");
-								ocrScanPlugin.put("languages", newLanguagesArray);
 
+								if(ocrScanPlugin.has("ocrConfig")) {
+									ocrScanPlugin.getJSONObject("ocrConfig").put("languages", newLanguagesArray);
+								} else {
+									ocrScanPlugin.put("languages", newLanguagesArray);
+								}
 							} else {
 								Log.d(TAG, "No Training Data");
 							}
