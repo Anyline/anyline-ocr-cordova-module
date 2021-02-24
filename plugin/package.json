@@ -1,6 +1,6 @@
 {
   "name": "io-anyline-cordova",
-  "version": "28.1.1",
+  "version": "28.1.2",
   "description": "The cordova plugin for the Anyline SDK",
   "cordova": {
     "id": "io-anyline-cordova",

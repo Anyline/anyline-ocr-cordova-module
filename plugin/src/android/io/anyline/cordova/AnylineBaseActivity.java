@@ -23,10 +23,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import at.nineyards.anyline.camera.CameraConfig;
-import at.nineyards.anyline.camera.CameraController;
-import at.nineyards.anyline.camera.CameraFeatures;
-import at.nineyards.anyline.camera.CameraOpenListener;
+import io.anyline.camera.CameraConfig;
+import io.anyline.camera.CameraController;
+import io.anyline.camera.CameraFeatures;
+import io.anyline.camera.CameraOpenListener;
 import io.anyline.plugin.barcode.BarcodeScanViewPlugin;
 import io.anyline.plugin.id.IdScanViewPlugin;
 import io.anyline.plugin.licenseplate.LicensePlateScanViewPlugin;

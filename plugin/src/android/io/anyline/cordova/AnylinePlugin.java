@@ -21,7 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import at.nineyards.anyline.AnylineController;
+import io.anyline.AnylineController;
 import at.nineyards.anyline.core.LicenseException;
 import io.anyline.AnylineSDK;
 

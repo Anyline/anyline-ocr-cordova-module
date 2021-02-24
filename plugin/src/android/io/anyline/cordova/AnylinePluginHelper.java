@@ -20,10 +20,10 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import at.nineyards.anyline.camera.NativeBarcodeResultListener;
+import io.anyline.camera.NativeBarcodeResultListener;
 //import at.nineyards.anyline.modules.barcode.BarcodeScanView;
-import at.nineyards.anyline.util.AssetUtil;
-import at.nineyards.anyline.util.TempFileUtil;
+import io.anyline.util.AssetUtil;
+import io.anyline.util.TempFileUtil;
 import io.anyline.plugin.ScanResult;
 import io.anyline.plugin.barcode.BarcodeFormat;
 import io.anyline.plugin.meter.MeterScanMode;
