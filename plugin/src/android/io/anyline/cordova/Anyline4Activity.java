@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import at.nineyards.anyline.AnylineDebugListener;
-import at.nineyards.anyline.camera.CameraController;
+import io.anyline.AnylineDebugListener;
+import io.anyline.camera.CameraController;
 import at.nineyards.anyline.core.LicenseException;
 import at.nineyards.anyline.core.RunFailure;
 import at.nineyards.anyline.core.Vector_Contour;
