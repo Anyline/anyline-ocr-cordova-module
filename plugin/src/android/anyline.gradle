@@ -1,14 +1,14 @@
 repositories{
     google()
     jcenter()
-    maven { url 'https://anylinesdk.blob.core.windows.net/testing/'}
+    maven { url 'https://anylinesdk.blob.core.windows.net/maven/'}
     flatDir {
         dirs 'libs'
     }
 }
 
 dependencies {
-    implementation 'io.anyline:anylinesdk:29-RC2'
+    implementation 'io.anyline:anylinesdk:29'
 }
 
 android {
@@ -16,7 +16,7 @@ android {
   defaultConfig {
       ndk {
       abiFilters "armeabi-v7a", "arm64-v8a"
-    } 
+    }
   }
 
   compileOptions {
