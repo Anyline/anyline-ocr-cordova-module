@@ -41,6 +41,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIButton *)createButtonForViewController:(UIViewController *)viewController
                                      config:(ALCordovaUIConfiguration *)config;
 
++ (UIButton *)createMultiBarcodeScanButtonForViewController:(UIViewController *)viewController
+                                                     config:(ALCordovaUIConfiguration *)config
+                                                     action:(SEL)action;
+
 + (ALRoundedView *)createRoundedViewForViewController:(UIViewController *)viewController;
 
 + (NSDictionary *)dictionaryForMeterResult:(ALMeterResult *)scanResult

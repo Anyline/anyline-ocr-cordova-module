@@ -29,6 +29,12 @@
 @property (nonatomic, weak) id<ALPluginScanViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSString *licensekey;
 @property (nonatomic, strong) ALCordovaUIConfiguration *cordovaConfig;
+
+@property (nonatomic, strong) UIButton *multiBarcodeScanButton;
+@property (nonatomic, strong) NSTimer *multiBarcodeFadeTimer;
+@property (nonatomic, strong) ALBarcodeResult* multiBarcodeLastResult;
+
+
 @end
 
 @implementation ALPluginScanViewController
@@ -76,7 +82,18 @@
         }];
     }
     
-    if ([self.scanView.scanViewPlugin isKindOfClass:[ALDocumentScanViewPlugin class]]) {
+    if ([self isMultibarcodeEnabled]) {
+        //Setup Confirm Button for multibarcode
+        self.multiBarcodeScanButton = [ALPluginHelper createMultiBarcodeScanButtonForViewController:self
+                                                                                             config:self.cordovaConfig
+                                                                                             action:@selector(scanMultiBarcodeAction:)];
+        [self.view bringSubviewToFront:self.multiBarcodeScanButton];
+        //Needed for mutlibarcode
+        ALScanViewPluginConfig *viewPluginConfig = self.scanView.scanViewPlugin.scanViewPluginConfig;
+        viewPluginConfig.cancelOnResult = false;
+        viewPluginConfig.scanFeedbackConfig.beepOnResult = false;
+        [self.scanView.scanViewPlugin setScanViewPluginConfig:viewPluginConfig];
+    } else if ([self.scanView.scanViewPlugin isKindOfClass:[ALDocumentScanViewPlugin class]]) {
         [(ALDocumentScanViewPlugin *)self.scanView.scanViewPlugin addScanViewPluginDelegate:self];
         [((ALDocumentScanViewPlugin *)self.scanView.scanViewPlugin).documentScanPlugin addInfoDelegate:self];
         
@@ -124,6 +141,11 @@
     self.doneButton = [ALPluginHelper createButtonForViewController:self config:self.cordovaConfig];
     
     self.scannedLabel = [ALPluginHelper createLabelForView:self.view];
+    
+    if (self.multiBarcodeScanButton) {
+        [self.view bringSubviewToFront:self.multiBarcodeScanButton];
+    }
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -172,6 +194,20 @@
     }];
 }
 
+- (void)scanMultiBarcodeAction:(id)sender {
+    [self.scanView.scanViewPlugin triggerScannedFeedback];
+    NSDictionary *dictResult = [ALPluginHelper dictionaryForBarcodeResult:self.multiBarcodeLastResult
+                                                                  outline:self.scanView.scanViewPlugin.outline
+                                                                  quality:self.quality];
+    //We need cancelOnResult=false for multibarcode.
+    //That's why we force cancelOnResult=true as soon as the multibarcode button was pressed.
+    [self handleResult:dictResult
+                result:self.multiBarcodeLastResult
+        cancelOnResult:true];
+}
+
+
+
 - (void)segmentChange:(id)sender {
     NSString *modeString = self.cordovaConfig.segmentModes[((UISegmentedControl *)sender).selectedSegmentIndex];
     ALScanMode scanMode = [ALPluginHelper scanModeFromString:modeString];
@@ -212,6 +248,25 @@
 
 - (void)anylineBarcodeScanPlugin:(ALBarcodeScanPlugin * _Nonnull)anylineBarcodeScanPlugin
                    didFindResult:(ALBarcodeResult * _Nonnull)scanResult {
+    self.multiBarcodeLastResult = scanResult;
+    
+    if ([self isMultibarcodeEnabled]) {
+        
+        [self.multiBarcodeFadeTimer invalidate];
+        
+        // show scan button
+        [UIView animateWithDuration:0.3 animations:^{ self.multiBarcodeScanButton.alpha = 1; }];
+        
+        // fade away in 3 seconds if no further results are detected.
+        self.multiBarcodeFadeTimer = [NSTimer scheduledTimerWithTimeInterval:3 repeats:NO block:^(NSTimer * _Nonnull timer) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.multiBarcodeScanButton.alpha = 0;
+            }];
+        }];
+        
+        return;
+    }
+    
     NSDictionary *dictResult = [ALPluginHelper dictionaryForBarcodeResult:scanResult
                                                                   outline:self.scanView.scanViewPlugin.outline
                                                                   quality:self.quality];
@@ -317,15 +372,23 @@
 }
 
 - (void)handleResult:(NSDictionary *)dictResult result:(ALScanResult *)scanResult {
+    [self handleResult:dictResult
+                result:scanResult
+        cancelOnResult:self.scanView.scanViewPlugin.scanViewPluginConfig.cancelOnResult];
+}
+
+- (void)handleResult:(NSDictionary *)dictResult
+              result:(ALScanResult *)scanResult
+      cancelOnResult:(BOOL)cancelOnResult {
     if ([scanResult.result isKindOfClass:[NSString class]]) {
         self.scannedLabel.text = (NSString *)scanResult.result;
     }
     
     [self.delegate pluginScanViewController:self
                                     didScan:dictResult
-                           continueScanning:!self.scanView.scanViewPlugin.scanViewPluginConfig.cancelOnResult];
+                           continueScanning:!cancelOnResult];
     
-    if (self.scanView.scanViewPlugin.scanViewPluginConfig.cancelOnResult) {
+    if (cancelOnResult) {
         [self dismissViewControllerAnimated:YES completion:NULL];
     }
     self.detectedBarcodes = [NSMutableArray array];
@@ -370,6 +433,10 @@
             self.showingLabel = NO;
         }];
     }];
+}
+
+- (BOOL)isMultibarcodeEnabled {
+    return [self.scanView.scanViewPlugin isKindOfClass:[ALBarcodeScanViewPlugin class]] && ((ALBarcodeScanViewPlugin*)self.scanView.scanViewPlugin).barcodeScanPlugin.multiBarcode;
 }
 
 @end

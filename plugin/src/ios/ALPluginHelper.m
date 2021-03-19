@@ -156,6 +156,42 @@
     return doneButton;
 }
 
+
+//TODO:(PM) implement config for multibarcode scan button
++ (UIButton *)createMultiBarcodeScanButtonForViewController:(UIViewController *)viewController
+                                                     config:(ALCordovaUIConfiguration *)config
+                                                     action:(SEL)action {
+    UIWindow *window = UIApplication.sharedApplication.keyWindow;
+    CGFloat bottomPadding = window.safeAreaInsets.bottom;
+    CGFloat horizontalPadding = 30;
+    
+    //Setup Confirm Button
+    UIButton * scanButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 300, viewController.view.bounds.size.width, 50+bottomPadding)];
+    [viewController.view addSubview:scanButton];
+    [scanButton addTarget:viewController action:action forControlEvents:UIControlEventTouchUpInside];
+    [scanButton setTitle:@"Scan" forState:UIControlStateNormal];
+    [scanButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
+    [scanButton.titleLabel setTextColor:[UIColor whiteColor]];
+    scanButton.backgroundColor = [UIColor colorWithRed:0.0 green:0.6 blue:1.0 alpha:1.0];
+    [scanButton.layer setCornerRadius:50/2];
+    [scanButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    
+    [scanButton.centerXAnchor constraintEqualToAnchor:viewController.view.centerXAnchor].active = YES;
+    
+    NSArray *scanButtonConstraints = @[
+        [scanButton.trailingAnchor constraintEqualToAnchor:viewController.view.trailingAnchor constant:-horizontalPadding],
+        [scanButton.leadingAnchor constraintEqualToAnchor:viewController.view.leadingAnchor constant:horizontalPadding],
+        [scanButton.heightAnchor  constraintEqualToConstant:50],
+        [scanButton.bottomAnchor  constraintEqualToAnchor:viewController.view.safeAreaLayoutGuide.bottomAnchor constant:-30]
+    ];
+    [viewController.view addConstraints:scanButtonConstraints];
+    [NSLayoutConstraint activateConstraints:scanButtonConstraints];
+
+    scanButton.alpha = 0;
+    return scanButton;
+}
+
 + (ALRoundedView *)createRoundedViewForViewController:(UIViewController *)viewController {
     ALRoundedView *roundedView = [[ALRoundedView alloc] initWithFrame:CGRectMake(20, 115, viewController.view.bounds.size.width - 40, 30)];
     roundedView.fillColor = [UIColor colorWithRed:98.0/255.0 green:39.0/255.0 blue:232.0/255.0 alpha:0.6];
