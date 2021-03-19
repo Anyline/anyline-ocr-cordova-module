@@ -33,6 +33,7 @@
 @property (nonatomic, strong) UIButton *multiBarcodeScanButton;
 @property (nonatomic, strong) NSTimer *multiBarcodeFadeTimer;
 @property (nonatomic, strong) ALBarcodeResult* multiBarcodeLastResult;
+@property (nonatomic, assign) BOOL beepOnResult;
 
 
 @end
@@ -88,10 +89,13 @@
                                                                                              config:self.cordovaConfig
                                                                                              action:@selector(scanMultiBarcodeAction:)];
         [self.view bringSubviewToFront:self.multiBarcodeScanButton];
-        //Needed for mutlibarcode
+        
         ALScanViewPluginConfig *viewPluginConfig = self.scanView.scanViewPlugin.scanViewPluginConfig;
-        viewPluginConfig.cancelOnResult = false;
+        //Save beepOnResult, and only trigger it when the scan button was pressed
+        self.beepOnResult = viewPluginConfig.scanFeedbackConfig.beepOnResult;
         viewPluginConfig.scanFeedbackConfig.beepOnResult = false;
+        //Update current scanViewPluginConfig - cancelOnResult=false is needed for mutlibarcode
+        viewPluginConfig.cancelOnResult = false;
         [self.scanView.scanViewPlugin setScanViewPluginConfig:viewPluginConfig];
     } else if ([self.scanView.scanViewPlugin isKindOfClass:[ALDocumentScanViewPlugin class]]) {
         [(ALDocumentScanViewPlugin *)self.scanView.scanViewPlugin addScanViewPluginDelegate:self];
@@ -195,7 +199,9 @@
 }
 
 - (void)scanMultiBarcodeAction:(id)sender {
-    [self.scanView.scanViewPlugin triggerScannedFeedback];
+    if (self.beepOnResult) {
+        [self.scanView.scanViewPlugin triggerScannedFeedback];
+    }
     NSDictionary *dictResult = [ALPluginHelper dictionaryForBarcodeResult:self.multiBarcodeLastResult
                                                                   outline:self.scanView.scanViewPlugin.outline
                                                                   quality:self.quality];
