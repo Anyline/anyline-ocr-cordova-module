@@ -85,7 +85,7 @@ public class AnylinePluginHelper {
 									}
 									newLanguagesArray.put(languages[i]);
 									Log.d("languages", languages[i]);
-									AssetUtil.copyAssetFileWithoutPath(context, traineddataFilePath, dirToCopy, false);
+									AssetUtil.copyAssetFileWithoutPath(context, newLanguagesArray.getString(i), dirToCopy, false);
 									Log.v(TAG, "Copy traineddata duration: " + (System.currentTimeMillis() - start));
 								}
 								//ocrConfig.setLanguages(languages);
