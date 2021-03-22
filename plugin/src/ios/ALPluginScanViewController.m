@@ -34,6 +34,7 @@
 @property (nonatomic, strong) NSTimer *multiBarcodeFadeTimer;
 @property (nonatomic, strong) ALBarcodeResult* multiBarcodeLastResult;
 @property (nonatomic, assign) BOOL beepOnResult;
+@property (nonatomic, assign) BOOL vibrateOnResult;
 
 
 @end
@@ -94,6 +95,10 @@
         //Save beepOnResult, and only trigger it when the scan button was pressed
         self.beepOnResult = viewPluginConfig.scanFeedbackConfig.beepOnResult;
         viewPluginConfig.scanFeedbackConfig.beepOnResult = false;
+        //Save vibrateOnResult, and only trigger it when the scan button was pressed
+        self.vibrateOnResult = viewPluginConfig.scanFeedbackConfig.vibrateOnResult;
+        viewPluginConfig.scanFeedbackConfig.vibrateOnResult = false;
+        
         //Update current scanViewPluginConfig - cancelOnResult=false is needed for mutlibarcode
         viewPluginConfig.cancelOnResult = false;
         [self.scanView.scanViewPlugin setScanViewPluginConfig:viewPluginConfig];
@@ -199,7 +204,7 @@
 }
 
 - (void)scanMultiBarcodeAction:(id)sender {
-    if (self.beepOnResult) {
+    if (self.beepOnResult || self.vibrateOnResult) {
         [self.scanView.scanViewPlugin triggerScannedFeedback];
     }
     NSDictionary *dictResult = [ALPluginHelper dictionaryForBarcodeResult:self.multiBarcodeLastResult

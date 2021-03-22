@@ -28,7 +28,7 @@
     NSString *customCmdFile = [self.anyline4Config valueForKeyPath:@"viewPlugin.plugin.nfcPlugin"];
     
     [self.commandDelegate runInBackground:^{
-        ALPluginScanViewController *pluginScanViewController;
+        __block ALPluginScanViewController *pluginScanViewController;
         if (customCmdFile) {
             if (@available(iOS 13.0, *)) {
                 if ([ALNFCDetector readingAvailable]) {
@@ -60,30 +60,33 @@
                 [self handleDidStopScanning:@"NFC passport reading is only supported on iOS 13 and later."];
             }
         } else {
-            pluginScanViewController = [[ALPluginScanViewController alloc] initWithLicensekey:self.licensekey
-                                                     configuration:self.anyline4Config
-                                              cordovaConfiguration:self.cordovaUIConf
-                                                          delegate:self];
-            if([self.anyline4Config valueForKey:@"quality"]){
-                pluginScanViewController.quality = [[self.anyline4Config valueForKey:@"quality"] integerValue];
-            }
+            dispatch_sync(dispatch_get_main_queue(), ^{
             
-            if([self.anyline4Config valueForKey:@"cropAndTransformErrorMessage"]){
-                NSString *str = [self.anyline4Config objectForKey:@"cropAndTransformErrorMessage"];
-                pluginScanViewController.cropAndTransformErrorMessage = str;
-            }
-            
-            if ([self.anyline4Config valueForKey:@"nativeBarcodeEnabled"]) {
-                pluginScanViewController.nativeBarcodeEnabled = [[self.anyline4Config objectForKey:@"nativeBarcodeEnabled"] boolValue];
-            }
-            
-            if ([self.anyline4Config valueForKey:@"nativeBarcodeEnabled"]) {
+                pluginScanViewController = [[ALPluginScanViewController alloc] initWithLicensekey:self.licensekey
+                                                         configuration:self.anyline4Config
+                                                  cordovaConfiguration:self.cordovaUIConf
+                                                              delegate:self];
+                if([self.anyline4Config valueForKey:@"quality"]){
+                    pluginScanViewController.quality = [[self.anyline4Config valueForKey:@"quality"] integerValue];
+                }
                 
-            }
-            
-            self.baseScanViewController = pluginScanViewController;
-            
-            [self presentViewController];
+                if([self.anyline4Config valueForKey:@"cropAndTransformErrorMessage"]){
+                    NSString *str = [self.anyline4Config objectForKey:@"cropAndTransformErrorMessage"];
+                    pluginScanViewController.cropAndTransformErrorMessage = str;
+                }
+                
+                if ([self.anyline4Config valueForKey:@"nativeBarcodeEnabled"]) {
+                    pluginScanViewController.nativeBarcodeEnabled = [[self.anyline4Config objectForKey:@"nativeBarcodeEnabled"] boolValue];
+                }
+                
+                if ([self.anyline4Config valueForKey:@"nativeBarcodeEnabled"]) {
+                    
+                }
+                
+                self.baseScanViewController = pluginScanViewController;
+                
+                [self presentViewController];
+            });
         }
     }];
 }

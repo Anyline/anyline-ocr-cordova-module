@@ -62,53 +62,54 @@ anyline.barcode = {
   },
 
   barcodeConfig: {
-    "camera": {
-      "captureResolution": "1080p"
-    },
-    "flash": {
-      "mode": "auto",
-      "alignment": "bottom_right"
-    },
-    "viewPlugin": {
-      "plugin": {
-        "id": "Barcode_ID",
-        "barcodePlugin": {
-        "barcodeFormatOptions": ["UPC_E", "EAN_13", "UPC_A", "EAN_8", "AZTEC", "CODABAR", "CODE_11", "CODE_32", "CODE_39", "CODE_93", "CODE_128", "DATABAR", "DATA_MATRIX", "GS1_QR_CODE", "GS1_128", "ITF", "ISBT_128", "MSI", "MICRO_QR", "MICRO_PDF", "PDF_417", "POST_UK",
-                    "QR_CODE", "RSS_14", "RSS_EXPANDED", "TRIOPTIC", "USPS_4CB", "US_PLANET", "US_POSTNET"]
-                   }
+      "camera": {
+          "captureResolution": "1080p"
       },
-      "cutoutConfig": {
-        "style": "rect",
-        "maxWidthPercent": "80%",
-        "maxHeightPercent": "80%",
-        "alignment": "center",
-        "ratioFromSize": {
-          "width": 100,
-          "height": 80
-        },
-        "strokeWidth": 1,
-        "cornerRadius": 3,
-        "strokeColor": "FFFFFF",
-        "outerColor": "000000",
-        "outerAlpha": 0.3,
-        "feedbackStrokeColor": "0099FF"
+      "flash": {
+          "mode": "auto",
+          "alignment": "top_left"
       },
-      "scanFeedback": {
-        "style": "rect",
-        "strokeColor": "0099FF",
-        "fillColor": "220099FF",
-        "animationDuration": 150,
-        "blinkOnResult": true,
-        "beepOnResult": true,
-        "vibrateOnResult": true
+      "viewPlugin": {
+          "plugin": {
+              "id": "Barcode_ID",
+              "barcodePlugin": {
+                  "barcodeFormatOptions": ["UPC_E", "EAN_13", "UPC_A", "EAN_8", "AZTEC", "CODABAR", "CODE_11", "CODE_32", "CODE_39", "CODE_93", "CODE_128", "DATABAR", "DATA_MATRIX", "GS1_QR_CODE", "GS1_128", "ITF", "ISBT_128", "MSI", "MICRO_QR", "MICRO_PDF", "PDF_417", "POST_UK",
+                      "QR_CODE", "RSS_14", "RSS_EXPANDED", "TRIOPTIC", "USPS_4CB", "US_PLANET", "US_POSTNET"
+                  ],
+                  "multiBarcode": true
+              }
+          },
+          "cutoutConfig": {
+              "style": "rect",
+              "maxWidthPercent": "80%",
+              "maxHeightPercent": "80%",
+              "alignment": "center",
+              "ratioFromSize": {
+                  "width": 100,
+                  "height": 80
+              },
+              "strokeWidth": 1,
+              "cornerRadius": 3,
+              "strokeColor": "FFFFFF",
+              "outerColor": "000000",
+              "outerAlpha": 0.3,
+              "feedbackStrokeColor": "0099FF"
+          },
+          "scanFeedback": {
+              "style": "rect",
+              "strokeColor": "0099FF",
+              "fillColor": "220099FF",
+              "animationDuration": 150,
+              "blinkOnResult": true,
+              "beepOnResult": true,
+              "vibrateOnResult": true
+          },
+          "cancelOnResult": true
       },
-      "cancelOnResult": true
-    },
     "doneButton": { // iOS only. Android uses hardware back button.
       "title": "OK",
       "type": "rect", // fullwidth, rect
       "cornerRadius": 0,
-      //"backgroundColor":"#EEEEEE", // default clearcolor
       "textColor": "FFFFFF",
       "textColorHighlighted": "CCCCCC",
       "fontSize": 33,
@@ -117,7 +118,7 @@ anyline.barcode = {
       "positionYAlignment": "bottom", // top, center, bottom
       "offset": {
         "x": 0, // postive -> right
-        "y": -88, // postive -> down
+        "y": -120, // postive -> down
       }
     }
   },
