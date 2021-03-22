@@ -123,69 +123,6 @@ anyline.barcode = {
     }
   },
 
-  barcodePDF417Config: {
-    "camera": {
-      "captureResolution": "1080p",
-      "zoomGesture": "false",
-      "zoomRatio": "1",
-      "maxZoomRatio": "0"
-    },
-    "flash": {
-      "mode": "auto",
-      "alignment": "bottom_right"
-    },
-    "viewPlugin": {
-      "plugin": {
-        "id": "Barcode_ID",
-        "barcodePlugin": {
-          "barcodeFormatOptions": ["PDF_417"]
-        }
-      },
-      "cutoutConfig": {
-        "style": "rect",
-        "maxWidthPercent": "80%",
-        "maxHeightPercent": "80%",
-        "alignment": "center",
-        "ratioFromSize": {
-          "width": 100,
-          "height": 80
-        },
-        "strokeWidth": 1,
-        "cornerRadius": 3,
-        "strokeColor": "FFFFFF",
-        "outerColor": "000000",
-        "outerAlpha": 0.3,
-        "feedbackStrokeColor": "0099FF"
-      },
-      "scanFeedback": {
-        "style": "rect",
-        "strokeColor": "0099FF",
-        "fillColor": "220099FF",
-        "animationDuration": 150,
-        "blinkOnResult": true,
-        "beepOnResult": true,
-        "vibrateOnResult": true
-      },
-      "cancelOnResult": true
-    },
-    "doneButton": { // iOS only. Android uses hardware back button.
-      "title": "OK",
-      "type": "rect", // fullwidth, rect
-      "cornerRadius": 0,
-      //"backgroundColor":"#EEEEEE", // default clearcolor
-      "textColor": "FFFFFF",
-      "textColorHighlighted": "CCCCCC",
-      "fontSize": 33,
-      "fontName": "HelveticaNeue",
-      "positionXAlignment": "center", // left,right,center - no affect on fullwidth
-      "positionYAlignment": "bottom", // top, center, bottom
-      "offset": {
-        "x": 0, // postive -> right
-        "y": -88, // postive -> down
-      }
-    }
-  },
-
   scan: function (type) {
     // start the barcode scanning
     // pass the success and error callbacks, as well as the license key and the config to the plugin
@@ -199,7 +136,7 @@ anyline.barcode = {
 
     var licenseKey = "ewogICJsaWNlbnNlS2V5VmVyc2lvbiI6IDIsCiAgImRlYnVnUmVwb3J0aW5nIjogIm9wdC1vdXQiLAogICJpbWFnZVJlcG9ydENhY2hpbmciOiBmYWxzZSwKICAibWFqb3JWZXJzaW9uIjogIjI1IiwKICAibWF4RGF5c05vdFJlcG9ydGVkIjogNSwKICAiYWR2YW5jZWRCYXJjb2RlIjogdHJ1ZSwKICAibXVsdGlCYXJjb2RlIjogdHJ1ZSwKICAic3VwcG9ydGVkQmFyY29kZUZvcm1hdHMiOiBbCiAgICAiQUxMIgogIF0sCiAgInBpbmdSZXBvcnRpbmciOiB0cnVlLAogICJwbGF0Zm9ybSI6IFsKICAgICJpT1MiLAogICAgIkFuZHJvaWQiLAogICAgIldpbmRvd3MiCiAgXSwKICAic2NvcGUiOiBbCiAgICAiQUxMIgogIF0sCiAgInNob3dQb3BVcEFmdGVyRXhwaXJ5IjogdHJ1ZSwKICAic2hvd1dhdGVybWFyayI6IHRydWUsCiAgInRvbGVyYW5jZURheXMiOiA5MCwKICAidmFsaWQiOiAiMjAyMi0wNS0zMCIsCiAgImlvc0lkZW50aWZpZXIiOiBbCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhLmJldGEiLAogICAgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIKICBdLAogICJhbmRyb2lkSWRlbnRpZmllciI6IFsKICAgICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiCiAgXSwKICAid2luZG93c0lkZW50aWZpZXIiOiBbCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIgogIF0KfQp1alBHWTFXU2dhajJIejc2dFpYMkptQ29lMGRFNHRsOXBFNkVhcFZMbFZyUU81bEtrUTh3VDJHZDlHS2l4YU4rRmNhdm1QTUZvY0Q3Tlp0RWRBbGZVREQzZXM5WHBVR2VESjRSaDNUbnQ1aWlyZWE3RjhUbUl0dWdrajN0Y3ZqNktReUlwY3NsN3Y0TFZkNHFNRm1mMWIyM1ZCdHVsVjloY092dGRDbzBvT2VqdEJ2cVdmckM3enRwRkNjaTlueHhoTStvRCtxdEpiZ2NVZ2pHQjExZ1dqcU1NMDUvTkdoK0hESHdjN2tmMXNHR3FiWkhxM3hYRk5FZ1FIamdLR2l6ckNrSjhQNDVscjVKb3JrUVFiQVlqL0VaT3Fvdmd1YlNTRzdzeVBpSklvQUFoWGxwOU5uR2pySkl4Mi92bFNqcUFSRnZZUUIwNHozTEQxeW1JTU5Tanc9PQ==";
 
-    var options = (type === 'pdf417') ? this.barcodePDF417Config : this.barcodeConfig;
+    var options = this.barcodeConfig;
 
 
     //mode "scanBarcode" is also still available (for backwards compatibility)
