@@ -50,6 +50,12 @@ public class AnylinePluginHelper {
 								if(ocrScanPlugin.has("ocrConfig")) {
 									JSONObject ocrConfig = ocrScanPlugin.getJSONObject("ocrConfig");
 									tesseractArray = ocrConfig.optJSONArray("languages");
+									if(ocrConfig.has("customCmdFile")){
+										File dirToCopy = new File(context.getFilesDir(), "anyline/module_anyline_ocr/");
+										String cmdFileName = ocrConfig.getString("customCmdFile");
+										AssetUtil.copyAssetFileWithoutPath(context,"www/assets/" + cmdFileName , dirToCopy, false);
+										ocrConfig.put("customCmdFile","www/assets/" + cmdFileName);
+									}
 								}
 							}
 							JSONArray newLanguagesArray = new JSONArray();
@@ -79,7 +85,7 @@ public class AnylinePluginHelper {
 									}
 									newLanguagesArray.put(languages[i]);
 									Log.d("languages", languages[i]);
-									AssetUtil.copyAssetFileWithoutPath(context, languages[i], dirToCopy, false);
+									AssetUtil.copyAssetFileWithoutPath(context, newLanguagesArray.getString(i), dirToCopy, false);
 									Log.v(TAG, "Copy traineddata duration: " + (System.currentTimeMillis() - start));
 								}
 								//ocrConfig.setLanguages(languages);
