@@ -202,12 +202,16 @@
 
 - (void)anylineOCRScanPlugin:(ALOCRScanPlugin * _Nonnull)anylineOCRScanPlugin
                didFindResult:(ALOCRResult * _Nonnull)scanResult {
-    NSDictionary *dictResult = [ALPluginHelper dictionaryForOCRResult:scanResult
+    dispatch_async(dispatch_get_main_queue(), ^{
+       
+    
+        NSDictionary *dictResult = [ALPluginHelper dictionaryForOCRResult:scanResult
                                                      detectedBarcodes:self.detectedBarcodes
                                                               outline:self.scanView.scanViewPlugin.outline
                                                               quality:self.quality];
     
-    [self handleResult:dictResult result:scanResult];
+        [self handleResult:dictResult result:scanResult];
+    });
 }
 
 - (void)anylineBarcodeScanPlugin:(ALBarcodeScanPlugin * _Nonnull)anylineBarcodeScanPlugin
@@ -327,7 +331,13 @@
     
     if (self.scanView.scanViewPlugin.scanViewPluginConfig.cancelOnResult) {
         [self dismissViewControllerAnimated:YES completion:NULL];
+        
+        [self.scanView.scanViewPlugin stopAndReturnError:nil];
+        [self.scanView stopCamera];
+        self.scanView.scanViewPlugin = nil;
+        self.scanView.scanViewPlugin = nil;
     }
+    
     self.detectedBarcodes = [NSMutableArray array];
 }
 
