@@ -1,14 +1,14 @@
 repositories{
     google()
     jcenter()
-    maven { url 'https://anylinesdk.blob.core.windows.net/testing/'}
+    maven { url 'https://anylinesdk.blob.core.windows.net/maven/'}
     flatDir {
         dirs 'libs'
     }
 }
 
 dependencies {
-    implementation 'io.anyline:anylinesdk:30-RC2'
+    implementation 'io.anyline:anylinesdk:30'
 }
 
 android {
