@@ -36,24 +36,15 @@ The old calls with the old configurations will still work.
 - [**ID:**](https://documentation.anyline.com/toc/products/id/index.html)  Reliable scanning of data from passports, Driving Licenses and IDs machine readable zones (MRZ)
 - [**Anyline OCR:**](https://documentation.anyline.com/toc/products/anyline_ocr/index.html) Create a custom use case with LINE or GRID recognition
 
-### UWP
-
-UWP is currently available in a Beta phase. You can use it with <b>x86</b>.
-Available products are: 
-    - <b>Anyline OCR</b>
-    - <b>Barcode</b>
-    - <b>License Plate</b>
-    - <b>MRZ</b>
-
 ### Requirements
 
 #### Android
-- Android device with SDK >= 15
+- Android device with SDK >= 21
 - decent camera functionality (recommended: 720p and adequate auto focus)
 
 #### iOS
-- minimum iOS 8
-- minimum iPhone4s
+- minimum iOS 12
+- minimum iPhone 5s 
 - minimum Camera of 1080p
 - Cordova iOS v4.3.0 (Cocoapod support)
 
