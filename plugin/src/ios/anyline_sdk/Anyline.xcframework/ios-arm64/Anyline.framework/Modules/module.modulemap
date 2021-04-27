@@ -1,6 +1,0 @@
-framework module Anyline {
-  umbrella header "Anyline.h"
-
-  export *
-  module * { export * }
-}
