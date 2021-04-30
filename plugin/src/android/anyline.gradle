@@ -8,7 +8,7 @@ repositories{
 }
 
 dependencies {
-    implementation 'io.anyline:anylinesdk:30'
+    implementation 'io.anyline:anylinesdk:30.1'
 }
 
 android {
