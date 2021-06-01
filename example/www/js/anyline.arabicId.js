@@ -113,8 +113,7 @@ anylineArabicIdViewConfig: {
       },
       "feedbackStrokeColor": "0099FF"
     },
-    "scanFeedback" : {
-    },
+    "scanFeedback" : { },
     "cancelOnResult" : true
   }
 },

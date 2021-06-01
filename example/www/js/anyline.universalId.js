@@ -125,7 +125,7 @@ anylineUniversalIdViewConfig: {
       }
     },
     "cutoutConfig" : {
-      "style": "rect",
+      "style": "animated_rect",
       "maxWidthPercent": "90%",
       "maxHeightPercent": "90%",
       "alignment": "center",
@@ -148,15 +148,7 @@ anylineUniversalIdViewConfig: {
       },
       "feedbackStrokeColor": "0099FF"
     },
-    "scanFeedback" : {
-      "style": "CONTOUR_RECT",
-      "visualFeedbackRedrawTimeout": 100,
-      "strokeColor": "0099FF",
-      "fillColor" : "220099FF",
-      "beepOnResult": true,
-      "vibrateOnResult": true,
-      "strokeWidth": 2
-    },
+    "scanFeedback" : { },
     "cancelOnResult" : true
   }
 },
