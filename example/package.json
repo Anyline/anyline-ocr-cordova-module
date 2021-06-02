@@ -1,6 +1,6 @@
 {
   "name": "anyline-cordova-example",
-  "version": "30.1.0",
+  "version": "31.0.0",
   "description": "Cordova plugin for implementing Anyline",
   "main": "index.js",
   "scripts": {
@@ -20,10 +20,12 @@
     "plugins": {
       "io-anyline-cordova": {}
     },
-    "platforms": []
+    "platforms": [
+      "android"
+    ]
   },
   "devDependencies": {
+    "cordova-android": "^9.1.0",
     "io-anyline-cordova": "file:../plugin"
-  },
-  "dependencies": {}
+  }
 }
