@@ -24,6 +24,7 @@ anyline.barcode = {
        var detailsBarcodes = "";
        for (var i = 0; i < result.barcodes.length; i++) {
          detailsBarcodes += result.barcodes[i].value;
+         detailsBarcodes += " (" + result.barcodes[i].base64 + ")";
          detailsBarcodes += " (" + result.barcodes[i].barcodeFormat + ")";
          if (i < result.barcodes.length - 1) {
            detailsBarcodes += ", ";
