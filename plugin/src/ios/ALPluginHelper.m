@@ -38,17 +38,17 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         scanModes = @{
-                      @"AUTO_ANALOG_DIGITAL_METER" : @(ALAutoAnalogDigitalMeter),
-                      @"DIAL_METER" : @(ALDialMeter),
-                      @"ANALOG_METER" : @(ALAnalogMeter),
-                      @"BARCODE" : @(ALMeterBarcode),
-                      @"SERIAL_NUMBER" : @(ALSerialNumber),
-                      @"DOT_MATRIX_METER" : @(ALDotMatrixMeter),
-                      @"DIGITAL_METER" : @(ALDigitalMeter),
-                      @"HEAT_METER_4" : @(ALHeatMeter4),
-                      @"HEAT_METER_5" : @(ALHeatMeter5),
-                      @"HEAT_METER_6" : @(ALHeatMeter6),
-                      };
+            @"AUTO_ANALOG_DIGITAL_METER" : @(ALAutoAnalogDigitalMeter),
+            @"DIAL_METER" : @(ALDialMeter),
+            @"ANALOG_METER" : @(ALAnalogMeter),
+            @"BARCODE" : @(ALMeterBarcode),
+            @"SERIAL_NUMBER" : @(ALSerialNumber),
+            @"DOT_MATRIX_METER" : @(ALDotMatrixMeter),
+            @"DIGITAL_METER" : @(ALDigitalMeter),
+            @"HEAT_METER_4" : @(ALHeatMeter4),
+            @"HEAT_METER_5" : @(ALHeatMeter5),
+            @"HEAT_METER_6" : @(ALHeatMeter6),
+        };
     });
     
     return scanModes;
@@ -63,20 +63,20 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
         barcodeFormats = @{
-                           @"AVMetadataObjectTypeUPCECode" : kCodeTypeUPCE,
-                           @"AVMetadataObjectTypeCode39Code" : kCodeTypeCode39,
-                           @"AVMetadataObjectTypeCode39Mod43Code" : kCodeTypeCode39,
-                           @"AVMetadataObjectTypeEAN13Code" : kCodeTypeEAN13,
-                           @"AVMetadataObjectTypeEAN8Code" : kCodeTypeEAN8,
-                           @"AVMetadataObjectTypeCode93Code" : kCodeTypeCode93,
-                           @"AVMetadataObjectTypeCode128Code" : kCodeTypeCode128,
-                           @"AVMetadataObjectTypePDF417Code" : kCodeTypePDF417,
-                           @"AVMetadataObjectTypeQRCode" : kCodeTypeQR,
-                           @"AVMetadataObjectTypeAztecCode" : kCodeTypeAztec,
-                           @"AVMetadataObjectTypeInterleaved2of5Code" : kCodeTypeITF,
-                           @"AVMetadataObjectTypeITF14Code" : kCodeTypeITF,
-                           @"AVMetadataObjectTypeDataMatrixCode" : kCodeTypeDataMatrix,
-                           };
+            @"AVMetadataObjectTypeUPCECode" : kCodeTypeUPCE,
+            @"AVMetadataObjectTypeCode39Code" : kCodeTypeCode39,
+            @"AVMetadataObjectTypeCode39Mod43Code" : kCodeTypeCode39,
+            @"AVMetadataObjectTypeEAN13Code" : kCodeTypeEAN13,
+            @"AVMetadataObjectTypeEAN8Code" : kCodeTypeEAN8,
+            @"AVMetadataObjectTypeCode93Code" : kCodeTypeCode93,
+            @"AVMetadataObjectTypeCode128Code" : kCodeTypeCode128,
+            @"AVMetadataObjectTypePDF417Code" : kCodeTypePDF417,
+            @"AVMetadataObjectTypeQRCode" : kCodeTypeQR,
+            @"AVMetadataObjectTypeAztecCode" : kCodeTypeAztec,
+            @"AVMetadataObjectTypeInterleaved2of5Code" : kCodeTypeITF,
+            @"AVMetadataObjectTypeITF14Code" : kCodeTypeITF,
+            @"AVMetadataObjectTypeDataMatrixCode" : kCodeTypeDataMatrix,
+        };
 #pragma clang diagnostic pop
     });
     
@@ -283,7 +283,7 @@
     NSMutableDictionary *barcode = [NSMutableDictionary dictionaryWithCapacity:2];
     
     barcode[@"value"] = scanResult;
-//    barcode[@"format"] = [ALPluginHelper barcodeFormatForNativeString:barcodeType];
+    //    barcode[@"format"] = [ALPluginHelper barcodeFormatForNativeString:barcodeType];
     barcode[@"format"] = barcodeType;
     
     return barcode;
@@ -363,25 +363,25 @@
     if ([scanResult.result isKindOfClass:[ALMRZIdentification class]]) {
         ALMRZIdentification *mrzIdentification = (ALMRZIdentification *)scanResult.result;
         NSMutableArray<NSString *> *keys=[@[
-                                            @"surname",
-                                            @"givenNames",
-                                            @"dateOfBirth",
-                                            @"dateOfExpiry",
-                                            @"documentNumber",
-                                            @"documentType",
-                                            @"issuingCountryCode",
-                                            @"nationalityCountryCode",
-                                            @"sex",
-                                            @"personalNumber",
-                                            @"optionalData",
-                                            @"mrzString",
-                                            @"checkDigitDateOfExpiry",
-                                            @"checkDigitDocumentNumber",
-                                            @"checkDigitDateOfBirth",
-                                            @"checkDigitFinal",
-                                            @"checkDigitPersonalNumber",
-                                            @"allCheckDigitsValid"
-                                            ] mutableCopy];
+            @"surname",
+            @"givenNames",
+            @"dateOfBirth",
+            @"dateOfExpiry",
+            @"documentNumber",
+            @"documentType",
+            @"issuingCountryCode",
+            @"nationalityCountryCode",
+            @"sex",
+            @"personalNumber",
+            @"optionalData",
+            @"mrzString",
+            @"checkDigitDateOfExpiry",
+            @"checkDigitDocumentNumber",
+            @"checkDigitDateOfBirth",
+            @"checkDigitFinal",
+            @"checkDigitPersonalNumber",
+            @"allCheckDigitsValid"
+        ] mutableCopy];
         dictResult = [[scanResult.result dictionaryWithValuesForKeys:keys] mutableCopy];
         //there's no confidence for allCheckDigitsValid
         [keys removeObject:@"allCheckDigitsValid"];
@@ -427,17 +427,17 @@
         [dictResult setValue:confidences forKey:@"fieldConfidences"];
     } else if ([scanResult.result isKindOfClass:[ALDrivingLicenseIdentification class]]) {
         NSMutableArray<NSString *> *keys=[@[
-                                            @"surname",
-                                            @"givenNames",
-                                            @"dateOfBirth",
-                                            @"placeOfBirth",
-                                            @"dateOfIssue",
-                                            @"dateOfExpiry",
-                                            @"authority",
-                                            @"documentNumber",
-                                            @"categories",
-                                            @"drivingLicenseString"
-                                            ] mutableCopy];
+            @"surname",
+            @"givenNames",
+            @"dateOfBirth",
+            @"placeOfBirth",
+            @"dateOfIssue",
+            @"dateOfExpiry",
+            @"authority",
+            @"documentNumber",
+            @"categories",
+            @"drivingLicenseString"
+        ] mutableCopy];
         dictResult = [[scanResult.result dictionaryWithValuesForKeys:keys] mutableCopy];
         //we have field confidences for everything but drivingLicenseString
         [keys removeObject:@"drivingLicenseString"];
@@ -449,16 +449,16 @@
     } else if ([scanResult.result isKindOfClass:[ALGermanIDFrontIdentification class]]) {
         ALGermanIDFrontIdentification *germanIDFrontIdentification = (ALGermanIDFrontIdentification *)scanResult.result;
         NSMutableArray<NSString *> *keys=[@[
-                                            @"surname",
-                                            @"givenNames",
-                                            @"dateOfBirth",
-                                            @"nationality",
-                                            @"placeOfBirth",
-                                            @"dateOfExpiry",
-                                            @"documentNumber",
-                                            @"cardAccessNumber",
-                                            @"germanIdFrontString"
-                                            ] mutableCopy];
+            @"surname",
+            @"givenNames",
+            @"dateOfBirth",
+            @"nationality",
+            @"placeOfBirth",
+            @"dateOfExpiry",
+            @"documentNumber",
+            @"cardAccessNumber",
+            @"germanIdFrontString"
+        ] mutableCopy];
         dictResult = [[germanIDFrontIdentification dictionaryWithValuesForKeys:keys] mutableCopy];
         //we have field confidences for everything but germanIdFrontString
         [keys removeObject:@"germanIdFrontString"];
@@ -566,7 +566,8 @@
     for(ALBarcode *barcode in scanResult.result) {
         [barcodeArray addObject:@{
             @"value":barcode.value,
-            @"barcodeFormat": [ALPluginHelper barcodeFormatFromString:barcode.barcodeFormat]
+            @"barcodeFormat": [ALPluginHelper barcodeFormatFromString:barcode.barcodeFormat],
+            @"base64": barcode.base64
         }];
     }
     
