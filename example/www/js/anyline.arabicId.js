@@ -76,7 +76,8 @@ anylineArabicIdViewConfig: {
           "faceDetection": true,
           "allowedLayouts": {
             "mrz": [],
-            "idFront": []
+            "idFront": [],
+            "drivingLicense": []
           },
           "idFront": {
             "fullName": {"scanOption": 0, "minConfidence": 60},
@@ -85,6 +86,14 @@ anylineArabicIdViewConfig: {
             "dateOfExpiry": {"scanOption": 1, "minConfidence": 60},
             "documentNumber": {"scanOption": 0, "minConfidence": 60},
             "nationality": {"scanOption": 1, "minConfidence": 60}
+          },
+          "drivingLicense": {
+            "fullName": {"scanOption": 0, "minConfidence": 60},
+            "dateOfBirth": {"scanOption": 0, "minConfidence": 60},
+            "placeOfBirth": {"scanOption": 1, "minConfidence": 60},
+            "dateOfExpiry": {"scanOption": 1, "minConfidence": 60},
+            "documentNumber": {"scanOption": 0, "minConfidence": 60},
+            "nationality": {"scanOption": 0, "minConfidence": 60}
           }
         }
       }
@@ -94,8 +103,8 @@ anylineArabicIdViewConfig: {
       "maxWidthPercent": "90%",
       "maxHeightPercent": "90%",
       "alignment": "center",
-      "strokeWidth": 2,
-      "cornerRadius": 4,
+      "strokeWidth": 3,
+      "cornerRadius": 8,
       "strokeColor": "FFFFFF",
       "outerColor": "000000",
       "outerAlpha": 0.3,
@@ -113,7 +122,15 @@ anylineArabicIdViewConfig: {
       },
       "feedbackStrokeColor": "0099FF"
     },
-    "scanFeedback" : { },
+    "scanFeedback" : {
+      "style": "CONTOUR_RECT",
+      "visualFeedbackRedrawTimeout": 100,
+      "strokeColor": "0099FF",
+      "fillColor" : "220099FF",
+      "beepOnResult": true,
+      "vibrateOnResult": true,
+      "strokeWidth": 2
+    },
     "cancelOnResult" : true
   }
 },

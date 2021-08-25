@@ -28,13 +28,12 @@ import io.anyline.plugin.barcode.BarcodeFormat;
 import io.anyline.plugin.meter.MeterScanMode;
 import io.anyline.view.ScanView;
 
-import static org.apache.cordova.Whitelist.TAG;
-
 public class AnylinePluginHelper {
 
 	private static Toast notificationToast;
 	private static boolean nativeBarcodeEnabled = false;
 	private static List<Barcode> finalBarcodeList;
+	private static String TAG = AnylinePluginHelper.class.getSimpleName();
 
 	public static JSONObject setLanguages(JSONObject json, Context context){
 		if(json.has("viewPlugin")){

@@ -27,11 +27,11 @@ cordova plugin add path/to/local/plugin
 
 Android:
 ```
-cordova platform add android@latest
+cordova platform add android@9.0.0
 ```
 iOS:
 ```
-cordova platform add ios@latest
+cordova platform add ios@5.0.0
 ```
 Windows UWP:
 ```

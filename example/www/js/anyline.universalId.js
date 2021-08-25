@@ -76,13 +76,16 @@ anylineUniversalIdViewConfig: {
   },
   "flash" : {
     "mode": "manual",
-    "alignment": "bottom_right"
+    "alignment": "bottom_right",
+    "imageOn": "flash_on",
+    "imageOff": "flash_off"
   },
   "viewPlugin" : {
     "plugin":{
       "id":"ID",
       "idPlugin": {
         "universalIdConfig": {
+          "faceDetection": true,
           "allowedLayouts": {
             "mrz": [],
             "drivingLicense": [],
@@ -129,8 +132,8 @@ anylineUniversalIdViewConfig: {
       "maxWidthPercent": "90%",
       "maxHeightPercent": "90%",
       "alignment": "center",
-      "strokeWidth": 2,
-      "cornerRadius": 4,
+      "strokeWidth": 3,
+      "cornerRadius": 8,
       "strokeColor": "FFFFFF",
       "outerColor": "000000",
       "outerAlpha": 0.3,
@@ -148,7 +151,15 @@ anylineUniversalIdViewConfig: {
       },
       "feedbackStrokeColor": "0099FF"
     },
-    "scanFeedback" : { },
+    "scanFeedback" : {
+      "style": "CONTOUR_RECT",
+      "visualFeedbackRedrawTimeout": 100,
+      "strokeColor": "0099FF",
+      "fillColor" : "220099FF",
+      "beepOnResult": true,
+      "vibrateOnResult": true,
+      "strokeWidth": 2
+    },
     "cancelOnResult" : true
   }
 },
