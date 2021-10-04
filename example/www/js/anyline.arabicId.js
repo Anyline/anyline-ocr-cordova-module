@@ -72,7 +72,8 @@ anylineArabicIdViewConfig: {
     "plugin":{
       "id":"ID",
       "idPlugin": {
-        "arabicIdConfig": {
+        "universalIdConfig": {
+          "alphabet": "arabic",
           "faceDetection": true,
           "allowedLayouts": {
             "mrz": [],
