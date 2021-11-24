@@ -30,8 +30,10 @@ import io.anyline.AnylineSDK;
 import io.anyline.plugin.ScanResult;
 import io.anyline.plugin.ScanResultListener;
 import io.anyline.plugin.barcode.Barcode;
+import io.anyline.plugin.barcode.BarcodeScanPlugin;
 import io.anyline.plugin.barcode.BarcodeScanResult;
 import io.anyline.plugin.barcode.BarcodeScanViewPlugin;
+import io.anyline.plugin.barcode.PDF417;
 import io.anyline.plugin.id.DrivingLicenseConfig;
 import io.anyline.plugin.id.DrivingLicenseIdentification;
 import io.anyline.plugin.id.GermanIdFrontConfig;
@@ -433,6 +435,9 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
 
                 } else if (scanViewPlugin instanceof BarcodeScanViewPlugin) {
 
+                    if (shouldEnablePDF417(json)) {
+                        ((BarcodeScanPlugin) ((BarcodeScanViewPlugin) scanViewPlugin).getScanPlugin()).enablePDF417Parsing();
+                    }
                     scanViewPlugin.addScanResultListener(new ScanResultListener<BarcodeScanResult>() {
                         @Override
                         public void onResult(BarcodeScanResult barcodeScanResult) {
@@ -447,16 +452,18 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                                         barcode.put("value", barcodeList.get(i).getValue());
                                         barcode.put("barcodeFormat", barcodeList.get(i).getBarcodeFormat());
 
+                                        PDF417 pdf417 = barcodeList.get(i).getParsedPDF417();
+
+                                        if(pdf417 != null) {
+                                            barcode.put("parsedPDF417", pdf417.toJSONObject());
+                                        }
+
                                         barcodeArray.put(barcode);
                                     }
                                     JSONObject finalObject = new JSONObject();
                                     finalObject.put("barcodes", barcodeArray);
                                     jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, barcodeScanResult, finalObject);
                                 }
-                                //else{
-                                //    jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, barcodeScanResult, barcodeList.get(0).toJSONObject());
-
-                               // }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -524,6 +531,21 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
             finishWithError(Resources.getString(this, "error_invalid_json_data") + "\n" + e.getLocalizedMessage());
         }
 
+    }
+
+    private boolean shouldEnablePDF417(JSONObject jsonObject) {
+        JSONObject viewPlugin = jsonObject.optJSONObject("viewPlugin");
+
+        if (viewPlugin != null) {
+            JSONObject plugin = viewPlugin.optJSONObject("plugin");
+
+            if (plugin != null) {
+                JSONObject barcodePlugin = plugin.optJSONObject("barcodePlugin");
+                Log.e("yyyy", ""+barcodePlugin.optBoolean("enablePDF417Parsing"));
+                return barcodePlugin != null && barcodePlugin.optBoolean("enablePDF417Parsing");
+            }
+        }
+        return false;
     }
 
     //this method is used only for the meter scanning which contains radio buttons
