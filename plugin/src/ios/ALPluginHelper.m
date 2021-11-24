@@ -567,7 +567,8 @@
         NSMutableDictionary *barcodeDictionary = @{ @"value":barcode.value,
                                                     @"barcodeFormat": [ALPluginHelper barcodeFormatFromString:barcode.barcodeFormat]}.mutableCopy;
         if (barcode.parsedPDF417 != nil) {
-            [barcodeDictionary setValue:[barcode.parsedPDF417[kPDF417ParsedBody] description] forKey:@"value"];
+            NSString *newValueWithPDF417 = [NSString stringWithFormat:@"{\"rawPDF417\" : \"%@\", \"parsedPDF417\" : \"%@\"}", barcode.value, [barcode.parsedPDF417[kPDF417ParsedBody] description]];
+            [barcodeDictionary setValue:newValueWithPDF417 forKey:@"value"];
         }
         [barcodeArray addObject:barcodeDictionary];
     }
