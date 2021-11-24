@@ -74,7 +74,8 @@ anyline.barcode = {
         "id": "Barcode_ID",
         "barcodePlugin": {
         "barcodeFormatOptions": ["UPC_E", "EAN_13", "UPC_A", "EAN_8", "AZTEC", "CODABAR", "CODE_11", "CODE_32", "CODE_39", "CODE_93", "CODE_128", "DATABAR", "DATA_MATRIX", "GS1_QR_CODE", "GS1_128", "ITF", "ISBT_128", "MSI", "MICRO_QR", "MICRO_PDF", "PDF_417", "POST_UK",
-                    "QR_CODE", "RSS_14", "RSS_EXPANDED", "TRIOPTIC", "USPS_4CB", "US_PLANET", "US_POSTNET"]
+                    "QR_CODE", "RSS_14", "RSS_EXPANDED", "TRIOPTIC", "USPS_4CB", "US_PLANET", "US_POSTNET"],
+                    "enablePDF417Parsing": true
                    }
       },
       "cutoutConfig": {
@@ -137,7 +138,8 @@ anyline.barcode = {
       "plugin": {
         "id": "Barcode_ID",
         "barcodePlugin": {
-          "barcodeFormatOptions": ["PDF_417"]
+          "barcodeFormatOptions": ["PDF_417"],
+          "enablePDF417Parsing": true
         }
       },
       "cutoutConfig": {
