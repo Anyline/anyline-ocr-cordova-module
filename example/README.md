@@ -33,10 +33,6 @@ iOS:
 ```
 cordova platform add ios@5.0.0
 ```
-Windows UWP:
-```
-cordova platform add windows@latest
-```
 
 #### Run it
 
