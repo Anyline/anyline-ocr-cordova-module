@@ -564,10 +564,13 @@
     
     
     for(ALBarcode *barcode in scanResult.result) {
-        [barcodeArray addObject:@{
-            @"value":barcode.value,
-            @"barcodeFormat": [ALPluginHelper barcodeFormatFromString:barcode.barcodeFormat]
-        }];
+        NSMutableDictionary *barcodeDictionary = @{ @"value":barcode.value,
+                                                    @"barcodeFormat": [ALPluginHelper barcodeFormatFromString:barcode.barcodeFormat]}.mutableCopy;
+        if (barcode.parsedPDF417 != nil) {
+            NSString *newValueWithPDF417 = [NSString stringWithFormat:@"{\"rawPDF417\" : \"%@\", \"parsedPDF417\" : \"%@\"}", barcode.value, [barcode.parsedPDF417[kPDF417ParsedBody] description]];
+            [barcodeDictionary setValue:newValueWithPDF417 forKey:@"value"];
+        }
+        [barcodeArray addObject:barcodeDictionary];
     }
     
     [dictResult setValue:barcodeArray forKey:@"barcodes"];

@@ -171,7 +171,7 @@ pod install
 
 If Anyline was not installed via pods, please make sure that your Podfile (./platform/ios/Podfile) contains the following line within your build target: 
 ```
-pod 'Anyline', '~> 15.1’
+pod 'Anyline'
 ```
 
 #### Access to app denied | missing architectures 
