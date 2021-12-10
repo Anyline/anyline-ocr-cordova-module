@@ -113,7 +113,7 @@ serialScan: {
                            "plugin":{
                               "id":"DRIVING_LICENSE",
                               "idPlugin":{
-                                 "drivingLicenseConfig":{
+                                 "universalIdConfig":{
                                     "scanMode":"AUTO"
                                  }
                               }

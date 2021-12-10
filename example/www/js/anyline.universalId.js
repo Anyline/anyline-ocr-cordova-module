@@ -24,18 +24,6 @@ onResult: function (result) {
     console.log("s 1: " + s);
     console.log("result length: " + result.length);
 
-//    for (var i = 0; i < result.length; i++){
-//        var obj = result[i];
-//        for (var key in obj){
-//            var attrName = key;
-//            var attrValue = obj[key];
-//    console.log("name, value: " + attrName + " - " + attrValue);
-//            s = s.concat("<br/><b>" + attrName + ": </b>" + attrValue);
-//    console.log("s 2: " + s);
-//        }
-//    }
-
-
     for (var key in result) {
       if (result.hasOwnProperty(key)) {
         var val = result[key];
@@ -44,8 +32,6 @@ onResult: function (result) {
         console.log("-------------- key, value: " + key + " - " + val);
       }
     }
-
-
 
     s = s.concat ("</p>");
     console.log("s 3: " + s);
