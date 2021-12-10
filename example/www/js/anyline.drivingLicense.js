@@ -82,8 +82,7 @@ if (anyline === undefined) {
           "plugin" : {
               "id" : "IDPlugin_ID",
               "idPlugin" : {
-                  "drivingLicenseConfig" : {
-                      "scanMode" : "AUTO"
+                  "universalIdConfig" : {
                   }
               }
           },
