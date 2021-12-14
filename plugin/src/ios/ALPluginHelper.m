@@ -531,8 +531,8 @@
             [barcodeDictionary setValue:newValueWithPDF417 forKey:@"value"];
         }
         [barcodeArray addObject:barcodeDictionary];
-    }   
-    
+    }
+        
     [dictResult setValue:barcodeArray forKey:@"barcodes"];
     
     NSString *imagePath = [ALPluginHelper saveImageToFileSystem:scanResult.image compressionQuality:dividedCompRate];
