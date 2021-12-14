@@ -130,7 +130,7 @@ serialScan: {
                                      "address": {"scanOption": 1}
                                    }
                                  }
-                               }
+                              }
                            },
                            "cutoutConfig":{
                               "style":"rect",
