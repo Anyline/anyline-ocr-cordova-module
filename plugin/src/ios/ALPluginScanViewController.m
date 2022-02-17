@@ -11,7 +11,7 @@
 #import "ALRoundedView.h"
 
 
-@interface ALPluginScanViewController ()<ALIDPluginDelegate,ALOCRScanPluginDelegate,ALBarcodeScanPluginDelegate,ALMeterScanPluginDelegate,ALLicensePlateScanPluginDelegate,ALDocumentScanPluginDelegate,AnylineNativeBarcodeDelegate, ALInfoDelegate, ALScanViewPluginDelegate, ALDocumentInfoDelegate, ALCompositeScanPluginDelegate>
+@interface ALPluginScanViewController ()<ALIDPluginDelegate,ALOCRScanPluginDelegate,ALBarcodeScanPluginDelegate,ALMeterScanPluginDelegate,ALLicensePlateScanPluginDelegate,ALDocumentScanPluginDelegate,AnylineNativeBarcodeDelegate, ALInfoDelegate, ALScanViewPluginDelegate, ALDocumentInfoDelegate, ALCompositeScanPluginDelegate, ALTireScanPluginDelegate>
 
 @property (nonatomic,strong) UIButton *doneButton;
 @property (nonatomic,strong) UILabel *scannedLabel;
@@ -276,6 +276,14 @@
     
     [self handleResult:dictResult result:nil];
     
+}
+
+- (void)anylineTireScanPlugin:(ALTireScanPlugin * _Nonnull)anylineTireScanPlugin
+                didFindResult:(ALTireResult * _Nonnull)scanResult {
+    NSDictionary *dictResult = [ALPluginHelper dictionaryForTireResult:scanResult
+                                                               quality:self.quality];
+    
+    [self handleResult:dictResult result:scanResult];
 }
 
 /*
