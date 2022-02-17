@@ -48,6 +48,8 @@ import io.anyline.plugin.meter.MeterScanResult;
 import io.anyline.plugin.meter.MeterScanViewPlugin;
 import io.anyline.plugin.ocr.OcrScanResult;
 import io.anyline.plugin.ocr.OcrScanViewPlugin;
+import io.anyline.plugin.tire.TireScanResult;
+import io.anyline.plugin.tire.TireScanViewPlugin;
 import io.anyline.view.AbstractBaseScanViewPlugin;
 import io.anyline.view.LicenseKeyExceptionListener;
 import io.anyline.view.ParallelScanViewComposite;
@@ -256,11 +258,6 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                         }
                     });
                 } else if (scanViewPlugin instanceof LicensePlateScanViewPlugin) {
-                    if (json.has("reportingEnabled")) {
-                        //scanViewPlugin.setReportingEnabled(json.optBoolean("reportingEnabled", true));
-                        (((LicensePlateScanViewPlugin) scanViewPlugin).getScanPlugin()).setReportingEnabled(
-                                json.optBoolean("reportingEnabled", true));
-                    }
                     scanViewPlugin.addScanResultListener(new ScanResultListener<LicensePlateScanResult>() {
                         @Override
                         public void onResult(LicensePlateScanResult licensePlateResult) {
@@ -342,11 +339,6 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                         });
                     }
                 } else if (scanViewPlugin instanceof OcrScanViewPlugin) {
-                    if (json.has("reportingEnabled")) {
-                        //						scanViewPlugin.setReportingEnabled(json.optBoolean("reportingEnabled", true));
-                        (((OcrScanViewPlugin) scanViewPlugin).getScanPlugin()).setReportingEnabled(json.optBoolean("reportingEnabled", true));
-
-                    }
 
                     scanViewPlugin.addScanResultListener(new ScanResultListener<OcrScanResult>() {
                         @Override
@@ -363,6 +355,22 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                         }
 
 
+                    });
+
+                } else if (scanViewPlugin instanceof TireScanViewPlugin) {
+
+                    scanViewPlugin.addScanResultListener(new ScanResultListener<TireScanResult>() {
+                        @Override
+                        public void onResult(TireScanResult tireScanResult) {
+                            JSONObject jsonResult = new JSONObject();
+                            try {
+                                jsonResult.put("text", tireScanResult.getResult().trim());
+                                jsonResult = AnylinePluginHelper.jsonHelper(Anyline4Activity.this, tireScanResult, jsonResult);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            setResult(scanViewPlugin, jsonResult);
+                        }
                     });
 
                 } else if (scanViewPlugin instanceof BarcodeScanViewPlugin) {
@@ -410,10 +418,6 @@ public class Anyline4Activity extends AnylineBaseActivity implements LicenseKeyE
                 } else if (scanViewPlugin instanceof MeterScanViewPlugin) {
                     final JSONArray jsonArray = new JSONArray();
                     //boolean nativeBarcodeEnabled = false;
-                    if (json.has("reportingEnabled")) {
-                        //						scanViewPlugin.setReportingEnabled(json.optBoolean("reportingEnabled", true));
-                        (((MeterScanViewPlugin) scanViewPlugin).getScanPlugin()).setReportingEnabled(json.optBoolean("reportingEnabled", true));
-                    }
                     //					if (json.has("nativeBarcodeEnabled")) {
                     //						nativeBarcodeEnabled = json.getBoolean("nativeBarcodeEnabled");
                     //					}
