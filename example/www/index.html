@@ -120,18 +120,22 @@
                 <hr>
                 <h2> Vehicles </h2>
                 <p>
-                <input type="button" value="License Plates"
-                onclick="anyline.licensePlate.scanLicensePlates('LICENSE_PLATE')" class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="Tire Identification Nb." onclick="anyline.ocr.scanTin()"
+                <input type="button" value="Vehicle Identification Nb." onclick="anyline.vin.scan()"
                 class="formButton" disabled=true/>
+                <br />
+                <input type="button" value="License Plates"
+                onclick="anyline.licensePlate.scanLicensePlates('LICENSE_PLATE')" class="formButton" disabled=false/>
+                <br />
+                <input type="button" value="License Plate US"
+                onclick="anyline.licensePlateUS.scanLicensePlates('LICENSE_PLATE')" class="formButton" disabled=false/>
+                <br />
+                <input type="button" value="License Plate Africa"
+                onclick="anyline.licensePlateAfrica.scanLicensePlates('LICENSE_PLATE')" class="formButton" disabled=false/>
                 </p>
                 
                 <hr>
                 <h2>MRO</h2>
-                <input type="button" value="Vehicle Identification Nb." onclick="anyline.vin.scan()"
-                class="formButton" disabled=true/>
-                <br />
+                <p>
                 <input type="button" value="Universal Serial Number" onclick="anyline.usnr.scan()" class="formButton" disabled=true/>
                 <br />
                 <input type="button" value="Shipping Container" onclick="anyline.container.scan('default')" class="formButton" disabled=true/>
@@ -197,6 +201,8 @@
         <script type="text/javascript" src="js/anyline.tire.js"></script>
         <script type="text/javascript" src="js/anyline.document.js"></script>
         <script type="text/javascript" src="js/anyline.licensePlate.js"></script>
+        <script type="text/javascript" src="js/anyline.licensePlateUS.js"></script>
+        <script type="text/javascript" src="js/anyline.licensePlateAfrica.js"></script>
         <script type="text/javascript" src="js/anyline.vin.js"></script>
         <script type="text/javascript" src="js/anyline.usnr.js"></script>
         <script type="text/javascript" src="js/anyline.container.js"></script>
