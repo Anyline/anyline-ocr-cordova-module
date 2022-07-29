@@ -120,7 +120,7 @@ anyline.energy = {
       "plugin": {
         "id": "Meter_ID",
         "meterPlugin": {
-          "scanMode": "ANALOG_METER"
+          "scanMode": "AUTO_ANALOG_DIGITAL_METER"
         }
       },
       "cutoutConfig": {
@@ -144,15 +144,6 @@ anyline.energy = {
       "cancelOnResult": true
     },
     "nativeBarcodeEnabled": true,
-    "segment": {
-      "titles": ["Analog", "Digital"],
-      "modes": ["ANALOG_METER", "DIGITAL_METER"],
-      "tintColor": "CCCCCC",
-      "offset": {
-        "x": 0,
-        "y": 400
-      }
-    }
   },
 
   energyDigitalConfigWithSegment:
@@ -168,7 +159,7 @@ anyline.energy = {
       "plugin": {
         "id": "Meter_ID",
         "meterPlugin": {
-          "scanMode": "DIGITAL_METER"
+          "scanMode": "AUTO_ANALOG_DIGITAL_METER"
         }
       },
       "cutoutConfig": {
@@ -192,15 +183,6 @@ anyline.energy = {
       "cancelOnResult": true,
     },
     "nativeBarcodeEnabled": true,
-    "segment": {
-      "titles": ["Analog", "Digital"],
-      "modes": ["ANALOG_METER", "DIGITAL_METER"],
-      "tintColor": "CCCCCC",
-      "offset": {
-        "x": 0,
-        "y": 400
-      }
-    }
   },
 
   dialConfig:
