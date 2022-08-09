@@ -57,7 +57,7 @@
         </podspec> -->
 
 
-        <!-- Frameworks needed by Anyline SDK for iOS -->
+        <!-- Frameworks/Libs needed by Anyline SDK for iOS -->
         <framework src="libz.tbd"/>
         <framework src="libc++.tbd"/>
         <framework src="AssetsLibrary.framework"/>
