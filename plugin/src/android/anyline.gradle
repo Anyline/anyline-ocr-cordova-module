@@ -27,6 +27,20 @@ android {
   packagingOptions {
     exclude 'META-INF/NOTICE'
     exclude 'META-INF/LICENSE'
+
+    def anylineIgnoreAssetsPattern = '';
+    new XmlSlurper().parse(file('../app/src/main/res/xml/config.xml')).preference.each {
+      if (it.@name.text() == 'anyline-ignore-assets-pattern') {
+        anylineIgnoreAssetsPattern = it.@value.text().toLowerCase()
+      }
+    }
+
+    if (!anylineIgnoreAssetsPattern.empty) {
+      println "Anyline: ignore assets Pattern --> $anylineIgnoreAssetsPattern"
+      aaptOptions {
+        ignoreAssetsPattern "$anylineIgnoreAssetsPattern"
+      }
+    }
   }
 
 }

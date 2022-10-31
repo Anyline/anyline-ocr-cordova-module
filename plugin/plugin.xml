@@ -9,11 +9,13 @@
 
     <!--Add Platform specific Files-->
     <platform name="ios">
-	
+        <hook type="after_plugin_install" src="scripts/ios/after_plugin_install.js" />
+        <hook type="before_plugin_uninstall" src="scripts/ios/before_plugin_uninstall.js" />
+
 		<js-module src="www/anyline.js" name="anyline">
 			<clobbers target="window.Anyline" />
 		</js-module>
-	
+
         <plugins-plist key="AnylineSDK" string="AnylineSDKPlugin"/>
         <!-- feature tag in config.xml -->
         <config-file parent="/widget" target="config.xml">
@@ -38,7 +40,7 @@
         <source-file src="src/ios/ALCordovaUIConfiguration.m"/>
         <header-file src="src/ios/ALNFCScanViewController.h"/>
         <source-file src="src/ios/ALNFCScanViewController.m"/>
-        
+
         <!-- Anyline Framework & Resource Bundle locally -->
         <!-- <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>-->
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
@@ -65,11 +67,11 @@
 
     </platform>
     <platform name="android">
-	
+
 		<js-module src="www/anyline.js" name="anyline">
 			<clobbers target="window.Anyline" />
 		</js-module>
-	
+
         <!-- register plugin -->
         <framework custom="true" src="src/android/anyline.gradle" type="gradleReference"/>
 
@@ -103,7 +105,7 @@
         </config-file>
 
         <!-- add plugin source code -->
-	    <source-file src="src/android/io/anyline/cordova/Anyline4Activity.java" target-dir="src/io/anyline/cordova"/>        
+	    <source-file src="src/android/io/anyline/cordova/Anyline4Activity.java" target-dir="src/io/anyline/cordova"/>
 	    <source-file src="src/android/io/anyline/cordova/AnylineBaseActivity.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/AnylinePlugin.java" target-dir="src/io/anyline/cordova"/>
 	    <source-file src="src/android/io/anyline/cordova/AnylinePluginHelper.java" target-dir="src/io/anyline/cordova"/>
