@@ -7,7 +7,9 @@
     <preference name="Orientation" value="portrait" />
     <preference name="windows-target-version" value="10.0" />
     <preference name="AndroidXEnabled" value="true" />
-    <preference name="anyline-ignore-assets-pattern" value="module_energy:module_id:module_anyline_ocr:module_document:module_license_plate:module_tire" />
+    <!--  To decrease the size of the SDK, add the modules to be removed from the app to the value of below key.
+      Example: value="module_energy:module_id:module_anyline_ocr:module_document:module_license_plate:module_tire" -->
+    <preference name="anyline-ignore-assets-pattern" value="" />
     <content src="index.html" />
     <access origin="*" />
     <icon src="www/img/ic_launcher.png" />
