@@ -2,7 +2,7 @@
  * Anyline Cordova Plugin
  * anyline.ocr.js
  *
- * Copyright (c) 2016 Anyline GmbH
+ * Copyright (c) 2023 Anyline GmbH
  */
 
 if (anyline === undefined) {
@@ -11,92 +11,28 @@ if (anyline === undefined) {
 anyline.licensePlate = {
   onResult: function (result) {
     changeLoadingState(false);
-    //this is called for every mrz scan result
-    //the result is a json-object containing all the scaned values and check-digits
-
-    console.log("Result: " + JSON.stringify(result));
-    console.log("Result: " + result.country);
-    console.log("Result: " + result.licensePlate);
-
-    var div = document.getElementById('results');
-
-    if(div.childElementCount >= 3) {
-      div.removeChild(div.childNodes[div.childElementCount - 1]);
+    // this is called for every mrz scan result
+    // the result is a json-object containing all the scaned values and check-digits
+    var resultStr = "";
+    if (result.licensePlateResult) {
+      resultStr = result.licensePlateResult.plateText;
     }
-
-    div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/>" +
-        "<br/><i><b>Country:</b> " + result.country + "</i>" +
-        "<br/><i><b>LicensePlate:</b> " + result.licensePlate + "</i>" +
-        "<br/><i><b>Confidence:</b> " + result.confidence + "</i>" +
-        "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" +
-        div.innerHTML;
-
-    document.getElementById("details_scan_modes").removeAttribute("open");
-    document.getElementById("details_results").setAttribute("open", "");
-    window.scrollTo(0, 0);
+    insertScanResult(result, resultStr);
   },
 
   onError: function (error) {
     changeLoadingState(false);
-    //called if an error occurred or the user canceled the scanning
+    // called if an error occurred or the user canceled the scanning
     if (error == "Canceled") {
-      //do stuff when user has canceled
+      // do stuff when user has canceled
       // this can be used as an indicator that the user finished the scanning if canclelOnResult is false
       console.log("AnylineOcr scanning canceled");
       return;
     }
-
     alert(error);
   },
 
-licenseKey:"ew0KICAibGljZW5zZUtleVZlcnNpb24iOiAiMy4wIiwNCiAgImRlYnVnUmVwb3J0aW5nIjogInBpbmciLA0KICAibWFqb3JWZXJzaW9uIjogIjM3IiwNCiAgInNjb3BlIjogWw0KICAgICJBTEwiDQogIF0sDQogICJtYXhEYXlzTm90UmVwb3J0ZWQiOiA1LA0KICAiYWR2YW5jZWRCYXJjb2RlIjogdHJ1ZSwNCiAgIm11bHRpQmFyY29kZSI6IHRydWUsDQogICJzdXBwb3J0ZWRCYXJjb2RlRm9ybWF0cyI6IFsNCiAgICAiQUxMIg0KICBdLA0KICAicGxhdGZvcm0iOiBbDQogICAgImlPUyIsDQogICAgIkFuZHJvaWQiLA0KICAgICJXaW5kb3dzIg0KICBdLA0KICAic2hvd1dhdGVybWFyayI6IHRydWUsDQogICJ0b2xlcmFuY2VEYXlzIjogMzAsDQogICJ2YWxpZCI6ICIyMDIyLTEyLTEyIiwNCiAgImlvc0lkZW50aWZpZXIiOiBbDQogICAgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YS5iZXRhIiwNCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIiwNCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhLmdpdGh1YiINCiAgXSwNCiAgImFuZHJvaWRJZGVudGlmaWVyIjogWw0KICAgICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiDQogIF0sDQogICJ3aW5kb3dzSWRlbnRpZmllciI6IFsNCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIg0KICBdDQp9CmhWYktnRE1GSis0RWE0ZXU2dEord2c1NjFGR25UdzNSV2dTZGdTZjliTlZyRitiOXdUVGJPVERZazM5UFBuWHAxTXh4bWVrc3BvcXJtcEt3SnlYSHBkOEJnQktHazdKZkxLOTl1d1BYRFpjS2dDNVlOTTFkS0c0TmQzSFdhSHdkOUUvZlZtQ3dNWGtXMFgvaE1FNlpod3NOYzZoaWRmcVZiRVI2SWZoRVhnWHNzS1Y1ckxzSjJYSzZQc01NMG9JbzR4dnp5WGtOS05sL0wxNDgybnFCQ2RZckxBWnBrS1RMT05BcnhLY3poV20rS3ZuV05uRU1JQ2c2NlBLemMwT3VmT05JUFJPeTIzanl6cnM0Wjh1RG92WC9pNmFXenlXS0o2bkpXd0E1OE5CVC9KS0txck1DYXdrT2cxblRiMVM3cEkwU1cvdVZTZzBLY1E1Y3RVaGNPdz09",
-    
-  anylineLicensePlateViewConfig: {
-      "camera" : {
-          "captureResolution" : "1080p",
-          "zoomGesture" : true 
-      },
-      "flash" : {
-          "mode" : "manual",
-          "alignment" : "top_left"
-      },
-      "viewPlugin" : {
-          "plugin" : {
-              "id" : "LicensePlate_ID",
-              "licensePlatePlugin" : {
-              }
-          },
-          "cutoutConfig" : {
-              "style": "rect",
-              "maxWidthPercent": "80%",
-              "maxHeightPercent": "80%",
-              "alignment": "top_half",
-              "width": 720,
-              "ratioFromSize": {
-                  "width": 2,
-                  "height": 1
-              },
-              "strokeWidth": 2,
-              "cornerRadius": 10,
-              "strokeColor": "FFFFFF",
-              "outerColor": "000000",
-              "outerAlpha": 0.3,
-              "feedbackStrokeColor": "0099FF"
-          },
-          "scanFeedback" : {
-              "animationDuration": 0,
-              "style": "RECT",
-              "strokeWidth": 2,
-              "strokeColor": "0099FF",
-              "blinkOnResult": true,
-              "beepOnResult": true,
-              "vibrateOnResult": true
-          },
-          "cancelOnResult" : true
-      }
-  },
-
-  scanLicensePlates: function () {
+  scan: function (type) {
     // start the Anyline OCR scanning
     // pass the success and error callbacks, as well as the license key and the config to the plugin
     // see http://documentation.anyline.io/#anyline-config for config details
@@ -107,9 +43,205 @@ licenseKey:"ew0KICAibGljZW5zZUtleVZlcnNpb24iOiAiMy4wIiwNCiAgImRlYnVnUmVwb3J0aW5n
     }
     changeLoadingState(true);
 
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [
-      this.licenseKey,
-      this.anylineLicensePlateViewConfig
-    ]);
+    var config = this.licensePlateConfig;
+    if (type == 'US') {
+      config = this.licensePlateUSConfig;
+    } else if (type == 'AFRICA') {
+      config = this.licensePlateAFConfig;
+    }
+
+    cordova.exec(
+      this.onResult,
+      this.onError,
+      "AnylineSDK",
+      "scan", [config]
+    );
+  },
+
+  licenseKey: "ewogICJsaWNlbnNlS2V5VmVyc2lvbiI6ICIzLjAiLAogICJkZWJ1Z1JlcG9ydGluZyI6ICJwaW5nIiwKICAibWFqb3JWZXJzaW9uIjogIjM3IiwKICAic2NvcGUiOiBbCiAgICAiQUxMIgogIF0sCiAgIm1heERheXNOb3RSZXBvcnRlZCI6IDUsCiAgImFkdmFuY2VkQmFyY29kZSI6IHRydWUsCiAgIm11bHRpQmFyY29kZSI6IHRydWUsCiAgInN1cHBvcnRlZEJhcmNvZGVGb3JtYXRzIjogWwogICAgIkFMTCIKICBdLAogICJwbGF0Zm9ybSI6IFsKICAgICJpT1MiLAogICAgIkFuZHJvaWQiCiAgXSwKICAic2hvd1dhdGVybWFyayI6IHRydWUsCiAgInRvbGVyYW5jZURheXMiOiAzMCwKICAidmFsaWQiOiAiMjAyMy0xMi0xMiIsCiAgImlvc0lkZW50aWZpZXIiOiBbCiAgICAiY29tLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIKICBdLAogICJhbmRyb2lkSWRlbnRpZmllciI6IFsKICAgICJjb20uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIgogIF0KfQpxUWxkWFVhSVBHaWhUWlVPL3ljSS9rR0UxcXJ5ZEs1cFh4UUJybk81TFZDaExlK1V3N0tGRkNMNnFSNnptUUVMdG1zVkUxZXJORHdYMW5XY3JtdlhKTFd4N2pjc2l3YXc3SUdubCtQRnd1NnpzS3ZjTTNWMk1peFRDZVBodUQrMzFRRTh1ZE84ZTdYS0NGa0lYd3BwOWdTYk03dDBqYitoTWc2S0dPd0dCVElnajIzVzdFZGdRaGlmZ2tOMGYxMHB4SWVZVzFBK21wcjQ1bTA2Ujc2dWZxSXhsc0lnVDhKbjFKV2haczFWOUFwR25zWUU4c3lVcnZuTXQvaTVvWTJ4YUpZdGE4cnJUZ0Rnc1ZHcUhvNjNrWTVQTllyNlRTWnRNcDBJTDFxTlFIakgrR1loQitIZm9hRzBLVXRkcTVsYW5mU2RESEpzV2F4NUtTQ01OdVNOZUE9PQ==",
+
+  licensePlateConfig: {
+    "options": {
+      "doneButtonConfig": {
+        "offset.y": -96
+      },
+      "segmentConfig": {
+        "titles": ["Auto", "US", "Africa"],
+        "modes": ["auto", "unitedstates", "africa"],
+        "offset.y": -24,
+        "tintColor": "0099ff"
+      }
+    },
+    "cameraConfig": {
+      "captureResolution": "1080p"
+    },
+    "flashConfig": {
+      "mode": "manual",
+      "alignment": "top_left"
+    },
+    "viewPluginConfig": {
+      "pluginConfig": {
+        "id": "license_plate",
+        "licensePlateConfig": {
+          "scanMode": "auto"
+        },
+        "cancelOnResult": true
+      },
+      "cutoutConfig": {
+        "animation": "none",
+        "maxWidthPercent": "85%",
+        "maxHeightPercent": "80%",
+        "alignment": "top_half",
+        "ratioFromSize": {
+          "width": 7,
+          "height": 2
+        },
+        "offset": {
+          "x": 0,
+          "y": 40
+        },
+        "cropPadding": {
+          "x": 0,
+          "y": 0
+        },
+        "cropOffset": {
+          "x": 0,
+          "y": 0
+        },
+        "cornerRadius": 4,
+        "strokeColor": "0099ff",
+        "strokeWidth": 2,
+        "feedbackStrokeColor": "0099ff",
+        "outerColor": "000000",
+        "outerAlpha": 0.3
+      },
+      "scanFeedbackConfig": {
+        "style": "rect",
+        "strokeWidth": 2,
+        "animationDuration": 0,
+        "strokeColor": "0099ff",
+        "cornerRadius": 0,
+        "fillColor": "330099ff",
+        "beepOnResult": true,
+        "vibrateOnResult": true,
+        "blinkAnimationOnResult": true
+      }
+    }
+  },
+
+  licensePlateUSConfig: {
+    "cameraConfig": {
+      "captureResolution": "1080p"
+    },
+    "flashConfig": {
+      "mode": "manual",
+      "alignment": "top_left"
+    },
+    "viewPluginConfig": {
+      "pluginConfig": {
+        "id": "license_plate_us",
+        "licensePlateConfig": {
+          "scanMode": "unitedstates"
+        },
+        "cancelOnResult": true
+      },
+      "cutoutConfig": {
+        "animation": "none",
+        "maxWidthPercent": "80%",
+        "maxHeightPercent": "80%",
+        "alignment": "top_half",
+        "ratioFromSize": {
+          "width": 3,
+          "height": 1
+        },
+        "offset": {
+          "x": 0,
+          "y": 40
+        },
+        "cropPadding": {
+          "x": 0,
+          "y": 0
+        },
+        "cropOffset": {
+          "x": 0,
+          "y": 0
+        },
+        "cornerRadius": 4,
+        "strokeColor": "0099ff",
+        "strokeWidth": 2,
+        "feedbackStrokeColor": "0099ff",
+        "outerColor": "000000",
+        "outerAlpha": 0.3
+      },
+      "scanFeedbackConfig": {
+        "style": "rect",
+        "strokeWidth": 2,
+        "animationDuration": 0,
+        "strokeColor": "0099ff",
+        "cornerRadius": 0,
+        "fillColor": "330099ff",
+        "beepOnResult": true,
+        "vibrateOnResult": true,
+        "blinkAnimationOnResult": true
+      }
+    }
+  },
+
+  licensePlateAFConfig: {
+    "cameraConfig": {
+      "captureResolution": "1080p"
+    },
+    "flashConfig": {
+      "mode": "manual",
+      "alignment": "top_left"
+    },
+    "viewPluginConfig": {
+      "pluginConfig": {
+        "id": "license_plate_africa",
+        "licensePlateConfig": {
+          "scanMode": "africa"
+        },
+        "cancelOnResult": true
+      },
+      "cutoutConfig": {
+        "animation": "none",
+        "maxWidthPercent": "85%",
+        "maxHeightPercent": "85%",
+        "alignment": "top_half",
+        "ratioFromSize": {
+          "width": 3,
+          "height": 1
+        },
+        "offset": {
+          "x": 0,
+          "y": 40
+        },
+        "cropPadding": {
+          "x": 0,
+          "y": 0
+        },
+        "cropOffset": {
+          "x": 0,
+          "y": 0
+        },
+        "cornerRadius": 4,
+        "strokeColor": "0099ff",
+        "strokeWidth": 2,
+        "feedbackStrokeColor": "0099ff",
+        "outerColor": "000000",
+        "outerAlpha": 0.3
+      },
+      "scanFeedbackConfig": {
+        "style": "rect",
+        "strokeWidth": 2,
+        "animationDuration": 0,
+        "strokeColor": "0099ff",
+        "cornerRadius": 0,
+        "fillColor": "330099ff",
+        "beepOnResult": true,
+        "vibrateOnResult": true,
+        "blinkAnimationOnResult": true
+      }
+    }
   }
 };

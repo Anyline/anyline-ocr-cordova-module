@@ -12,26 +12,26 @@ var comment = "\"Anyline: Remove unneeded assets\"";
 
 module.exports = {
 
-    getIgnoreAssetsPattern: function () {
-        return utilities.getPreferenceValue('anyline-ignore-assets-pattern');
+    getRetainAssetsPattern: function () {
+        return utilities.getPreferenceValue('anyline-retain-assets-pattern');
     },
 
     getXcodeProjectPath: function () {
         return path.join("platforms", "ios", utilities.getAppName() + ".xcodeproj", "project.pbxproj");
     },
 
-    getSShellScriptBuildPhasePath: function () {
-        return path.join("platforms", "ios", utilities.getAppName() , "Scripts", "remove-unneeded-assets.sh");
+    getShellScriptBuildPhasePath: function () {
+        return path.join("platforms", "ios", utilities.getAppName(), "Scripts", "remove-unneeded-assets.sh");
     },
 
     addShellScriptBuildPhase: function (context, xcodeProjectPath) {
-        var ignoreAssetsPattern = this.getIgnoreAssetsPattern();
-        if(!ignoreAssetsPattern){
+        var retainAssetsPattern = this.getRetainAssetsPattern();
+        if (!retainAssetsPattern) {
             return;
         }
 
-        var scriptPathSrc = path.join(context.opts.plugin.dir, "scripts", "ios",  "remove-unneeded-assets.sh");
-        var scriptPathDest = this.getSShellScriptBuildPhasePath();
+        var scriptPathSrc = path.join(context.opts.plugin.dir, "scripts", "ios", "remove-unneeded-assets.sh");
+        var scriptPathDest = this.getShellScriptBuildPhasePath();
         fs.copyFileSync(scriptPathSrc, scriptPathDest);
 
         // Read and parse the XCode project (.pxbproj) from disk.
@@ -42,7 +42,7 @@ module.exports = {
         // Build the body of the script to be executed during the build phase.
         var script = [
             '"',
-            'export ANYLINE_IGNORE_ASSETS_PATTERN=\\"'+ ignoreAssetsPattern.replace(/:/ig, ' ') +'\\"\\n',
+            'export ANYLINE_RETAIN_ASSETS_PATTERN=\\"' + retainAssetsPattern.replace(/:/ig, ' ') + '\\"\\n',
             '\\"',
             '$SRCROOT',
             '/',
@@ -55,7 +55,6 @@ module.exports = {
             '"'
         ].join('');
 
-
         // Generate a unique ID for our new build phase.
         var id = xcodeProject.generateUuid();
         // Create the build phase.
@@ -66,6 +65,7 @@ module.exports = {
             inputPaths: ['"' + '$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)' + '"'],
             name: comment,
             outputPaths: [],
+            // "Run script only when installing"
             // runOnlyForDeploymentPostprocessing: 1,
             runOnlyForDeploymentPostprocessing: 0,
             shellPath: "/bin/sh",
@@ -97,8 +97,8 @@ module.exports = {
     },
 
     removeShellScriptBuildPhase: function (context, xcodeProjectPath) {
-        var ignoreAssetsPattern = this.getIgnoreAssetsPattern();
-        if(!ignoreAssetsPattern){
+        var retainAssetsPattern = this.getRetainAssetsPattern();
+        if (!retainAssetsPattern) {
             return;
         }
 

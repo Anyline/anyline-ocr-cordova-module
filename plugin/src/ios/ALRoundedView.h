@@ -1,11 +1,3 @@
-//
-//  ALRoundedView.h
-//  Anyline
-//
-//  Created by David Dengg on 18.01.16.
-//  Copyright © 2016 Anyline GmbH. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 @interface ALRoundedView : UIView
@@ -20,6 +12,7 @@
 @property (nonatomic, strong) UIColor *borderColor;
 
 - (void)addTarget:(id)target selector:(SEL)selector;
+
 - (void)addImage:(UIImage*)image;
 
 @end

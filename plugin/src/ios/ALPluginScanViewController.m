@@ -1,52 +1,44 @@
-//
-//  ALPluginScanViewController.m
-//  Anyline Cordova Example
-//
-//  Created by Daniel Albertini on 30.10.18.
-//
-
 #import "ALPluginScanViewController.h"
 #import <Anyline/Anyline.h>
-#import "ALPluginHelper.h"
 #import "ALRoundedView.h"
+#import "ALPluginHelper.h"
 
+@interface ALPluginScanViewController () <ALScanPluginDelegate, ALViewPluginCompositeDelegate, ALScanViewDelegate>
 
-@interface ALPluginScanViewController ()<ALIDPluginDelegate,ALOCRScanPluginDelegate,ALBarcodeScanPluginDelegate,ALMeterScanPluginDelegate,ALLicensePlateScanPluginDelegate,ALDocumentScanPluginDelegate,AnylineNativeBarcodeDelegate, ALInfoDelegate, ALScanViewPluginDelegate, ALDocumentInfoDelegate, ALCompositeScanPluginDelegate, ALTireScanPluginDelegate>
+@property (nonatomic, strong) NSDictionary *configDict;
+@property (nonatomic, strong) ALPluginConfig *pluginConfig;
+@property (nonatomic, strong) ALCordovaUIConfiguration *cordovaConfig;
 
-@property (nonatomic,strong) UIButton *doneButton;
-@property (nonatomic,strong) UILabel *scannedLabel;
-
-@property (nonatomic, strong) UISegmentedControl *segment;
-
-@property (nonatomic, strong) ALRoundedView *roundedView;
-@property (nonatomic, assign) BOOL showingLabel;
+@property (nonatomic, assign) NSUInteger quality;
 
 @property (nonatomic, strong) ALScanView *scanView;
+@property (nonatomic, strong) ALPluginCallback callback;
 
 @property (nonatomic, strong) NSMutableArray<NSDictionary *> *detectedBarcodes;
 
-@property (nonatomic, strong) NSDictionary *anylineConfig;
-@property (nonatomic, weak) id<ALPluginScanViewControllerDelegate> delegate;
-@property (nonatomic, strong) NSString *licensekey;
-@property (nonatomic, strong) ALCordovaUIConfiguration *cordovaConfig;
+@property (nonatomic, assign) BOOL showingLabel;
+@property (nonatomic,strong) UILabel *scannedLabel;
+@property (nonatomic,strong) UIButton *doneButton;
+@property (nonatomic, strong) UISegmentedControl *segment;
+@property (nonatomic, strong) ALRoundedView *roundedView;
+
+@property (nonatomic, strong) NSLayoutConstraint *labelHorizontalOffsetConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *labelVerticalOffsetConstraint;
+
 @end
+
 
 @implementation ALPluginScanViewController
 
-- (instancetype)initWithLicensekey:(NSString *)licensekey
-                     configuration:(NSDictionary *)anylineConfig
-              cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
-                          delegate:(id<ALPluginScanViewControllerDelegate>)delegate {
+- (instancetype)initWithConfiguration:(NSDictionary *)configDict
+                 cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                             callback:(ALPluginCallback)callback {
     self = [super init];
     if(self) {
-        _licensekey = licensekey;
-        _delegate = delegate;
-        _anylineConfig = anylineConfig;
+        _callback = callback;
+        _configDict = configDict;
         _cordovaConfig = cordovaConf;
-        
-        self.quality = 100;
-        self.nativeBarcodeEnabled = NO;
-        self.cropAndTransformErrorMessage = @"";
+        _quality = 100;
     }
     return self;
 }
@@ -54,344 +46,358 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSError *licenseError = nil;
-    //Initialize the Anyline License
-    [AnylineSDK setupWithLicenseKey:self.licensekey error:&licenseError];
-    if (licenseError) {
-        [self dismissViewControllerAnimated:YES completion:^{
-            [self.delegate pluginScanViewController:self didStopScanning:self error:licenseError];
-        }];
-    }
-    
+    self.view.backgroundColor = [UIColor blackColor];
     
     NSError *error = nil;
+    self.scanView = [ALScanViewFactory withJSONDictionary:self.configDict
+                                                 delegate:self
+                                                    error:&error];
     
-    self.scanView = [ALScanView scanViewForFrame:self.view.bounds
-                                      configDict:self.anylineConfig
-                                        delegate:self
-                                           error:&error];
-    if (error) {
-        [self dismissViewControllerAnimated:YES completion:^{
-            [self.delegate pluginScanViewController:self didStopScanning:self error:error];
-        }];
-    }
-    
-    if ([self.scanView.scanViewPlugin isKindOfClass:[ALDocumentScanViewPlugin class]]) {
-        [(ALDocumentScanViewPlugin *)self.scanView.scanViewPlugin addScanViewPluginDelegate:self];
-        [((ALDocumentScanViewPlugin *)self.scanView.scanViewPlugin).documentScanPlugin addInfoDelegate:self];
-        
-        ((ALDocumentScanViewPlugin *)self.scanView.scanViewPlugin).documentScanPlugin.justDetectCornersIfPossible = NO;
-        [((ALDocumentScanViewPlugin *)self.scanView.scanViewPlugin) setValue:self forKey:@"tmpOutlineDelegate"];
-        
-        
-        self.roundedView = [ALPluginHelper createRoundedViewForViewController:self];
-        
-        self.scanView.cameraConfig = [ALCameraConfig defaultCameraConfig];
-    }
-
-    if ([self.scanView.scanViewPlugin isKindOfClass:[ALBarcodeScanViewPlugin class]] && self.anylineConfig[@"viewPlugin"][@"plugin"][@"barcodePlugin"][@"enablePDF417Parsing"]) {
-        ((ALBarcodeScanViewPlugin*)self.scanView.scanViewPlugin).barcodeScanPlugin.parsePDF417 = YES;
-    }
-    
-    if(!self.scanView) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not start scanning" message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [alert show];
-        
+    if ([self showErrorAlertIfNeeded:error]) {
         return;
     }
     
-    [self.scanView startCamera];
-    
     [self.view addSubview:self.scanView];
     
-    if (self.cordovaConfig.segmentModes && [self.scanView.scanViewPlugin isKindOfClass:[ALMeterScanViewPlugin class]]) {
-        self.segment = [ALPluginHelper createSegmentForViewController:self
-                                                               config:self.cordovaConfig
-                                                             scanMode:((ALMeterScanViewPlugin *)self.scanView.scanViewPlugin).meterScanPlugin.scanMode];
-        [(ALMeterScanViewPlugin *)self.scanView.scanViewPlugin addScanViewPluginDelegate:self];
-    }
+    self.scanView.translatesAutoresizingMaskIntoConstraints = false;
+    [self.scanView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
+    [self.scanView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
+    [self.scanView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor].active = YES;
+    [self.scanView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
     
-    if (self.nativeBarcodeEnabled) {
-        error = nil;
-        BOOL success = [self.scanView.captureDeviceManager addBarcodeDelegate:self error:&error];
-        
-        if(!success) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not start scanning" message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            [alert show];
-            
-            return;
-        }
-    }
-    
+    self.scanView.supportedNativeBarcodeFormats = self.cordovaConfig.nativeBarcodeFormats;
+    self.scanView.delegate = self;
     self.detectedBarcodes = [NSMutableArray array];
     
     self.doneButton = [ALPluginHelper createButtonForViewController:self config:self.cordovaConfig];
     
     self.scannedLabel = [ALPluginHelper createLabelForView:self.view];
+    [self configureLabel:self.scannedLabel config:self.cordovaConfig];
+    
+    [self configureSegmentedControl];
+    [self.scanView startCamera];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    // avoid allowing the app to be put to sleep after a long period without touch events
     [UIApplication sharedApplication].idleTimerDisabled = YES;
     
     NSError *error;
-    
-    BOOL success = [self.scanView.scanViewPlugin startAndReturnError:&error];
-    if(!success) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not start scanning" message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [alert show];
-    }
-    
-    if(self.cordovaConfig.segmentModes){
-        self.segment.frame = CGRectMake(self.scanView.scanViewPlugin.cutoutRect.origin.x + self.cordovaConfig.segmentXPositionOffset/2,
-                                        self.scanView.scanViewPlugin.cutoutRect.origin.y + self.cordovaConfig.segmentYPositionOffset/2,
-                                        self.view.frame.size.width - 2*(self.scanView.scanViewPlugin.cutoutRect.origin.x + self.cordovaConfig.segmentXPositionOffset/2),
-                                        self.segment.frame.size.height);
-        self.segment.hidden = NO;
-    }
-    
+    [self.scanView.scanViewPlugin startWithError:&error];
+    [self showErrorAlertIfNeeded:error];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [UIApplication sharedApplication].idleTimerDisabled = NO;
-    [self.scanView.scanViewPlugin stopAndReturnError:nil];
-    [self.scanView stopCamera];
+    [super viewDidDisappear:animated];
 }
 
 - (BOOL)shouldAutorotate {
     return NO;
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self.delegate pluginScanViewController:self didStopScanning:self];
-    }];
+// MARK: - Configure UI
+
+- (void)configureLabel:(UILabel *)label config:(ALCordovaUIConfiguration *)config {
+    
+    if (config.labelText.length < 1) {
+        return;
+    }
+    
+    label.alpha = 1;
+    label.text = config.labelText;
+    label.font = [UIFont fontWithName:@"HelveticaNeue" size:config.labelSize];
+    label.textColor = config.labelColor;
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [label.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant:10].active = YES;
+    
+    self.labelHorizontalOffsetConstraint = [label.centerXAnchor
+                                            constraintEqualToAnchor:self.view.centerXAnchor constant:0];
+    self.labelVerticalOffsetConstraint = [label.bottomAnchor
+                                          constraintEqualToAnchor:self.view.topAnchor
+                                          constant:0];
+    
+    self.labelHorizontalOffsetConstraint.active = YES;
+    self.labelVerticalOffsetConstraint.active = YES;
 }
 
+/// The segment control contains a list of scan modes each of which, when selected, reloads the scan view with
+/// the appropriate scan mode for the active plugin (keeping everything else the same)
+- (void)configureSegmentedControl {
+    
+    NSString *scanMode = [self currentScanMode];
+    if (!scanMode) {
+        // Do nothing else: our plugin does not support scan modes.
+        return;
+    }
+    
+    NSLog(@"The scan mode: %@", scanMode);
+    
+    // At this point, you can safely create segment controls.
+    if (!self.cordovaConfig.segmentModes) {
+        return;
+    }
+    
+    if (![self segmentModesAreValid]) {
+        return;
+    }
+    
+    // Give it the current scanmode that's initially defined already in the config JSON
+    self.segment = [ALPluginHelper createSegmentForViewController:self
+                                                           config:self.cordovaConfig
+                                                  initialScanMode:scanMode];
+    
+    self.segment.hidden = NO;
+    self.segment.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.segment.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+    [self.segment.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor
+                                              constant:self.cordovaConfig.segmentYPositionOffset].active = YES;
+    
+    // NOTE: uncomment this to show the segment full width
+    [self.segment.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant:10].active = YES;
+}
+
+// MARK: - Selector Actions
+
 - (void)doneButtonPressed:(id)sender {
-    [self.scanView.scanViewPlugin stopAndReturnError:nil];
+    [self.scanView.scanViewPlugin stop];
+    
+    __block __typeof__(self) __weak weakSelf = self;
     [self dismissViewControllerAnimated:YES completion:^{
-        [self.delegate pluginScanViewController:self didStopScanning:sender];
+        weakSelf.callback(nil, @"Canceled");
     }];
 }
 
 - (void)segmentChange:(id)sender {
-    NSString *modeString = self.cordovaConfig.segmentModes[((UISegmentedControl *)sender).selectedSegmentIndex];
-    ALScanMode scanMode = [ALPluginHelper scanModeFromString:modeString];
-    if ([self.scanView.scanViewPlugin isKindOfClass:[ALMeterScanViewPlugin class]]) {
-        [((ALMeterScanViewPlugin *)self.scanView.scanViewPlugin).meterScanPlugin setScanMode:scanMode error:nil];
+    NSString *newMode = self.cordovaConfig.segmentModes[((UISegmentedControl *)sender).selectedSegmentIndex];
+    [self updateScanModeWithValue:newMode];
+}
+
+// MARK: - Getters and Setters
+
+- (ALPluginConfig * _Nullable)pluginConfig {
+    // applic. only to non-composites
+    NSObject<ALScanViewPluginBase> *scanVwPluginBase = self.scanView.scanViewPlugin;
+    if ([scanVwPluginBase isKindOfClass:ALScanViewPlugin.class]) {
+        return ((ALScanViewPlugin *)scanVwPluginBase).scanPlugin.scanPluginConfig.pluginConfig;
+    }
+    return nil;
+}
+
+// MARK: - Handle scan mode switching
+
+- (void)updateScanModeWithValue:(NSString *)modeString {
+    ALPluginConfig *pluginConfig = self.pluginConfig;
+    
+    id key = [ALPluginHelper confPropKeyWithScanModeForPluginConfig:pluginConfig];
+    
+    // obj is something like an ALMeterConfig instance, that you can call scanMode: (or setScanMode:) on
+    id obj = [self.pluginConfig valueForKey:key];
+    NSAssert(obj, @"obj shouldn't be nil!");
+    
+    id scanModeObj = [obj valueForKey:@"scanMode"];
+    NSString *newScanMode;
+    
+    // does the equivalent of +[ALConfigMeterScanMode withValue:modeString],
+    // (or whatever scan mode object gets evaluated) avoiding warnings:
+    // https://stackoverflow.com/a/20058585
+    SEL selector = NSSelectorFromString(@"withValue:");
+    IMP imp = [[scanModeObj class] methodForSelector:selector];
+    NSString *(*func)(id, SEL, NSString *) = (void *)imp;
+    newScanMode = func([scanModeObj class], selector, modeString);
+    
+    NSAssert(newScanMode, @"newScanMode is not nil!");
+    
+    // like obj, pluginSubConfig should be the the plugin-specific config object
+    // (e.g. ALLicensePlateConfig) which responds to setScanMode:.
+    selector = NSSelectorFromString(@"setScanMode:");
+    imp = [obj methodForSelector:selector];
+    id (*func2)(id, SEL, id) = (void *)imp;
+    id pluginSubConfig = func2(obj, selector, newScanMode);
+    
+    [pluginConfig setValue:pluginSubConfig forKey:key];
+    
+    NSError *error;
+    BOOL success = [self updatePluginConfig:pluginConfig error:&error];
+    
+    if (!success) {
+        // check error
+        NSLog(@"there was an error changing the scan mode: %@", error.localizedDescription);
     }
 }
 
-#pragma mark - ALScanViewPluginDelegate Delegate Methods
-
-//Update the position and size of the segment control, after cutout has been updated.
-- (void)anylineScanViewPlugin:(ALAbstractScanViewPlugin *)anylineScanViewPlugin updatedCutout:(CGRect)cutoutRect {
-    //Handle Cutout related positions here. E.g. Warning Views/Icons
-    //SegmentControl is not modified here, because it will move with cutout changes (=> origin.y changes from analog to digital meter scanMode)
-}
-
-
-#pragma mark - Anyline Result Delegate Methods
-- (void)anylineIDScanPlugin:(ALIDScanPlugin * _Nonnull)anylineIDScanPlugin
-              didFindResult:(ALIDResult * _Nonnull)scanResult {
-    NSDictionary *dictResult = [ALPluginHelper dictionaryForIDResult:scanResult
-                                                    detectedBarcodes:self.detectedBarcodes
-                                                             outline:self.scanView.scanViewPlugin.outline
-                                                             quality:self.quality];
+// assume that pluginConfig carries the updated scanMode or whatever value that you wish to refresh.
+- (BOOL)updatePluginConfig:(ALPluginConfig *)pluginConfig error:(NSError * _Nullable * _Nullable)error {
     
-    [self handleResult:dictResult result:scanResult];
-}
-
-- (void)anylineOCRScanPlugin:(ALOCRScanPlugin * _Nonnull)anylineOCRScanPlugin
-               didFindResult:(ALOCRResult * _Nonnull)scanResult {
-    dispatch_async(dispatch_get_main_queue(), ^{
-       
+    ALScanPluginConfig *scanPluginConfig = [[ALScanPluginConfig alloc] initWithPluginConfig:pluginConfig];
+    ALScanViewPluginConfig *origSVPConfig = ((ALScanViewPlugin *)self.scanView.scanViewPlugin).scanViewPluginConfig;
+    ALScanViewPluginConfig *scanViewPluginConfig = [ALScanViewPluginConfig withScanPluginConfig:scanPluginConfig
+                                                                                   cutoutConfig:origSVPConfig.cutoutConfig
+                                                                             scanFeedbackConfig:origSVPConfig.scanFeedbackConfig];
+    ALScanViewPlugin *newScanViewPlugin = [[ALScanViewPlugin alloc] initWithConfig:scanViewPluginConfig error:error];
+    if (!newScanViewPlugin) {
+        return NO;
+    }
     
-        NSDictionary *dictResult = [ALPluginHelper dictionaryForOCRResult:scanResult
-                                                     detectedBarcodes:self.detectedBarcodes
-                                                              outline:self.scanView.scanViewPlugin.outline
-                                                              quality:self.quality];
+    newScanViewPlugin.scanPlugin.delegate = self;
     
-        [self handleResult:dictResult result:scanResult];
-    });
-}
-
-- (void)anylineBarcodeScanPlugin:(ALBarcodeScanPlugin * _Nonnull)anylineBarcodeScanPlugin
-                   didFindResult:(ALBarcodeResult * _Nonnull)scanResult {
-    NSDictionary *dictResult = [ALPluginHelper dictionaryForBarcodeResult:scanResult
-                                                                  outline:self.scanView.scanViewPlugin.outline
-                                                                  quality:self.quality];
+    BOOL success = [self.scanView setScanViewPlugin:newScanViewPlugin error:error];
+    if (!success) {
+        return NO;
+    }
     
-    [self handleResult:dictResult result:scanResult];
+    success = [[self.scanView scanViewPlugin] startWithError:error];
+    if (!success) {
+        // check error
+        return NO;
+    }
+    return YES;
 }
 
-- (void)anylineMeterScanPlugin:(ALMeterScanPlugin * _Nonnull)anylineMeterScanPlugin
-                 didFindResult:(ALMeterResult * _Nonnull)scanResult {
-    NSDictionary *dictResult = [ALPluginHelper dictionaryForMeterResult:scanResult
-                                                       detectedBarcodes:self.detectedBarcodes
-                                                                outline:self.scanView.scanViewPlugin.outline
-                                                                quality:self.quality];
+/// If the running plugin supports a scan mode, this returns the string representation of it.
+- (NSString * _Nullable)currentScanMode {
+    // Does our running plugin contain a property named something like `XXXConfig`?
+    // If yes, is there a `scanMode` inside?
+    NSString * _Nullable pluginConfigPropertyWithScanMode = [ALPluginHelper confPropKeyWithScanModeForPluginConfig:self.pluginConfig];
+    if (!pluginConfigPropertyWithScanMode) {
+        return nil;
+    }
+    // obj is something like an ALMeterConfig instance
+    id obj = [self.pluginConfig valueForKey:pluginConfigPropertyWithScanMode];
+    NSAssert(obj, @"obj shouldn't be nil!");
+    id scanModeObj = [obj valueForKey:@"scanMode"];
+    return [scanModeObj valueForKey:@"value"];
+}
+
+// Check whether the scan modes indicated in options > segmentConfig are valid.
+// Otherwise, the segment control is not shown.
+- (BOOL)segmentModesAreValid {
+    if (self.cordovaConfig.segmentModes.count < 1) {
+        return NO;
+    }
     
-    [self handleResult:dictResult result:scanResult];
-}
-
-- (void)anylineLicensePlateScanPlugin:(ALLicensePlateScanPlugin * _Nonnull)anylineLicensePlateScanPlugin
-                        didFindResult:(ALLicensePlateResult * _Nonnull)scanResult {
-    NSDictionary *dictResult = [ALPluginHelper dictionaryForLicensePlateResult:scanResult
-                                                              detectedBarcodes:self.detectedBarcodes
-                                                                       outline:self.scanView.scanViewPlugin.outline
-                                                                       quality:self.quality];
+    // easy question first: is there an identical number of segModes and segTitles?
+    if (self.cordovaConfig.segmentModes.count != self.cordovaConfig.segmentTitles.count) {
+        NSLog(@"Error: should have the same number of segment modes and segment titles!");
+        return NO;
+    }
     
-    [self handleResult:dictResult result:scanResult];
-}
-
-- (void)anylineDocumentScanPlugin:(ALDocumentScanPlugin * _Nonnull)anylineDocumentScanPlugin
-                        hasResult:(UIImage * _Nonnull)transformedImage
-                        fullImage:(UIImage * _Nonnull)fullFrame
-                  documentCorners:(ALSquare * _Nonnull)corners {
-    NSDictionary *dictResult = [ALPluginHelper dictionaryForTransformedImage:transformedImage
-                                                                   fullFrame:fullFrame
-                                                                     quality:self.quality
-                                                            detectedBarcodes:self.detectedBarcodes
-                                                                     outline:corners];
+    NSString *propKey = [ALPluginHelper confPropKeyWithScanModeForPluginConfig:self.pluginConfig];
+    id obj = [self.pluginConfig valueForKey:propKey];
+    NSAssert(obj, @"obj shouldn't be nil!");
     
-    [self handleResult:dictResult result:nil];
-}
-
-- (void)anylineCaptureDeviceManager:(ALCaptureDeviceManager * _Nonnull)captureDeviceManager
-               didFindBarcodeResult:(NSString * _Nonnull)scanResult
-                               type:(NSString * _Nonnull)barcodeType {
-    [self.detectedBarcodes addObject:[ALPluginHelper dictionaryForBarcodeResults:self.detectedBarcodes
-                                                                     barcodeType:barcodeType
-                                                                      scanResult:scanResult]];
-}
-
-- (void)anylineCompositeScanPlugin:(ALAbstractScanViewPluginComposite *)anylineCompositeScanPlugin
-                     didFindResult:(ALCompositeResult *)scanResult {
-    NSDictionary *dictResult = [ALPluginHelper dictionaryForCompositeResult:scanResult
-                                                           detectedBarcodes:self.detectedBarcodes
-                                                                    quality:self.quality];
-    
-    [self handleResult:dictResult result:nil];
-    
-}
-
-- (void)anylineTireScanPlugin:(ALTireScanPlugin * _Nonnull)anylineTireScanPlugin
-                didFindResult:(ALTireResult * _Nonnull)scanResult {
-    NSDictionary *dictResult = [ALPluginHelper dictionaryForTireResult:scanResult
-                                                               quality:self.quality];
-    
-    [self handleResult:dictResult result:scanResult];
-}
-
-/*
- This method receives errors that occured during the scan.
- */
--(void)anylineDocumentScanPlugin:(ALDocumentScanPlugin *)anylineDocumentScanPlugin reportsPictureProcessingFailure:(ALDocumentError)error {
-    [self showUserLabel:error];
-}
-
-/*
- This method receives errors that occured during the scan.
- */
-
--(void)anylineDocumentScanPlugin:(ALDocumentScanPlugin *)anylineDocumentScanPlugin reportsPreviewProcessingFailure:(ALDocumentError)error {
-    [self showUserLabel:error];
-}
-- (void)anylineScanPlugin:(ALAbstractScanPlugin * _Nonnull)anylineScanPlugin
-               runSkipped:(ALRunSkippedReason * _Nonnull)runSkippedReason {
-    
-    switch (runSkippedReason.reason) {
-        case ALRunFailurePointsOutOfCutout: {
-            NSLog(@"Failure: points out of bounce");
-            
-            self.roundedView.textLabel.text = self.cropAndTransformErrorMessage;
-            
-            // Animate the appearance of the label
-            CGFloat fadeDuration = 1.5;
-            
-            // Check for Strict Mode and set it
-            if( self.showingLabel == 0){
-                self.showingLabel = 1;
-                [UIView animateWithDuration:fadeDuration animations:^{
-                    self.roundedView.alpha = 1;
-                } completion:^(BOOL finished) {
-                    [UIView animateWithDuration:fadeDuration animations:^{
-                        self.roundedView.alpha = 0;
-                    } completion:^(BOOL finished) {
-                        self.showingLabel = 0;
-                    }];
-                }];
-            }
-            break;
+    // go through each self.segmentMode. Each call below should be non-nil.
+    // NOTE: for now (24.01.2023) TIN and Container scanModes should be named in the JSON config
+    // in all UPPERCASE (because the schema demands it to be so).
+    for (NSString *scanModeStr in self.cordovaConfig.segmentModes) {
+        if (![[[obj scanMode] class] withValue:scanModeStr]) {
+            NSLog(@"Error: %@ is not a valid scan mode for the current plugin", scanModeStr);
+            return NO;
         }
-        default:
-            break;
     }
+    
+    return YES;
 }
 
-- (void)handleResult:(NSDictionary *)dictResult result:(ALScanResult *)scanResult {
-    if ([scanResult.result isKindOfClass:[NSString class]]) {
-        self.scannedLabel.text = (NSString *)scanResult.result;
-    }
+// MARK: - ALScanPluginDelegate
+
+- (void)scanPlugin:(ALScanPlugin *)scanPlugin resultReceived:(ALScanResult *)scanResult {
     
-    [self.delegate pluginScanViewController:self
-                                    didScan:dictResult
-                           continueScanning:!self.scanView.scanViewPlugin.scanViewPluginConfig.cancelOnResult];
+    CGFloat compressionQuality = self.quality / 100.0f;
     
-    if (self.scanView.scanViewPlugin.scanViewPluginConfig.cancelOnResult) {
-        [self dismissViewControllerAnimated:YES completion:NULL];
-        
-        [self.scanView.scanViewPlugin stopAndReturnError:nil];
-        [self.scanView stopCamera];
-        self.scanView.scanViewPlugin = nil;
-        self.scanView.scanViewPlugin = nil;
-    }
+    NSMutableDictionary *resultDictMutable = [NSMutableDictionary dictionaryWithDictionary:scanResult.resultDictionary];
     
-    self.detectedBarcodes = [NSMutableArray array];
+    NSString *imagePath = [ALPluginHelper saveImageToFileSystem:scanResult.croppedImage
+                                             compressionQuality:compressionQuality];
+    resultDictMutable[@"imagePath"] = imagePath;
+    
+    imagePath = [ALPluginHelper saveImageToFileSystem:scanResult.fullSizeImage
+                                   compressionQuality:compressionQuality];
+    
+    resultDictMutable[@"fullImagePath"] = imagePath;
+    
+    [self handleResult:resultDictMutable];
 }
 
-- (void)showUserLabel:(ALDocumentError)error {
-    NSString *helpString = nil;
-    switch (error) {
-        case ALDocumentErrorNotSharp:
-            helpString = @"Document not Sharp";
-            break;
-        case ALDocumentErrorSkewTooHigh:
-            helpString = @"Wrong Perspective";
-            break;
-        case ALDocumentErrorImageTooDark:
-            helpString = @"Too Dark";
-            break;
-        case ALDocumentErrorShakeDetected:
-            helpString = @"Too much shaking";
-            break;
-        default:
-            break;
-    }
+
+// MARK: - ALViewPluginCompositeDelegate
+
+- (void)viewPluginComposite:(ALViewPluginComposite *)viewPluginComposite
+         allResultsReceived:(NSArray<ALScanResult *> *)scanResults {
+    // combine all into an array and create a string version of it.
+    NSMutableDictionary *results = [NSMutableDictionary dictionaryWithCapacity:scanResults.count];
+    CGFloat compressionQuality = self.quality / 100.0f;
     
-    // The error is not in the list above or a label is on screen at the moment
-    if(!helpString || self.showingLabel) {
+    for (ALScanResult *scanResult in scanResults) {
+        NSMutableDictionary *resultDictMutable = [NSMutableDictionary dictionaryWithDictionary:scanResult.resultDictionary];
+        NSString *imagePath = [ALPluginHelper saveImageToFileSystem:scanResult.croppedImage
+                                                 compressionQuality:compressionQuality];
+        resultDictMutable[@"imagePath"] = imagePath;
+        imagePath = [ALPluginHelper saveImageToFileSystem:scanResult.fullSizeImage
+                                       compressionQuality:compressionQuality];
+        resultDictMutable[@"fullImagePath"] = imagePath;
+        results[scanResult.pluginID] = resultDictMutable;
+    }
+    [self handleResult:results];
+}
+
+// MARK: - ALScanViewDelegate
+
+- (void)scanView:(ALScanView *)scanView updatedCutoutWithPluginID:(NSString *)pluginID frame:(CGRect)frame {
+    
+    if (CGRectIsEmpty(frame)) {
         return;
     }
     
-    self.showingLabel = YES;
-    self.roundedView.textLabel.text = helpString;
+    CGFloat xOffset = self.cordovaConfig.labelXPositionOffset;
+    CGFloat yOffset = self.cordovaConfig.labelYPositionOffset;
     
+    // takes into account that frame reported for a cutout is in relation to
+    // its scan view's coordinate system
+    yOffset += [self.scanView convertRect:frame toView:self.scanView.superview].origin.y;
     
-    // Animate the appearance of the label
-    CGFloat fadeDuration = 0.8;
-    [UIView animateWithDuration:fadeDuration animations:^{
-        self.roundedView.alpha = 1;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:fadeDuration animations:^{
-            self.roundedView.alpha = 0;
-        } completion:^(BOOL finished) {
-            self.showingLabel = NO;
-        }];
-    }];
+    self.labelHorizontalOffsetConstraint.constant = xOffset;
+    
+    self.labelVerticalOffsetConstraint.constant = yOffset;
+}
+
+- (void)scanView:(ALScanView *)scanView didReceiveNativeBarcodeResult:(ALScanResult *)scanResult {
+    // for this implementation we just take the last detected (we can show a list of it)
+    [self.detectedBarcodes removeAllObjects];
+    [self.detectedBarcodes addObject:scanResult.resultDictionary];
+}
+
+- (void)handleResult:(id _Nullable)resultObj {
+    
+    NSMutableDictionary *resultDictionary = [NSMutableDictionary dictionaryWithDictionary:resultObj];
+    
+    if (self.detectedBarcodes.count) {
+        resultDictionary[@"nativeBarcodesDetected"] = self.detectedBarcodes;
+    }
+    
+    // dismiss the view controller, if cancelOnResult for the config is true
+    NSObject<ALScanViewPluginBase> *scanViewPluginBase = self.scanView.scanViewPlugin;
+    if ([scanViewPluginBase isKindOfClass:ALScanViewPlugin.class]) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        ALScanViewPlugin *scanViewPlugin = (ALScanViewPlugin *)scanViewPluginBase;
+        BOOL cancelOnResult = scanViewPlugin.scanPlugin.scanPluginConfig.cancelOnResult;
+        if (cancelOnResult) {
+            self.callback(resultDictionary, nil);
+        }
+    } else if ([scanViewPluginBase isKindOfClass:ALViewPluginComposite.class]) {
+        // for composites, the cancelOnResult values for each child don't matter
+        [self dismissViewControllerAnimated:YES completion:nil];
+        self.callback(resultDictionary, nil);
+    }
+}
+
+// MARK: - Helper methods
+
+- (BOOL)showErrorAlertIfNeeded:(NSError *)error {
+    return [ALPluginHelper showErrorAlertIfNeeded:error pluginCallback:self.callback];
 }
 
 @end

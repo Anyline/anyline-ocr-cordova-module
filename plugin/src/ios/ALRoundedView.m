@@ -1,22 +1,15 @@
-//
-//  ALRoundedView.m
-//  Anyline
-//
-//  Created by David Dengg on 18.01.16.
-//  Copyright © 2016 Anyline GmbH. All rights reserved.
-//
-
 #import "ALRoundedView.h"
 
 @interface ALRoundedView ()
+
 @property (nonatomic, strong) UIButton *button;
+
 @end
 
 
 @implementation ALRoundedView
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
@@ -25,7 +18,6 @@
         self.fillColor = [UIColor clearColor];
         self.cornerRadius = 15;
         self.opaque = NO;
-        
         
         self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         self.textLabel.backgroundColor = [UIColor clearColor];
@@ -49,9 +41,9 @@
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
-    //CGContextRef context = UIGraphicsGetCurrentContext();
-    //CGContextSaveGState(context);
-    //CGContextSetBlendMode(context, kCGBlendModeDestinationOut);
+    // CGContextRef context = UIGraphicsGetCurrentContext();
+    // CGContextSaveGState(context);
+    // CGContextSetBlendMode(context, kCGBlendModeDestinationOut);
     
     CGRect frame = CGRectInset(self.bounds, 0, 0);
     
@@ -63,7 +55,6 @@
     
     [_fillColor set];
     [path fill];
-    
     
     if(nil != _borderColor && _borderWidth > 0) {
         UIBezierPath* outlinePath =
@@ -78,15 +69,13 @@
         
         mainRect = CGRectInset(frame, _borderWidth, _borderWidth);
     }
-    
-    //CGContextRestoreGState(context);
+    // CGContextRestoreGState(context);
 }
 
 - (void)setBorderColor:(UIColor *)borderColor {
     _borderColor = borderColor;
     [self setNeedsDisplay];
 }
-
 
 - (void)addTarget:(id)target selector:(SEL)selector {
     [self.button removeFromSuperview];

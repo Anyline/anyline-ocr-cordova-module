@@ -1,0 +1,10 @@
+{
+    "ios": {
+        "debug": {
+            "developmentTeam": "35RHL53WRE"
+        },
+        "release": {
+            "developmentTeam": "35RHL53WRE"
+        }
+    }
+}

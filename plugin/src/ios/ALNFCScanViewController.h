@@ -1,26 +1,13 @@
-//
-//  ALNFCScanViewController.h
-//  AnylineExamples
-//
-//  Created by Angela Brett on 08.10.19.
-//
-
 #import "ALPluginScanViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ALNFCScanViewController : UIViewController
 
-@property (nonatomic, assign) BOOL nativeBarcodeEnabled;
+- (instancetype _Nullable)initWithConfiguration:(NSDictionary *)anylineConfig
+                           cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                                       callback:(ALPluginCallback)callback;
 
-@property (nonatomic, strong) NSString *cropAndTransformErrorMessage;
-
-@property (nonatomic, assign) NSUInteger quality;
-
-- (instancetype)initWithLicensekey:(NSString *)licensekey
-                     configuration:(NSDictionary *)anylineConfig
-              cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
-                          delegate:(id<ALPluginScanViewControllerDelegate>)delegate;
 @end
 
 NS_ASSUME_NONNULL_END
