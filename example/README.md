@@ -1,46 +1,37 @@
-	 _____         _ _         
-	|  _  |___ _ _| |_|___ ___ 
+	 _____         _ _
+	|  _  |___ _ _| |_|___ ___
 	|     |   | | | | |   | -_|
 	|__|__|_|_|_  |_|_|_|_|___|
-	          |___|            
-	          
+	          |___|
+
 ## Anyline Cordova Example App ##
 
+This example Cordova app for Android and iOS integrates the `io-anyline-cordova` plugin, and showcases the
+different scanning possibilities that come with Anyline.
 
-### Quick Start - Setup
-
-Copy the plugin to a new folder in your example App folder or elsewhere, just not in the same folder es the examples
-folder (so when you locally add the plugin, it won't recursively add itself).
-
-#### Add Plugin
-
-npm:
-```
-cordova plugin add io-anyline-cordova
-```
-local:
-```
-cordova plugin add path/to/local/plugin
-```
-
-#### Add platform
+### Quick Start
 
 Android:
 ```
-cordova platform add android@9.0.0
+npm run reinstall
 ```
+
 iOS:
 ```
-cordova platform add ios@5.0.0
+npm run reinstall-ios
 ```
 
-#### Run it
-
-```
-cordova run android --device 
-```
+See **package.json** for more commands.
 
 
+### Running The Example App
+
+Android:
 ```
-cordova run ios --device 
+cordova run android --device
+```
+
+iOS:
+```
+cordova run ios --device
 ```

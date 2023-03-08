@@ -1,0 +1,56 @@
+repositories{
+    google()
+    jcenter()
+    maven { url 'https://anylinesdk.blob.core.windows.net/maven/'}
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation 'io.anyline:anylinesdk:43.1.0'
+    implementation("com.google.android.material:material:1.4.0-rc01")
+}
+
+android {
+
+    defaultConfig {
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+
+        def anylineRetainAssetsPattern = '';
+        new XmlSlurper().parse(file('../app/src/main/res/xml/config.xml')).preference.each {
+            if (it.@name.text() == 'anyline-retain-assets-pattern') {
+                anylineRetainAssetsPattern = it.@value.text().toLowerCase()
+            }
+        }
+
+        if (!anylineRetainAssetsPattern.empty) {
+            println "Anyline: retain assets pattern --> $anylineRetainAssetsPattern"
+            aaptOptions {
+                retainAssetsPattern "$anylineRetainAssetsPattern"
+            }
+        }
+    }
+
+}
+
+ext.postBuildExtras = {
+    android {
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+    }
+}

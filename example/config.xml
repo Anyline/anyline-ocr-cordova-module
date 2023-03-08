@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.anyline.examples.cordova" version="42.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.anyline.examples.cordova" version="43.0.0" ios-CFBundleVersion="3"
+    xmlns="http://www.w3.org/ns/widgets"
+    xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Anyline Cordova Example</name>
     <preference name="deployment-target" value="12.0" />
     <preference name="SwiftVersion" value="4.2" />
@@ -7,12 +9,39 @@
     <preference name="Orientation" value="portrait" />
     <preference name="windows-target-version" value="10.0" />
     <preference name="AndroidXEnabled" value="true" />
-    <!--  To decrease the size of the SDK, add the modules to be removed from the app to the value of below key.
-      Example: value="module_energy:module_id:module_anyline_ocr:module_document:module_license_plate:module_tire" -->
-    <preference name="anyline-ignore-assets-pattern" value="" />
+    <preference name="scheme" value="app" />
+    <preference name="hostname" value="localhost" />
+
+    <allow-navigation href="http://app/*"/>
+    <allow-navigation href="https://app/*"/>
+    <allow-navigation href="http://localhost/*"/>
+    <allow-navigation href="https://localhost/*"/>
+
+    <!-- Requested by cordova-plugin-file for Android -->
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
+
+    <!-- To decrease the size of the SDK, list down the modules (separated by colons) to be
+        kept with the app bundle in the value of key below, all others will be removed. If
+        this value is empty, all modules are untouched.
+        
+        The following modules can be removed:
+        - module_anyline_ocr
+        - module_barcode
+        - module_document
+        - module_energy
+        - module_id
+        - module_license_plate
+        - module_tire
+
+        Example: value="module_energy:module_id:module_anyline_ocr"
+    -->
+    <preference name="anyline-retain-assets-pattern" value="" />
+
     <content src="index.html" />
     <access origin="*" />
-    <icon src="www/img/ic_launcher.png" />
+    <platform name="android">
+        <icon src="www/img/ic_launcher.png" />
+    </platform>
     <platform name="ios">
         <config-file parent="NFCReaderUsageDescription" target="*-Info.plist">
             <string>Please allow NFC access to read passports</string>
@@ -22,11 +51,49 @@
                 <string>A0000002471001</string>
             </array>
         </config-file>
+        <config-file parent="ITSAppUsesNonExemptEncryption" target="*-Info.plist">
+            <false/>
+        </config-file>
         <config-file parent="com.apple.developer.nfc.readersession.formats" target="Entitlements-*.plist">
             <array>
                 <string>NDEF</string>
                 <string>TAG</string>
             </array>
         </config-file>
+
+        <!-- iOS 8.0+ -->
+        <!-- iPhone 6 Plus  -->
+        <icon src="www/img/ios/icon-60@3x.png" width="180" height="180" />
+        <!-- iOS 7.0+ -->
+        <!-- iPhone / iPod Touch  -->
+        <icon src="www/img/ios/icon-60.png" width="60" height="60" />
+        <icon src="www/img/ios/icon-60@2x.png" width="120" height="120" />
+        <!-- iPad -->
+        <icon src="www/img/ios/icon-76.png" width="76" height="76" />
+        <icon src="www/img/ios/icon-76@2x.png" width="152" height="152" />
+        <!-- iPad Notification-->
+        <icon src="www/img/ios/icon-20.png" width="20" height="20" />
+        <!-- Spotlight Icon -->
+        <icon src="www/img/ios/icon-40.png" width="40" height="40" />
+        <icon src="www/img/ios/icon-40@2x.png" width="80" height="80" />
+        <!-- iOS 6.1 -->
+        <!-- iPhone / iPod Touch -->
+        <icon src="www/img/ios/icon.png" width="57" height="57" />
+        <icon src="www/img/ios/icon@2x.png" width="114" height="114" />
+        <!-- iPad -->
+        <icon src="www/img/ios/icon-72.png" width="72" height="72" />
+        <icon src="www/img/ios/icon-72@2x.png" width="144" height="144" />
+        <!-- iPad Pro -->
+        <icon src="www/img/ios/icon-167.png" width="167" height="167" />
+        <!-- iPhone Spotlight and Settings Icon -->
+        <icon src="www/img/ios/icon-small.png" width="29" height="29" />
+        <icon src="www/img/ios/icon-small@2x.png" width="58" height="58" />
+        <icon src="www/img/ios/icon-small@3x.png" width="87" height="87" />
+        <!-- iPad Spotlight and Settings Icon -->
+        <icon src="www/img/ios/icon-50.png" width="50" height="50" />
+        <icon src="www/img/ios/icon-50@2x.png" width="100" height="100" />
+        <!-- iTunes Marketing Image -->
+        <icon src="www/img/ios/icon-1024.png" width="1024" height="1024" />
+
     </platform>
 </widget>

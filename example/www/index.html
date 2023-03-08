@@ -1,214 +1,212 @@
 <!DOCTYPE html>
-<!--
- Anyline Cordova Plugin
- indext.html
- 
- Copyright (c) 2016 Anyline GmbH
- -->
 <html>
-    
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        
-        <meta name="format-detection" content="telephone=no">
-            <meta name="msapplication-tap-highlight" content="no">
-                <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1,
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1,
                     width=device-width, height=device-height">
-                    <link rel="stylesheet" type="text/css" href="css/index.css">
-                        <link rel="stylesheet" type="text/css" href="css/anyline.css">
-                            <title>Anyline Cordova Example</title>
-                            <script type="application/javascript">localStorage.setItem("hasStartedAnyline", true);</script>
-                            <script type="application/javascript">
-                                function changeLoadingState(isLoading = false) {
-                                    var buttons = document.getElementsByClassName('formButton');
-                                    for (var i = 0; i < buttons.length; i++) {
-                                        buttons[i].disabled = isLoading;
-                                    }
-                                    localStorage.setItem("hasStartedAnyline", isLoading)
-                                }
-                            </script>
-                            <script type="application/javascript">
-                                function showMrzIfiOS() {
-                                    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/anyline.css">
+    <title>Anyline Cordova Example</title>
+    <script type="application/javascript">
+        localStorage.setItem("hasStartedAnyline", true);
+    </script>
+    <link rel="icon" href="data:,">
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
 
-                                    // Windows Phone must come first because its UA also contains "Android"
-                                    if (/windows phone/i.test(userAgent)) {
-                                        document.getElementById(1234).style.display = 'none';
-                                        }
+        const licenseKey = "ewogICJsaWNlbnNlS2V5VmVyc2lvbiI6ICIzLjAiLAogICJkZWJ1Z1JlcG9ydGluZyI6ICJwaW5nIiwKICAibWFqb3JWZXJzaW9uIjogIjM3IiwKICAic2NvcGUiOiBbCiAgICAiQUxMIgogIF0sCiAgIm1heERheXNOb3RSZXBvcnRlZCI6IDUsCiAgImFkdmFuY2VkQmFyY29kZSI6IHRydWUsCiAgIm11bHRpQmFyY29kZSI6IHRydWUsCiAgInN1cHBvcnRlZEJhcmNvZGVGb3JtYXRzIjogWwogICAgIkFMTCIKICBdLAogICJwbGF0Zm9ybSI6IFsKICAgICJpT1MiLAogICAgIkFuZHJvaWQiCiAgXSwKICAic2hvd1dhdGVybWFyayI6IHRydWUsCiAgInRvbGVyYW5jZURheXMiOiAzMCwKICAidmFsaWQiOiAiMjAyMy0xMi0xMiIsCiAgImlvc0lkZW50aWZpZXIiOiBbCiAgICAiY29tLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIKICBdLAogICJhbmRyb2lkSWRlbnRpZmllciI6IFsKICAgICJjb20uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIgogIF0KfQpxUWxkWFVhSVBHaWhUWlVPL3ljSS9rR0UxcXJ5ZEs1cFh4UUJybk81TFZDaExlK1V3N0tGRkNMNnFSNnptUUVMdG1zVkUxZXJORHdYMW5XY3JtdlhKTFd4N2pjc2l3YXc3SUdubCtQRnd1NnpzS3ZjTTNWMk1peFRDZVBodUQrMzFRRTh1ZE84ZTdYS0NGa0lYd3BwOWdTYk03dDBqYitoTWc2S0dPd0dCVElnajIzVzdFZGdRaGlmZ2tOMGYxMHB4SWVZVzFBK21wcjQ1bTA2Ujc2dWZxSXhsc0lnVDhKbjFKV2haczFWOUFwR25zWUU4c3lVcnZuTXQvaTVvWTJ4YUpZdGE4cnJUZ0Rnc1ZHcUhvNjNrWTVQTllyNlRTWnRNcDBJTDFxTlFIakgrR1loQitIZm9hRzBLVXRkcTVsYW5mU2RESEpzV2F4NUtTQ01OdVNOZUE9PQ==";
 
-                                    if (/android/i.test(userAgent)) {
-                                        document.getElementById(1234).style.display = 'none';
-                                        }
+        function onLoad() {
+            document.addEventListener("deviceready", onDeviceReady, false);
+        }
 
-                                    // iOS detection from: http://stackoverflow.com/a/9039885/177710
-                                    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                                        document.getElementById(1234).style.display = 'block';
-                                        }
-                                }
-                            </script>
-    </head>
+        function onDeviceReady() {
 
-    <body onload="javascript:showMrzIfiOS()">
-    <body>
-        <h1>Anyline Cordova</h1>
+            changeLoadingState(true);
 
-        <div id="navigation">
-            <details id="details_scan_modes" open>
-                <summary class="summary1">
-                    Scan Modes
-                </summary>
-                <h2> Meter Reading </h2>
-                <p>
-                <input type="button" value="Analog/Digital Meter"
-                onclick="anyline.energy.scan('AUTO_ANALOG_DIGITAL_METER')" class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="Analog Meter" onclick="anyline.energy.scanElectricAnalogSegment()"
-                class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="Digital Meter" onclick="anyline.energy.scanElectricDigitalSegment()"
-                class="formButton" disabled=true/>
+            showSDKVersion();
+
+            cordova.exec(
+                function (initWasSuccessful) {
+                    console.log(initWasSuccessful);
+                    changeLoadingState(false);
+                },
+                function (err) {
+                    console.error(err);
+                    https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-dialogs/index.html
+                    var errorMessage = 'The Anyline SDK could not be initialized. Please check if you have a valid license key.';
+                    navigator.notification.alert(errorMessage, null, 'Error', []);
+                },
+                "AnylineSDK",
+                "initAnylineSDK",
+                [licenseKey]
+            );
+        }
+
+        function showSDKVersion() {
+            cordova.exec(
+                function (sdkVersion) {
+                    showMRZIfiOS();
+                    var div = document.getElementById('SDK');
+                    div.innerHTML = "<p>Anyline SDK Version: " + sdkVersion + "</p>";
+                },
+                function (err) {
+                    console.error(err);
+                },
+                "AnylineSDK",
+                "getSDKVersion",
+                []
+            );
+        }
+
+        function changeLoadingState(isLoading = false) {
+            var buttons = document.getElementsByClassName('formButton');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = isLoading;
+            }
+            localStorage.setItem("hasStartedAnyline", isLoading);
+        }
+
+        function showMRZIfiOS() {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            // Windows Phone must come first because its UA also contains "Android"
+            if (/windows phone/i.test(userAgent)) {
+                document.getElementById(1234).style.display = 'none';
+            }
+            if (/android/i.test(userAgent)) {
+                document.getElementById(1234).style.display = 'none';
+            }
+            // iOS detection from: http://stackoverflow.com/a/9039885/177710
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                document.getElementById(1234).style.display = 'span';
+            }
+        }
+    </script>
+</head>
+
+<body onload="onLoad()">
+
+    <h1>Anyline Cordova</h1>
+    <div id="navigation">
+        <details id="details_scan_modes" open>
+            <summary class="summary1">
+                Scan Modes
+            </summary>
+            <h2>Barcode</h2>
+            <p>
+                <input type="button" value="Barcode (All Formats)" onclick="anyline.barcode.scan()" class="formButton"
+                    disabled=true />
+            </p>
+            <h2>Meter Reading</h2>
+            <p>
+                <input type="button" value="Meter" onclick="anyline.energy.scan('AUTO_ANALOG_DIGITAL_METER')"
+                    class="formButton" disabled=true />
                 <br />
                 <input type="button" value="Serial Number" onclick="anyline.energy.scan('SERIAL_NUMBER')"
-                class="formButton" disabled=true/>
+                    class="formButton" disabled=true />
                 <br />
-                <input type="button" value="Dial Meter" onclick="anyline.energy.scan('DIAL_METER')"
-                class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="Dot Matrix Meter" onclick="anyline.energy.scan('DOT_MATRIX_METER')"
-                class="formButton" disabled=true/>
-                <br />
-                <hr>
-                <h2>ID</h2>
-                <input type="button" value="MRZ of Passport or ID" onclick="anyline.mrz.scan()" class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="MRZ+NFC (iOS)" onclick="anyline.nfc.scan()" class="formButton" disabled=true id="1234" onload="showMrz()" />
-                <br />
-                <input type="button" value="Barcode PDF417" onclick="anyline.barcode.scan('pdf417')"
-                class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="Universal Id" onclick="anyline.universalId.scan()"
-                       class="formButton" disabled=true/>
-                <p>
-                <input type="button" value="Arabic Id" onclick="anyline.arabicId.scan()"
-                       class="formButton" disabled=true/>
-                <p>
-                <input type="button" value="Cyrillic Id" onclick="anyline.cyrillicId.scan()"
-                       class="formButton" disabled=true/>
-                <p>
-                <input type="button" value="Japanese Landing Permission" onclick="anyline.japaneseLandingPermission.scan()"
-                       class="formButton" disabled=true/>
-                <p>
-                </p>
-                <h2>Anyline OCR</h2>
-                <p>
-                <input type="button" value="IBAN" onclick="anyline.ocr.scanIban()" class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="Anyline Voucher Codes" onclick="anyline.ocr.scanAnylineVoucherCodes()"
-                class="formButton" disabled=true/>
-                <br />
-                </p>
-                <hr>
-                <h2>Tire</h2>
-                <p>
-                <input type="button" value="TIN" onclick="anyline.tire.scanTin()" class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="Tire Size" onclick="anyline.tire.scanTireSize()" class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="Commercial Tire ID" onclick="anyline.tire.scanCommercialTireId()" class="formButton" disabled=true/>
-                <br />
-                </p>
-                <hr>
-                <h2> Vehicles </h2>
-                <p>
-                <input type="button" value="Vehicle Identification Nb." onclick="anyline.vin.scan()"
-                class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="License Plates"
-                onclick="anyline.licensePlate.scanLicensePlates('LICENSE_PLATE')" class="formButton" disabled=false/>
-                <br />
-                <input type="button" value="License Plate US"
-                onclick="anyline.licensePlateUS.scanLicensePlates('LICENSE_PLATE')" class="formButton" disabled=false/>
-                <br />
-                <input type="button" value="License Plate Africa"
-                onclick="anyline.licensePlateAfrica.scanLicensePlates('LICENSE_PLATE')" class="formButton" disabled=false/>
-                </p>
-                
-                <hr>
-                <h2>MRO</h2>
-                <p>
-                <input type="button" value="Universal Serial Number" onclick="anyline.usnr.scan()" class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="Shipping Container" onclick="anyline.container.scan('default')" class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="Shipping Container Vertical" onclick="anyline.container.scan('vertical')" class="formButton" disabled=true/>
-                <br />
-                
-                
-                <hr>
-                <h2> Others </h2>
-                <p>
-                <input type="button" value="Barcode" onclick="anyline.barcode.scan('default')" class="formButton" disabled=true/>
-                <br />
-                <input type="button" value="Document" onclick="anyline.document.scan()" class="formButton" disabled=true/>
-                <br />
+            <h2>Identity</h2>
+            <input type="button" value="Universal ID" onclick="anyline.universalId.scan('LATIN')" class="formButton"
+                disabled=true />
+            <br />
+            <input type="button" value="Arabic ID" onclick="anyline.universalId.scan('ARABIC')" class="formButton"
+                disabled=true />
+            <br />
+            <input type="button" value="Cyrillic ID" onclick="anyline.universalId.scan('CYRILLIC')" class="formButton"
+                disabled=true />
+            <br />
+            <input type="button" value="MRZ (Passport / ID)" onclick="anyline.mrz.scan()" class="formButton"
+                disabled=true />
+            <br />
+            <!-- The onload method causes this block to not display if not iOS -->
+            <input type="button" value="MRZ + NFC" onclick="anyline.nfc.scan()" class="formButton" disabled=true
+                id="1234" onload="showMRZ()" />
+            <br />
+            <input type="button" value="Barcode PDF417 (AAMVA)" onclick="anyline.barcode.scan('PDF417')"
+                class="formButton" disabled=true />
+            <br />
 
-                <input type="button" value="Cattle Tag" onclick="anyline.ocr.scanCattleTag()" class="formButton" disabled=true/>
-                </p>
-                <hr>
-                <h2> Workflows </h2>
-                <p>
-                <input type="button" value="Serial Scanning (LP>DL>VIN)" onclick="anyline.serialScan.scan()" class="formButton" disabled=true/>
+            <!-- As License Plate (EU/US/Africa) is now a single tile, it's been moved to the Vehicle group. -->
+            <!-- <h2>License Plate</h2>
+        <p>
+            <input type="button" value="License Plates" onclick="anyline.licensePlate.scan('AUTO')"
+                class="formButton" disabled=false />
+            <br />
+            <input type="button" value="License Plate (US)" onclick="anyline.licensePlate.scan('US')"
+                class="formButton" disabled=false />
+            <br />
+            <input type="button" value="License Plate (Africa)" onclick="anyline.licensePlate.scan('AFRICA')"
+                class="formButton" disabled=false /> -->
+            <h2>Vehicle</h2>
+            <p>
+                <input type="button" value="License Plate" onclick="anyline.licensePlate.scan('AUTO')"
+                    class="formButton" disabled=false />
                 <br />
-                <input type="button" value="Parallel Scanning (Meter/USRN)" onclick="anyline.parallelScan.scan()" class="formButton" disabled=true/>
+                <input type="button" value="TIN" onclick="anyline.vehicle.scan('TIN')" class="formButton"
+                    disabled=true />
                 <br />
+                <input type="button" value="Tire Size" onclick="anyline.vehicle.scan('TIRE_SIZE')" class="formButton"
+                    disabled=true />
+                <br />
+                <input type="button" value="Commercial Tire ID" onclick="anyline.vehicle.scan('COMMERCIAL_TIRE')"
+                    class="formButton" disabled=true />
+                <br />
+                <input type="button" value="Vehicle Identification No." onclick="anyline.vehicle.scan('VIN')"
+                    class="formButton" disabled=true />
+                <br />
+                <input type="button" value="Vehicle Registration Certificate" onclick="anyline.vehicle.scan('VRC')"
+                    class="formButton" disabled=true />
+            </p>
+            <h2>OCR</h2>
+            <p>
+                <input type="button" value="Universal Serial Number" onclick="anyline.ocr.scan('SERIAL_NUMBER')"
+                    class="formButton" disabled=true />
+                <br />
+                <input type="button" value="Shipping Container" onclick="anyline.ocr.scan('SHIPPING_CONTAINER')"
+                    class="formButton" disabled=true />
+                <br />
+                <input type="button" value="Vertical Shipping Container"
+                    onclick="anyline.ocr.scan('SHIPPING_CONTAINER_VERTICAL')" class="formButton" disabled=true />
+            </p>
+            <h2>Others</h2>
+            <p>
+                <input type="button" value="Serial Scan (LP > DL > VIN)"
+                    onclick="anyline.compositeScan.scan('SEQUENTIAL')" class="formButton" disabled=true />
+                <br />
+                <input type="button" value="Parallel Scan (Meter / Serial No.)"
+                    onclick="anyline.compositeScan.scan('PARALLEL')" class="formButton" disabled=true />
+                <br />
+            </p>
+        </details>
+        <hr />
+        <details id="details_results">
+            <summary class="summary1">
+                Results
+            </summary>
+            <p>
+            <div id="results">
 
-                </p>
-            </details>
-            
-            
-            <hr>
-            <details id="details_results">
-                <summary class="summary1">
-                    Results
-                </summary>
-                <p>
-                <div id="results">
-                    
-                </div>
-                </p>
-            </details>
-            <hr>
-            <div id="versions">
-                <div id="SDK">
-                </div>
-                <div>
-                    <p>Cordova Build Version: 1</p>
-                </div>
             </div>
+            </p>
+        </details>
+        <div id="versions">
+            <div id="SDK"></div>
         </div>
-        
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/anyline.general.js"></script>
-        <script type="text/javascript" src="js/anyline.barcode.js"></script>
-        <script type="text/javascript" src="js/anyline.energy.js"></script>
-        <script type="text/javascript" src="js/anyline.mrz.js"></script>
-        <script type="text/javascript" src="js/anyline.universalId.js"></script>
-        <script type="text/javascript" src="js/anyline.arabicId.js"></script>
-        <script type="text/javascript" src="js/anyline.cyrillicId.js"></script>
-        <script type="text/javascript" src="js/anyline.japaneseLandingPermission.js"></script>
-        <script type="text/javascript" src="js/anyline.nfc.js"></script>
-        <script type="text/javascript" src="js/anyline.ocr.js"></script>
-        <script type="text/javascript" src="js/anyline.tire.js"></script>
-        <script type="text/javascript" src="js/anyline.document.js"></script>
-        <script type="text/javascript" src="js/anyline.licensePlate.js"></script>
-        <script type="text/javascript" src="js/anyline.licensePlateUS.js"></script>
-        <script type="text/javascript" src="js/anyline.licensePlateAfrica.js"></script>
-        <script type="text/javascript" src="js/anyline.vin.js"></script>
-        <script type="text/javascript" src="js/anyline.usnr.js"></script>
-        <script type="text/javascript" src="js/anyline.container.js"></script>
-        <script type="text/javascript" src="js/anyline.serialScan.js"></script>
-        <script type="text/javascript" src="js/anyline.parallelScan.js"></script>
+    </div>
 
-    </body>
-    
+    <script type="text/javascript" src="js/anyline.general.js"></script>
+    <script type="text/javascript" src="js/anyline.barcode.js"></script>
+    <script type="text/javascript" src="js/anyline.compositeScan.js"></script>
+    <script type="text/javascript" src="js/anyline.energy.js"></script>
+    <script type="text/javascript" src="js/anyline.id.js"></script>
+    <script type="text/javascript" src="js/anyline.licensePlate.js"></script>
+    <script type="text/javascript" src="js/anyline.mrz.js"></script>
+    <script type="text/javascript" src="js/anyline.nfc.js"></script>
+    <script type="text/javascript" src="js/anyline.ocr.js"></script>
+    <script type="text/javascript" src="js/anyline.vehicle.js"></script>
+</body>
+
 </html>

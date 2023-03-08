@@ -2,7 +2,7 @@
  * Anyline Cordova Plugin
  * anyline.ocr.js
  *
- * Copyright (c) 2016 Anyline GmbH
+ * Copyright (c) 2023 Anyline GmbH
  */
 
 if (anyline === undefined) {
@@ -11,191 +11,176 @@ if (anyline === undefined) {
 anyline.ocr = {
   onResult: function (result) {
     changeLoadingState(false);
-    //this is called for every mrz scan result
-    //the result is a json-object containing all the scaned values and check-digits
+    // this is called for every mrz scan result
+    // the result is a json-object containing all the scaned values and check-digits
 
-    console.log("Result: " + JSON.stringify(result));
-    var div = document.getElementById('results');
-
-    if (div.childElementCount >= 3) {
-      div.removeChild(div.childNodes[div.childElementCount - 1]);
+    var resultText = "";
+    if (result.ocrResult) {
+      resultText = result.ocrResult.text;
+    } else if (result.containerResult) {
+      resultText = result.containerResult.text;
     }
-
-    div.innerHTML = "<p>" + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>" +
-      "<b>Result: </b> " + result.text
-      + "<br/><i><b>Confidence:</b> " + result.confidence + "</i>"
-      + "<br/><i><b>Outline Points:</b> " + result.outline + "</i>" + "</p>"
-      + div.innerHTML;
-
-    document.getElementById("details_scan_modes").removeAttribute("open");
-    document.getElementById("details_results").setAttribute("open", "");
-    window.scrollTo(0, 0);
+    insertScanResult(result, resultText);
   },
 
   onError: function (error) {
     changeLoadingState(false);
-    //called if an error occurred or the user canceled the scanning
+    // called if an error occurred or the user canceled the scanning
     if (error == "Canceled") {
-      //do stuff when user has canceled
+      // do stuff when user has canceled
       // this can be used as an indicator that the user finished the scanning if canclelOnResult is false
       console.log("AnylineOcr scanning canceled");
       return;
     }
-
     alert(error);
   },
 
-  licenseKey: "ew0KICAibGljZW5zZUtleVZlcnNpb24iOiAiMy4wIiwNCiAgImRlYnVnUmVwb3J0aW5nIjogInBpbmciLA0KICAibWFqb3JWZXJzaW9uIjogIjM3IiwNCiAgInNjb3BlIjogWw0KICAgICJBTEwiDQogIF0sDQogICJtYXhEYXlzTm90UmVwb3J0ZWQiOiA1LA0KICAiYWR2YW5jZWRCYXJjb2RlIjogdHJ1ZSwNCiAgIm11bHRpQmFyY29kZSI6IHRydWUsDQogICJzdXBwb3J0ZWRCYXJjb2RlRm9ybWF0cyI6IFsNCiAgICAiQUxMIg0KICBdLA0KICAicGxhdGZvcm0iOiBbDQogICAgImlPUyIsDQogICAgIkFuZHJvaWQiLA0KICAgICJXaW5kb3dzIg0KICBdLA0KICAic2hvd1dhdGVybWFyayI6IHRydWUsDQogICJ0b2xlcmFuY2VEYXlzIjogMzAsDQogICJ2YWxpZCI6ICIyMDIyLTEyLTEyIiwNCiAgImlvc0lkZW50aWZpZXIiOiBbDQogICAgImlvLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YS5iZXRhIiwNCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIiwNCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhLmdpdGh1YiINCiAgXSwNCiAgImFuZHJvaWRJZGVudGlmaWVyIjogWw0KICAgICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiDQogIF0sDQogICJ3aW5kb3dzSWRlbnRpZmllciI6IFsNCiAgICAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIg0KICBdDQp9CmhWYktnRE1GSis0RWE0ZXU2dEord2c1NjFGR25UdzNSV2dTZGdTZjliTlZyRitiOXdUVGJPVERZazM5UFBuWHAxTXh4bWVrc3BvcXJtcEt3SnlYSHBkOEJnQktHazdKZkxLOTl1d1BYRFpjS2dDNVlOTTFkS0c0TmQzSFdhSHdkOUUvZlZtQ3dNWGtXMFgvaE1FNlpod3NOYzZoaWRmcVZiRVI2SWZoRVhnWHNzS1Y1ckxzSjJYSzZQc01NMG9JbzR4dnp5WGtOS05sL0wxNDgybnFCQ2RZckxBWnBrS1RMT05BcnhLY3poV20rS3ZuV05uRU1JQ2c2NlBLemMwT3VmT05JUFJPeTIzanl6cnM0Wjh1RG92WC9pNmFXenlXS0o2bkpXd0E1OE5CVC9KS0txck1DYXdrT2cxblRiMVM3cEkwU1cvdVZTZzBLY1E1Y3RVaGNPdz09",
-
-  ibanViewConfig: {
-    "camera": {
-      "captureResolution": "1080"
-    },
-    "flash": {
-      "mode": "manual",
-      "alignment": "bottom_right"
-    },
-    "viewPlugin": {
-      "plugin": {
-        "id": "OCR_IBAN",
-        "ocrPlugin": {
-            "ocrConfig":{
-                "scanMode": "LINE",
-                "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-                "minConfidence": 70,
-                "validationRegex": "^[A-Z]{2}([0-9A-Z]\\s*){13,32}$"
-            }
-        }
-      },
-      "cutoutConfig": {
-        "style": "rect",
-        "maxWidthPercent": "80%",
-        "maxHeightPercent": "80%",
-        "alignment": "center",
-        "width": 900,
-        "ratioFromSize": {
-          "width": 10,
-          "height": 1
-        },
-        "strokeWidth": 2,
-        "cornerRadius": 10,
-        "strokeColor": "FFFFFF",
-        "outerColor": "000000",
-        "outerAlpha": 0.3,
-        "feedbackStrokeColor": "0099FF"
-      },
-      "cancelOnResult": true,
-      "scanFeedback": {
-        "style": "contour_underline",
-        "strokeColor": "0099FF",
-        "strokeWidth": 2,
-        "fillColor": "110099FF",
-        "beepOnResult": true,
-        "vibrateOnResult": true,
-        "blinkAnimationOnResult": true
-      }
+  scan: function (type) {
+    if (localStorage.getItem("hasStartedAnyline") === 'true') {
+      return;
     }
+    changeLoadingState(true);
+    // start the Anyline OCR scanning
+    // pass the success and error callbacks, as well as the license key and the config to the plugin
+    // see http://documentation.anyline.io/#anyline-config for config details
+    // and http://documentation.anyline.io/#anylineOcrModule for module details
+
+    var config = this.serialNumberConfig;
+
+    if (type == 'SHIPPING_CONTAINER') {
+      config = this.shippingContainerConfig;
+    } else if (type == 'SHIPPING_CONTAINER_VERTICAL') {
+      config = this.shippingContainerVerticalConfig;
+    }
+
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config]);
   },
 
+  licenseKey: "ewogICJsaWNlbnNlS2V5VmVyc2lvbiI6ICIzLjAiLAogICJkZWJ1Z1JlcG9ydGluZyI6ICJwaW5nIiwKICAibWFqb3JWZXJzaW9uIjogIjM3IiwKICAic2NvcGUiOiBbCiAgICAiQUxMIgogIF0sCiAgIm1heERheXNOb3RSZXBvcnRlZCI6IDUsCiAgImFkdmFuY2VkQmFyY29kZSI6IHRydWUsCiAgIm11bHRpQmFyY29kZSI6IHRydWUsCiAgInN1cHBvcnRlZEJhcmNvZGVGb3JtYXRzIjogWwogICAgIkFMTCIKICBdLAogICJwbGF0Zm9ybSI6IFsKICAgICJpT1MiLAogICAgIkFuZHJvaWQiCiAgXSwKICAic2hvd1dhdGVybWFyayI6IHRydWUsCiAgInRvbGVyYW5jZURheXMiOiAzMCwKICAidmFsaWQiOiAiMjAyMy0xMi0xMiIsCiAgImlvc0lkZW50aWZpZXIiOiBbCiAgICAiY29tLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIKICBdLAogICJhbmRyb2lkSWRlbnRpZmllciI6IFsKICAgICJjb20uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIgogIF0KfQpxUWxkWFVhSVBHaWhUWlVPL3ljSS9rR0UxcXJ5ZEs1cFh4UUJybk81TFZDaExlK1V3N0tGRkNMNnFSNnptUUVMdG1zVkUxZXJORHdYMW5XY3JtdlhKTFd4N2pjc2l3YXc3SUdubCtQRnd1NnpzS3ZjTTNWMk1peFRDZVBodUQrMzFRRTh1ZE84ZTdYS0NGa0lYd3BwOWdTYk03dDBqYitoTWc2S0dPd0dCVElnajIzVzdFZGdRaGlmZ2tOMGYxMHB4SWVZVzFBK21wcjQ1bTA2Ujc2dWZxSXhsc0lnVDhKbjFKV2haczFWOUFwR25zWUU4c3lVcnZuTXQvaTVvWTJ4YUpZdGE4cnJUZ0Rnc1ZHcUhvNjNrWTVQTllyNlRTWnRNcDBJTDFxTlFIakgrR1loQitIZm9hRzBLVXRkcTVsYW5mU2RESEpzV2F4NUtTQ01OdVNOZUE9PQ==",
 
-  anylineVoucherCodesViewConfig: {
-    "camera": {
-      "captureResolution": "1080"
+  serialNumberConfig: {
+    "options": {
+      "doneButtonConfig": {
+        "offset.y": -88
+      }
     },
-    "flash": {
+    "cameraConfig": {
+      "captureResolution": "1080p",
+      "pictureResolution": "1080p",
+      "zoomGesture": true
+    },
+    "flashConfig": {
       "mode": "manual",
-      "alignment": "bottom_right"
+      "alignment": "top_right"
     },
-    "viewPlugin": {
-      "plugin": {
-        "id": "OCR_VC",
-        "ocrPlugin": {
-            "ocrConfig":{
-                "scanMode": "AUTO",
-                "charWhitelist": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-                "validationRegex": "[A-Z0-9]{8}$",
-                "minConfidence": 70
-            }
-        }
+    "viewPluginConfig": {
+      "pluginConfig": {
+        "id": "universal_serial_number",
+        "ocrConfig": {
+          "scanMode": "AUTO",
+          "model": "USNr.any"
+        },
+        "cancelOnResult": true
       },
       "cutoutConfig": {
-        "style": "rect",
+        "animation": "none",
         "maxWidthPercent": "80%",
-        "maxHeightPercent": "80%",
-        "alignment": "center",
-        "width": 540,
+        "alignment": "top_half",
         "ratioFromSize": {
           "width": 5,
           "height": 1
         },
-        "strokeWidth": 2,
-        "cornerRadius": 10,
-        "strokeColor": "FFFFFF",
-        "outerColor": "000000",
-        "outerAlpha": 0.3,
-        "feedbackStrokeColor": "0099FF"
-      },
-      "scanFeedback": {
-        "style": "contour_point",
-        "strokeWidth": 3,
-        "strokeColor": "0099FF",
-        "fillColor": "220099FF",
-        "beepOnResult": true,
-        "vibrateOnResult": true,
-        "blinkAnimationOnResult": true
-      },
-      "cancelOnResult": true
-    }
-  },
-
-  cattleTagConfig: {
-    "camera": {
-      "captureResolution": "1080"
-    },
-    "flash": {
-      "mode": "manual",
-      "alignment": "bottom_right"
-    },
-    "viewPlugin": {
-      "plugin": {
-        "id": "OCR_COW",
-        "ocrPlugin": {
-          "cattleTagConfig":{
-          }
-        }
-      },
-      "cutoutConfig": {
-        "style": "rect",
-        "maxWidthPercent": "80%",
-        "maxHeightPercent": "80%",
-        "alignment": "center",
-        "width": 600,
-        "ratioFromSize": {
-          "width": 1,
-          "height": 1
-        },
-        "strokeWidth": 2,
-        "cornerRadius": 10,
-        "strokeColor": "FFFFFF",
-        "outerColor": "000000",
-        "outerAlpha": 0.3,
-        "feedbackStrokeColor": "0099FF",
-        "cropPadding": {
-          "x": 60,
-          "y": 60
+        "offset": {
+          "x": 0,
+          "y": 0
         },
         "cropOffset": {
           "x": 0,
           "y": 0
-        }
+        },
+        "cropPadding": {
+          "x": 0,
+          "y": 0
+        },
+        "cornerRadius": 4,
+        "strokeColor": "0099ff",
+        "strokeWidth": 2,
+        "outerColor": "000000",
+        "feedbackStrokeColor": "0099FF",
+        "outerAlpha": 0.3
       },
-      "cancelOnResult": true,
-      "scanFeedback": {
+      "scanFeedbackConfig": {
         "style": "rect",
         "strokeWidth": 2,
+        "cornerRadius": 2,
         "strokeColor": "0099FF",
         "fillColor": "330099FF",
-        "cornerRadius": 0,
+        "beepOnResult": true,
+        "vibrateOnResult": true,
+        "blinkAnimationOnResult": false
+      }
+    }
+  },
+
+  shippingContainerConfig: {
+    "options": {
+      "doneButtonConfig": {
+        "offset.y": -88
+      }
+    },
+    "cameraConfig": {
+      "captureResolution": "1080p",
+      "pictureResolution": "1080p",
+      "zoomGesture": true
+    },
+    "flashConfig": {
+      "mode": "manual",
+      "alignment": "top_right"
+    },
+    "viewPluginConfig": {
+      "pluginConfig": {
+        "id": "horizontal_container",
+        "containerConfig": {
+          "scanMode": "HORIZONTAL"
+        },
+        "cancelOnResult": true
+      },
+      "cutoutConfig": {
+        "style": "rect",
+        "animation": "none",
+        "maxWidthPercent": "70%",
+        "alignment": "top_half",
+        "ratioFromSize": {
+          "width": 62,
+          "height": 9
+        },
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "cropOffset": {
+          "x": 0,
+          "y": 0
+        },
+        "cropPadding": {
+          "x": 0,
+          "y": 0
+        },
+        "cornerRadius": 4,
+        "strokeColor": "0099ff",
+        "strokeWidth": 2,
+        "outerColor": "000000",
+        "feedbackStrokeColor": "0099FF",
+        "outerAlpha": 0.3
+      },
+      "scanFeedbackConfig": {
+        "style": "contour_rect",
+        "animation": "traverse_multi",
+        "animationDuration": 250,
+        "strokeWidth": 2,
+        "cornerRadius": 2,
+        "strokeColor": "0099FF",
+        "fillColor": "330099FF",
         "beepOnResult": true,
         "vibrateOnResult": true,
         "blinkAnimationOnResult": true
@@ -203,101 +188,69 @@ anyline.ocr = {
     }
   },
 
-  anylineTinConfig:{
-      "camera": {
-          "captureResolution": "720p"
-      },
-      "flash": {
-          "mode": "manual",
-          "alignment": "bottom_right"
-      },
-      "viewPlugin" : {
-
-          "plugin": {
-            "id": "TIN",
-            "tirePlugin": {
-              "tinConfig":{
-              }
-            }
-          },
-          "cutoutConfig" : {
-              "style": "rect",
-              "width": 720,
-              "alignment": "center",
-              "maxWidthPercent": "80%",
-              "ratioFromSize": {
-                  "width": 720,
-                  "height": 144
-              },
-              "outerColor": "000000",
-              "outerAlpha": 0.3,
-              "strokeWidth": 2,
-              "strokeColor": "FFFFFF",
-              "cornerRadius": 2,
-              "feedbackStrokeColor": "0099FF"
-          },
-          "scanFeedback" : {
-              "animation": "traverse_multi",
-              "animationDuration" : 250,
-              "style": "contour_rect",
-              "strokeWidth": 2,
-              "strokeColor": "0099FF",
-              "beepOnResult": true,
-              "vibrateOnResult": true,
-              "blinkAnimationOnResult": true
-          },
-          "cancelOnResult" : true
+  shippingContainerVerticalConfig: {
+    "options": {
+      "doneButtonConfig": {
+        "offset.y": -88
       }
-  },
-
-
-  scanCattleTag: function () {
-    if (localStorage.getItem("hasStartedAnyline") === 'true') {
-      return;
+    },
+    "cameraConfig": {
+      "captureResolution": "1080p",
+      "pictureResolution": "1080p",
+      "zoomGesture": true
+    },
+    "flashConfig": {
+      "mode": "manual",
+      "alignment": "top_right"
+    },
+    "viewPluginConfig": {
+      "pluginConfig": {
+        "id": "vertical_container",
+        "containerConfig": {
+          "scanMode": "VERTICAL"
+        },
+        "cancelOnResult": true
+      },
+      "cutoutConfig": {
+        "style": "rect",
+        "animation": "none",
+        "maxWidthPercent": "10%",
+        "alignment": "center",
+        "ratioFromSize": {
+          "width": 9,
+          "height": 62
+        },
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "cropOffset": {
+          "x": 0,
+          "y": 0
+        },
+        "cropPadding": {
+          "x": 0,
+          "y": 0
+        },
+        "cornerRadius": 4,
+        "strokeColor": "0099ff",
+        "strokeWidth": 2,
+        "outerColor": "000000",
+        "feedbackStrokeColor": "0099FF",
+        "outerAlpha": 0.3
+      },
+      "scanFeedbackConfig": {
+        "style": "contour_rect",
+        "animation": "traverse_multi",
+        "animationDuration": 250,
+        "strokeWidth": 2,
+        "cornerRadius": 2,
+        "strokeColor": "0099FF",
+        "fillColor": "330099FF",
+        "beepOnResult": true,
+        "vibrateOnResult": true,
+        "blinkAnimationOnResult": true
+      }
     }
-    changeLoadingState(true);
-    // start the Anyline OCR scanning
-    // pass the success and error callbacks, as well as the license key and the config to the plugin
-    // see http://documentation.anyline.io/#anyline-config for config details
-    // and http://documentation.anyline.io/#anylineOcrModule for module details
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.cattleTagConfig]);
   },
-
-  scanIban: function () {
-    if (localStorage.getItem("hasStartedAnyline") === 'true') {
-      return;
-    }
-    changeLoadingState(true);
-    // start the Anyline OCR scanning
-    // pass the success and error callbacks, as well as the license key and the config to the plugin
-    // see http://documentation.anyline.io/#anyline-config for config details
-    // and http://documentation.anyline.io/#anylineOcrModule for module details
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.ibanViewConfig]);
-  },
-
-  scanAnylineVoucherCodes: function () {
-    if (localStorage.getItem("hasStartedAnyline") === 'true') {
-      return;
-    }
-    changeLoadingState(true);
-    // start the Anyline OCR scanning
-    // pass the success and error callbacks, as well as the license key and the config to the plugin
-    // see http://documentation.anyline.io/#anyline-config for config details
-    // and http://documentation.anyline.io/#anylineOcrModule for module details
-
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.anylineVoucherCodesViewConfig]);
-  },
-  scanTin: function () {
-    if (localStorage.getItem("hasStartedAnyline") === 'true') {
-      return;
-    }
-    changeLoadingState(true);
-    // start the Anyline OCR scanning
-    // pass the success and error callbacks, as well as the license key and the config to the plugin
-    // see http://documentation.anyline.io/#anyline-config for config details
-    // and http://documentation.anyline.io/#anylineOcrModule for module details
-
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.licenseKey, this.anylineTinConfig]);
-  }
 };
-
