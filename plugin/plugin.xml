@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="43.0.0">
+    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="44.1.0">
 
     <name>AnylineSDK</name>
 
@@ -43,7 +43,7 @@
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods-->
-        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 43.0.0"/>
+        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 44"/>
 
         <!-- <podspec>
             <config>
@@ -79,14 +79,14 @@
             </feature>
         </config-file>
         <!-- add permissions in AndroidManifest.xml file-->
-        <config-file mode="merge" parent="/manifest" target="AndroidManifest.xml">
+        <config-file parent="/manifest" target="AndroidManifest.xml">
             <uses-permission android:name="android.permission.CAMERA"/>
             <uses-permission android:name="android.permission.VIBRATE"/>
         </config-file>
-        <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml">
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
             <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
         </config-file>
-        <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml">
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
             <activity android:name="io.anyline.cordova.ScanActivity" android:theme="@style/AppTheme" />
         </config-file>
 
