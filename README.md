@@ -10,8 +10,8 @@
 
 ## Documentation Resources
 
-- [Getting Started](https://documentation-preview.anyline.com/cordova-plugin-component/43.0.0/getting-started.html)
-- [Changelog](https://documentation-preview.anyline.com/cordova-plugin-component/43.0.0/changelog.html)
+- [Getting Started](https://documentation-preview.anyline.com/cordova-plugin-component/latest/getting-started.html)
+- [Changelog](https://documentation-preview.anyline.com/cordova-plugin-component/latest/changelog.html)
 
 ## Get Help (Support)
 

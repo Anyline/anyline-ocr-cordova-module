@@ -77,8 +77,7 @@ anyline.ocr = {
       "pluginConfig": {
         "id": "universal_serial_number",
         "ocrConfig": {
-          "scanMode": "AUTO",
-          "model": "USNr.any"
+          "scanMode": "auto"
         },
         "cancelOnResult": true
       },
