@@ -128,17 +128,6 @@
                 class="formButton" disabled=true />
             <br />
 
-            <!-- As License Plate (EU/US/Africa) is now a single tile, it's been moved to the Vehicle group. -->
-            <!-- <h2>License Plate</h2>
-        <p>
-            <input type="button" value="License Plates" onclick="anyline.licensePlate.scan('AUTO')"
-                class="formButton" disabled=false />
-            <br />
-            <input type="button" value="License Plate (US)" onclick="anyline.licensePlate.scan('US')"
-                class="formButton" disabled=false />
-            <br />
-            <input type="button" value="License Plate (Africa)" onclick="anyline.licensePlate.scan('AFRICA')"
-                class="formButton" disabled=false /> -->
             <h2>Vehicle</h2>
             <p>
                 <input type="button" value="License Plate" onclick="anyline.licensePlate.scan('AUTO')"
@@ -151,6 +140,9 @@
                     disabled=true />
                 <br />
                 <input type="button" value="Commercial Tire ID" onclick="anyline.vehicle.scan('COMMERCIAL_TIRE')"
+                    class="formButton" disabled=true />
+                <br />
+                <input type="button" value="Tire make" onclick="anyline.vehicle.scan('TIRE_MAKE')"
                     class="formButton" disabled=true />
                 <br />
                 <input type="button" value="Vehicle Identification No." onclick="anyline.vehicle.scan('VIN')"

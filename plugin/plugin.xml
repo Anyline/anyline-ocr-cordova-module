@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="44.1.0">
+    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="46.1.0">
 
     <name>AnylineSDK</name>
 
@@ -102,7 +102,7 @@
         <resource-file src="src/android/res/layout/activity_scan.xml" target="res/layout/activity_scan.xml"/>
         <resource-file src="src/android/res/values/styles.xml" target="res/values/styles.xml"/>
         <resource-file src="src/android/res/drawable/right_arrow.png" target="res/drawable/right_arrow.png"/>
-        <resource-file src="src/android/res/drawable/rotate_screen_background.xml" target="res/drawable/rotate_screen_background.png"/>
+        <resource-file src="src/android/res/drawable/rotate_screen_background.xml" target="res/drawable/rotate_screen_background.xml"/>
         <resource-file src="src/android/res/drawable/rotate_screen_white.png" target="res/drawable/rotate_screen_white.png"/>
 
     </platform>
