@@ -29,17 +29,17 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
 
-        def anylineRetainAssetsPattern = '';
+        def anylineIgnoreAssetsPattern = '';
         new XmlSlurper().parse(file('../app/src/main/res/xml/config.xml')).preference.each {
-            if (it.@name.text() == 'anyline-retain-assets-pattern') {
-                anylineRetainAssetsPattern = it.@value.text().toLowerCase()
+            if (it.@name.text() == 'anyline-android-ignore-assets-pattern') {
+                anylineIgnoreAssetsPattern = it.@value.text().toLowerCase()
             }
         }
 
-        if (!anylineRetainAssetsPattern.empty) {
-            println "Anyline: retain assets pattern --> $anylineRetainAssetsPattern"
+        if (!anylineIgnoreAssetsPattern.empty) {
+            println "Anyline: ignore assets pattern --> $anylineIgnoreAssetsPattern"
             aaptOptions {
-                retainAssetsPattern "$anylineRetainAssetsPattern"
+                ignoreAssetsPattern "$anylineIgnoreAssetsPattern"
             }
         }
     }
