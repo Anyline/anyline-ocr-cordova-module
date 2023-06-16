@@ -43,7 +43,7 @@
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods-->
-        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 44"/>
+        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 47.0"/>
 
         <!-- <podspec>
             <config>

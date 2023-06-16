@@ -12,21 +12,20 @@
  */
 function Anyline() {}
 
-/**
- * Scan a credit card with card.io.
- *
- *
- * @parameter options: an object; may be {}. Sample options object:
- *   {licenseKey: '', config: {...}}
- *
- * @parameter onSuccess: a callback function that accepts a response object; response keys
- * include ...
- *
- * @parameter onFailure: a zero argument callback function that will be called if the user
- * cancels card scanning.
- */
-Anyline.prototype.scan = function(options, onSuccess, onFailure) {
-  cordova.exec(onSuccess, onFailure, "AnylineSDK", "scan", [options.licenseKey, options.config]);
+Anyline.prototype.checkLicense = function(licenseKey, onSuccess, onFailure) {
+  cordova.exec(onSuccess, onFailure, "AnylineSDK", "checkLicense", [licenseKey]);
+};
+
+Anyline.prototype.initAnylineSDK = function(licenseKey, onSuccess, onFailure) {
+  cordova.exec(onSuccess, onFailure, "AnylineSDK", "initAnylineSDK", [licenseKey]);
+};
+
+Anyline.prototype.getSDKVersion = function(onSuccess, onFailure) {
+  cordova.exec(onSuccess, onFailure, "AnylineSDK", "getSDKVersion", []);
+};
+
+Anyline.prototype.scan = function(config, onSuccess, onFailure) {
+  cordova.exec(onSuccess, onFailure, "AnylineSDK", "scan", [config]);
 };
 
 /**

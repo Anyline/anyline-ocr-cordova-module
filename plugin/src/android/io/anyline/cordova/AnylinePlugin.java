@@ -78,8 +78,8 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
 
     private void initAnylineSDK(String licenseKey) throws LicenseException {
         Activity activity = cordova.getActivity();
-        AnylineSdk.init(licenseKey, activity);
-        callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, "Anyline SDK init was successful."));
+        AnylineSdk.init(licenseKey, activity, "www/assets");
+        onResult(new PluginResult(PluginResult.Status.OK, "Anyline SDK init was successful."), true);
     }
 
     private void getLicenseExpirationDate(String license) throws LicenseException {

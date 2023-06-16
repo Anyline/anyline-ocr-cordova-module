@@ -1,11 +1,12 @@
 {
   "name": "anyline-cordova-example",
-  "version": "46.1.0",
+  "version": "47.1.0",
   "description": "Cordova plugin for implementing Anyline",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "reinstall": "cordova platform remove android && cordova plugin remove io-anyline-cordova && cordova platform add android@latest && cordova plugin add ../plugin",
+    "addPlugins": "cordova plugin add cordova-plugin-android-permissions && cordova plugin add cordova-plugin-device && cordova plugin add ../plugin",
+    "reinstall": "cordova platform remove android && cordova plugin remove io-anyline-cordova && cordova platform add android@latest && yarn addPlugins",
     "reinstall-ios": "cordova platform remove ios; cordova plugin remove io-anyline-cordova; cordova platform add ios@latest; cordova plugin add ../plugin",
     "reinstall-win": "cordova platform remove windows && cordova plugin remove io-anyline-cordova && cordova platform add windows@latest && cordova plugin add ../plugin",
     "overwrite": "rm -R ../src/android/io && rm -R ../src/android/res && cp -R platforms/android/src/io ../src/android/ && cp -R platforms/android/res ../src/android",
@@ -20,6 +21,8 @@
         "ANDROIDX_WEBKIT_VERSION": "1.4.0"
       },
       "cordova-plugin-dialogs": {},
+      "cordova-plugin-android-permissions": {},
+      "cordova-plugin-device": {},
       "io-anyline-cordova": {}
     },
     "platforms": [
@@ -28,8 +31,10 @@
     ]
   },
   "devDependencies": {
-    "cordova-android": "^11.0.0",
+    "cordova-android": "^12.0.0",
     "cordova-ios": "^6.3.0",
+    "cordova-plugin-android-permissions": "^1.1.5",
+    "cordova-plugin-device": "^2.1.0",
     "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-file": "^7.0.0",
     "io-anyline-cordova": "file:../plugin",
