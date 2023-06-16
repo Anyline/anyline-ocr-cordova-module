@@ -24,41 +24,9 @@
         }
 
         function onDeviceReady() {
-
             changeLoadingState(true);
-
             showSDKVersion();
-
-            cordova.exec(
-                function (initWasSuccessful) {
-                    console.log(initWasSuccessful);
-                    changeLoadingState(false);
-                },
-                function (err) {
-                    console.error(err);
-                    var errorMessage = 'The Anyline SDK could not be initialized. Please check if you have a valid license key.';
-                    navigator.notification.alert(errorMessage, null, 'Error', []);
-                },
-                "AnylineSDK",
-                "initAnylineSDK",
-                [licenseKey]
-            );
-        }
-
-        function showSDKVersion() {
-            cordova.exec(
-                function (sdkVersion) {
-                    showMRZIfiOS();
-                    var div = document.getElementById('SDK');
-                    div.innerHTML = "<p>Anyline SDK Version: " + sdkVersion + "</p>";
-                },
-                function (err) {
-                    console.error(err);
-                },
-                "AnylineSDK",
-                "getSDKVersion",
-                []
-            );
+            requestCameraPermissionOnAndroid();
         }
 
         function changeLoadingState(isLoading = false) {
@@ -67,6 +35,24 @@
                 buttons[i].disabled = isLoading;
             }
             localStorage.setItem("hasStartedAnyline", isLoading);
+        }
+
+        function showSDKVersion() {
+            console.error("showSDKVersion");
+            cordova.exec(
+                function (sdkVersion) {
+                    showMRZIfiOS();
+                    var div = document.getElementById('SDK');
+                    div.innerHTML = "<p>Anyline SDK Version: " + sdkVersion + "</p>";
+                    initAnylineSDK();
+                },
+                function (err) {
+                    console.error(err);
+                },
+                "AnylineSDK",
+                "getSDKVersion",
+                []
+            );
         }
 
         function showMRZIfiOS() {
@@ -81,6 +67,56 @@
             // iOS detection from: http://stackoverflow.com/a/9039885/177710
             if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
                 document.getElementById(1234).style.display = 'span';
+            }
+        }
+
+        function initAnylineSDK(){
+            cordova.exec(
+                function (initWasSuccessful) {
+                    changeLoadingState(false);
+                    checkLicense();
+                },
+                function (err) {
+                    var errorMessage = 'The Anyline SDK could not be initialized. Please check if you have a valid license key.';
+                    navigator.notification.alert(errorMessage, null, 'Error', []);
+                },
+                "AnylineSDK",
+                "initAnylineSDK",
+                [licenseKey]
+            );
+        }
+
+        function checkLicense(){
+            cordova.exec(
+                function (date) {
+                    console.log(date);
+                },
+                function (err) {
+                    console.error(err);
+                },
+                "AnylineSDK",
+                "checkLicense",
+                [licenseKey]
+            );
+        }
+
+        function requestCameraPermissionOnAndroid() {
+            if(device.platform == "Android") {
+                var permissions = cordova.plugins.permissions;
+
+                permissions.hasPermission(permissions.CAMERA, function(status){
+                    if (!status.hasPermission) {
+                        permissions.requestPermission(
+                            permissions.CAMERA,
+                            function(status) {
+                                if(!status.hasPermission) console.warn('Camera permission is needed to use the app!');
+                            },
+                            function() {
+                                console.warn('Camera permission is needed to use the app!');
+                            }
+                        );
+                    }
+                });
             }
         }
     </script>
