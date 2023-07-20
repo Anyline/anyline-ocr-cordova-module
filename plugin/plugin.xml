@@ -43,17 +43,16 @@
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods-->
-        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 47.0"/>
-
-        <!-- <podspec>
+        <podspec>
             <config>
-                <source url="https://github.com/Anyline/anyline-ocr-examples-ios.git" />
-                <source url="https://github.com/CocoaPods/Specs.git"/>
+                <!-- <source url="https://github.com/Anyline/anyline-ocr-examples-ios.git" />-->
+                <!-- <source url="https://github.com/CocoaPods/Specs.git"/>-->
+                <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="Anyline" type="podspec" spec="~> 17" />
+                <pod name="Anyline" type="podspec" spec="~> 47.0" />
             </pods>
-        </podspec> -->
+        </podspec>
 
 
         <!-- Frameworks/Libs needed by Anyline SDK for iOS -->
