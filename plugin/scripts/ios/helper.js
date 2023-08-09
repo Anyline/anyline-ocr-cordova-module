@@ -44,7 +44,7 @@ module.exports = {
             '"',
             'export ANYLINE_RETAIN_ASSETS_PATTERN=\\"' + retainAssetsPattern.replace(/:/ig, ' ') + '\\"\\n',
             '\\"',
-            '$SRCROOT',
+            '$PROJECT_DIR',
             '/',
             '$PROJECT_NAME',
             '/',
