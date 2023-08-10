@@ -133,7 +133,7 @@ API_AVAILABLE(ios(13.0))
     ALCutoutConfig *cutoutConfig = scanViewPlugin.scanViewPluginConfig.cutoutConfig;
     ALScanFeedbackConfig *scanFeedbackConfig = scanViewPlugin.scanViewPluginConfig.scanFeedbackConfig;
 
-    ALPluginConfig *pluginConfig = scanViewPlugin.scanPlugin.scanPluginConfig.pluginConfig;
+    ALPluginConfig *pluginConfig = scanViewPlugin.scanPlugin.pluginConfig;
     ALMrzConfig *mrzConfig = pluginConfig.mrzConfig;
 
     // a bit lengthy but this is how you properly change the config (mrzFieldScanOptions and mrzMinFieldConfidences)
@@ -153,9 +153,9 @@ API_AVAILABLE(ios(13.0))
     mrzConfig.mrzMinFieldConfidences.dateOfExpiry = @(90);
 
     NSError *error;
-    ALScanViewPluginConfig *scanViewPluginConfig = [ALScanViewPluginConfig withScanPluginConfig:[ALScanPluginConfig withPluginConfig:pluginConfig]
-                                                                                   cutoutConfig:cutoutConfig
-                                                                             scanFeedbackConfig:scanFeedbackConfig];
+    ALScanViewPluginConfig *scanViewPluginConfig = [ALScanViewPluginConfig withPluginConfig:pluginConfig
+                                                                               cutoutConfig:cutoutConfig
+                                                                         scanFeedbackConfig:scanFeedbackConfig];
     ALScanViewPlugin *updatedScanViewPlugin = [[ALScanViewPlugin alloc] initWithConfig:scanViewPluginConfig error:&error];
     [self.scanView setScanViewPlugin:updatedScanViewPlugin error:&error];
 
@@ -217,7 +217,7 @@ API_AVAILABLE(ios(13.0))
     // TODO: handle this for composites: cancelOnResult = true? dismiss
     if ([scanViewPluginBase isKindOfClass:ALScanViewPlugin.class]) {
         ALScanViewPlugin *scanViewPlugin = (ALScanViewPlugin *)scanViewPluginBase;
-        BOOL cancelOnResult = scanViewPlugin.scanPlugin.scanPluginConfig.cancelOnResult;
+        BOOL cancelOnResult = scanViewPlugin.scanPlugin.pluginConfig.cancelOnResult;
         if (cancelOnResult) {
             [self dismissViewControllerAnimated:YES completion:nil];
         }

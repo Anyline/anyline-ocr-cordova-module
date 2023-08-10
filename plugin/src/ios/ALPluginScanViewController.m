@@ -182,7 +182,7 @@
     // applic. only to non-composites
     NSObject<ALScanViewPluginBase> *scanVwPluginBase = self.scanView.scanViewPlugin;
     if ([scanVwPluginBase isKindOfClass:ALScanViewPlugin.class]) {
-        return ((ALScanViewPlugin *)scanVwPluginBase).scanPlugin.scanPluginConfig.pluginConfig;
+        return ((ALScanViewPlugin *)scanVwPluginBase).scanPlugin.pluginConfig;
     }
     return nil;
 }
@@ -232,11 +232,10 @@
 // assume that pluginConfig carries the updated scanMode or whatever value that you wish to refresh.
 - (BOOL)updatePluginConfig:(ALPluginConfig *)pluginConfig error:(NSError * _Nullable * _Nullable)error {
     
-    ALScanPluginConfig *scanPluginConfig = [[ALScanPluginConfig alloc] initWithPluginConfig:pluginConfig];
     ALScanViewPluginConfig *origSVPConfig = ((ALScanViewPlugin *)self.scanView.scanViewPlugin).scanViewPluginConfig;
-    ALScanViewPluginConfig *scanViewPluginConfig = [ALScanViewPluginConfig withScanPluginConfig:scanPluginConfig
-                                                                                   cutoutConfig:origSVPConfig.cutoutConfig
-                                                                             scanFeedbackConfig:origSVPConfig.scanFeedbackConfig];
+    ALScanViewPluginConfig *scanViewPluginConfig = [ALScanViewPluginConfig withPluginConfig:pluginConfig
+                                                                               cutoutConfig:origSVPConfig.cutoutConfig
+                                                                         scanFeedbackConfig:origSVPConfig.scanFeedbackConfig];
     ALScanViewPlugin *newScanViewPlugin = [[ALScanViewPlugin alloc] initWithConfig:scanViewPluginConfig error:error];
     if (!newScanViewPlugin) {
         return NO;
@@ -383,7 +382,7 @@
     if ([scanViewPluginBase isKindOfClass:ALScanViewPlugin.class]) {
         [self dismissViewControllerAnimated:YES completion:nil];
         ALScanViewPlugin *scanViewPlugin = (ALScanViewPlugin *)scanViewPluginBase;
-        BOOL cancelOnResult = scanViewPlugin.scanPlugin.scanPluginConfig.cancelOnResult;
+        BOOL cancelOnResult = scanViewPlugin.scanPlugin.pluginConfig.cancelOnResult;
         if (cancelOnResult) {
             self.callback(resultDictionary, nil);
         }

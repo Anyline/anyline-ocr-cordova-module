@@ -21,7 +21,7 @@ module.exports = {
     },
 
     getShellScriptBuildPhasePath: function () {
-        return path.join("platforms", "ios", utilities.getAppName(), "Scripts", "remove-unneeded-assets.sh");
+        return path.join("platforms", "ios", utilities.getAppName(), "remove-unneeded-assets.sh");
     },
 
     addShellScriptBuildPhase: function (context, xcodeProjectPath) {
@@ -44,11 +44,9 @@ module.exports = {
             '"',
             'export ANYLINE_RETAIN_ASSETS_PATTERN=\\"' + retainAssetsPattern.replace(/:/ig, ' ') + '\\"\\n',
             '\\"',
-            '$SRCROOT',
+            '$PROJECT_DIR',
             '/',
             '$PROJECT_NAME',
-            '/',
-            'Scripts',
             '/',
             'remove-unneeded-assets.sh',
             '\\"',

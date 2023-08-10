@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="46.1.0">
+    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="50.0.2">
 
     <name>AnylineSDK</name>
 
@@ -43,17 +43,16 @@
         <!-- <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>-->
 
         <!-- Anyline Framework & Resource Bundle CocoaPods-->
-        <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 47.0"/>
+        <!-- <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 47.0"/> -->
 
-        <!-- <podspec>
+        <podspec>
             <config>
-                <source url="https://github.com/Anyline/anyline-ocr-examples-ios.git" />
-                <source url="https://github.com/CocoaPods/Specs.git"/>
+                <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="Anyline" type="podspec" spec="~> 17" />
+                <pod name="Anyline" type="podspec" spec="~>50" />
             </pods>
-        </podspec> -->
+        </podspec>
 
 
         <!-- Frameworks/Libs needed by Anyline SDK for iOS -->

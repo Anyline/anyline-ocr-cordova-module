@@ -1,9 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.anyline.examples.cordova" version="47.1.0" ios-CFBundleVersion="1"
+<widget id="com.anyline.examples.cordova" version="50.0.2" ios-CFBundleVersion="1"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Anyline Cordova Example</name>
     <preference name="deployment-target" value="12.0" />
+    <preference name="target-device" value="universal" />
     <preference name="SwiftVersion" value="4.2" />
     <preference name="BackupWebStorage" value="local" />
     <preference name="Orientation" value="portrait" />

@@ -58,19 +58,14 @@ anyline.vehicle = {
       config = this.tireSizeConfig;
     } else if (type == 'TIRE_MAKE') {
       config = this.tireMakeConfig;
+    } else if (type == 'ODOMETER') {
+      config = this.odometerConfig;
     } else if (type == 'VRC') {
       config = this.vrcConfig;
     }
-
-    cordova.exec(
-      this.onResult,
-      this.onError,
-      "AnylineSDK",
-      "scan", [config]
-    );
+    
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config]);
   },
-
-  licenseKey: "ewogICJsaWNlbnNlS2V5VmVyc2lvbiI6ICIzLjAiLAogICJkZWJ1Z1JlcG9ydGluZyI6ICJwaW5nIiwKICAibWFqb3JWZXJzaW9uIjogIjM3IiwKICAic2NvcGUiOiBbCiAgICAiQUxMIgogIF0sCiAgIm1heERheXNOb3RSZXBvcnRlZCI6IDUsCiAgImFkdmFuY2VkQmFyY29kZSI6IHRydWUsCiAgIm11bHRpQmFyY29kZSI6IHRydWUsCiAgInN1cHBvcnRlZEJhcmNvZGVGb3JtYXRzIjogWwogICAgIkFMTCIKICBdLAogICJwbGF0Zm9ybSI6IFsKICAgICJpT1MiLAogICAgIkFuZHJvaWQiCiAgXSwKICAic2hvd1dhdGVybWFyayI6IHRydWUsCiAgInRvbGVyYW5jZURheXMiOiAzMCwKICAidmFsaWQiOiAiMjAyMy0xMi0xMiIsCiAgImlvc0lkZW50aWZpZXIiOiBbCiAgICAiY29tLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIKICBdLAogICJhbmRyb2lkSWRlbnRpZmllciI6IFsKICAgICJjb20uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIgogIF0KfQpxUWxkWFVhSVBHaWhUWlVPL3ljSS9rR0UxcXJ5ZEs1cFh4UUJybk81TFZDaExlK1V3N0tGRkNMNnFSNnptUUVMdG1zVkUxZXJORHdYMW5XY3JtdlhKTFd4N2pjc2l3YXc3SUdubCtQRnd1NnpzS3ZjTTNWMk1peFRDZVBodUQrMzFRRTh1ZE84ZTdYS0NGa0lYd3BwOWdTYk03dDBqYitoTWc2S0dPd0dCVElnajIzVzdFZGdRaGlmZ2tOMGYxMHB4SWVZVzFBK21wcjQ1bTA2Ujc2dWZxSXhsc0lnVDhKbjFKV2haczFWOUFwR25zWUU4c3lVcnZuTXQvaTVvWTJ4YUpZdGE4cnJUZ0Rnc1ZHcUhvNjNrWTVQTllyNlRTWnRNcDBJTDFxTlFIakgrR1loQitIZm9hRzBLVXRkcTVsYW5mU2RESEpzV2F4NUtTQ01OdVNOZUE9PQ==",
 
   commercialTireIDConfig: {
     "options": {
@@ -93,9 +88,8 @@ anyline.vehicle = {
         "commercialTireIdConfig": {}
       },
       "cutoutConfig": {
-        "style": "animated_rect",
         "maxWidthPercent": "80%",
-        "maxHeightPercent": "80%",
+        "width": 720,
         "alignment": "center",
         "strokeWidth": 2,
         "cornerRadius": 4,
@@ -104,8 +98,8 @@ anyline.vehicle = {
         "outerAlpha": 0.3,
         "width": 720,
         "ratioFromSize": {
-          "width": 720,
-          "height": 144
+          "width": 5,
+          "height": 1
         },
         "feedbackStrokeColor": "0099FF"
       },
@@ -150,10 +144,9 @@ anyline.vehicle = {
         }
       },
       "cutoutConfig": {
-        "style": "animated_rect",
         "maxWidthPercent": "80%",
-        "maxHeightPercent": "80%",
-        "alignment": "top_half",
+        "width": 720,
+        "alignment": "center",
         "strokeWidth": 2,
         "cornerRadius": 4,
         "strokeColor": "0099FF",
@@ -161,8 +154,8 @@ anyline.vehicle = {
         "outerAlpha": 0.3,
         "width": 800,
         "ratioFromSize": {
-          "width": 720,
-          "height": 144
+          "width": 5,
+          "height": 1
         },
         "feedbackStrokeColor": "0099FF"
       },
@@ -201,9 +194,8 @@ anyline.vehicle = {
         }
       },
       "cutoutConfig": {
-        "style": "animated_rect",
         "maxWidthPercent": "80%",
-        "maxHeightPercent": "80%",
+        "width": 720,
         "alignment": "center",
         "strokeWidth": 2,
         "cornerRadius": 4,
@@ -212,8 +204,8 @@ anyline.vehicle = {
         "outerAlpha": 0.3,
         "width": 720,
         "ratioFromSize": {
-          "width": 720,
-          "height": 144
+          "width": 2.5,
+          "height": 1
         },
         "feedbackStrokeColor": "0099FF"
       },
@@ -229,7 +221,7 @@ anyline.vehicle = {
     }
   },
 
-  tireMakeConfig: {
+tireMakeConfig: {
       "options": {
           "doneButtonConfig": {
               "offset.y": -88
@@ -252,19 +244,18 @@ anyline.vehicle = {
               }
           },
           "cutoutConfig": {
-              "style": "animated_rect",
               "maxWidthPercent": "80%",
               "maxHeightPercent": "80%",
+              "width": 720,
               "alignment": "center",
               "strokeWidth": 2,
               "cornerRadius": 4,
               "strokeColor": "0099FF",
               "outerColor": "000000",
               "outerAlpha": 0.3,
-              "width": 1400,
               "ratioFromSize": {
-                  "width": 720,
-                  "height": 144
+                  "width": 5,
+                  "height": 1
               },
               "feedbackStrokeColor": "0099FF"
           },
@@ -301,13 +292,11 @@ anyline.vehicle = {
         "vinConfig": {}
       },
       "cutoutConfig": {
-        "style": "animated_rect",
         "maxWidthPercent": "70%",
-        "maxHeightPercent": "70%",
         "alignment": "top_half",
         "ratioFromSize": {
-          "width": 62,
-          "height": 9
+          "width": 6.89,
+          "height": 1
         },
         "outerColor": "000000",
         "outerAlpha": 0.3,
@@ -330,6 +319,59 @@ anyline.vehicle = {
     }
   },
 
+  odometerConfig: {
+      "options": {
+        "doneButtonConfig": {
+          "offset.y": -88
+        }
+      },
+      "cameraConfig":{
+        "captureResolution" : "1080p",
+        "zoomGesture": true
+      },
+      "flashConfig" : {
+        "mode": "manual",
+        "alignment": "top_left"
+      },
+      "viewPluginConfig" : {
+        "pluginConfig" : {
+          "id" : "Odometer",
+          "odometerConfig" : {
+
+          },
+          "cancelOnResult" : true
+        },
+        "cutoutConfig" : {
+          "alignment" : "top",
+          "strokeWidth" : 2,
+          "strokeColor" : "FFFFFF",
+          "cornerRadius" : 4,
+          "outerColor" : "000000",
+          "outerAlpha" : 0.5,
+          "feedbackStrokeColor" : "0099FF",
+          "width": 550,
+          "maxWidthPercent": "90%",
+          "maxHeightPercent": "90%",
+          "ratioFromSize": {
+            "width": 2.75,
+            "height": 1
+          },
+          "offset": {
+            "x": 0,
+            "y": 120
+          }
+        },
+        "scanFeedbackConfig" : {
+          "style" : "CONTOUR_RECT",
+          "strokeColor" : "0099FF",
+          "fillColor" : "220099FF",
+          "blinkOnResult": true,
+          "beepOnResult": true,
+          "vibrateOnResult": true
+        }
+      }
+  },
+
   vrcConfig: {
     "options": {
       "doneButtonConfig": {
@@ -346,55 +388,55 @@ anyline.vehicle = {
         "vehicleRegistrationCertificateConfig": {
           "vehicleRegistrationCertificate": {
             "documentNumber": {
-              "scanOption": 1,
+              "scanOption": "optional",
               "minConfidence": 40
             },
             "licensePlate": {
-              "scanOption": 0,
+              "scanOption": "mandatory",
               "minConfidence": 40
             },
             "lastName": {
-              "scanOption": 0,
+              "scanOption": "mandatory",
               "minConfidence": 60
             },
             "firstName": {
-              "scanOption": 1,
+              "scanOption": "optional",
               "minConfidence": 40
             },
             "address": {
-              "scanOption": 0,
+              "scanOption": "mandatory",
               "minConfidence": 50
             },
             "firstIssued": {
-              "scanOption": 0,
+              "scanOption": "mandatory",
               "minConfidence": 60
             },
             "manufacturerCode": {
-              "scanOption": 0,
+              "scanOption": "mandatory",
               "minConfidence": 50
             },
             "vehicleTypeCode": {
-              "scanOption": 0,
+              "scanOption": "mandatory",
               "minConfidence": 50
             },
             "vehicleIdentificationNumber": {
-              "scanOption": 0,
+              "scanOption": "mandatory",
               "minConfidence": 60
             },
             "brand": {
-              "scanOption": 1,
+              "scanOption": "optional",
               "minConfidence": 40
             },
             "vehicleType": {
-              "scanOption": 1,
+              "scanOption": "optional",
               "minConfidence": 40
             },
             "displacement": {
-              "scanOption": 1,
+              "scanOption": "optional",
               "minConfidence": 40
             },
             "tire": {
-              "scanOption": 1,
+              "scanOption": "optional",
               "minConfidence": 50
             }
           }
@@ -404,11 +446,10 @@ anyline.vehicle = {
       "cutoutConfig": {
         "animation": "none",
         "maxWidthPercent": "90%",
-        "maxHeightPercent": "80%",
         "alignment": "center",
         "ratioFromSize": {
-          "width": 90,
-          "height": 46
+          "width": 2,
+          "height": 1
         },
         "offset": {
           "x": 0,
@@ -419,8 +460,8 @@ anyline.vehicle = {
           "y": 0
         },
         "cropPadding": {
-          "x": 50,
-          "y": 50
+          "x": -50,
+          "y": -50
         },
         "cornerRadius": 4,
         "strokeColor": "0099FF",

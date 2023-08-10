@@ -43,15 +43,8 @@ anyline.compositeScan = {
       config = this.parallelScanConfig;
     }
 
-    cordova.exec(
-      this.onResult,
-      this.onError,
-      "AnylineSDK",
-      "scan", [config]
-    );
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config]);
   },
-
-  licenseKey: "ewogICJsaWNlbnNlS2V5VmVyc2lvbiI6ICIzLjAiLAogICJkZWJ1Z1JlcG9ydGluZyI6ICJwaW5nIiwKICAibWFqb3JWZXJzaW9uIjogIjM3IiwKICAic2NvcGUiOiBbCiAgICAiQUxMIgogIF0sCiAgIm1heERheXNOb3RSZXBvcnRlZCI6IDUsCiAgImFkdmFuY2VkQmFyY29kZSI6IHRydWUsCiAgIm11bHRpQmFyY29kZSI6IHRydWUsCiAgInN1cHBvcnRlZEJhcmNvZGVGb3JtYXRzIjogWwogICAgIkFMTCIKICBdLAogICJwbGF0Zm9ybSI6IFsKICAgICJpT1MiLAogICAgIkFuZHJvaWQiCiAgXSwKICAic2hvd1dhdGVybWFyayI6IHRydWUsCiAgInRvbGVyYW5jZURheXMiOiAzMCwKICAidmFsaWQiOiAiMjAyMy0xMi0xMiIsCiAgImlvc0lkZW50aWZpZXIiOiBbCiAgICAiY29tLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIKICBdLAogICJhbmRyb2lkSWRlbnRpZmllciI6IFsKICAgICJjb20uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIgogIF0KfQpxUWxkWFVhSVBHaWhUWlVPL3ljSS9rR0UxcXJ5ZEs1cFh4UUJybk81TFZDaExlK1V3N0tGRkNMNnFSNnptUUVMdG1zVkUxZXJORHdYMW5XY3JtdlhKTFd4N2pjc2l3YXc3SUdubCtQRnd1NnpzS3ZjTTNWMk1peFRDZVBodUQrMzFRRTh1ZE84ZTdYS0NGa0lYd3BwOWdTYk03dDBqYitoTWc2S0dPd0dCVElnajIzVzdFZGdRaGlmZ2tOMGYxMHB4SWVZVzFBK21wcjQ1bTA2Ujc2dWZxSXhsc0lnVDhKbjFKV2haczFWOUFwR25zWUU4c3lVcnZuTXQvaTVvWTJ4YUpZdGE4cnJUZ0Rnc1ZHcUhvNjNrWTVQTllyNlRTWnRNcDBJTDFxTlFIakgrR1loQitIZm9hRzBLVXRkcTVsYW5mU2RESEpzV2F4NUtTQ01OdVNOZUE9PQ==",
 
   parallelScanConfig: {
     "options": {
@@ -74,7 +67,6 @@ anyline.compositeScan = {
               "startScanDelay": 0
             },
             "cutoutConfig": {
-              "style": "rect",
               "maxWidthPercent": "100%",
               "width": 768,
               "alignment": "top_half",
@@ -109,7 +101,7 @@ anyline.compositeScan = {
         {
           "viewPluginConfig": {
             "pluginConfig": {
-              "id": "universal_serial_number",
+              "id": "meter_serial_number",
               "ocrConfig": {
                 "scanMode": "auto"
               },
@@ -237,7 +229,6 @@ anyline.compositeScan = {
               "cancelOnResult": true
             },
             "cutoutConfig": {
-              "style": "animated_rect",
               "maxWidthPercent": "90%",
               "maxHeightPercent": "90%",
               "alignment": "center",

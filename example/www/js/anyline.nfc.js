@@ -19,7 +19,7 @@ anyline.nfc = {
 
     onError: function (error) {
         changeLoadingState(false);
-        //called if an error occurred or the user canceled the scanning
+        // called if an error occurred or the user canceled the scanning
         if (error == "Canceled") {
             // do stuff when user has canceled
             // this can be used as an indicator that the user finished the scanning if canclelOnResult is false
@@ -33,15 +33,9 @@ anyline.nfc = {
             return;
         }
         changeLoadingState(true);
+
         // start the MRZ scanning
-        // pass the success and error callbacks, as well as the license key and the config to the plugin
-        // see http://documentation.anyline.io/#anyline-config for config details
-        // and http://documentation.anyline.io/#mrz for module details
-
-        var licenseKey = "ewogICJsaWNlbnNlS2V5VmVyc2lvbiI6ICIzLjAiLAogICJkZWJ1Z1JlcG9ydGluZyI6ICJwaW5nIiwKICAibWFqb3JWZXJzaW9uIjogIjM3IiwKICAic2NvcGUiOiBbCiAgICAiQUxMIgogIF0sCiAgIm1heERheXNOb3RSZXBvcnRlZCI6IDUsCiAgImFkdmFuY2VkQmFyY29kZSI6IHRydWUsCiAgIm11bHRpQmFyY29kZSI6IHRydWUsCiAgInN1cHBvcnRlZEJhcmNvZGVGb3JtYXRzIjogWwogICAgIkFMTCIKICBdLAogICJwbGF0Zm9ybSI6IFsKICAgICJpT1MiLAogICAgIkFuZHJvaWQiCiAgXSwKICAic2hvd1dhdGVybWFyayI6IHRydWUsCiAgInRvbGVyYW5jZURheXMiOiAzMCwKICAidmFsaWQiOiAiMjAyMy0xMi0xMiIsCiAgImlvc0lkZW50aWZpZXIiOiBbCiAgICAiY29tLmFueWxpbmUuZXhhbXBsZXMuY29yZG92YSIKICBdLAogICJhbmRyb2lkSWRlbnRpZmllciI6IFsKICAgICJjb20uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIgogIF0KfQpxUWxkWFVhSVBHaWhUWlVPL3ljSS9rR0UxcXJ5ZEs1cFh4UUJybk81TFZDaExlK1V3N0tGRkNMNnFSNnptUUVMdG1zVkUxZXJORHdYMW5XY3JtdlhKTFd4N2pjc2l3YXc3SUdubCtQRnd1NnpzS3ZjTTNWMk1peFRDZVBodUQrMzFRRTh1ZE84ZTdYS0NGa0lYd3BwOWdTYk03dDBqYitoTWc2S0dPd0dCVElnajIzVzdFZGdRaGlmZ2tOMGYxMHB4SWVZVzFBK21wcjQ1bTA2Ujc2dWZxSXhsc0lnVDhKbjFKV2haczFWOUFwR25zWUU4c3lVcnZuTXQvaTVvWTJ4YUpZdGE4cnJUZ0Rnc1ZHcUhvNjNrWTVQTllyNlRTWnRNcDBJTDFxTlFIakgrR1loQitIZm9hRzBLVXRkcTVsYW5mU2RESEpzV2F4NUtTQ01OdVNOZUE9PQ==";
-
-        //mode "scanMRZ" is also still available (for backwards compatibility)
-        cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [this.anylineMRZAndNFCViewConfig]);
+        cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [anyline.nfc.anylineMRZAndNFCViewConfig]);
     },
     anylineMRZAndNFCViewConfig: {
         "options": {

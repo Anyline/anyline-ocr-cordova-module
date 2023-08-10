@@ -35,3 +35,10 @@ iOS:
 ```
 cordova run ios --device
 ```
+
+IMPORTANT: Before running the example app, replace the string defined in anyline.license.js with a valid license key. To find out how to obtain a license key, see License.
+
+## License 
+
+To claim a free developer / trial license, go to: [Anyline SDK Register Form](https://anyline.com/free-demos/)
+The software underlies the MIT License. As Anyline is a paid software for Commercial Projects, the License Agreement of Anyline GmbH applies, when used commercially.

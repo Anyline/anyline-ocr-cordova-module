@@ -16,33 +16,33 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
     NSDictionary *optionsDict = [config objectForKey:@"options"];
     ALCordovaUIConfiguration *jsonUIConf = [[ALCordovaUIConfiguration alloc] initWithDictionary:optionsDict];
     BOOL isNFC = [optionsDict[@"enableNFCWithMRZ"] boolValue];
-
     if (isNFC) {
         if (@available(iOS 13.0, *)) {
             if (![ALNFCDetector readingAvailable]) {
                 callback(nil, @"NFC passport reading is not supported on this device or app.");
                 return nil;
             }
-            ALNFCScanViewController *nfcScanViewController = [[ALNFCScanViewController alloc] initWithConfiguration:config
-                                                                                               cordovaConfiguration:jsonUIConf
-                                                                                                           callback:callback];
-            [self presentViewController:nfcScanViewController];
-            // TODO: should this VC be a PluginScanViewController as well?
-            // return nfcScanViewController;
-
+            __weak __block __typeof(self) weakSelf = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                ALNFCScanViewController *nfcScanViewController = [[ALNFCScanViewController alloc] initWithConfiguration:config
+                                                                                                   cordovaConfiguration:jsonUIConf
+                                                                                                               callback:callback];
+                [weakSelf presentViewController:nfcScanViewController];
+            });
         } else {
             callback(nil, @"NFC passport reading is only supported on iOS 13 and later.");
         }
         return nil;
     } else {
-        ALPluginScanViewController *pluginScanViewController;
-        pluginScanViewController = [[ALPluginScanViewController alloc] initWithConfiguration:config
-                                                                        cordovaConfiguration:jsonUIConf
-                                                                                    callback:callback];
-
-        [self presentViewController:pluginScanViewController];
-
-        return pluginScanViewController;
+        __weak __block __typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            ALPluginScanViewController *pluginScanViewController;
+            pluginScanViewController = [[ALPluginScanViewController alloc] initWithConfiguration:config
+                                                                            cordovaConfiguration:jsonUIConf
+                                                                                        callback:callback];
+            [weakSelf presentViewController:pluginScanViewController];
+        });
+        return nil;
     }
 }
 
