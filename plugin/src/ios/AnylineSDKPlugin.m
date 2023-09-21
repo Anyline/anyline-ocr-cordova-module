@@ -56,6 +56,20 @@
     }];
 }
 
+- (void)exportCachedEvents:(CDVInvokedUrlCommand *)command {
+    NSError *error;
+    NSString *exportPath = [AnylineSDK exportCachedEvents:&error];
+
+    CDVPluginResult *pluginResult;
+    if (!exportPath) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:exportPath];
+    }
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)initAnylineSDK:(CDVInvokedUrlCommand *)command {
     __weak __block __typeof(self) weakSelf = self;
     [self.commandDelegate runInBackground:^{
@@ -67,7 +81,16 @@
         }
         NSString *licenseKey = (NSString *)command.arguments[0];
         NSError *error;
-        [AnylineSDK setupWithLicenseKey:licenseKey error:&error];
+
+        ALCacheConfig *cacheConfig;
+        if (command.arguments.count > 1) {
+            id offlineLicenseCacheEnabled = command.arguments[1];
+            if (offlineLicenseCacheEnabled != [NSNull null] && [offlineLicenseCacheEnabled boolValue]) {
+                cacheConfig = [ALCacheConfig offlineLicenseCachingEnabled];
+            }
+        }
+
+        [AnylineSDK setupWithLicenseKey:licenseKey cacheConfig:cacheConfig error:&error];
         if (error) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                              messageAsString:error.localizedDescription];

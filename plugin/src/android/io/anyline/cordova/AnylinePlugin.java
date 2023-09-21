@@ -21,7 +21,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
+
 import io.anyline2.AnylineSdk;
+import io.anyline2.CacheConfig;
 import io.anyline2.core.LicenseException;
 
 
@@ -61,15 +65,21 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
                 if ("checkLicense".equals(mAction)) {
                     getLicenseExpirationDate(mArgs.getString(0));
                 } else if ("initAnylineSDK".equals(mAction)) {
-                    initAnylineSDK(args.getString(0));
+                    boolean enableOfflineCache = args.optBoolean(1, false);
+                    initAnylineSDK(args.getString(0), enableOfflineCache);
                 } else if ("getSDKVersion".equals(mAction)) {
                     getSDKVersion();
                 } else if ("scan".equals(mAction)) {
                     startScanning(mAction, mArgs);
+                } else if ("exportCachedEvents".equals(mAction)) {
+                    exportCachedEvents();
                 }
+
             } catch (JSONException e) {
                 onError(e.getMessage());
             } catch (LicenseException e) {
+                onError(e.getMessage());
+            } catch (IOException e) {
                 onError(e.getMessage());
             }
         });
@@ -77,14 +87,31 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     }
 
     private void initAnylineSDK(String licenseKey) throws LicenseException {
+        initAnylineSDK(licenseKey, false);
+    }
+    private void initAnylineSDK(String licenseKey, boolean enableOfflineCache) throws LicenseException {
         Activity activity = cordova.getActivity();
-        AnylineSdk.init(licenseKey, activity, "www/assets");
+
+        CacheConfig.Preset cacheConfig = CacheConfig.Preset.Default.INSTANCE;
+        if (enableOfflineCache) {
+            cacheConfig = CacheConfig.Preset.OfflineLicenseEventCachingEnabled.INSTANCE;
+        }
+        AnylineSdk.init(licenseKey, activity, "www/assets", cacheConfig);
         onResult(new PluginResult(PluginResult.Status.OK, "Anyline SDK init was successful."), true);
     }
 
     private void getLicenseExpirationDate(String license) throws LicenseException {
         String validDate = AnylineSdk.getExpiryDate().toString();
         onResult(validDate, true);
+    }
+
+    private void exportCachedEvents() throws IOException {
+        String exportedFile = AnylineSdk.exportCachedEvents();
+        if (exportedFile != null) {
+            onResult(exportedFile, true);
+        } else {
+            onError(getString("error_event_cache_empty"));
+        }
     }
 
     private void onError(String errorMessage) {
