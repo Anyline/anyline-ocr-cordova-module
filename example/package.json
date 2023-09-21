@@ -22,7 +22,8 @@
       },
       "cordova-plugin-dialogs": {},
       "cordova-plugin-android-permissions": {},
-      "cordova-plugin-device": {}
+      "cordova-plugin-device": {},
+      "io-anyline-cordova": {}
     },
     "platforms": [
       "ios",

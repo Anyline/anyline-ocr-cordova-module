@@ -3,5 +3,5 @@ if (anyline === undefined) {
 }
 
 anyline.license = {
-    key: "REPLACE WITH YOUR ANYLINE LICENSE KEY",
+    key: "REPLACE WITH YOUR ANYLINE LICENSE KEY"
 }
