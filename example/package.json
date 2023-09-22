@@ -1,6 +1,6 @@
 {
   "name": "anyline-cordova-example",
-  "version": "51.0.1",
+  "version": "51.0.2",
   "description": "Cordova plugin for implementing Anyline",
   "main": "index.js",
   "scripts": {
