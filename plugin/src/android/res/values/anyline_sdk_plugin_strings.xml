@@ -4,5 +4,6 @@
     <string name="error_invalid_segment_config">Segment config not valid. Must have equal amount of titles and modes.</string>
     <string name="error_accessing_camera">Error while accessing camera.</string>
     <string name="error_licence_invalid">Error: Anyline license invalid.</string>
+    <string name="error_event_cache_empty">Event cache is empty.</string>
     <string name="error_occured">An error occured.</string>
 </resources>

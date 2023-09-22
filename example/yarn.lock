@@ -1750,7 +1750,7 @@ interpret@^1.0.0:
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
 "io-anyline-cordova@file:../plugin":
-  version "51.0.1"
+  version "51.0.2"
   resolved "file:../plugin"
   dependencies:
     xml-js "^1.6.11"
