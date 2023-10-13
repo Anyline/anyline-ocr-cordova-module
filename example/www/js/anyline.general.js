@@ -35,33 +35,45 @@ function insertScanResult(result, resultText = "", includeFullImage = false) {
         div.removeChild(div.childNodes[div.childElementCount - 1]);
     }
 
-    var filename = getFileNameFromPath(result.imagePath);
+    var pathPrefix = "files/results/" // for Android only!
+
+    // only Android uses this path - for iOS this will be null
+    var cachePath = cordova.file.externalApplicationStorageDirectory;
+    if (cachePath == null) {
+        cachePath = "cdvfile://localhost/cache/";
+        // cachePath = cordova.file.cacheDirectory;
+        pathPrefix = ""
+    }
+
+    var filename = pathPrefix + getFileNameFromPath(result.imagePath);
     var tagID = 'cropImg_' + filename;
 
-    var fullFilename = getFileNameFromPath(result.fullImagePath);
+    var fullFilename = pathPrefix + getFileNameFromPath(result.fullImagePath);
     var tagFullID = 'fullImg_' + fullFilename;
 
     div.innerHTML = getResultHTML(result, resultText, tagID, includeFullImage ? tagFullID : "") + div.innerHTML;
 
     console.log("resolveLocalFileSystemURL:");
-    var cachePath = "cdvfile://localhost/cache/";
+
+
+    console.log("The cache path: " + cachePath);
+    
     // set the img attributes using scheme (https://stackoverflow.com/a/64708261)
     window.resolveLocalFileSystemURL(cachePath, function (entry) {
-        console.log("inside resolveLocalFileSystemURL");
         var nativeUrl = entry.toURL(); // will be "file://...."
-        var schemeUrl = window.WkWebView.convertFilePath(nativeUrl);  // Will be "app://..."
 
-        console.log(nativeUrl);
-        console.log(schemeUrl);
-        document.getElementById(tagID).src = schemeUrl + filename;
-        if (includeFullImage) {
-            document.getElementById(tagFullID).src = schemeUrl + fullFilename;
+        // iOS only! // make an if-test
+        if (cordova.file.externalApplicationStorageDirectory == null) {
+            nativeUrl = window.WkWebView.convertFilePath(nativeUrl);  // Will be "app://..."
         }
+
+        document.getElementById(tagID).src = nativeUrl + filename;
+        if (includeFullImage) {
+            document.getElementById(tagFullID).src = nativeUrl + fullFilename;
+        }
+    }, function(evt) {
+        console.log("exception resolveLocalFileSystemURL: " + e.code);
     });
-    document.getElementById(tagID).src = result.imagePath;
-    if (includeFullImage) {
-        document.getElementById(tagFullID).src = result.fullImagePath;
-    }
 
     document.getElementById("details_scan_modes").removeAttribute("open");
     document.getElementById("details_results").setAttribute("open", "");

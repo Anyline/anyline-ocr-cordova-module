@@ -61,15 +61,11 @@ anyline.mrz = {
         },
         "offset": {
           "x": 0,
-          "y": 25
+          "y": 90
         },
         "cropPadding": {
           "x": -30,
           "y": -90
-        },
-        "cropOffset": {
-          "x": 0,
-          "y": 90
         },
         "outerColor": "000000",
         "outerAlpha": 0.3,

@@ -88,15 +88,13 @@ anyline.vehicle = {
         "commercialTireIdConfig": {}
       },
       "cutoutConfig": {
-        "maxWidthPercent": "80%",
-        "width": 720,
+        "maxWidthPercent": "60%",
         "alignment": "center",
         "strokeWidth": 2,
         "cornerRadius": 4,
         "strokeColor": "0099FF",
         "outerColor": "000000",
         "outerAlpha": 0.3,
-        "width": 720,
         "ratioFromSize": {
           "width": 5,
           "height": 1
@@ -144,15 +142,13 @@ anyline.vehicle = {
         }
       },
       "cutoutConfig": {
-        "maxWidthPercent": "80%",
-        "width": 720,
+        "maxWidthPercent": "60%",
         "alignment": "center",
         "strokeWidth": 2,
         "cornerRadius": 4,
         "strokeColor": "0099FF",
         "outerColor": "000000",
         "outerAlpha": 0.3,
-        "width": 800,
         "ratioFromSize": {
           "width": 5,
           "height": 1
@@ -194,15 +190,13 @@ anyline.vehicle = {
         }
       },
       "cutoutConfig": {
-        "maxWidthPercent": "80%",
-        "width": 720,
+        "maxWidthPercent": "60%",
         "alignment": "center",
         "strokeWidth": 2,
         "cornerRadius": 4,
         "strokeColor": "0099FF",
         "outerColor": "000000",
         "outerAlpha": 0.3,
-        "width": 720,
         "ratioFromSize": {
           "width": 2.5,
           "height": 1
@@ -244,9 +238,8 @@ tireMakeConfig: {
               }
           },
           "cutoutConfig": {
-              "maxWidthPercent": "80%",
-              "maxHeightPercent": "80%",
-              "width": 720,
+              "maxWidthPercent": "60%",
+              "maxHeightPercent": "60%",
               "alignment": "center",
               "strokeWidth": 2,
               "cornerRadius": 4,
@@ -349,16 +342,15 @@ tireMakeConfig: {
           "outerColor" : "000000",
           "outerAlpha" : 0.5,
           "feedbackStrokeColor" : "0099FF",
-          "width": 550,
-          "maxWidthPercent": "90%",
-          "maxHeightPercent": "90%",
+          "maxWidthPercent": "85%",
+          "maxHeightPercent": "85%",
           "ratioFromSize": {
             "width": 2.75,
             "height": 1
           },
           "offset": {
             "x": 0,
-            "y": 120
+            "y": 160
           }
         },
         "scanFeedbackConfig" : {

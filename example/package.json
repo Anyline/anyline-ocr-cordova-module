@@ -26,8 +26,8 @@
       "io-anyline-cordova": {}
     },
     "platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ]
   },
   "devDependencies": {
