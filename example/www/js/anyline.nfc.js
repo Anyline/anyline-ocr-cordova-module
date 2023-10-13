@@ -67,21 +67,20 @@ anyline.nfc = {
             },
             "cutoutConfig": {
                 "animation": "none",
-                "maxWidthPercent": "85%",
+                "maxWidthPercent": "90%",
                 "maxHeightPercent": "70%",
-                "width": 0,
-                "alignment": "top_half",
+                "alignment": "center",
                 "ratioFromSize": {
-                    "width": 86,
-                    "height": 54
+                  "width": 161,
+                  "height": 100
                 },
                 "offset": {
                     "x": 0,
-                    "y": 20
+                    "y": 90
                 },
                 "cropPadding": {
-                    "x": 25,
-                    "y": 25
+                  "x": -30,
+                  "y": -90
                 },
                 "outerColor": "000000",
                 "outerAlpha": 0.3,

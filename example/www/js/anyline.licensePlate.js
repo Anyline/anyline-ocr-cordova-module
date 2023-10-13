@@ -82,7 +82,6 @@ anyline.licensePlate = {
       },
       "cutoutConfig": {
         "animation": "none",
-        "width": 550,
         "maxWidthPercent": "80%",
         "alignment": "top_half",
         "ratioFromSize": {
@@ -91,7 +90,7 @@ anyline.licensePlate = {
         },
         "offset": {
           "x": 0,
-          "y": 40
+          "y": 0
         },
         "cropPadding": {
           "x": 0,
@@ -142,14 +141,13 @@ anyline.licensePlate = {
         "animation": "none",
         "maxWidthPercent": "80%",
         "alignment": "top_half",
-        "width": 550,
         "ratioFromSize": {
           "width": 2,
           "height": 1
         },
         "offset": {
           "x": 0,
-          "y": 40
+          "y": 0
         },
         "cropPadding": {
           "x": 0,
@@ -199,7 +197,6 @@ anyline.licensePlate = {
       "cutoutConfig": {
         "animation": "none",
         "maxWidthPercent": "80%",
-        "width": 550,
         "alignment": "top_half",
         "ratioFromSize": {
           "width": 2,
@@ -207,7 +204,7 @@ anyline.licensePlate = {
         },
         "offset": {
           "x": 0,
-          "y": 40
+          "y": 0
         },
         "cropPadding": {
           "x": 0,

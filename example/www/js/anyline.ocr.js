@@ -82,17 +82,12 @@ anyline.ocr = {
       "cutoutConfig": {
         "animation": "none",
         "maxWidthPercent": "80%",
-        "width": 720,
         "alignment": "top_half",
         "ratioFromSize": {
           "width": 2,
           "height": 1
         },
         "offset": {
-          "x": 0,
-          "y": 0
-        },
-        "cropOffset": {
           "x": 0,
           "y": -15
         },
@@ -146,17 +141,12 @@ anyline.ocr = {
       "cutoutConfig": {
         "animation": "none",
         "maxWidthPercent": "80%",
-        "width": 720,
         "alignment": "top_half",
         "ratioFromSize": {
           "width": 5,
           "height": 1
         },
         "offset": {
-          "x": 0,
-          "y": 0
-        },
-        "cropOffset": {
           "x": 0,
           "y": -15
         },
@@ -218,10 +208,6 @@ anyline.ocr = {
           "height": 100
         },
         "offset": {
-          "x": 0,
-          "y": 0
-        },
-        "cropOffset": {
           "x": 0,
           "y": -15
         },

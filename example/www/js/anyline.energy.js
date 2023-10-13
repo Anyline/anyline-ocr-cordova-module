@@ -100,7 +100,7 @@ anyline.energy = {
         "cancelOnResult": true
       },
       "cutoutConfig": {
-        "maxWidthPercent": "80%",
+        "maxWidthPercent": "85%",
         "alignment": "top",
         "ratioFromSize": {
           "width": 2,
@@ -108,11 +108,7 @@ anyline.energy = {
         },
         "offset": {
           "x": 0,
-          "y": 80
-        },
-        "cropOffset": {
-          "x": 0,
-          "y": 120
+          "y": 160
         },
         "strokeWidth": 2,
         "cornerRadius": 4,
@@ -170,7 +166,7 @@ anyline.energy = {
         "cancelOnResult": true
       },
       "cutoutConfig": {
-        "maxWidthPercent": "80%",
+        "maxWidthPercent": "85%",
         "alignment": "top",
         "ratioFromSize": {
           "width": 2,
@@ -178,11 +174,7 @@ anyline.energy = {
         },
         "offset": {
           "x": 0,
-          "y": 80
-        },
-        "cropOffset": {
-          "x": 0,
-          "y": 120
+          "y": 160
         },
         "strokeWidth": 2,
         "cornerRadius": 4,
