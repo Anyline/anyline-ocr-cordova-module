@@ -11,3 +11,5 @@ plugin/src/windows/AnylineProxy/AppUwpJS/bin
 plugin/src/windows/AnylineProxy/AppUwpJS/bld
 example/package-lock.json
 .history
+
+build.json
