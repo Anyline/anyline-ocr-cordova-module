@@ -26,6 +26,8 @@ See **package.json** for more commands.
 
 ### Running The Example App
 
+IMPORTANT: Before running the example app, replace the string defined in anyline.license.js with a valid license key. To find out how to obtain a license key, see License.
+
 Android:
 ```
 cordova run android --device
@@ -36,7 +38,27 @@ iOS:
 cordova run ios --device
 ```
 
-IMPORTANT: Before running the example app, replace the string defined in anyline.license.js with a valid license key. To find out how to obtain a license key, see License.
+On iOS, a [build configuration file](https://cordova.apache.org/docs/en/12.x/guide/platforms/ios/#using-buildjson) may be more convenient to allow you to build the examples app in the way you want. To do so, create a build.json file in the `example` directory containing the following:
+
+```
+{
+    "ios": {
+        "debug": {
+            "codeSignIdentity": "Apple Development",
+            "developmentTeam": "<YOUR_TEAM_ID>",
+            "automaticProvisioning": true,
+            "packageType": "development"
+        },
+        "release": {
+            "codeSignIdentity": "Apple Development",
+            "developmentTeam": "<YOUR_TEAM_ID>",
+            "packageType": "app-store",
+            "automaticProvisioning": true,
+            "buildFlag": ["-UseModernBuildSystem=0", "-allowProvisioningUpdates"]
+        }
+    }
+}
+```
 
 ## License 
 
