@@ -1,10 +1,17 @@
 {
     "ios": {
         "debug": {
-            "developmentTeam": "35RHL53WRE"
+            "codeSignIdentity": "Apple Development",
+            "developmentTeam": "35RHL53WRE",
+            "automaticProvisioning": true,
+            "packageType": "development"
         },
         "release": {
-            "developmentTeam": "35RHL53WRE"
+            "codeSignIdentity": "Apple Development",
+            "developmentTeam": "35RHL53WRE",
+            "packageType": "app-store",
+            "automaticProvisioning": true,
+            "buildFlag": ["-UseModernBuildSystem=0", "-allowProvisioningUpdates"]
         }
     }
 }
