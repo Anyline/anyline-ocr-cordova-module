@@ -90,7 +90,9 @@
             }
         }
 
-        [AnylineSDK setupWithLicenseKey:licenseKey cacheConfig:cacheConfig error:&error];
+        NSString *version = [NSBundle mainBundle].infoDictionary[@"AnylineCordovaPluginVersion"] ?: @"0.0.0";
+        [AnylineSDK setupWithLicenseKey:licenseKey cacheConfig:cacheConfig wrapperConfig:[ALWrapperConfig cordova:version] error:&error];
+
         if (error) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                              messageAsString:error.localizedDescription];

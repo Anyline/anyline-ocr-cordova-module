@@ -24,6 +24,10 @@
             <string>Allow Anyline to access your camera?</string>
         </config-file>
 
+        <config-file target="*-Info.plist" parent="AnylineCordovaPluginVersion">
+            <string>51.3.1</string>
+        </config-file>
+
         <!-- Anyline SDK Cordova Plugin Source for iOS -->
         <header-file src="src/ios/AnylineSDKPlugin.h"/>
         <source-file src="src/ios/AnylineSDKPlugin.m"/>
