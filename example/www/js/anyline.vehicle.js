@@ -163,6 +163,87 @@ anyline.vehicle = {
         "beepOnResult": true,
         "vibrateOnResult": false,
         "strokeWidth": 2
+      },
+      "uiFeedbackConfig": {
+          "presets": [
+              {
+                  "presetName": "tin_custom_v1",
+                  "presetAttributes": [
+                      {
+                          "attributeName": "lighting_toodark_image",
+                          "attributeValue": "uifeedback_tin_toodark"
+                      },
+                      {
+                          "attributeName": "lighting_toobright_image",
+                          "attributeValue": "uifeedback_tin_toobright"
+                      },
+                      {
+                          "attributeName": "distance_moveback_image",
+                          "attributeValue": "uifeedback_tin_moveback"
+                      },
+                      {
+                          "attributeName": "distance_movecloser_image",
+                          "attributeValue": "uifeedback_tin_movecloser"
+                      },
+                      {
+                          "attributeName": "format_wrong_image",
+                          "attributeValue": "uifeedback_tin_wrongformat"
+                      },
+                      {
+                          "attributeName": "date_wrong_image",
+                          "attributeValue": "uifeedback_tin_wrongformat"
+                      },
+                      {
+                          "attributeName": "lighting_toodark_text",
+                          "attributeValue": ""
+                      },
+                      {
+                          "attributeName": "lighting_toobright_text",
+                          "attributeValue": ""
+                      },
+                      {
+                          "attributeName": "distance_moveback_text",
+                          "attributeValue": ""
+                      },
+                      {
+                          "attributeName": "distance_movecloser_text",
+                          "attributeValue": ""
+                      },
+                      {
+                          "attributeName": "format_wrong_text",
+                          "attributeValue": ""
+                      },
+                      {
+                          "attributeName": "date_wrong_text",
+                          "attributeValue": ""
+                      },
+                      {
+                          "attributeName": "lighting_toodark_sound",
+                          "attributeValue": "info_sound_TIN.wav"
+                      },
+                      {
+                          "attributeName": "lighting_toobright_sound",
+                          "attributeValue": "info_sound_TIN.wav"
+                      },
+                      {
+                          "attributeName": "distance_moveback_sound",
+                          "attributeValue": "info_sound_TIN.wav"
+                      },
+                      {
+                          "attributeName": "distance_movecloser_sound",
+                          "attributeValue": "info_sound_TIN.wav"
+                      },
+                      {
+                          "attributeName": "format_wrong_sound",
+                          "attributeValue": "info_sound_TIN.wav"
+                      },
+                      {
+                          "attributeName": "date_wrong_sound",
+                          "attributeValue": "info_sound_TIN.wav"
+                      }
+                  ]
+              }
+          ]
       }
     }
   },

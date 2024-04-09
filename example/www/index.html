@@ -29,6 +29,7 @@
             showMrzIfiOS();
 
             showSDKVersion();
+            showPluginVersion();
             initAnylineSDK();
             requestCameraPermissionOnAndroid();
         }
@@ -64,6 +65,19 @@
                     console.error(err)
                 },
                 "AnylineSDK", "getSDKVersion"
+            );
+        }
+
+        function showPluginVersion() {
+            cordova.exec(
+                function (pluginVersion) {
+                    var div = document.getElementById('Plugin');
+                    div.innerHTML = "<p>Anyline Plugin Version: " + pluginVersion + "</p>"
+                },
+                function (err) {
+                    console.error("Unable to get pluginVersion: " + err)
+                },
+                "AnylineSDK", "getPluginVersion"
             );
         }
 
@@ -222,6 +236,7 @@
                 <hr>
                 <div id="versions">
                     <div id="SDK"></div>
+                    <div id="Plugin"></div>
                 </div>
             </div>
 
