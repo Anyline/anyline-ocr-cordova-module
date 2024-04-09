@@ -10,7 +10,19 @@
  *
  * @constructor
  */
-function Anyline() {}
+function Anyline() {
+
+    const pluginVersion = cordova.require("cordova/plugin_list").metadata['io-anyline-cordova'];
+    
+    cordova.exec(
+        function () {
+
+        },
+        function (err) {
+            console.error("Version error: " + err)
+        },
+    "AnylineSDK", "setPluginVersion", [pluginVersion]);
+}
 
 Anyline.prototype.checkLicense = function(licenseKey, onSuccess, onFailure) {
   cordova.exec(onSuccess, onFailure, "AnylineSDK", "checkLicense", [licenseKey]);

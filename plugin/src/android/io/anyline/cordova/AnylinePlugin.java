@@ -27,6 +27,8 @@ import java.io.IOException;
 import io.anyline2.AnylineSdk;
 import io.anyline2.CacheConfig;
 import io.anyline2.core.LicenseException;
+import io.anyline2.WrapperConfig;
+import io.anyline2.WrapperInfo;
 
 
 public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnResultListener {
@@ -54,6 +56,9 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     private String mAction;
     private JSONArray mArgs;
 
+    private static String pluginVersion;
+    private static WrapperConfig wrapperConfig;
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
         this.callbackContext = callbackContext;
@@ -64,6 +69,10 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             try {
                 if ("checkLicense".equals(mAction)) {
                     getLicenseExpirationDate(mArgs.getString(0));
+                } else if ("setPluginVersion".equals(mAction)) {
+                    setPluginVersion(args.getString(0));
+                } else if ("getPluginVersion".equals(mAction)) {
+                    getPluginVersion();
                 } else if ("initAnylineSDK".equals(mAction)) {
                     boolean enableOfflineCache = args.optBoolean(1, false);
                     initAnylineSDK(args.getString(0), enableOfflineCache);
@@ -86,6 +95,13 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
         return true;
     }
 
+    private static void setPluginVersion(final String version) {
+        pluginVersion = version;
+        wrapperConfig = new WrapperConfig.Wrapper(
+                new WrapperInfo(WrapperInfo.WrapperType.Cordova, pluginVersion)
+        );
+    }
+
     private void initAnylineSDK(String licenseKey) throws LicenseException {
         initAnylineSDK(licenseKey, false);
     }
@@ -96,7 +112,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
         if (enableOfflineCache) {
             cacheConfig = CacheConfig.Preset.OfflineLicenseEventCachingEnabled.INSTANCE;
         }
-        AnylineSdk.init(licenseKey, activity, "www/assets", cacheConfig);
+        AnylineSdk.init(licenseKey, activity, "www/assets", cacheConfig, wrapperConfig);
         onResult(new PluginResult(PluginResult.Status.OK, "Anyline SDK init was successful."), true);
     }
 
@@ -177,6 +193,9 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
         this.callbackContext.sendPluginResult(pluginResult);
     }
 
+    private void getPluginVersion() {
+        onResult(pluginVersion, true);
+    }
     private void getSDKVersion() {
         onResult(at.nineyards.anyline.BuildConfig.VERSION_NAME, true);
     }

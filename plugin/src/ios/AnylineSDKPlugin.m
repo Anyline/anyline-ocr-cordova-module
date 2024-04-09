@@ -10,6 +10,10 @@
 
 @property (nonatomic, strong) NSDictionary *anylineConfig;
 
+@property (nonatomic, strong) ALWrapperConfig *wrapperConfig;
+
+@property (nonatomic, strong) NSString *wrapperPluginVersion;
+
 @end
 
 
@@ -70,6 +74,33 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)setPluginVersion:(CDVInvokedUrlCommand *)command {
+    __weak __block __typeof(self) weakSelf = self;
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult *pluginResult;
+        if (command.arguments.count < 1) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Plugin version not given."];
+            [weakSelf.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            return;
+        }
+        weakSelf.wrapperPluginVersion = (NSString *)(command.arguments[0]);
+        weakSelf.wrapperConfig = [ALWrapperConfig cordova:weakSelf.wrapperPluginVersion];
+        
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [weakSelf.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+- (void)getPluginVersion:(CDVInvokedUrlCommand *)command {
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                      messageAsString:self.wrapperPluginVersion];
+    __weak __block __typeof(self) weakSelf = self;
+    [self.commandDelegate runInBackground:^{
+        [weakSelf.commandDelegate sendPluginResult:pluginResult
+                                        callbackId:command.callbackId];
+    }];
+}
+
 - (void)initAnylineSDK:(CDVInvokedUrlCommand *)command {
     __weak __block __typeof(self) weakSelf = self;
     [self.commandDelegate runInBackground:^{
@@ -90,7 +121,7 @@
             }
         }
 
-        [AnylineSDK setupWithLicenseKey:licenseKey cacheConfig:cacheConfig error:&error];
+        [AnylineSDK setupWithLicenseKey:licenseKey cacheConfig:cacheConfig wrapperConfig:self.wrapperConfig error:&error];
         if (error) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                              messageAsString:error.localizedDescription];
