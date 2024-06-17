@@ -167,8 +167,16 @@ anyline.vehicle = {
       "uiFeedbackConfig": {
           "presets": [
               {
-                  "presetName": "tin_custom_v1",
+                  "presetName": "tin_with_instruction_overlay_image_text_sound_feedback",
                   "presetAttributes": [
+                      {
+                          "attributeName": "instruction_text",
+                          "attributeValue": "Please make sure the entire TIN number is inside the cutout."
+                      },
+                      {
+                          "attributeName": "left_overlay_image",
+                          "attributeValue": ""
+                      },
                       {
                           "attributeName": "lighting_toodark_image",
                           "attributeValue": "uifeedback_tin_toodark"
@@ -292,6 +300,19 @@ anyline.vehicle = {
         "beepOnResult": true,
         "vibrateOnResult": false,
         "strokeWidth": 2
+      },
+      "uiFeedbackConfig": {
+          "presets": [
+            {
+              "presetName": "simple_instruction_label",
+              "presetAttributes": [
+                {
+                  "attributeName": "instruction_text",
+                  "attributeValue": "Look for a standardized number sequence, like 205/55 R16"
+                }
+              ]
+            }
+          ]
       }
     }
   },
