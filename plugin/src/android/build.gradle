@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.anyline:anylinesdk:51.4.0'
+    implementation 'io.anyline:anylinesdk:52.0.1'
     implementation("com.google.android.material:material:1.4.0-rc01")
 }
 

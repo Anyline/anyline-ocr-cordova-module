@@ -213,6 +213,19 @@ anyline.compositeScan = {
               "fillColor": "330099ff",
               "beepOnResult": true,
               "vibrateOnResult": true
+            },
+            "uiFeedbackConfig": {
+              "presets": [
+                {
+                  "presetName": "simple_instruction_label",
+                  "presetAttributes": [
+                    {
+                      "attributeName": "instruction_text",
+                      "attributeValue": "Position the entire License Plate within the cutout"
+                    }
+                  ]
+                }
+              ]
             }
           }
         },
@@ -259,6 +272,19 @@ anyline.compositeScan = {
               "beepOnResult": true,
               "vibrateOnResult": true,
               "strokeWidth": 2
+            },
+            "uiFeedbackConfig": {
+              "presets": [
+                {
+                  "presetName": "simple_instruction_label",
+                  "presetAttributes": [
+                    {
+                      "attributeName": "instruction_text",
+                      "attributeValue": "Position the entire Driving License within the cutout"
+                    }
+                  ]
+                }
+              ]
             }
           }
         },
@@ -297,6 +323,19 @@ anyline.compositeScan = {
               "fillColor": "330099FF",
               "beepOnResult": true,
               "vibrateOnResult": true
+            },
+            "uiFeedbackConfig": {
+              "presets": [
+                {
+                  "presetName": "simple_instruction_label",
+                  "presetAttributes": [
+                    {
+                      "attributeName": "instruction_text",
+                      "attributeValue": "Position the VIN within the cutout"
+                    }
+                  ]
+                }
+              ]
             }
           }
         }
