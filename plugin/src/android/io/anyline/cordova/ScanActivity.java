@@ -80,6 +80,9 @@ public class ScanActivity extends AppCompatActivity {
                 };
             } catch (JSONException e) {
                 finishWithError("Error parsing view config: " + e.getMessage());
+            } catch (Exception e) {
+                finishWithError(getString(getResources().getIdentifier("error_invalid_json_data", "string", getPackageName()))
+                        + "\n" + e.getLocalizedMessage());
             }
         } else {
             finishWithError("View config not found");
@@ -194,13 +197,17 @@ public class ScanActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        scanView.start();
+        if (scanView.isInitialized()) {
+            scanView.start();
+        }
     }
 
     @Override
     protected void onPause() {
-        scanView.stop();
-        scanView.getCameraView().releaseCameraInBackground();
+        if (scanView.isInitialized()) {
+            scanView.stop();
+            scanView.getCameraView().releaseCameraInBackground();
+        }
         super.onPause();
     }
 

@@ -31,6 +31,8 @@ API_AVAILABLE(ios(13.0))
 // JPEG compression quality 0-100
 @property (nonatomic, assign) NSUInteger quality;
 
+@property (nonatomic, strong) NSError *scanViewError;
+
 @end
 
 
@@ -59,7 +61,9 @@ API_AVAILABLE(ios(13.0))
     } else {
         error = [ALPluginHelper errorWithMessage:@"iOS 13.0 or newer is required to scan with MRZ / NFC."];
     }
+
     if ([self showErrorAlertIfNeeded:error]) {
+        self.scanViewError = error;
         return;
     }
 
@@ -77,7 +81,7 @@ API_AVAILABLE(ios(13.0))
         return;
     }
 
-    self.mrzScanViewPlugin = (ALScanViewPlugin *)self.scanView.scanViewPlugin;
+    self.mrzScanViewPlugin = (ALScanViewPlugin *)self.scanView.viewPlugin;
 
     // TODO: reeenable this
     // self.scanView.supportedNativeBarcodeFormats = self.uiConfig.nativeBarcodeFormats;
@@ -104,8 +108,15 @@ API_AVAILABLE(ios(13.0))
     [super viewDidAppear:animated];
 
     NSError *error;
-    [self startMRZScanning:&error];
-    [self showErrorAlertIfNeeded:error];
+    if(!self.scanViewError){
+        [self startMRZScanning:&error];
+        [self showErrorAlertIfNeeded:error];
+    }
+    else{
+        [self dismissViewControllerAnimated:YES completion:^{
+            self.callback(nil, self.scanViewError);
+        }];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -125,7 +136,7 @@ API_AVAILABLE(ios(13.0))
 
 - (void)configureMRZPlugin {
 
-    ALScanViewPlugin *scanViewPlugin = (ALScanViewPlugin *)self.scanView.scanViewPlugin;
+    ALScanViewPlugin *scanViewPlugin = (ALScanViewPlugin *)self.scanView.viewPlugin;
     if (![scanViewPlugin isKindOfClass:ALScanViewPlugin.class]) {
         return;
     }
@@ -153,14 +164,11 @@ API_AVAILABLE(ios(13.0))
     mrzConfig.mrzMinFieldConfidences.dateOfExpiry = @(90);
 
     NSError *error;
-    ALScanViewPluginConfig *scanViewPluginConfig = [ALScanViewPluginConfig withPluginConfig:pluginConfig
-                                                                               cutoutConfig:cutoutConfig
-                                                                         scanFeedbackConfig:scanFeedbackConfig];
-    ALScanViewPlugin *updatedScanViewPlugin = [[ALScanViewPlugin alloc] initWithConfig:scanViewPluginConfig error:&error];
-    [self.scanView setScanViewPlugin:updatedScanViewPlugin error:&error];
+    ALViewPluginConfig *scanViewPluginConfig = scanViewPlugin.scanViewPluginConfig;
+    [self.scanView setViewPluginConfig:scanViewPluginConfig error:&error];
 
     // the delegate binding was lost when you recreated the ScanPlugin it so you have to bring it back here
-    scanViewPlugin = (ALScanViewPlugin *)self.scanView.scanViewPlugin;
+    scanViewPlugin = (ALScanViewPlugin *)self.scanView.viewPlugin;
     scanViewPlugin.scanPlugin.delegate = self;
 }
 
@@ -213,7 +221,7 @@ API_AVAILABLE(ios(13.0))
         resultDictionary[@"nativeBarcodesDetected"] = self.detectedBarcodes;
     }
 
-    NSObject<ALScanViewPluginBase> *scanViewPluginBase = self.scanView.scanViewPlugin;
+    NSObject<ALViewPluginBase> *scanViewPluginBase = self.scanView.viewPlugin;
     // TODO: handle this for composites: cancelOnResult = true? dismiss
     if ([scanViewPluginBase isKindOfClass:ALScanViewPlugin.class]) {
         ALScanViewPlugin *scanViewPlugin = (ALScanViewPlugin *)scanViewPluginBase;
@@ -233,7 +241,7 @@ API_AVAILABLE(ios(13.0))
 
     __weak __block __typeof(self) weakSelf = self;
     [self dismissViewControllerAnimated:YES completion:^{
-        weakSelf.callback(nil, @"Canceled");
+        weakSelf.callback(nil, [NSError errorWithDomain:@"ALCordovaErrorDomain" code:-1 userInfo:@{NSLocalizedDescriptionKey: @"Canceled"}]);
     }];
 }
 
@@ -370,7 +378,17 @@ API_AVAILABLE(ios(13.0))
 }
 
 - (BOOL)showErrorAlertIfNeeded:(NSError *)error {
-    return [ALPluginHelper showErrorAlertIfNeeded:error pluginCallback:self.callback];
+    if (!error) {
+        return NO;
+    }
+
+    return YES;
+}
+
+-(void)dismissOnError:(NSError *)error{
+    [self dismissViewControllerAnimated:YES completion:^{
+        self.callback(nil, error);
+    }];
 }
 
 // MARK: - User Interface

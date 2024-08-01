@@ -24,17 +24,17 @@
     __weak __block __typeof(self) weakSelf = self;
     [self.commandDelegate runInBackground:^{
         [ALPluginHelper startScan:weakSelf.anylineConfig
-                         finished:^(id  _Nullable callbackObj, NSString * _Nullable errorString) {
-            CDVPluginResult *pluginResult;
-            if (errorString.length) {
-                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                                 messageAsString:errorString];
-            } else {
-                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                             messageAsDictionary:callbackObj];
-            }
-            [weakSelf.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        }];
+                         finished:^(NSDictionary * _Nullable callbackObj, NSError * _Nullable error) {
+                             CDVPluginResult *pluginResult;
+                             if (error) {
+                                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                                                  messageAsString:error.localizedDescription];
+                             } else {
+                                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                              messageAsDictionary:callbackObj];
+                             }
+                             [weakSelf.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                         }];
     }];
 }
 
@@ -85,7 +85,7 @@
         }
         weakSelf.wrapperPluginVersion = (NSString *)(command.arguments[0]);
         weakSelf.wrapperConfig = [ALWrapperConfig cordova:weakSelf.wrapperPluginVersion];
-        
+
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         [weakSelf.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];

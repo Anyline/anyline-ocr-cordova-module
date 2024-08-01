@@ -68,7 +68,7 @@ anyline.energy = {
         "text": "Position your meter inside the box",
         "color": "f0f0f0",
         "size": 12,
-        "offset.y": -10,
+        "offset.y": -10
       },
       "segmentConfig": {
         "titles": ["Analog", "Digital", "Dial"],

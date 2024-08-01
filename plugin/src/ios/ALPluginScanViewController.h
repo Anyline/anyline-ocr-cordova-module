@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^ALPluginCallback)(id _Nullable callbackObj, NSString * _Nullable errorString);
+typedef void (^ALPluginCallback)(NSDictionary * _Nullable callbackObj, NSError * _Nullable error);
 
 @interface ALPluginScanViewController : UIViewController
 
