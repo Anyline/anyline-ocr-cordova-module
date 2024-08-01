@@ -265,8 +265,8 @@ anyline.compositeScan = {
               "feedbackStrokeColor": "0099FF"
             },
             "scanFeedbackConfig": {
-              "style": "CONTOUR_RECT",
-              "visualFeedbackRedrawTimeout": 100,
+              "style": "contour_rect",
+              "redrawTimeout": 100,
               "strokeColor": "0099FF",
               "fillColor": "220099FF",
               "beepOnResult": true,

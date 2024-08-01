@@ -19,7 +19,7 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
     if (isNFC) {
         if (@available(iOS 13.0, *)) {
             if (![ALNFCDetector readingAvailable]) {
-                callback(nil, @"NFC passport reading is not supported on this device or app.");
+                callback(nil, [NSError errorWithDomain:ALCordovaErrorDomain code:100 userInfo:@{@"Error reason": @"NFC passport reading is not supported on this device or app."}]);
                 return nil;
             }
             __weak __block __typeof(self) weakSelf = self;
@@ -30,7 +30,7 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
                 [weakSelf presentViewController:nfcScanViewController];
             });
         } else {
-            callback(nil, @"NFC passport reading is only supported on iOS 13 and later.");
+            callback(nil,[NSError errorWithDomain:ALCordovaErrorDomain code:100 userInfo:@{@"Error reason": @"NFC passport reading is only supported on iOS 13 and later."}]);
         }
         return nil;
     } else {
@@ -59,7 +59,7 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
     NSData *binaryImageData = UIImageJPEGRepresentation(image, compressionQuality);
     NSString *uuid = [NSUUID UUID].UUIDString;
     NSString *imageName = [NSString stringWithFormat:@"%@.jpg",uuid];
-    
+
     NSString *fullPath = [basePath stringByAppendingPathComponent:imageName];
     [binaryImageData writeToFile:fullPath atomically:YES];
 
@@ -69,17 +69,17 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
 // MARK: - UI helpers
 
 + (UILabel *)createLabelForView:(UIView *)view {
-    
+
     UILabel *scannedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, 44)];
     scannedLabel.center = CGPointMake(view.center.x, view.center.y+166);
-    
+
     scannedLabel.alpha = 0.0;
     scannedLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:33];
     scannedLabel.textColor = [UIColor whiteColor];
     scannedLabel.textAlignment = NSTextAlignmentCenter;
-    
+
     [view addSubview:scannedLabel];
-    
+
     return scannedLabel;
 }
 
@@ -115,7 +115,7 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
 
 + (UIButton *)createButtonForViewController:(UIViewController *)viewController
                                      config:(ALCordovaUIConfiguration *)config {
-    
+
     UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [doneButton setTitle:config.buttonDoneTitle
                 forState:UIControlStateNormal];
@@ -124,11 +124,11 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
     [doneButton addTarget:viewController action:@selector(doneButtonPressed:)
          forControlEvents:UIControlEventTouchUpInside];
     [viewController.view addSubview:doneButton];
-    
+
     [ALPluginHelper updateButtonPosition:doneButton
                        withConfiguration:config
                                   onView:viewController.view];
-    
+
     return doneButton;
 }
 
@@ -265,14 +265,14 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
     if (!date) {
         return nil;
     }
-    
+
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC+0:00"]];
     [dateFormatter setDateFormat:@"EEE MMM d hh:mm:ss ZZZZ yyyy"];
-    
+
     //Date will be formatted to string - e.g.: "Fri Jan 11 12:00:00 GMT+0:00 1980"
     NSString *dateString = [dateFormatter stringFromDate:date];
-    
+
     return dateString;
 }
 
@@ -313,11 +313,11 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * _Nonnull action) {
 
-        [[UIApplication sharedApplication].keyWindow.rootViewController
-         dismissViewControllerAnimated:YES completion:^{
-            callback(nil, @"Canceled");
-        }];
-    }];
+                                                       [[UIApplication sharedApplication].keyWindow.rootViewController
+                                                               dismissViewControllerAnimated:YES completion:^{
+                                                           callback(nil, [NSError errorWithDomain:@"ALCordovaErrorDomain" code:-1 userInfo:@{@"Error reason": @"Canceled"}]);
+                                                       }];
+                                                   }];
 
     [alert addAction:action];
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert
