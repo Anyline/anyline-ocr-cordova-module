@@ -27,6 +27,8 @@
 
 @property (nonatomic, strong) NSError *scanViewError;
 
+@property (nonatomic, nullable) NSString *initializationParamsStr;
+
 @end
 
 
@@ -34,12 +36,14 @@
 
 - (instancetype)initWithConfiguration:(NSDictionary *)configDict
                  cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+              initializationParamsStr:(NSString *)initializationParamsStr
                              callback:(ALPluginCallback)callback {
     self = [super init];
     if(self) {
         _callback = callback;
         _configDict = configDict;
         _cordovaConfig = cordovaConf;
+        _initializationParamsStr = initializationParamsStr;
         _quality = 100;
     }
     return self;
@@ -51,7 +55,17 @@
     self.view.backgroundColor = [UIColor blackColor];
 
     NSError *error = nil;
+    ALScanViewInitializationParameters *initializationParams = nil;
+    if(![self isStringEmpty:_initializationParamsStr]){
+        initializationParams =  [ALScanViewInitializationParameters withJSONString: _initializationParamsStr error:&error];
+    }
+    
+    if ([self showErrorAlertIfNeeded:error]) {
+        self.scanViewError = error;
+        return;
+    }
     self.scanView = [ALScanViewFactory withJSONDictionary:self.configDict
+                                     initializationParams:initializationParams
                                                  delegate:self
                                                     error:&error];
 
@@ -419,5 +433,11 @@
     }];
 }
 
+-(BOOL)isStringEmpty:(NSString *)str {
+    if(str == nil || [str isKindOfClass:[NSNull class]] || str.length==0) {
+        return YES;
+    }
+    return NO;
+}
 
 @end

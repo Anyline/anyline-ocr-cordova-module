@@ -9,6 +9,7 @@ typedef void (^ALPluginCallback)(NSDictionary * _Nullable callbackObj, NSError *
 
 - (instancetype)initWithConfiguration:(NSDictionary *)anylineConfig
                  cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+              initializationParamsStr:(NSString *)initializationParamsStr
                              callback:(ALPluginCallback)callback;
 
 @end
