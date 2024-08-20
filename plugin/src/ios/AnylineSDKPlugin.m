@@ -14,6 +14,8 @@
 
 @property (nonatomic, strong) NSString *wrapperPluginVersion;
 
+@property (nonatomic, copy) NSString *initializationParamsStr;
+
 @end
 
 
@@ -24,6 +26,7 @@
     __weak __block __typeof(self) weakSelf = self;
     [self.commandDelegate runInBackground:^{
         [ALPluginHelper startScan:weakSelf.anylineConfig
+          initializationParamsStr:weakSelf.initializationParamsStr
                          finished:^(NSDictionary * _Nullable callbackObj, NSError * _Nullable error) {
                              CDVPluginResult *pluginResult;
                              if (error) {
@@ -138,12 +141,24 @@
 - (void)processArgumentsForCommand:(CDVInvokedUrlCommand *)command {
     self.callbackId = command.callbackId;
     self.anylineConfig = [command.arguments objectAtIndex:0];
-
+    if (command.arguments.count > 1) {
+        self.initializationParamsStr = [self stringForDictionary:[command.arguments objectAtIndex:1]];
+    } else {
+        self.initializationParamsStr = nil;
+    }
     NSDictionary *UIOptions = self.anylineConfig[@"options"];
     if (![UIOptions isKindOfClass:NSDictionary.class]) {
         UIOptions = @{};
     }
     self.cordovaUIConf = [[ALCordovaUIConfiguration alloc] initWithDictionary:UIOptions];
+}
+
+// MARK: - Utility Method
+
+- (NSString *)stringForDictionary:(NSDictionary *)dict {
+    NSError * err;
+    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&err];
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
 @end

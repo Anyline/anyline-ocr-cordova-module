@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype _Nullable)initWithConfiguration:(NSDictionary *)anylineConfig
                            cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                        initializationParamsStr:(NSString *)initializationParamsStr
                                        callback:(ALPluginCallback)callback;
 
 @end

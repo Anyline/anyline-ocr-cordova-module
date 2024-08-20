@@ -1,8 +1,10 @@
 package io.anyline.cordova;
 
 import static io.anyline.cordova.AnylinePlugin.EXTRA_CONFIG_JSON;
+import static io.anyline.cordova.AnylinePlugin.EXTRA_SCANVIEW_INITIALIZATION_PARAMETERS;
 import static io.anyline.cordova.AnylinePlugin.EXTRA_ERROR_MESSAGE;
 import static io.anyline.cordova.AnylinePlugin.RESULT_ERROR;
+import static io.anyline2.sdk.extension.ScanViewInitializationParametersExtensionKt.getScanViewInitializationParametersFromJsonObject;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -20,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import io.anyline.plugin.config.ScanViewInitializationParameters;
 import io.anyline2.ScanResult;
 import io.anyline2.view.ScanView;
 import io.anyline2.viewplugin.ViewPluginBase;
@@ -56,7 +59,17 @@ public class ScanActivity extends AppCompatActivity {
                 applyDefaultOrientation(configJSON);
                 setupChangeOrientationButton(configJSON);
 
-                scanView.init(configJSON);
+                String initializationParametersString = getIntent().getStringExtra(EXTRA_SCANVIEW_INITIALIZATION_PARAMETERS);
+                if (initializationParametersString != null) {
+                    ScanViewInitializationParameters scanViewInitializationParameters =
+                            getScanViewInitializationParametersFromJsonObject(
+                                    this,
+                                    new JSONObject(initializationParametersString));
+                    scanView.init(configJSON, scanViewInitializationParameters);
+                }
+                else {
+                    scanView.init(configJSON);
+                }
 
                 ViewPluginBase viewPluginBase = scanView.getScanViewPlugin();
 

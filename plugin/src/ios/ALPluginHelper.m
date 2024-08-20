@@ -11,6 +11,7 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
 // MARK: - Start Anyline
 
 + (ALPluginScanViewController *)startScan:(NSDictionary *)config
+                   initializationParamsStr:(NSString * _Nullable)initializationParamsStr
                                  finished:(ALPluginCallback)callback {
 
     NSDictionary *optionsDict = [config objectForKey:@"options"];
@@ -26,6 +27,7 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
             dispatch_async(dispatch_get_main_queue(), ^{
                 ALNFCScanViewController *nfcScanViewController = [[ALNFCScanViewController alloc] initWithConfiguration:config
                                                                                                    cordovaConfiguration:jsonUIConf
+                                                                                                initializationParamsStr:initializationParamsStr
                                                                                                                callback:callback];
                 [weakSelf presentViewController:nfcScanViewController];
             });
@@ -39,6 +41,7 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
             ALPluginScanViewController *pluginScanViewController;
             pluginScanViewController = [[ALPluginScanViewController alloc] initWithConfiguration:config
                                                                             cordovaConfiguration:jsonUIConf
+                                                                         initializationParamsStr:initializationParamsStr
                                                                                         callback:callback];
             [weakSelf presentViewController:pluginScanViewController];
         });

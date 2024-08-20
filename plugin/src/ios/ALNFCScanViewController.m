@@ -33,18 +33,23 @@ API_AVAILABLE(ios(13.0))
 
 @property (nonatomic, strong) NSError *scanViewError;
 
+@property (nonatomic, nullable) NSString *initializationParamsStr;
+
+
 @end
 
 
 @implementation ALNFCScanViewController
 
 - (instancetype)initWithConfiguration:(NSDictionary *)anylineConfig
-                 cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf
+                 cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConf           
+              initializationParamsStr:(NSString *)initializationParamsStr
                              callback:(ALPluginCallback)callback {
     if (self = [super init]) {
         _callback = callback;
         _config = anylineConfig;
         _uiConfig = cordovaConf;
+        _initializationParamsStr = initializationParamsStr;
 
         self.quality = 90;
     }
@@ -61,6 +66,11 @@ API_AVAILABLE(ios(13.0))
     } else {
         error = [ALPluginHelper errorWithMessage:@"iOS 13.0 or newer is required to scan with MRZ / NFC."];
     }
+    
+    ALScanViewInitializationParameters *initializationParams = nil;
+    if(_initializationParamsStr){
+        initializationParams=  [ALScanViewInitializationParameters withJSONString:_initializationParamsStr error:&error];
+    }
 
     if ([self showErrorAlertIfNeeded:error]) {
         self.scanViewError = error;
@@ -72,7 +82,9 @@ API_AVAILABLE(ios(13.0))
     self.resultDict = [[NSMutableDictionary alloc] init];
     self.detectedBarcodes = [NSMutableArray array];
 
-    self.scanView = [ALScanViewFactory withJSONDictionary:self.config delegate:self error:&error];
+    self.scanView = [ALScanViewFactory withJSONDictionary:self.config
+                                     initializationParams:initializationParams
+                                                 delegate:self error:&error];
     self.scanView.delegate = self;
 
     [self configureMRZPlugin];

@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ALPluginHelper : NSObject
 
 + (ALPluginScanViewController *)startScan:(NSDictionary *)config
+                   initializationParamsStr:(NSString * _Nullable)initializationParamsStr 
                                  finished:(ALPluginCallback)callback;
 
 // UI Elements

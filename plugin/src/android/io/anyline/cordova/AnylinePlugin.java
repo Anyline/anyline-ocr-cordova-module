@@ -35,6 +35,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
 
     public static final String EXTRA_LICENSE_KEY = "EXTRA_LICENSE_KEY";
     public static final String EXTRA_CONFIG_JSON = "EXTRA_CONFIG_JSON";
+    public static final String EXTRA_SCANVIEW_INITIALIZATION_PARAMETERS = "EXTRA_SCANVIEW_INITIALIZATION_PARAMETERS";
     public static final String EXTRA_OCR_CONFIG_JSON = "EXTRA_OCR_CONFIG_JSON";
     public static final String EXTRA_ERROR_MESSAGE = "EXTRA_ERROR_MESSAGE";
     public static final String EXTRA_SCAN_NATIVE_BARCODE = "EXTRA_SCAN_NATIVE_BARCOE";
@@ -150,6 +151,11 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
 
         try {
             intent.putExtra(EXTRA_CONFIG_JSON, data.getJSONObject(0).toString());
+            String scanViewInitParams = null;
+            if (data.length() > 1) {
+                scanViewInitParams = data.getJSONObject(1).toString();
+            }
+            intent.putExtra(EXTRA_SCANVIEW_INITIALIZATION_PARAMETERS, scanViewInitParams);
             cordova.startActivityForResult(this, intent, requestCode);
         } catch (JSONException e) {
             onError(getString("error_invalid_json_data"));
