@@ -26,8 +26,6 @@
         }
 
         function onDeviceReady() {
-            showMrzIfiOS();
-
             showSDKVersion();
             showPluginVersion();
             initAnylineSDK();
@@ -79,21 +77,6 @@
                 },
                 "AnylineSDK", "getPluginVersion"
             );
-        }
-
-        function showMrzIfiOS() {
-            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            // Windows Phone must come first because its UA also contains "Android"
-            if (/windows phone/i.test(userAgent)) {
-                document.getElementById(1234).style.display = 'none';
-            }
-            if (/android/i.test(userAgent)) {
-                document.getElementById(1234).style.display = 'none';
-            }
-            // iOS detection from: http://stackoverflow.com/a/9039885/177710
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                document.getElementById(1234).style.display = 'span';
-            }
         }
 
         function requestCameraPermissionOnAndroid() {
@@ -154,10 +137,6 @@
                     <br />
                     <input type="button" value="MRZ (Passport / ID)" onclick="anyline.mrz.scan()" class="formButton"
                     disabled=true />
-                    <br />
-                    <!-- The onload method causes this block to not display if not iOS -->
-                    <input type="button" value="MRZ + NFC" onclick="anyline.nfc.scan()" class="formButton" disabled=true
-                    id="1234" onload="showMrz()" />
                     <br />
                     <input type="button" value="Barcode PDF417 (AAMVA)" onclick="anyline.barcode.scan('PDF417')"
                     class="formButton" disabled=true />
@@ -248,7 +227,6 @@
         <script type="text/javascript" src="js/anyline.id.js"></script>
         <script type="text/javascript" src="js/anyline.licensePlate.js"></script>
         <script type="text/javascript" src="js/anyline.mrz.js"></script>
-        <script type="text/javascript" src="js/anyline.nfc.js"></script>
         <script type="text/javascript" src="js/anyline.ocr.js"></script>
         <script type="text/javascript" src="js/anyline.vehicle.js"></script>
     </body>
