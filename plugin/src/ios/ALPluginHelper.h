@@ -13,9 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ALPluginHelper : NSObject
 
-+ (ALPluginScanViewController *)startScan:(NSDictionary *)config
-                   initializationParamsStr:(NSString * _Nullable)initializationParamsStr 
-                                 finished:(ALPluginCallback)callback;
++ (ALPluginScanViewController * _Nullable)startScan:(NSDictionary *)config
+                            initializationParamsStr:(NSString * _Nullable)initializationParamsStr
+                                           finished:(ALPluginCallback)callback;
 
 // UI Elements
 + (UILabel *)createLabelForView:(UIView *)view;
@@ -40,13 +40,13 @@ NS_ASSUME_NONNULL_BEGIN
 // Date Formatting
 + (NSString *)stringForDate:(NSDate *)date;
 
-+ (NSDate *)formattedStringToDate:(NSString *)formattedStr;
++ (NSDate * _Nullable)formattedStringToDate:(NSString *)formattedStr;
 
 // Miscellaneous
-+ (NSString * _Nullable)confPropKeyWithScanModeForPluginConfig:(ALPluginConfig *)pluginConfig;
++ (NSString * _Nullable)confPropKeyWithScanModeForPluginConfig:(ALPluginConfig * _Nullable)pluginConfig;
 
-+ (NSString *)saveImageToFileSystem:(UIImage *)image
-                 compressionQuality:(CGFloat)compressionQuality;
++ (NSString * _Nullable)saveImageToFileSystem:(UIImage *)image
+                           compressionQuality:(CGFloat)compressionQuality;
 
 @end
 

@@ -1,5 +1,4 @@
 #import "ALPluginHelper.h"
-#import "ALNFCScanViewController.h"
 #import <objc/runtime.h>
 
 // Predefined domain for errors from most AppKit and Foundation APIs.
@@ -10,43 +9,23 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
 
 // MARK: - Start Anyline
 
-+ (ALPluginScanViewController *)startScan:(NSDictionary *)config
++ (ALPluginScanViewController * _Nullable)startScan:(NSDictionary *)config
                    initializationParamsStr:(NSString * _Nullable)initializationParamsStr
                                  finished:(ALPluginCallback)callback {
 
     NSDictionary *optionsDict = [config objectForKey:@"options"];
     ALCordovaUIConfiguration *jsonUIConf = [[ALCordovaUIConfiguration alloc] initWithDictionary:optionsDict];
-    BOOL isNFC = [optionsDict[@"enableNFCWithMRZ"] boolValue];
-    if (isNFC) {
-        if (@available(iOS 13.0, *)) {
-            if (![ALNFCDetector readingAvailable]) {
-                callback(nil, [NSError errorWithDomain:ALCordovaErrorDomain code:100 userInfo:@{@"Error reason": @"NFC passport reading is not supported on this device or app."}]);
-                return nil;
-            }
-            __weak __block __typeof(self) weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                ALNFCScanViewController *nfcScanViewController = [[ALNFCScanViewController alloc] initWithConfiguration:config
-                                                                                                   cordovaConfiguration:jsonUIConf
-                                                                                                initializationParamsStr:initializationParamsStr
-                                                                                                               callback:callback];
-                [weakSelf presentViewController:nfcScanViewController];
-            });
-        } else {
-            callback(nil,[NSError errorWithDomain:ALCordovaErrorDomain code:100 userInfo:@{@"Error reason": @"NFC passport reading is only supported on iOS 13 and later."}]);
-        }
-        return nil;
-    } else {
-        __weak __block __typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            ALPluginScanViewController *pluginScanViewController;
-            pluginScanViewController = [[ALPluginScanViewController alloc] initWithConfiguration:config
-                                                                            cordovaConfiguration:jsonUIConf
-                                                                         initializationParamsStr:initializationParamsStr
-                                                                                        callback:callback];
-            [weakSelf presentViewController:pluginScanViewController];
-        });
-        return nil;
-    }
+
+    __weak __block __typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        ALPluginScanViewController *pluginScanViewController;
+        pluginScanViewController = [[ALPluginScanViewController alloc] initWithConfiguration:config
+                                                                        cordovaConfiguration:jsonUIConf
+                                                                     initializationParamsStr:initializationParamsStr
+                                                                                    callback:callback];
+        [weakSelf presentViewController:pluginScanViewController];
+    });
+    return nil;
 }
 
 // MARK: - Filesystem handling
@@ -55,7 +34,7 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
     return [self saveImageToFileSystem:image compressionQuality:0.9];
 }
 
-+ (NSString *)saveImageToFileSystem:(UIImage *)image compressionQuality:(CGFloat)compressionQuality {
++ (NSString * _Nullable)saveImageToFileSystem:(UIImage *)image compressionQuality:(CGFloat)compressionQuality {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
 
@@ -64,8 +43,10 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
     NSString *imageName = [NSString stringWithFormat:@"%@.jpg",uuid];
 
     NSString *fullPath = [basePath stringByAppendingPathComponent:imageName];
-    [binaryImageData writeToFile:fullPath atomically:YES];
-
+    if (fullPath != nil) {
+        [binaryImageData writeToFile:fullPath atomically:YES];
+    }
+    
     return fullPath;
 }
 
@@ -279,7 +260,7 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
     return dateString;
 }
 
-+ (NSDate *)formattedStringToDate:(NSString *)formattedStr {
++ (NSDate * _Nullable)formattedStringToDate:(NSString *)formattedStr {
     // From this: "Sun Apr 12 00:00:00 UTC 1977" to this: "04/12/1977"
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT+0:00"]];
@@ -336,7 +317,7 @@ NSErrorDomain const ALCordovaErrorDomain = @"ALCordovaErrorDomain";
 // MARK: - Plugin Reflection
 
 // return the ALPluginConfig property whose name ends with 'Config', is nonnull, AND which has a `scanMode` property
-+ (NSString * _Nullable)confPropKeyWithScanModeForPluginConfig:(ALPluginConfig *)pluginConfig {
++ (NSString * _Nullable)confPropKeyWithScanModeForPluginConfig:(ALPluginConfig * _Nullable)pluginConfig {
     unsigned int count;
     Ivar *ivars = class_copyIvarList(ALPluginConfig.class, &count);
     for (int i = 0; i < count; i++) {

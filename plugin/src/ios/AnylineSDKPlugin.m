@@ -155,10 +155,15 @@
 
 // MARK: - Utility Method
 
-- (NSString *)stringForDictionary:(NSDictionary *)dict {
+- (NSString * _Nullable)stringForDictionary:(NSDictionary *)dict {
     NSError * err;
     NSData * jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&err];
-    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    if(jsonData != nil){
+        return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+    else{
+        return @"";
+    }
 }
 
 @end

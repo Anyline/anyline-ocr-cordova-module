@@ -218,39 +218,44 @@
     ALPluginConfig *pluginConfig = self.pluginConfig;
 
     id key = [ALPluginHelper confPropKeyWithScanModeForPluginConfig:pluginConfig];
-
-    // obj is something like an ALMeterConfig instance, that you can call scanMode: (or setScanMode:) on
-    id obj = [self.pluginConfig valueForKey:key];
-    NSAssert(obj, @"obj shouldn't be nil!");
-
-    id scanModeObj = [obj valueForKey:@"scanMode"];
-    NSString *newScanMode;
-
-    // does the equivalent of +[ALConfigMeterScanMode withValue:modeString],
-    // (or whatever scan mode object gets evaluated) avoiding warnings:
-    // https://stackoverflow.com/a/20058585
-    SEL selector = NSSelectorFromString(@"withValue:");
-    IMP imp = [[scanModeObj class] methodForSelector:selector];
-    NSString *(*func)(id, SEL, NSString *) = (void *)imp;
-    newScanMode = func([scanModeObj class], selector, modeString);
-
-    NSAssert(newScanMode, @"newScanMode is not nil!");
-
-    // like obj, pluginSubConfig should be the the plugin-specific config object
-    // (e.g. ALLicensePlateConfig) which responds to setScanMode:.
-    selector = NSSelectorFromString(@"setScanMode:");
-    imp = [obj methodForSelector:selector];
-    id (*func2)(id, SEL, id) = (void *)imp;
-    id pluginSubConfig = func2(obj, selector, newScanMode);
-
-    [pluginConfig setValue:pluginSubConfig forKey:key];
-
-    NSError *error;
-    BOOL success = [self updatePluginConfig:pluginConfig error:&error];
-
-    if (!success) {
-        // check error
-        NSLog(@"there was an error changing the scan mode: %@", error.localizedDescription);
+    
+    if (key != nil) {
+        // obj is something like an ALMeterConfig instance, that you can call scanMode: (or setScanMode:) on
+        id obj = [self.pluginConfig valueForKey:key];
+        NSAssert(obj, @"obj shouldn't be nil!");
+        
+        id scanModeObj = [obj valueForKey:@"scanMode"];
+        NSString *newScanMode;
+        
+        // does the equivalent of +[ALConfigMeterScanMode withValue:modeString],
+        // (or whatever scan mode object gets evaluated) avoiding warnings:
+        // https://stackoverflow.com/a/20058585
+        SEL selector = NSSelectorFromString(@"withValue:");
+        IMP imp = [[scanModeObj class] methodForSelector:selector];
+        NSString * (*func)(id, SEL, NSString * ) = (void *) imp;
+        newScanMode = func([scanModeObj class], selector, modeString);
+        
+        NSAssert(newScanMode, @"newScanMode is not nil!");
+        
+        // like obj, pluginSubConfig should be the the plugin-specific config object
+        // (e.g. ALLicensePlateConfig) which responds to setScanMode:.
+        selector = NSSelectorFromString(@"setScanMode:");
+        imp = [obj methodForSelector:selector];
+        id (*func2)(id, SEL, id) = (void *) imp;
+        id pluginSubConfig = func2(obj, selector, newScanMode);
+        
+        [pluginConfig setValue:pluginSubConfig forKey:key];
+        
+        NSError *error;
+        BOOL success = [self updatePluginConfig:pluginConfig error:&error];
+        
+        if (!success) {
+            // check error
+            NSLog(@"there was an error changing the scan mode: %@", error.localizedDescription);
+        }
+    } else {
+        NSLog(@"Error: key is nil!");
+        
     }
 }
 
@@ -309,20 +314,25 @@
     }
 
     NSString *propKey = [ALPluginHelper confPropKeyWithScanModeForPluginConfig:self.pluginConfig];
-    id obj = [self.pluginConfig valueForKey:propKey];
-    NSAssert(obj, @"obj shouldn't be nil!");
-
-    // go through each self.segmentMode. Each call below should be non-nil.
-    // NOTE: for now (24.01.2023) TIN and Container scanModes should be named in the JSON config
-    // in all UPPERCASE (because the schema demands it to be so).
-    for (NSString *scanModeStr in self.cordovaConfig.segmentModes) {
-        if (![[[obj scanMode] class] withValue:scanModeStr]) {
-            NSLog(@"Error: %@ is not a valid scan mode for the current plugin", scanModeStr);
-            return NO;
+    if (propKey != nil) {
+        id obj = [self.pluginConfig valueForKey:propKey];
+        NSAssert(obj, @"obj shouldn't be nil!");
+        
+        // go through each self.segmentMode. Each call below should be non-nil.
+        // NOTE: for now (24.01.2023) TIN and Container scanModes should be named in the JSON config
+        // in all UPPERCASE (because the schema demands it to be so).
+        for (NSString *scanModeStr in self.cordovaConfig.segmentModes) {
+            if (![[[obj scanMode] class] withValue:scanModeStr]) {
+                NSLog(@"Error: %@ is not a valid scan mode for the current plugin", scanModeStr);
+                return NO;
+            }
         }
+        
+        return YES;
+    } else {
+        NSLog(@"Error: propKey is nil!");
+        return NO;
     }
-
-    return YES;
 }
 
 // MARK: - ALScanPluginDelegate
