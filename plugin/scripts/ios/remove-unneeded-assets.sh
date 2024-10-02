@@ -17,6 +17,7 @@ MODULES_DIR_PATH=$(find "${CODESIGNING_FOLDER_PATH}" -iname ${FILENAME})
 MODULES_ARRAY=(${DIR_OCR} ${DIR_BARCODE} ${DIR_DOCUMENT} ${DIR_ENERGY} ${DIR_ID} ${DIR_LICENSE_PLATE} ${DIR_TIRE})
 
 if ((${#MODULES_TO_KEEP_ARRAY[@]})); then
+    rm -rf "${MODULES_DIR_PATH}/mobile_sdk_resources/antora-documentation"
     for module in "${MODULES_ARRAY[@]}"; do
         if [[ ! " ${MODULES_TO_KEEP_ARRAY[*]} " =~ " ${module} " ]]; then
             echo "Removing module ${module}"
