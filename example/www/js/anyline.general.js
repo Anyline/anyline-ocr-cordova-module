@@ -41,7 +41,6 @@ function insertScanResult(result, resultText = "", includeFullImage = false) {
     var cachePath = cordova.file.externalApplicationStorageDirectory;
     if (cachePath == null) {
         cachePath = "cdvfile://localhost/cache/";
-        // cachePath = cordova.file.cacheDirectory;
         pathPrefix = ""
     }
 
