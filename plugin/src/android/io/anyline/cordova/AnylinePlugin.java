@@ -54,14 +54,15 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     public static final int REQUEST_ANYLINE_4 = 9;
     private static final String TAG = AnylinePlugin.class.getSimpleName();
     private CallbackContext callbackContext;
-    private String mAction;
-    private JSONArray mArgs;
+
 
     private static String pluginVersion;
     private static WrapperConfig wrapperConfig;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
+        JSONArray mArgs;
+        String mAction;
         this.callbackContext = callbackContext;
         mAction = action;
         mArgs = args;
@@ -136,12 +137,10 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     }
 
     private void startScanning(String action, JSONArray args) {
-        switch (action) {
-            case "scan":
-                scan(ScanActivity.class, REQUEST_ANYLINE_4, args);
-                break;
-            default:
-                this.callbackContext.error(getString("error_unkown_scan_mode") + " " + action);
+        if (action.equals("scan")) {
+            scan(ScanActivity.class, REQUEST_ANYLINE_4, args);
+        } else {
+            this.callbackContext.error(getString("error_unkown_scan_mode") + " " + action);
         }
     }
 
@@ -159,7 +158,6 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
             cordova.startActivityForResult(this, intent, requestCode);
         } catch (JSONException e) {
             onError(getString("error_invalid_json_data"));
-            return;
         }
     }
 
@@ -168,7 +166,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
         ResultReporter.setListener(null);
 
         if (resultCode == RESULT_OK) {
-            //nothing todo, handeled with ResultReporter
+            // handeled with ResultReporter
         } else if (resultCode == RESULT_CANCELED) {
             this.callbackContext.error("Canceled");
         } else if (resultCode == RESULT_ERROR) {

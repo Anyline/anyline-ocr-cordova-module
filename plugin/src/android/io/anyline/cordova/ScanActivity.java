@@ -32,7 +32,6 @@ public class ScanActivity extends AppCompatActivity {
     private static final String KEY_DEFAULT_ORIENTATION_APPLIED = "default_orientation_applied";
 
     private ScanView scanView;
-    private float dpFactor = 0;
     private boolean defaultOrientationApplied;
     private int orientation;
 
@@ -41,7 +40,7 @@ public class ScanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getResources().getIdentifier("activity_scan", "layout", getPackageName()));
 
-        dpFactor = getResources().getDisplayMetrics().density;
+        float dpFactor = getResources().getDisplayMetrics().density;
 
         orientation = this.getResources().getConfiguration().orientation;
 
