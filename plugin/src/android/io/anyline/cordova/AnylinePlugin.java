@@ -138,6 +138,7 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
 
     private void startScanning(String action, JSONArray args) {
         if (action.equals("scan")) {
+            deleteAllPreviousScanResultImages(cordova.getContext());
             scan(ScanActivity.class, REQUEST_ANYLINE_4, args);
         } else {
             this.callbackContext.error(getString("error_unkown_scan_mode") + " " + action);
@@ -203,4 +204,34 @@ public class AnylinePlugin extends CordovaPlugin implements ResultReporter.OnRes
     private void getSDKVersion() {
         onResult(at.nineyards.anyline.BuildConfig.VERSION_NAME, true);
     }
+
+    /**
+     * This function removes all previous scan result images from disk, either from external
+     * or internal files dir, e.g.:
+     * /sdcard/Android/[applicationId]/files/results/image1729849635965
+     */
+    private void deleteAllPreviousScanResultImages(Context context) {
+        String imagePath = "";
+        if (context.getExternalFilesDir(null) != null) {
+            imagePath = context
+                    .getExternalFilesDir(null)
+                    .toString() + "/results/";
+
+        } else if (context.getFilesDir() != null) {
+            imagePath = context
+                    .getFilesDir()
+                    .toString() + "/results/";
+        }
+
+        File resultFolder = new File(imagePath);
+        File[] files = resultFolder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.getName().startsWith("image")) {
+                    file.delete();
+                }
+            }
+        }
+    }
+
 }
