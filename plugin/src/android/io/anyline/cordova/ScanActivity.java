@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import io.anyline.plugin.config.ScanViewInitializationParameters;
 import io.anyline2.ScanResult;
 import io.anyline2.view.ScanView;
+import io.anyline2.view.ScanViewLoadResult;
 import io.anyline2.viewplugin.ViewPluginBase;
 
 public class ScanActivity extends AppCompatActivity {
@@ -50,55 +51,62 @@ public class ScanActivity extends AppCompatActivity {
             defaultOrientationApplied = savedInstanceState.getBoolean(KEY_DEFAULT_ORIENTATION_APPLIED);
         }
 
-        if (getIntent().hasExtra(EXTRA_CONFIG_JSON)) {
+        scanView.setOnScanViewLoaded(scanViewLoadResult -> {
+            if (scanViewLoadResult instanceof ScanViewLoadResult.Succeeded) {
+                if (getIntent().hasExtra(EXTRA_CONFIG_JSON)) {
+                    try {
+                        JSONObject configJSON = new JSONObject(getIntent().getStringExtra(EXTRA_CONFIG_JSON));
 
-            try {
-                JSONObject configJSON = new JSONObject(getIntent().getStringExtra(EXTRA_CONFIG_JSON));
+                        applyDefaultOrientation(configJSON);
+                        setupChangeOrientationButton(configJSON);
 
-                applyDefaultOrientation(configJSON);
-                setupChangeOrientationButton(configJSON);
+                        String initializationParametersString = getIntent().getStringExtra(EXTRA_SCANVIEW_INITIALIZATION_PARAMETERS);
+                        if (initializationParametersString != null) {
+                            ScanViewInitializationParameters scanViewInitializationParameters =
+                                    getScanViewInitializationParametersFromJsonObject(
+                                            this,
+                                            new JSONObject(initializationParametersString));
+                            scanView.init(configJSON, scanViewInitializationParameters);
+                        }
+                        else {
+                            scanView.init(configJSON);
+                        }
+                        scanView.start();
 
-                String initializationParametersString = getIntent().getStringExtra(EXTRA_SCANVIEW_INITIALIZATION_PARAMETERS);
-                if (initializationParametersString != null) {
-                    ScanViewInitializationParameters scanViewInitializationParameters =
-                            getScanViewInitializationParametersFromJsonObject(
-                                    this,
-                                    new JSONObject(initializationParametersString));
-                    scanView.init(configJSON, scanViewInitializationParameters);
-                }
-                else {
-                    scanView.init(configJSON);
-                }
+                        ViewPluginBase viewPluginBase = scanView.getScanViewPlugin();
 
-                ViewPluginBase viewPluginBase = scanView.getScanViewPlugin();
+                        viewPluginBase.resultReceived = scanResult -> {
+                            setResult(AnylinePlugin.RESULT_OK);
+                            JSONObject resultObject = getResultWithImagePath(scanResult);
+                            ResultReporter.onResult(resultObject, true);
+                            finish();
+                        };
 
-                viewPluginBase.resultReceived = scanResult -> {
-                    setResult(AnylinePlugin.RESULT_OK);
-                    JSONObject resultObject = getResultWithImagePath(scanResult);
-                    ResultReporter.onResult(resultObject, true);
-                    finish();
-                };
+                        viewPluginBase.resultsReceived = scanResults -> {
+                            JSONArray resultJSONArray = new JSONArray();
 
-                viewPluginBase.resultsReceived = scanResults -> {
-                    JSONArray resultJSONArray = new JSONArray();
-
-                    for (ScanResult scanResult : scanResults) {
-                        JSONObject resultObject = getResultWithImagePath(scanResult);
-                        resultJSONArray.put(resultObject);
+                            for (ScanResult scanResult : scanResults) {
+                                JSONObject resultObject = getResultWithImagePath(scanResult);
+                                resultJSONArray.put(resultObject);
+                            }
+                            setResult(AnylinePlugin.RESULT_OK);
+                            ResultReporter.onResult(resultJSONArray, true);
+                            finish();
+                        };
+                    } catch (JSONException e) {
+                        finishWithError("Error parsing view config: " + e.getMessage());
+                    } catch (Exception e) {
+                        finishWithError(getString(getResources().getIdentifier("error_invalid_json_data", "string", getPackageName()))
+                                + "\n" + e.getLocalizedMessage());
                     }
-                    setResult(AnylinePlugin.RESULT_OK);
-                    ResultReporter.onResult(resultJSONArray, true);
-                    finish();
-                };
-            } catch (JSONException e) {
-                finishWithError("Error parsing view config: " + e.getMessage());
-            } catch (Exception e) {
-                finishWithError(getString(getResources().getIdentifier("error_invalid_json_data", "string", getPackageName()))
-                        + "\n" + e.getLocalizedMessage());
+                } else {
+                    finishWithError("View config not found");
+                }
+            } else {
+                ScanViewLoadResult.Failed scanViewLoadFailed = (ScanViewLoadResult.Failed) scanViewLoadResult;
+                finishWithError(scanViewLoadFailed.getErrorMessage());
             }
-        } else {
-            finishWithError("View config not found");
-        }
+        });
     }
 
     private void applyDefaultOrientation(JSONObject configJSON) {
@@ -218,7 +226,6 @@ public class ScanActivity extends AppCompatActivity {
     protected void onPause() {
         if (scanView.isInitialized()) {
             scanView.stop();
-            scanView.getCameraView().releaseCameraInBackground();
         }
         super.onPause();
     }
