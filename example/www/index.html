@@ -29,7 +29,6 @@
             showSDKVersion();
             showPluginVersion();
             initAnylineSDK();
-            requestCameraPermissionOnAndroid();
         }
 
         function changeLoadingState(isLoading = false) {
@@ -77,26 +76,6 @@
                 },
                 "AnylineSDK", "getPluginVersion"
             );
-        }
-
-        function requestCameraPermissionOnAndroid() {
-            if(device.platform == "Android") {
-                var permissions = cordova.plugins.permissions;
-
-                permissions.hasPermission(permissions.CAMERA, function(status){
-                    if (!status.hasPermission) {
-                        permissions.requestPermission(
-                            permissions.CAMERA,
-                            function(status) {
-                                if(!status.hasPermission) console.warn('Camera permission is needed to use the app!');
-                            },
-                            function() {
-                                console.warn('Camera permission is needed to use the app!');
-                            }
-                        );
-                    }
-                });
-            }
         }
     </script>
 </head>
