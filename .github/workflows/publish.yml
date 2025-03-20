@@ -1,0 +1,57 @@
+name: Publish to npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseNotes:
+        description: 'Release Notes'
+        required: true
+        default: ''
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '23'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+
+  release:
+    runs-on: ubuntu-latest
+    needs: publish
+    steps:
+      - name: Generate Release
+        id: generate_release
+        run: |
+          TAG=${{github.ref_name}}
+          TAG_VERSION=$(echo "$TAG" | sed 's/^v//')
+          echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_ENV
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1 # Use the create-release action
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use the GitHub token from secrets
+        with:
+          tag_name: ${{ github.ref_name }} # Use the generated tag name
+          release_name: Anyline ${{ env.TAG_VERSION}} # Set the release name
+          body: |
+            [Release Notes](${{ github.event.inputs.releaseNotes }})
+          draft: false # Publish the release immediately
+          prerelease: false # Mark the release as a full release
