@@ -23,15 +23,11 @@ jobs:
         with:
           node-version: '23'
           registry-url: 'https://registry.npmjs.org'
-      - name: Update version to alpha
-        run: |
-          cd plugin
-          npm version prepatch --preid=alpha
 
       - name: Publish to npm
         run: |
           cd plugin
-          npm publish --tag alpha --provenance --access public
+          npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
