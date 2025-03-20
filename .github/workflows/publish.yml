@@ -23,7 +23,9 @@ jobs:
         with:
           node-version: '23'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
+      - run: |
+          cd plugin
+          npm ci
 
       - name: Update version to alpha
         run: |
