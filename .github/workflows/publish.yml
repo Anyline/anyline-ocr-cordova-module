@@ -21,11 +21,10 @@ jobs:
         with:
           node-version: '23'
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Update version to alpha
-        run: npm version prepatch --preid=alpha
+        run: |
+          cd plugin
+          npm version prepatch --preid=alpha
 
       - name: Publish to npm
         run: |
