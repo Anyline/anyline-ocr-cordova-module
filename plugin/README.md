@@ -30,5 +30,4 @@ Thank you!
 
 See LICENSE file.
 
-This is alpha version.
 
