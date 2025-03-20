@@ -30,4 +30,4 @@ Thank you!
 
 See LICENSE file.
 
-This is test for automation
+This is test for automation.
