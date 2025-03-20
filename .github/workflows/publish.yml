@@ -22,6 +22,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '23'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
 
       - name: Update version to alpha
         run: |
@@ -31,7 +33,7 @@ jobs:
       - name: Publish to npm
         run: |
           cd plugin
-          npm publish --tag alpha
+          npm publish --tag alpha --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
