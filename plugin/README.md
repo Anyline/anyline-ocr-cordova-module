@@ -29,5 +29,3 @@ Thank you!
 ## License
 
 See LICENSE file.
-
-
