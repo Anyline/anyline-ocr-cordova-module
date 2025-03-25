@@ -1,0 +1,56 @@
+name: Publish to npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseNotes:
+        description: 'Enter link to Release Notes, e.g. https://documentation.anyline.com/cordova-plugin-component/latest/release-notes.html#54-6-0-2025-02-14'
+        required: true
+        default: ''
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Publish to npm
+        run: |
+          cd plugin
+          npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+
+  release:
+    runs-on: ubuntu-latest
+    needs: publish
+    steps:
+      - name: Generate Release
+        id: generate_release
+        run: |
+          TAG=${{github.ref_name}}
+          TAG_VERSION=$(echo "$TAG" | sed 's/^v//')
+          echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_ENV
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1 # Use the create-release action
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use the GitHub token from secrets
+        with:
+          tag_name: ${{ github.ref_name }} # Use the generated tag name
+          release_name: Anyline ${{ env.TAG_VERSION}} # Set the release name
+          body: |
+            [Release Notes](${{ github.event.inputs.releaseNotes }})
+          draft: false # Publish the release immediately
+          prerelease: false # Mark the release as a full release

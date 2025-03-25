@@ -1,0 +1,36 @@
+name: Release Tagging Workflow
+
+on:
+  pull_request:
+    types: [closed] # Trigger the workflow when a pull request is closed
+    branches:
+      - master # Only trigger for pull requests merged into the main branch
+
+jobs:
+  create_tag:
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/') # Run only if the PR is merged and the branch name starts with 'release/'
+    runs-on: ubuntu-latest # Use the latest Ubuntu environment
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Check out the repository
+
+      - name: Set up Git
+        run: |
+          git config user.name "${{ secrets.RELEASE_BOT_USERNAME }}" # Set Git username
+          git config user.email "${{ secrets.RELEASE_BOT_EMAIL }}" # Set Git email
+      - name: Generate Tag
+        id: generate_tag
+        run: |
+          BRANCH_NAME=${{github.event.pull_request.head.ref}}
+          echo "Current branch name is: $BRANCH_NAME"
+          TAG_NAME=$(echo "$BRANCH_NAME" | sed -E 's/^release\/(.*)$/v\1/')
+          TAG_VERSION=$(echo "$BRANCH_NAME" | sed -E 's/^release\/(.*)$/\1/')
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_ENV
+          echo "VERSION=$TAG_NAME" >> $GITHUB_OUTPUT
+      - name: Push Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        run: |
+          git tag ${{ env.TAG_NAME }} # Create the tag
+          git push origin ${{ env.TAG_NAME }} # Push the tag to the repository
