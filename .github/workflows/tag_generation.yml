@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed] # Trigger the workflow when a pull request is closed
     branches:
-      - main # Only trigger for pull requests merged into the main branch
+      - master # Only trigger for pull requests merged into the main branch
 
 jobs:
   create_tag:
