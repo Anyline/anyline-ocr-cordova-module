@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       releaseNotes:
-        description: 'Release Notes'
+        description: 'Enter link to Release Notes, e.g. https://documentation.anyline.com/cordova-plugin-component/latest/release-notes.html#54-6-0-2025-02-14'
         required: true
         default: ''
 
