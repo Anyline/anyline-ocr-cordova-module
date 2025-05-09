@@ -52,6 +52,7 @@ anyline.barcode = {
       "pluginConfig": {
         "id": "barcode",
         "barcodeConfig": {
+          "fastProcessMode": true,
           "parseAAMVA": false,
           "barcodeFormats": [
             "ALL"
