@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="55.2.0">
+    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="55.2.1">
 
     <name>AnylineSDK</name>
 
@@ -48,7 +48,7 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="Anyline" type="podspec" spec="55.2.0" />
+                <pod name="Anyline" type="podspec" spec="55.2.1" />
             </pods>
         </podspec>
 
