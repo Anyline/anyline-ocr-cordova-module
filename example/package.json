@@ -1,13 +1,13 @@
 {
   "name": "anyline-cordova-example",
-  "version": "55.2.0",
+  "version": "55.2.1",
   "description": "Cordova plugin for implementing Anyline",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "addPlugins": "cordova plugin add cordova-plugin-android-permissions && cordova plugin add cordova-plugin-device && cordova plugin add ../plugin",
-    "reinstall": "cordova platform remove android && cordova plugin remove io-anyline-cordova && cordova platform add android@latest && yarn addPlugins",
-    "reinstall-ios": "cordova platform remove ios; cordova plugin remove io-anyline-cordova; cordova platform add ios@latest; cordova plugin add ../plugin",
+    "reinstall": "cordova platform remove android && (cordova plugin remove io-anyline-cordova || true) && cordova platform add android@latest && yarn addPlugins",
+    "reinstall-ios": "cordova platform remove ios; (cordova plugin remove io-anyline-cordova || true); cordova platform add ios@latest; cordova plugin add ../plugin",
     "reinstall-win": "cordova platform remove windows && cordova plugin remove io-anyline-cordova && cordova platform add windows@latest && cordova plugin add ../plugin",
     "overwrite": "rm -R ../src/android/io && rm -R ../src/android/res && cp -R platforms/android/src/io ../src/android/ && cp -R platforms/android/res ../src/android",
     "overwrite-ios": "rm -R ../plugin/src/ios; cp -R platforms/ios/Anyline\\ Cordova\\ Example/Plugins/io-anyline-cordova ../plugin/src/ios",
