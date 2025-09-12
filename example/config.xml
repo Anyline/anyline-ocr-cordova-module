@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.anyline.examples.cordova" ios-CFBundleVersion="1" version="55.4.0" xmlns="http://www.w3.org/ns/widgets">
+<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.anyline.examples.cordova" ios-CFBundleVersion="1" version="55.5.0" xmlns="http://www.w3.org/ns/widgets">
     <name>Anyline Cordova Example</name>
     <hook src="hooks/after_prepare/add_license_key.js" type="after_prepare" />
     <preference name="deployment-target" value="12.0" />

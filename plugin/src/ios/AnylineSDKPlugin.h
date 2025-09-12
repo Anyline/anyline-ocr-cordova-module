@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
+#import <Anyline/Anyline.h>
 #import "Cordova/CDVPlugin.h"
 
-@interface AnylineSDKPlugin : CDVPlugin
+@interface AnylineSDKPlugin : CDVPlugin <ALWrapperSessionClientDelegate>
 
 - (void)scan:(CDVInvokedUrlCommand *)command;
 
