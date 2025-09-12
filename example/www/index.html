@@ -93,6 +93,9 @@
                 <p>
                     <input type="button" value="Barcode (All Formats)" onclick="anyline.barcode.scan()"
                     class="formButton" disabled=true />
+                    <br />
+                    <input type="button" value="Barcode (Continuous)" onclick="anyline.barcode.scan('BARCODE_CONTINUOUS')"
+                    class="formButton" disabled=true />
                 </p>
                 <h2>Meter Reading</h2>
                 <p>
@@ -187,6 +190,7 @@
             </div>
 
         <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/config-loader.js"></script>
         <script type="text/javascript" src="js/anyline.general.js"></script>
         <script type="text/javascript" src="js/anyline.barcode.js"></script>
         <script type="text/javascript" src="js/anyline.compositeScan.js"></script>

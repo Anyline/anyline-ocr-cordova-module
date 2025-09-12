@@ -8,14 +8,25 @@
 if (anyline === undefined) {
   var anyline = {};
 }
+
+let continuousResultCallback;
+const maxContinuousResultCount = 10;
+
+let continuousResults = "";
+let continuousCount = 0;
+
 anyline.barcode = {
   onResult: function (result) {
     changeLoadingState(false);
     // this is called with result of the barcode module
     // the result is a string containing the barcode
-    var resultStr = "";
-    if (result.barcodeResult) {
-      resultStr = result.barcodeResult.value;
+    let resultStr = "";
+    if (continuousResultCallback) {
+      result = JSON.parse('[' + continuousResults + ']');
+    } else {
+      if (result.barcodeResult) {
+        resultStr = result.barcodeResult.value;
+      }
     }
     insertScanResult(result, resultStr);
   },
@@ -43,148 +54,39 @@ anyline.barcode = {
     }
     changeLoadingState(true);
 
-    var config = (type === 'PDF417') ? this.barcodePDF417Config : this.barcodeConfig;
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config]);
-  },
+    let config;
+    continuousResultCallback = null;
+    if (type === 'PDF417') {
+      config = this.barcodePDF417Config;
+    } else if (type === 'BARCODE_CONTINUOUS') {
+      config = this.barcodeContinuousConfig;
 
-  barcodeConfig: {
-    "viewPluginConfig": {
-      "pluginConfig": {
-        "id": "barcode",
-        "barcodeConfig": {
-          "fastProcessMode": true,
-          "parseAAMVA": false,
-          "barcodeFormats": [
-            "ALL"
-          ]
-        },
-        "cancelOnResult": true,
-        "startScanDelay": 1500
-      },
-      "cutoutConfig": {
-        "animation": "none",
-        "maxWidthPercent": "70%",
-        "maxHeightPercent": "70%",
-        "alignment": "center",
-        "ratioFromSize": {
-          "width": 3,
-          "height": 2
-        },
-        "offset": {
-          "x": 0,
-          "y": 0
-        },
-        "cropOffset": {
-          "x": 0,
-          "y": 0
-        },
-        "cropPadding": {
-          "x": 0,
-          "y": 0
-        },
-        "cornerRadius": 4,
-        "strokeColor": "0099ff",
-        "strokeWidth": 2,
-        "outerColor": "000000",
-        "feedbackStrokeColor": "0099FF",
-        "outerAlpha": 0.3
-      },
-      "scanFeedbackConfig": {
-        "style": "none",
-        "strokeWidth": 0,
-        "strokeColor": "0099FF",
-        "fillColor": "330099FF",
-        "beepOnResult": false,
-        "vibrateOnResult": false,
-        "blinkAnimationOnResult": false
-      }
-    },
-    "options": {
-      "doneButtonConfig": {
-        "title": "OK",
-        "type": "rect",
-        "cornerRadius": 0,
-        "textColor": "FFFFFF",
-        "textColorHighlighted": "CCCCCC",
-        "fontSize": 33,
-        "fontName": "HelveticaNeue",
-        "positionXAlignment": "center",
-        "positionYAlignment": "bottom",
-        "offset": {
-          "x": 0,
-          "y": -88
+      continuousResultCallback = "onResultCallback";
+      continuousResults = "";
+      continuousCount = 0;
+      window.onResultCallback = function(message) {
+        if (continuousResults !== "") {
+          continuousResults = continuousResults + ", ";
         }
-      }
+        continuousResults = continuousResults + message;
+        continuousCount++;
+        if (continuousCount > maxContinuousResultCount) {
+          cordova.exec(anyline.barcode.onResult, anyline.barcode.onError, "AnylineSDK", "tryStopScan", null);
+        }
+
+      };
+    } else {
+      config = this.barcodeConfig;
+    }
+
+    if (continuousResultCallback) {
+      cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config, null, null, { "callbackConfig": { "onResultEventName": continuousResultCallback} }]);
+    } else {
+      cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config]);
     }
   },
 
-  barcodePDF417Config: {
-    "viewPluginConfig": {
-      "pluginConfig": {
-        "id": "barcode_pdf417_aamva",
-        "barcodeConfig": {
-          "barcodeFormats": [
-            "PDF_417"
-          ],
-          "parseAAMVA": true
-        },
-        "cancelOnResult": true
-      },
-      "cutoutConfig": {
-        "animation": "none",
-        "maxWidthPercent": "75%",
-        "maxHeightPercent": "50%",
-        "width": 0,
-        "alignment": "center",
-        "ratioFromSize": {
-          "width": 4,
-          "height": 1
-        },
-        "offset": {
-          "x": 0,
-          "y": 0
-        },
-        "cropOffset": {
-          "x": 0,
-          "y": 0
-        },
-        "cropPadding": {
-          "x": 0,
-          "y": 0
-        },
-        "cornerRadius": 4,
-        "strokeColor": "0099ff",
-        "strokeWidth": 2,
-        "outerColor": "000000",
-        "feedbackStrokeColor": "0099FF",
-        "outerAlpha": 0.3
-      },
-      "scanFeedbackConfig": {
-        "style": "animated_rect",
-        "strokeWidth": 2,
-        "strokeColor": "000000",
-        "fillColor": "330099FF",
-        "beepOnResult": false,
-        "vibrateOnResult": false,
-        "blinkAnimationOnResult": false
-      }
-    },
-    "options": {
-      "doneButtonConfig": {
-        "title": "OK",
-        "type": "rect",
-        "cornerRadius": 0,
-        "textColor": "FFFFFF",
-        "textColorHighlighted": "CCCCCC",
-        "fontSize": 33,
-        "fontName": "HelveticaNeue",
-        "positionXAlignment": "center",
-        "positionYAlignment": "bottom",
-        "offset": {
-          "x": 0,
-          "y": -88
-        }
-      }
-    }
-  }
+  barcodeConfig: configLoader.loadJsonConfig('barcodeConfig.json'),
+  barcodeContinuousConfig: configLoader.loadJsonConfig('barcodeContinuousConfig.json'),
+  barcodePDF417Config: configLoader.loadJsonConfig('barcodePDF417Config.json')
 };

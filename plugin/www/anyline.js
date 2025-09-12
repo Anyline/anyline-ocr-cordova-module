@@ -21,7 +21,7 @@ function Anyline() {
         function (err) {
             console.error("Version error: " + err)
         },
-    "AnylineSDK", "setPluginVersion", [pluginVersion]);
+    "AnylineSDK", "setupWrapperSession", [pluginVersion]);
 }
 
 Anyline.prototype.checkLicense = function(licenseKey, onSuccess, onFailure) {
