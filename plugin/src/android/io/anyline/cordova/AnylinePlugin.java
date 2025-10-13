@@ -104,7 +104,7 @@ public class AnylinePlugin extends CordovaPlugin
 
     private void setupWrapperSession(final String version) {
         pluginVersion = version;
-        WrapperInfo wrapperInfo = new WrapperInfo(WrapperInfo.WrapperType.ReactNative, pluginVersion);
+        WrapperInfo wrapperInfo = new WrapperInfo(WrapperInfo.WrapperType.Cordova, pluginVersion);
         WrapperSessionProvider.setupWrapperSession(wrapperInfo,this);
     }
 

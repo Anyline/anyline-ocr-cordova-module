@@ -56,7 +56,7 @@ anyline.energy = {
     } else if (scanMode == 'SERIAL_NUMBER') {
       config = this.serialNumberConfig;
     }
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config]);
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config, null, { "scanViewConfigPath": "www/assets/config"}]);
   },
 
   meterConfig: configLoader.loadJsonConfig('meterConfig.json'),

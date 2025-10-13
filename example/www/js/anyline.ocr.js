@@ -53,7 +53,7 @@ anyline.ocr = {
       config = this.shippingContainerVerticalConfig;
     }
 
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config]);
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config, null, { "scanViewConfigPath": "www/assets/config"}]);
   },
 
   serialNumberConfig: configLoader.loadJsonConfig('serialNumberConfig.json'),

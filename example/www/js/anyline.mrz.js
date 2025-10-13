@@ -34,7 +34,7 @@ anyline.mrz = {
 
     // start the MRZ scanning
     var config = this.anylineMRZViewConfig;
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config]);
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config, null, { "scanViewConfigPath": "www/assets/config"}]);
   },
 
   anylineMRZViewConfig: configLoader.loadJsonConfig('mrzConfig.json')

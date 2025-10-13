@@ -6,7 +6,7 @@
     "segmentConfig": {
       "titles": ["Universal", "DOT"],
       "viewConfigs": ["tinConfig.json", "tinDotConfig.json"],
-      "titleIndex": 0,
+      "titleIndex": 1,
       "offset.y": -24,
       "tintColor": "0099ff"
     }
@@ -24,7 +24,7 @@
       "id": "tire_identification_number",
       "cancelOnResult": true,
       "tinConfig": {
-        "scanMode": "UNIVERSAL"
+        "scanMode": "DOT"
       }
     },
     "cutoutConfig": {
@@ -57,11 +57,11 @@
           "presetAttributes": [
             {
               "attributeName": "instruction_text",
-              "attributeValue": "Please make sure the entire TIN number is inside the cutout."
+              "attributeValue": "Please make sure the entire DOT number is inside the cutout."
             },
             {
               "attributeName": "left_overlay_image",
-              "attributeValue": ""
+              "attributeValue": "dot_overlay"
             },
             {
               "attributeName": "lighting_toodark_image",

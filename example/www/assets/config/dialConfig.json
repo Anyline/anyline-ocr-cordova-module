@@ -4,17 +4,12 @@
       "offset.y": -96
     },
     "segmentConfig": {
-      "titles": ["Analog", "Digital", "Dial"],
-      "modes": ["auto_analog_digital_meter", "auto_analog_digital_meter", "dial_meter"],
+      "titles": ["Analog", "Dial"],
+      "viewConfigs": ["meterConfig.json", "dialConfig.json"],
+      "titleIndex": 1,
       "offset.y": -24,
       "tintColor": "0099ff"
-    },
-    "nativeBarcodeScanningFormats": [
-      "CODE_128",
-      "CODE_39",
-      "QR_CODE",
-      "PDF_417"
-    ]
+    }
   },
   "cameraConfig": {
     "captureResolution": "1080p",
