@@ -137,7 +137,7 @@ static NSString *_pluginVersion;
         }
         _pluginVersion = (NSString *)(command.arguments[0]);
         // Setup wrapper session with this view controller as delegate
-        ALWrapperConfig *wrapperConfig = [ALWrapperConfig reactNative:_pluginVersion];
+        ALWrapperConfig *wrapperConfig = [ALWrapperConfig cordova:_pluginVersion];
         [ALWrapperSessionProvider setupWrapperSessionWithWrapperInfo:wrapperConfig
                                                 wrapperSessionClient:self];
 

@@ -43,7 +43,7 @@ anyline.compositeScan = {
       config = this.parallelScanConfig;
     }
 
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config]);
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config, null, { "scanViewConfigPath": "www/assets/config"}]);
   },
 
   parallelScanConfig: configLoader.loadJsonConfig('parallelScanConfig.json'),

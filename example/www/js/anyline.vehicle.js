@@ -64,7 +64,7 @@ anyline.vehicle = {
       config = this.vrcConfig;
     }
     
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config]);
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config, null, { "scanViewConfigPath": "www/assets/config"}]);
   },
 
   commercialTireIDConfig: configLoader.loadJsonConfig('commercialTireIDConfig.json'),

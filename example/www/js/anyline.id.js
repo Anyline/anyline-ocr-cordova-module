@@ -47,7 +47,7 @@ anyline.universalId = {
       config = this.cyrillicIDConfig;
     }
 
-    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config]);
+    cordova.exec(this.onResult, this.onError, "AnylineSDK", "scan", [config, null, { "scanViewConfigPath": "www/assets/config"}]);
   },
 
   universalIDConfig: configLoader.loadJsonConfig('universalIDConfig.json'),
