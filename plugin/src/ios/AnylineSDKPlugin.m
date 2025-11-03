@@ -94,7 +94,7 @@ static NSString *_pluginVersion;
     __weak __block __typeof(self) weakSelf = self;
     [self.commandDelegate runInBackground:^{
         ALWrapperSessionSDKInitializationResponse *currentSdkInitializationResponse = [ALWrapperSessionProvider getCurrentSdkInitializationResponse];
-        if (currentSdkInitializationResponse.initialized != 0) {
+        if ([currentSdkInitializationResponse.initialized isEqualToNumber:@YES]) {
             ALWrapperSessionSDKInitializationResponseInitialized *sdkInitializationResponseInitialized = currentSdkInitializationResponse.succeedInfo;
             if (sdkInitializationResponseInitialized) {
                 CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
@@ -249,7 +249,7 @@ static NSString *_pluginVersion;
 
 - (void)onSdkInitializationResponse:(nonnull ALWrapperSessionSDKInitializationResponse *)initializationResponse {
     CDVPluginResult *pluginResult;
-    if (initializationResponse.initialized) {
+    if ([initializationResponse.initialized isEqualToNumber:@YES]) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.wrapperSessionSdkInitializationResponseCommand.callbackId];
     } else {

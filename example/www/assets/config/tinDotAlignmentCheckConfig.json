@@ -6,7 +6,7 @@
     "segmentConfig": {
       "titles": ["Universal", "DOT", "DOT (Align. Check)"],
       "viewConfigs": ["tinConfig.json", "tinDotConfig.json", "tinDotAlignmentCheckConfig.json"],
-      "titleIndex": 1,
+      "titleIndex": 2,
       "offset.y": -24,
       "tintColor": "0099ff"
     }
@@ -25,7 +25,9 @@
       "cancelOnResult": true,
       "tinConfig": {
         "scanMode": "DOT",
-        "upsideDownMode": "AUTO"
+        "upsideDownMode": "AUTO",
+        "horizontalAlignmentRatio": 0.11,
+        "detectionMinHeightRatio": 0.36
       }
     },
     "cutoutConfig": {

@@ -4,8 +4,8 @@
       "offset.y": -96
     },
     "segmentConfig": {
-      "titles": ["Universal", "DOT"],
-      "viewConfigs": ["tinConfig.json", "tinDotConfig.json"],
+      "titles": ["Universal", "DOT", "DOT (Align. Check)"],
+      "viewConfigs": ["tinConfig.json", "tinDotConfig.json", "tinDotAlignmentCheckConfig.json"],
       "titleIndex": 0,
       "offset.y": -24,
       "tintColor": "0099ff"
@@ -53,14 +53,26 @@
     "uiFeedbackConfig": {
       "presets": [
         {
-          "presetName": "tin_with_instruction_overlay_image_text_sound_feedback",
+          "presetName": "tin_with_instruction_oriented_overlay_image_text_sound_feedback",
           "presetAttributes": [
             {
               "attributeName": "instruction_text",
               "attributeValue": "Please make sure the entire TIN number is inside the cutout."
             },
             {
-              "attributeName": "left_overlay_image",
+              "attributeName": "cutout_overlay_normal_image",
+              "attributeValue": ""
+            },
+            {
+              "attributeName": "cutout_overlay_upsidedown_image",
+              "attributeValue": ""
+            },
+            {
+              "attributeName": "alignment_alignleft_image",
+              "attributeValue": ""
+            },
+            {
+              "attributeName": "alignment_alignright_image",
               "attributeValue": ""
             },
             {
@@ -88,6 +100,14 @@
               "attributeValue": "uifeedback_tin_wrongformat"
             },
             {
+              "attributeName": "alignment_alignleft_text",
+              "attributeValue": ""
+            },
+            {
+              "attributeName": "alignment_alignright_text",
+              "attributeValue": ""
+            },
+            {
               "attributeName": "lighting_toodark_text",
               "attributeValue": ""
             },
@@ -109,6 +129,14 @@
             },
             {
               "attributeName": "date_wrong_text",
+              "attributeValue": ""
+            },
+            {
+              "attributeName": "alignment_alignleft_sound",
+              "attributeValue": ""
+            },
+            {
+              "attributeName": "alignment_alignright_sound",
               "attributeValue": ""
             },
             {
