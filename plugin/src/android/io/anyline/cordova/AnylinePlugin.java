@@ -12,7 +12,10 @@ package io.anyline.cordova;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -86,6 +89,8 @@ public class AnylinePlugin extends CordovaPlugin
                     tryStopScan(mArgs);
                 } else if ("exportCachedEvents".equals(mAction)) {
                     exportCachedEvents();
+                } else if ("setDefaultScanStartPlatformOptions".equals(mAction)) {
+                    setDefaultScanStartPlatformOptions(args.getString(0));
                 }
 
             } catch (JSONException e) {
@@ -100,6 +105,11 @@ public class AnylinePlugin extends CordovaPlugin
     @Override
     public @NotNull Context getContext() {
         return cordova.getContext();
+    }
+
+    @Override
+    public @Nullable ViewGroup getContainerView() {
+        return null;
     }
 
     private void setupWrapperSession(final String version) {
@@ -145,6 +155,15 @@ public class AnylinePlugin extends CordovaPlugin
 
     private void exportCachedEvents() throws IOException {
         WrapperSessionProvider.requestExportCachedEvents();
+    }
+
+    private void setDefaultScanStartPlatformOptions(String scanStartPlatformOptionsString) {
+        try {
+            WrapperSessionProvider.setDefaultScanStartPlatformOptions(scanStartPlatformOptionsString);
+            onResult("", true);
+        } catch (Exception e) {
+            onError(e.getMessage());
+        }
     }
 
     @Override

@@ -126,6 +126,26 @@ static NSString *_pluginVersion;
     }];
 }
 
+- (void)setDefaultScanStartPlatformOptions:(CDVInvokedUrlCommand *)command {
+    __weak __block __typeof(self) weakSelf = self;
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult *pluginResult;
+        @try {
+            NSString *scanStartPlatformOptionsString = nil;
+            if (command.arguments.count > 0 && [command.arguments objectAtIndex:0] != [NSNull null]) {
+                scanStartPlatformOptionsString = (NSString *)command.arguments[0];
+            }
+            [ALWrapperSessionProvider setDefaultScanStartPlatformOptionsWithString:scanStartPlatformOptionsString];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@""];
+        }
+        @catch (NSException *exception) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                             messageAsString:exception.reason];
+        }
+        [weakSelf.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
 - (void)setupWrapperSession:(CDVInvokedUrlCommand *)command {
     __weak __block __typeof(self) weakSelf = self;
     [self.commandDelegate runInBackground:^{
@@ -244,6 +264,10 @@ static NSString *_pluginVersion;
 #pragma mark - ALWrapperSessionClientDelegate
 
 - (nullable UIViewController *)getTopViewController {
+    return nil;
+}
+
+- (nullable UIView *)getContainerView {
     return nil;
 }
 
