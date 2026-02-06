@@ -40,6 +40,10 @@ Anyline.prototype.scan = function(config, onSuccess, onFailure) {
   cordova.exec(onSuccess, onFailure, "AnylineSDK", "scan", [config]);
 };
 
+Anyline.prototype.setDefaultScanStartPlatformOptions = function(scanStartPlatformOptionsString, onSuccess, onFailure) {
+  cordova.exec(onSuccess, onFailure, "AnylineSDK", "setDefaultScanStartPlatformOptions", [scanStartPlatformOptionsString]);
+};
+
 /**
  * Plugin setup boilerplate.
  */

@@ -13,3 +13,4 @@ example/package-lock.json
 .history
 
 build.json
+compile_commands.json
