@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="55.9.0">
+    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="56.0.0">
 
     <name>AnylineSDK</name>
 
@@ -13,11 +13,27 @@
             <clobbers target="window.Anyline" />
         </js-module>
 
+        <js-module src="www/anyline-infinity.js" name="anyline-infinity">
+            <clobbers target="window.AnylineInfinity" />
+        </js-module>
+
+        <js-module src="www/enums/wrapper_session_parameters.js" name="anyline-wrapper-session-enums">
+            <merges target="window.AnylineEnums" />
+        </js-module>
+
+        <js-module src="www/enums/sdk_config.js" name="anyline-sdk-config-enums">
+            <merges target="window.AnylineEnums" />
+        </js-module>
+
         <plugins-plist key="AnylineSDK" string="AnylineSDKPlugin"/>
+        <plugins-plist key="AnylineInfinityPlugin" string="AnylineInfinityPlugin"/>
         <!-- feature tag in config.xml -->
         <config-file parent="/widget" target="config.xml">
             <feature name="AnylineSDK">
                 <param name="ios-package" value="AnylineSDKPlugin"/>
+            </feature>
+            <feature name="AnylineInfinityPlugin">
+                <param name="ios-package" value="AnylineInfinityPlugin"/>
             </feature>
         </config-file>
         <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
@@ -27,6 +43,10 @@
         <!-- Anyline SDK Cordova Plugin Source for iOS -->
         <header-file src="src/ios/AnylineSDKPlugin.h"/>
         <source-file src="src/ios/AnylineSDKPlugin.m"/>
+
+        <!-- Anyline Infinity SDK Cordova Plugin Source for iOS -->
+        <header-file src="src/ios/AnylineInfinityPlugin.h"/>
+        <source-file src="src/ios/AnylineInfinityPlugin.m"/>
 
         <!-- Anyline Framework & Resource Bundle locally -->
         <!-- <framework custom="true" src="src/ios/anyline_sdk/Anyline.xcframework"/>-->
@@ -44,7 +64,7 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="Anyline" type="podspec" spec="55.9.0" />
+                <pod name="Anyline" type="podspec" spec="56.0.0" />
             </pods>
         </podspec>
 
@@ -62,12 +82,28 @@
             <clobbers target="window.Anyline" />
         </js-module>
 
+        <js-module src="www/anyline-infinity.js" name="anyline-infinity">
+            <clobbers target="window.AnylineInfinity" />
+        </js-module>
+
+        <js-module src="www/enums/wrapper_session_parameters.js" name="anyline-wrapper-session-enums">
+            <merges target="window.AnylineEnums" />
+        </js-module>
+
+        <js-module src="www/enums/sdk_config.js" name="anyline-sdk-config-enums">
+            <merges target="window.AnylineEnums" />
+        </js-module>
+
         <!-- register plugin -->
         <framework custom="true" src="src/android/build.gradle" type="gradleReference"/>
 
         <config-file parent="/*" target="config.xml">
             <feature name="AnylineSDK">
                 <param name="android-package" value="io.anyline.cordova.AnylinePlugin"/>
+                <param name="onload" value="true"/>
+            </feature>
+            <feature name="AnylineInfinityPlugin">
+                <param name="android-package" value="io.anyline.cordova.AnylineInfinityPlugin"/>
                 <param name="onload" value="true"/>
             </feature>
         </config-file>
@@ -86,6 +122,7 @@
         <!-- add plugin source code -->
         <source-file src="src/android/io/anyline/cordova/AnylinePlugin.java" target-dir="src/io/anyline/cordova"/>
         <source-file src="src/android/io/anyline/cordova/ResultReporter.java" target-dir="src/io/anyline/cordova"/>
+        <source-file src="src/android/io/anyline/cordova/AnylineInfinityPlugin.java" target-dir="src/io/anyline/cordova"/>
 
         <resource-file src="src/android/res/values/anyline_sdk_plugin_strings.xml" target="res/values/anyline_sdk_plugin_strings.xml"/>
         <resource-file src="src/android/res/values/anyline_sdk_plugin_colors.xml" target="res/values/anyline_sdk_plugin_colors.xml"/>

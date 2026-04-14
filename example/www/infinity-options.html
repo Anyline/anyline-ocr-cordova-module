@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<!--
+    Anyline Cordova Plugin
+    infinity-options.html — Scan Options page (3-tab json-editor)
+    Loaded as an iframe overlay inside infinity.html — no cordova.js needed.
+-->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover">
+    <link rel="stylesheet" type="text/css" href="css/infinity.css">
+    <link rel="stylesheet" type="text/css" href="assets/anyline_assets/json_schema_editor/spectre.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/anyline_assets/json_schema_editor/spectre-exp.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/anyline_assets/json_schema_editor/spectre-icons.min.css">
+    <script>if (/Android/i.test(navigator.userAgent)) document.documentElement.style.setProperty('--safe-top', '0px');</script>
+    <title>Scan Options</title>
+</head>
+<body>
+<div id="page-root">
+
+    <!-- ── Header ───────────────────────────────────────────────────────── -->
+    <div class="page-header">
+        <button class="page-header-btn" id="btn-cancel">Cancel</button>
+        <span class="page-header-title">Scan Options</span>
+        <button class="page-header-btn page-header-btn-save" id="btn-save">Save</button>
+    </div>
+
+    <!-- ── Tab bar ──────────────────────────────────────────────────────── -->
+    <div class="tab-bar">
+        <button class="tab-item tab-item-active" data-tab="0">Scan Result Config</button>
+        <button class="tab-item" data-tab="1">Platform Options</button>
+        <button class="tab-item" data-tab="2">Init Parameters</button>
+    </div>
+
+    <!-- ── Tab panels ───────────────────────────────────────────────────── -->
+    <div class="tab-content-area">
+
+    <!-- Tab 0: Scan Result Config -->
+    <div id="tab-panel-0" class="tab-panel">
+        <div class="section-header">Image Container</div>
+        <div class="radio-row">
+            <div class="radio-option" role="radio" aria-checked="true" aria-label="Encoded (base64)">
+                <div id="radio-encoded" class="radio-circle radio-circle-active"></div>
+                <span class="radio-label">Encoded (base64)</span>
+            </div>
+            <div class="radio-option" role="radio" aria-checked="false" aria-label="Saved (to path)">
+                <div id="radio-saved" class="radio-circle"></div>
+                <span class="radio-label">Saved (to path)</span>
+            </div>
+        </div>
+        <div class="editor-container" id="editor-container-container"></div>
+
+        <div class="section-header">Image Parameters</div>
+        <div class="editor-container" id="editor-container-params"></div>
+
+        <div class="section-header">Clean Strategy</div>
+        <div class="editor-container" id="editor-container-clean"></div>
+        <div class="editor-spacer"></div>
+    </div>
+
+    <!-- Tab 1: Platform Options -->
+    <div id="tab-panel-1" class="tab-panel tab-panel-hidden">
+        <div class="editor-container" id="editor-container-platform"></div>
+    </div>
+
+    <!-- Tab 2: Init Parameters -->
+    <div id="tab-panel-2" class="tab-panel tab-panel-hidden">
+        <div class="editor-container" id="editor-container-init"></div>
+    </div>
+
+    </div><!-- /.tab-content-area -->
+</div>
+
+<script type="text/javascript" src="assets/anyline_assets/json_schema_editor/jsoneditor.js"></script>
+<script type="text/javascript">
+// ─── AJAX error interceptor ──────────────────────────────────────────────────
+var _ajaxErrorFired = false;
+(function() {
+    var origSend = XMLHttpRequest.prototype.send;
+    XMLHttpRequest.prototype.send = function() {
+        this.addEventListener('load', function() {
+            if (!_ajaxErrorFired && (this.status < 200 || this.status >= 300)) {
+                _ajaxErrorFired = true;
+                alert('Failed to load schema (HTTP ' + this.status + '). A network connection is required to edit configurations.');
+                window.parent.postMessage({ type: 'infinity-options-done' }, window.location.origin);
+            }
+        });
+        this.addEventListener('error', function() {
+            if (!_ajaxErrorFired) {
+                _ajaxErrorFired = true;
+                alert('Network error while loading schema. Please check your internet connection and try again.');
+                window.parent.postMessage({ type: 'infinity-options-done' }, window.location.origin);
+            }
+        });
+        return origSend.apply(this, arguments);
+    };
+})();
+
+// ─── Options page logic ───────────────────────────────────────────────────────
+// Loaded as an iframe — options are read immediately from sessionStorage (prefilled
+// by the parent page) rather than waiting for deviceready.
+// Schemas are fetched remotely via json-editor AJAX. A network connection is required.
+
+const OPTIONS_STORAGE_KEY = 'infinity_scan_options';
+
+var _pluginVersion = sessionStorage.getItem('infinity_plugin_version') || '';
+function _schemaBase(pluginVersion) {
+    return 'https://documentation.anyline.com/cordova-plugin-component/' + pluginVersion + '/mobile-sdk-common/_attachments/json-schemas';
+}
+const SCHEMA_BASE = _schemaBase(_pluginVersion);
+
+// Remote $ref schemas — json-editor resolves these via AJAX
+const SCHEMAS = {
+    encodedContainer: { $ref: SCHEMA_BASE + '/exported_scan_result.schema.json#/definitions/exportedScanResultImageContainerEncoded' },
+    savedContainer:   { $ref: SCHEMA_BASE + '/exported_scan_result.schema.json#/definitions/exportedScanResultImageContainerSaved' },
+    imageParameters:  { $ref: SCHEMA_BASE + '/exported_scan_result.schema.json#/definitions/exportedScanResultImageParameters' },
+    cleanStrategy:    { $ref: SCHEMA_BASE + '/wrapper_session_parameters.schema.json#/definitions/wrapperSessionScanResultCleanStrategyConfig' },
+    platformOptions:  { $ref: SCHEMA_BASE + '/wrapper_session_parameters.schema.json#/definitions/wrapperSessionScanStartRequest/properties/platformOptions' },
+    initParams:       { $ref: SCHEMA_BASE + '/scanview_initialization_parameters.schema.json' },
+};
+
+let _containerMode = 'encoded';  // 'encoded' | 'saved'
+let _editors = {};               // keyed by editor id
+let _activeTab = 0;
+let _tabActivated = [true, false, false];
+
+let _src = {};
+let _initContainer = {};
+
+// Read options immediately (synchronous). Parent sets sessionStorage prefill before
+// opening the iframe so these are always available without needing cordova.file.
+let _opts = null;
+try {
+    _opts = JSON.parse(sessionStorage.getItem('infinity_options_prefill') || 'null')
+         || JSON.parse(localStorage.getItem(OPTIONS_STORAGE_KEY) || 'null');
+} catch (e) { _opts = null; }
+if (!_opts) {
+    _opts = {
+        imageSavePath: null,
+        scanResultConfig: {
+            cleanStrategy: 'CleanFolderOnStartScanning',
+            imageContainer: { encoded: {} },
+            imageParameters: { format: 'Png', quality: 50 },
+        },
+        initializationParameters: null,
+        platformOptions: null,
+    };
+}
+
+// ─── Initialise editors ───────────────────────────────────────────────────────
+
+_src = _opts.scanResultConfig || {};
+_initContainer = _src.imageContainer || {};
+_containerMode = (_initContainer.saved !== null && _initContainer.saved !== undefined) ? 'saved' : 'encoded';
+_updateRadioUI();
+_initTab0();
+
+// ─── Tab 0 ────────────────────────────────────────────────────────────────────
+
+function _initTab0() {
+    const containerVal = _containerMode === 'encoded'
+        ? (_initContainer.encoded || {})
+        : (_initContainer.saved || {});
+    const containerSchema = _containerMode === 'encoded' ? SCHEMAS.encodedContainer : SCHEMAS.savedContainer;
+
+    _editors.container = _makeEditor('editor-container-container', containerSchema, containerVal);
+    _editors.params    = _makeEditor('editor-container-params',    SCHEMAS.imageParameters, _src.imageParameters || {});
+    _editors.clean     = _makeEditor('editor-container-clean',     SCHEMAS.cleanStrategy,
+        _src.cleanStrategy || 'CleanFolderOnStartScanning');
+}
+
+function _switchContainerMode(mode) {
+    if (mode === _containerMode) return;
+    _containerMode = mode;
+    _updateRadioUI();
+    if (_editors.container) { _editors.container.destroy(); }
+    const val = _containerMode === 'encoded' ? (_initContainer.encoded || {}) : (_initContainer.saved || {});
+    const schema = _containerMode === 'encoded' ? SCHEMAS.encodedContainer : SCHEMAS.savedContainer;
+    _editors.container = _makeEditor('editor-container-container', schema, val);
+}
+
+function _updateRadioUI() {
+    document.getElementById('radio-encoded').className = 'radio-circle' + (_containerMode === 'encoded' ? ' radio-circle-active' : '');
+    document.getElementById('radio-saved').className   = 'radio-circle' + (_containerMode === 'saved'   ? ' radio-circle-active' : '');
+}
+
+document.getElementById('tab-panel-0').querySelectorAll('.radio-option').forEach(function (opt, i) {
+    opt.addEventListener('click', function () { _switchContainerMode(i === 0 ? 'encoded' : 'saved'); });
+});
+
+// ─── Tab switching ────────────────────────────────────────────────────────────
+
+document.querySelectorAll('.tab-bar .tab-item').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        const tab = Number.parseInt(btn.dataset.tab, 10);
+        _activateTab(tab);
+    });
+});
+
+function _activateTab(tab) {
+    _activeTab = tab;
+    document.querySelectorAll('.tab-bar .tab-item').forEach(function (b) {
+        b.className = 'tab-item' + (Number.parseInt(b.dataset.tab, 10) === tab ? ' tab-item-active' : '');
+    });
+    for (let i = 0; i < 3; i++) {
+        const panel = document.getElementById('tab-panel-' + i);
+        panel.className = 'tab-panel' + (i === tab ? '' : ' tab-panel-hidden');
+    }
+    // Lazy init tabs 1 and 2 on first visit
+    if (tab === 1 && !_tabActivated[1]) {
+        _tabActivated[1] = true;
+        _editors.platform = _makeEditor('editor-container-platform', SCHEMAS.platformOptions, _opts.platformOptions || {});
+    }
+    if (tab === 2 && !_tabActivated[2]) {
+        _tabActivated[2] = true;
+        _editors.init = _makeEditor('editor-container-init', SCHEMAS.initParams, _opts.initializationParameters || {});
+    }
+}
+
+// ─── Editor factory ───────────────────────────────────────────────────────────
+
+function _makeEditor(containerId, schema, startval) {
+    const el = document.getElementById(containerId);
+    if (!el) return null;
+    el.innerHTML = '';
+    return new JSONEditor(el, {
+        theme: 'spectre',
+        iconlib: 'spectre',
+        schema: schema,
+        startval: startval,
+        ajax: true,
+        disable_edit_json: true,
+        disable_properties: false,
+        disable_collapse: false,
+        no_additional_properties: false,
+        show_opt_in: false,
+        required_by_default: false,
+    });
+}
+
+// ─── Save / Cancel ────────────────────────────────────────────────────────────
+
+document.getElementById('btn-save').addEventListener('click', function () {
+    try {
+        const containerEditor = _editors.container;
+        const containerVal = containerEditor ? containerEditor.getValue() : {};
+        const paramsVal = _editors.params ? _editors.params.getValue() : {};
+        const cleanVal = _editors.clean ? _editors.clean.getValue() : ((_opts.scanResultConfig && _opts.scanResultConfig.cleanStrategy) || 'CleanFolderOnStartScanning');
+        const platformVal = _editors.platform ? _editors.platform.getValue() : (_opts.platformOptions || null);
+        const initVal = _editors.init ? _editors.init.getValue() : (_opts.initializationParameters || null);
+
+        const imageContainer = _containerMode === 'encoded'
+            ? { encoded: containerVal }
+            : { saved: containerVal };
+
+        const updated = {
+            imageSavePath: _opts.imageSavePath || null,
+            scanResultConfig: {
+                imageContainer: imageContainer,
+                imageParameters: Object.keys(paramsVal).length ? paramsVal : undefined,
+                cleanStrategy: cleanVal,
+            },
+            platformOptions: (platformVal && Object.keys(platformVal).length) ? platformVal : null,
+            initializationParameters: (initVal && Object.keys(initVal).length) ? initVal : null,
+        };
+        localStorage.setItem(OPTIONS_STORAGE_KEY, JSON.stringify(updated));
+    } catch (e) {
+        console.warn('Failed to save options:', e);
+    }
+    window.parent.postMessage({ type: 'infinity-options-done' }, window.location.origin);
+});
+
+document.getElementById('btn-cancel').addEventListener('click', function () {
+    window.parent.postMessage({ type: 'infinity-options-done' }, window.location.origin);
+});
+
+</script>
+</body>
+</html>

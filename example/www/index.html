@@ -16,190 +16,20 @@
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/anyline.css">
     <title>Anyline Cordova Example</title>
-    <script type="application/javascript">
-        localStorage.setItem("hasStartedAnyline", true);
-    </script>
-    <script type="text/javascript" src="js/anyline.license.js"></script>
-    <script type="application/javascript">
-        function onLoad() {
-            document.addEventListener('deviceready', onDeviceReady, false);
-        }
-
-        function onDeviceReady() {
-            showSDKVersion();
-            showPluginVersion();
-            initAnylineSDK();
-        }
-
-        function changeLoadingState(isLoading = false) {
-            var buttons = document.getElementsByClassName('formButton');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].disabled = isLoading;
-            }
-            localStorage.setItem("hasStartedAnyline", isLoading)
-        }
-
-        function initAnylineSDK() {
-            changeLoadingState(true);
-            cordova.exec(function (success) {
-                console.log("Anyline SDK initialized successfully");
-                changeLoadingState(false);
-            },
-            function (err) {
-                console.log("Anyline SDK initialization was unsuccessful: " + err);
-                alert(err);
-            }, "AnylineSDK", "initAnylineSDK", [anyline.license.key]);
-        }
-
-        function showSDKVersion() {
-            cordova.exec(
-                function (sdkVersion) {
-                    console.log("Anyline SDK Version: " + sdkVersion);
-                    var div = document.getElementById('SDK');
-                    div.innerHTML = "<p>Anyline SDK Version: " + sdkVersion + "</p>"
-                },
-                function (err) {
-                    console.error(err)
-                },
-                "AnylineSDK", "getSDKVersion"
-            );
-        }
-
-        function showPluginVersion() {
-            cordova.exec(
-                function (pluginVersion) {
-                    var div = document.getElementById('Plugin');
-                    div.innerHTML = "<p>Anyline Plugin Version: " + pluginVersion + "</p>"
-                },
-                function (err) {
-                    console.error("Unable to get pluginVersion: " + err)
-                },
-                "AnylineSDK", "getPluginVersion"
-            );
-        }
-    </script>
 </head>
 
-<body onload="javascript:onLoad()"></body>
+<body style="margin:0; padding:0;">
+    <div id="app-home" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:#303030; gap:16px;">
+        <h1 style="color:white; margin-bottom:32px;">Anyline Cordova</h1>
+        <button onclick="location.replace('infinity.html')" style="background:#0099FF; color:white; padding:16px 32px; border:none; font-weight:bold; font-size:16px; cursor:pointer;">
+            Infinity Plugin Examples
+        </button>
+        <button onclick="location.replace('legacy.html')" style="background:#555; color:white; padding:16px 32px; border:none; font-weight:bold; font-size:16px; cursor:pointer;">
+            Legacy Plugin Examples
+        </button>
+    </div>
 
-    <body>
-        <h1>Anyline Cordova</h1>
-        <div id="navigation">
-            <details id="details_scan_modes" open>
-                <summary class="summary1">
-                    Scan Modes
-                </summary>
-                <h2>Barcode</h2>
-                <p>
-                    <input type="button" value="Barcode (All Formats)" onclick="anyline.barcode.scan()"
-                    class="formButton" disabled=true />
-                    <br />
-                    <input type="button" value="Barcode (Continuous)" onclick="anyline.barcode.scan('BARCODE_CONTINUOUS')"
-                    class="formButton" disabled=true />
-                </p>
-                <h2>Meter Reading</h2>
-                <p>
-                    <input type="button" value="Meter" onclick="anyline.energy.scan('AUTO_ANALOG_DIGITAL_METER')"
-                    class="formButton" disabled=true />
-                    <br />
-                    <input type="button" value="Serial Number" onclick="anyline.energy.scan('SERIAL_NUMBER')"
-                    class="formButton" disabled=true />
-                    <br />
-                </p>
-                <h2>Identity</h2>
-                <p>
-                    <input type="button" value="Universal ID" onclick="anyline.universalId.scan('LATIN')" class="formButton"
-                    disabled=true />
-                    <br />
-                    <input type="button" value="Arabic ID" onclick="anyline.universalId.scan('ARABIC')" class="formButton"
-                    disabled=true />
-                    <br />
-                    <input type="button" value="Cyrillic ID" onclick="anyline.universalId.scan('CYRILLIC')"
-                    class="formButton" disabled=true />
-                    <br />
-                    <input type="button" value="MRZ (Passport / ID)" onclick="anyline.mrz.scan()" class="formButton"
-                    disabled=true />
-                    <br />
-                    <input type="button" value="Barcode PDF417 (AAMVA)" onclick="anyline.barcode.scan('PDF417')"
-                    class="formButton" disabled=true />
-                    <br />
-                </p>
-                <h2>Vehicle</h2>
-                <p>
-                    <input type="button" value="License Plate" onclick="anyline.licensePlate.scan('AUTO')"
-                    class="formButton" disabled=false />
-                    <br />
-                    <input type="button" value="TIN" onclick="anyline.vehicle.scan('TIN')" class="formButton"
-                    disabled=true />
-                    <br />
-                    <input type="button" value="Tire Size" onclick="anyline.vehicle.scan('TIRE_SIZE')"
-                    class="formButton" disabled=true />
-                    <br />
-                    <input type="button" value="Commercial Tire ID" onclick="anyline.vehicle.scan('COMMERCIAL_TIRE')"
-                    class="formButton" disabled=true />
-                    <br />
-                    <input type="button" value="Tire Make" onclick="anyline.vehicle.scan('TIRE_MAKE')"
-                           class="formButton" disabled=true />
-                    <br />
-                    <input type="button" value="Odometer" onclick="anyline.vehicle.scan('ODOMETER')"
-                           class="formButton" disabled=true />
-                    <br />
-                    <input type="button" value="Vehicle Identification No." onclick="anyline.vehicle.scan('VIN')"
-                    class="formButton" disabled=true />
-                    <br />
-                    <input type="button" value="Vehicle Registration Certificate" onclick="anyline.vehicle.scan('VRC')"
-                    class="formButton" disabled=true />
-                </p>
-                <h2>OCR</h2>
-                <p>
-                    <input type="button" value="Universal Serial Number" onclick="anyline.ocr.scan('SERIAL_NUMBER')"
-                    class="formButton" disabled=true />
-                    <br />
-                    <input type="button" value="Shipping Container" onclick="anyline.ocr.scan('SHIPPING_CONTAINER')"
-                    class="formButton" disabled=true />
-                    <br />
-                    <input type="button" value="Vertical Shipping Container"
-                    onclick="anyline.ocr.scan('SHIPPING_CONTAINER_VERTICAL')" class="formButton" disabled=true />
-                </p>
-                <h2>Others</h2>
-                <p>
-                    <input type="button" value="Serial Scan (LP > DL > VIN)" onclick="anyline.compositeScan.scan('SEQUENTIAL')"
-                    class="formButton" disabled=true />
-                    <br />
-                    <input type="button" value="Parallel Scan (Meter / Serial No.)" onclick="anyline.compositeScan.scan('PARALLEL')"
-                    class="formButton" disabled=true />
-                    <br />
-                </p>
-                </details>
-                <hr>
-                <details id="details_results">
-                    <summary class="summary1">
-                        Results
-                    </summary>
-                    <p>
-                        <div id="results">
-
-                        </div>
-                    </p>
-                </details>
-                <hr>
-                <div id="versions">
-                    <div id="SDK"></div>
-                    <div id="Plugin"></div>
-                </div>
-            </div>
-
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/config-loader.js"></script>
-        <script type="text/javascript" src="js/anyline.general.js"></script>
-        <script type="text/javascript" src="js/anyline.barcode.js"></script>
-        <script type="text/javascript" src="js/anyline.compositeScan.js"></script>
-        <script type="text/javascript" src="js/anyline.energy.js"></script>
-        <script type="text/javascript" src="js/anyline.id.js"></script>
-        <script type="text/javascript" src="js/anyline.licensePlate.js"></script>
-        <script type="text/javascript" src="js/anyline.mrz.js"></script>
-        <script type="text/javascript" src="js/anyline.ocr.js"></script>
-        <script type="text/javascript" src="js/anyline.vehicle.js"></script>
-    </body>
+    <script type="text/javascript" src="cordova.js"></script>
+</body>
 
 </html>

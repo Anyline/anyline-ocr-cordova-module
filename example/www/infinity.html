@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+    Anyline Cordova Plugin
+    infinity.html — Infinity Plugin DevExample main scan page
+-->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover">
+    <link rel="stylesheet" type="text/css" href="css/infinity.css">
+    <script>if (/Android/i.test(navigator.userAgent)) document.documentElement.style.setProperty('--safe-top', '0px');</script>
+    <title>Infinity Examples</title>
+</head>
+<body>
+<div id="page-root">
+
+    <!-- ── Toolbar ──────────────────────────────────────────────────────── -->
+    <div id="toolbar">
+        <button id="btn-back">&#8592;</button>
+        <span id="toolbar-title">Infinity Examples</span>
+        <div id="toolbar-actions">
+            <button id="btn-options" class="toolbar-icon-btn" title="Scan Options">&#9881;</button>
+            <button id="btn-info"    class="toolbar-icon-btn" title="Info">&#9432;</button>
+        </div>
+    </div>
+
+    <!-- ── Config browser (group tabs + chip row + context menu) ────────── -->
+    <div id="config-browser"></div>
+
+    <!-- ── Result list ──────────────────────────────────────────────────── -->
+    <div id="content-area"></div>
+
+</div>
+
+<!-- ── Options overlay (iframe — keeps parent Cordova bridge alive) ── -->
+<div id="options-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:100; background:#fff;">
+    <iframe id="options-iframe" title="Scan Options" style="width:100%; height:100%; border:none;" src=""></iframe>
+</div>
+
+<!-- ── Editor overlay (iframe — keeps parent Cordova bridge alive) ── -->
+<div id="editor-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:100; background:#fff;">
+    <iframe id="editor-iframe" title="Config Editor" style="width:100%; height:100%; border:none;" src=""></iframe>
+</div>
+
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/anyline.license.js"></script>
+<script type="text/javascript" src="js/infinity/schema-resolver.js"></script>
+<script type="text/javascript" src="js/infinity/plugin-type-helper.js"></script>
+<script type="text/javascript" src="js/infinity/ucr-helper.js"></script>
+<script type="text/javascript" src="js/infinity/scan-options.js"></script>
+<script type="text/javascript" src="js/infinity/config-registry.js"></script>
+<script type="text/javascript" src="js/infinity/config-browser.js"></script>
+<script type="text/javascript" src="js/infinity/result-list.js"></script>
+<script type="text/javascript" src="js/infinity/main.js"></script>
+</body>
+</html>

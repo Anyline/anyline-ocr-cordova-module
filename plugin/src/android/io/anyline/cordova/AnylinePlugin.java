@@ -53,6 +53,10 @@ import io.anyline2.wrapper.extensions.WrapperSessionUCRReportRequestExtensionKt;
 import io.anyline2.wrapper.legacy.LegacyPluginHelper;
 
 
+/**
+ * @deprecated Use {@link AnylineInfinityPlugin} instead.
+ */
+@Deprecated
 public class AnylinePlugin extends CordovaPlugin
         implements WrapperSessionClientInterface, ResultReporter.OnResultListener {
 
@@ -114,7 +118,7 @@ public class AnylinePlugin extends CordovaPlugin
 
     private void setupWrapperSession(final String version) {
         pluginVersion = version;
-        WrapperInfo wrapperInfo = new WrapperInfo(WrapperInfo.WrapperType.Cordova, pluginVersion);
+        WrapperInfo wrapperInfo = new WrapperInfo(WrapperInfo.WrapperType.Cordova, pluginVersion, WrapperInfo.WrapperCodename.Legacy);
         WrapperSessionProvider.setupWrapperSession(wrapperInfo,this);
     }
 

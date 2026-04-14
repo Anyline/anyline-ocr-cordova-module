@@ -156,8 +156,7 @@ static NSString *_pluginVersion;
             return;
         }
         _pluginVersion = (NSString *)(command.arguments[0]);
-        // Setup wrapper session with this view controller as delegate
-        ALWrapperConfig *wrapperConfig = [ALWrapperConfig cordova:_pluginVersion];
+        ALWrapperConfig *wrapperConfig = [ALWrapperConfig cordova:_pluginVersion codename:ALWrapperCodenameLegacy];
         [ALWrapperSessionProvider setupWrapperSessionWithWrapperInfo:wrapperConfig
                                                 wrapperSessionClient:self];
 
