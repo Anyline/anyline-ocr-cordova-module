@@ -2,6 +2,7 @@
 #import <Anyline/Anyline.h>
 #import "Cordova/CDVPlugin.h"
 
+__attribute__((deprecated("Use AnylineInfinityPlugin instead.")))
 @interface AnylineSDKPlugin : CDVPlugin <ALWrapperSessionClientDelegate>
 
 - (void)scan:(CDVInvokedUrlCommand *)command;

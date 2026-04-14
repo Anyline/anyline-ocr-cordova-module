@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.anyline.examples.cordova" ios-CFBundleVersion="1" version="55.9.0" xmlns="http://www.w3.org/ns/widgets">
+<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.anyline.examples.cordova" ios-CFBundleVersion="1" version="56.0.0" xmlns="http://www.w3.org/ns/widgets">
     <name>Anyline Cordova Example</name>
     <hook src="hooks/after_prepare/add_license_key.js" type="after_prepare" />
     <preference name="deployment-target" value="12.0" />
     <preference name="target-device" value="universal" />
     <preference name="SwiftVersion" value="4.2" />
     <preference name="BackupWebStorage" value="local" />
-    <preference name="Orientation" value="portrait" />
+    <preference name="Orientation" value="all" />
     <preference name="windows-target-version" value="10.0" />
     <preference name="AndroidXEnabled" value="true" />
     <preference name="scheme" value="app" />
@@ -43,6 +43,11 @@
     <access origin="*" />
     <platform name="android">
         <icon src="www/img/ic_launcher.png" />
+        <!-- Disable the Android 13+ OnBackInvokedCallback API so Cordova's legacy
+             onBackPressed() hook keeps working on targetSdkVersion >= 33. -->
+        <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/activity[@android:name='MainActivity']" mode="merge">
+            <activity android:enableOnBackInvokedCallback="false" android:screenOrientation="fullSensor" />
+        </edit-config>
     </platform>
     <platform name="ios">
         <config-file parent="ITSAppUsesNonExemptEncryption" target="*-Info.plist">

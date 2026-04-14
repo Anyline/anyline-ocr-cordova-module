@@ -8,6 +8,7 @@
 /**
  * This class exposes anyline scanning functionality to JavaScript.
  *
+ * @deprecated Use window.AnylineInfinity instead.
  * @constructor
  */
 function Anyline() {

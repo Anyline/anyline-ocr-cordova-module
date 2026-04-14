@@ -1,0 +1,455 @@
+/*
+ * infinity.css — styles for infinity.html, infinity-options.html, infinity-editor.html
+ * Colors match the React Native DevExample: #303030 bg, #1e1e1e toolbar, #0099FF accent.
+ */
+
+/* ─── Safe area ─────────────────────────────────────────────────────────────── */
+/*
+ * --safe-top defaults to env(safe-area-inset-top) (iOS notch / Dynamic Island).
+ * On Android the WebView does not extend under the status bar, so it is
+ * overridden to 0px via an inline <script> in each HTML page.
+ */
+:root { --safe-top: env(safe-area-inset-top); }
+
+/* ─── Reset / Base ──────────────────────────────────────────────────────────── */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    background: #303030;
+    color: #fff;
+    overflow: hidden;
+}
+
+button { cursor: pointer; border: none; background: none; font-family: inherit; font-size: inherit; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+/* ─── Page layout ───────────────────────────────────────────────────────────── */
+
+#page-root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* ─── Toolbar ───────────────────────────────────────────────────────────────── */
+
+#toolbar {
+    display: flex;
+    align-items: center;
+    background: #1e1e1e;
+    padding: 8px 8px;
+    padding-top: max(8px, var(--safe-top));
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+}
+
+#btn-back {
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 4px 8px;
+}
+
+#toolbar-title {
+    flex: 1;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+#toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.toolbar-icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #0099FF;
+    color: #0099FF;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolbar-icon-btn:disabled { opacity: 0.4; }
+
+/* ─── Config browser ────────────────────────────────────────────────────────── */
+
+#config-browser { flex-shrink: 0; }
+
+#cb-group-bar {
+    display: flex;
+    flex-direction: row;
+    background: #1e1e1e;
+    border-bottom: 1px solid #333;
+    overflow-x: auto;
+    padding: 6px;
+    gap: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+#cb-group-bar::-webkit-scrollbar { display: none; }
+
+.cb-group-tab {
+    white-space: nowrap;
+    padding: 6px 14px;
+    border-radius: 16px;
+    color: #888;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+.cb-group-tab-active { background: #0099FF; color: #fff; }
+
+#cb-chip-row {
+    display: flex;
+    flex-direction: row;
+    background: #2a2a2a;
+    overflow-x: auto;
+    padding: 8px;
+    gap: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+#cb-chip-row::-webkit-scrollbar { display: none; }
+
+.cb-chip {
+    white-space: nowrap;
+    background: #fff;
+    color: #333;
+    border-radius: 16px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+.cb-chip-user { background: #ccc; color: #555; }
+
+/* Context menu */
+#cb-context-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+#cb-menu-backdrop {
+    flex: 1;
+    background: rgba(0,0,0,0.4);
+}
+#cb-menu-sheet {
+    background: #fff;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+#cb-menu-title {
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+}
+.cb-menu-item {
+    display: block;
+    width: 100%;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    font-size: 16px;
+    color: #333;
+    text-align: left;
+}
+.cb-menu-destructive { color: #d32f2f; }
+.cb-menu-cancel-btn { border-bottom: none; margin-top: 8px; }
+
+/* ─── Content / Result area ─────────────────────────────────────────────────── */
+
+#content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    border-top: 1px solid #ddd;
+}
+
+/* Result list */
+#rl-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    background: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+    flex-shrink: 0;
+}
+#rl-count { font-size: 13px; font-weight: bold; color: #333; }
+#rl-stop {
+    background: #d32f2f;
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 4px 14px;
+    border-radius: 4px;
+}
+
+#rl-empty {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+#rl-empty-text { color: #9e9e9e; font-size: 13px; text-align: center; white-space: pre-line; }
+
+#rl-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 8px;
+    gap: 8px;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Result card */
+.rl-card {
+    flex-shrink: 0;
+    width: 200px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+}
+.rl-card-type { font-weight: bold; font-size: 13px; color: #333; }
+.rl-card-image {
+    width: 100%;
+    height: 100px;
+    border-radius: 4px;
+    background: #e0e0e0;
+    object-fit: contain;
+}
+.rl-card-image-placeholder {
+    width: 100%;
+    height: 100px;
+    border-radius: 4px;
+    background: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9e9e9e;
+    font-size: 12px;
+}
+.rl-card-json {
+    font-size: 10px;
+    color: #666;
+    font-family: monospace;
+    max-height: 80px;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+.rl-ucr-row { display: flex; gap: 4px; align-items: center; }
+.rl-ucr-input {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 11px;
+    min-width: 0;
+}
+.rl-ucr-btn {
+    background: #0099FF;
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.rl-ucr-status { font-size: 11px; min-height: 14px; }
+.rl-ucr-ok { color: #388e3c; }
+.rl-ucr-fail { color: #d32f2f; }
+
+/* Result detail overlay */
+.rl-detail-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.rl-detail-backdrop { flex: 1; background: rgba(0,0,0,0.4); }
+.rl-detail-sheet {
+    background: #fff;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    padding: 16px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+}
+.rl-detail-handle {
+    width: 40px; height: 4px;
+    background: #ccc; border-radius: 2px;
+    align-self: center;
+}
+.rl-detail-title { font-weight: bold; font-size: 16px; color: #333; }
+.rl-detail-image {
+    width: 100%; height: 200px;
+    border-radius: 4px; background: #e0e0e0;
+    object-fit: contain;
+}
+.rl-detail-json {
+    font-size: 12px; color: #555;
+    font-family: monospace;
+    overflow-y: auto;
+    max-height: 180px;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* ─── SDK overlay ───────────────────────────────────────────────────────────── */
+
+.sdk-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    z-index: 300;
+    gap: 12px;
+}
+.sdk-overlay-text { color: #fff; font-size: 16px; text-align: center; }
+.sdk-overlay-title { color: #fff; font-size: 18px; font-weight: bold; text-align: center; }
+.sdk-overlay-error { color: #ef9a9a; font-size: 13px; text-align: center; }
+.sdk-retry-btn {
+    background: #0099FF;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 12px 32px;
+    border-radius: 6px;
+}
+
+/* ─── Options / Editor header ───────────────────────────────────────────────── */
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1e1e1e;
+    padding: 12px 16px;
+    padding-top: max(12px, var(--safe-top));
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+}
+.page-header-title { color: #fff; font-size: 17px; font-weight: bold; }
+.page-header-btn { color: #90CAF9; font-size: 15px; min-width: 60px; }
+.page-header-btn-save { color: #0099FF; font-weight: bold; text-align: right; }
+
+/* ─── Tab bar (options + editor) ────────────────────────────────────────────── */
+
+.tab-bar {
+    display: flex;
+    flex-direction: row;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    flex-shrink: 0;
+}
+.tab-item {
+    flex: 1;
+    padding: 10px 4px;
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+}
+.tab-item-active { color: #0099FF; font-weight: 700; border-bottom-color: #0099FF; }
+
+.tab-content-area { flex: 1; overflow: hidden; position: relative; }
+.tab-panel { position: absolute; inset: 0; overflow-y: auto; background: #fff; }
+.tab-panel-hidden { display: none; }
+
+/* ─── Options: section headers & radio ──────────────────────────────────────── */
+
+.section-header {
+    padding: 16px 12px 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0099FF;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.radio-row { display: flex; flex-direction: row; gap: 16px; padding: 8px 12px; }
+.radio-option { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.radio-circle {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid #aaa; background: #fff;
+}
+.radio-circle-active { border-color: #0099FF; background: #0099FF; }
+.radio-label { font-size: 14px; color: #333; }
+
+.editor-container { padding: 8px; }
+.editor-spacer { height: 16px; }
+
+/* ─── Editor page ───────────────────────────────────────────────────────────── */
+
+.filename-row {
+    display: flex;
+    align-items: center;
+    background: #2a2a2a;
+    padding: 10px 16px;
+    border-bottom: 1px solid #333;
+    gap: 4px;
+    flex-shrink: 0;
+}
+.filename-input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    font-family: monospace;
+    outline: none;
+}
+.filename-input::placeholder { color: #aaa; }
+.filename-suffix { color: #aaa; font-size: 14px; }
+.error-text {
+    color: #ef9a9a;
+    font-size: 12px;
+    padding: 6px 16px;
+    background: #2a2a2a;
+    flex-shrink: 0;
+}
+
+/* ─── Spectre overrides for dark editor pages ───────────────────────────────── */
+
+
+.editor-page-body .container { padding: 0 8px 16px; }

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<!--
+    Anyline Cordova Plugin
+    infinity-editor.html — ViewConfigEditorScreen: edit/save ScanView config via json-editor
+-->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover">
+    <link rel="stylesheet" type="text/css" href="css/infinity.css">
+    <link rel="stylesheet" type="text/css" href="assets/anyline_assets/json_schema_editor/spectre.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/anyline_assets/json_schema_editor/spectre-exp.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/anyline_assets/json_schema_editor/spectre-icons.min.css">
+    <script>if (/Android/i.test(navigator.userAgent)) document.documentElement.style.setProperty('--safe-top', '0px');</script>
+    <title>Edit / Save as</title>
+</head>
+<body class="editor-page-body" style="overflow:auto;">
+<div id="page-root" style="height:auto; min-height:100%; overflow:visible;">
+
+    <!-- ── Header ───────────────────────────────────────────────────────── -->
+    <div class="page-header">
+        <button class="page-header-btn" id="btn-cancel">Cancel</button>
+        <span class="page-header-title">Edit / Save as</span>
+        <button class="page-header-btn page-header-btn-save" id="btn-save">Save</button>
+    </div>
+
+    <!-- ── Filename input ───────────────────────────────────────────────── -->
+    <div class="filename-row">
+        <label for="filename-input" class="sr-only">Config filename</label>
+        <input class="filename-input" id="filename-input" type="text"
+               placeholder="e.g. my_barcode_config" autocapitalize="none" autocorrect="off" />
+        <span class="filename-suffix">.json</span>
+    </div>
+
+    <div id="save-error" class="error-text" style="display:none"></div>
+
+    <!-- ── JSON editor ──────────────────────────────────────────────────── -->
+    <div class="container" id="editor-holder"></div>
+
+</div>
+
+<script type="text/javascript" src="assets/anyline_assets/json_schema_editor/jsoneditor.js"></script>
+<script type="text/javascript">
+// ─── AJAX error interceptor ──────────────────────────────────────────────────
+// json-editor resolves $ref URIs via XMLHttpRequest. If a request fails, the
+// editor silently produces a broken form. This interceptor catches failures and
+// alerts the user, then closes the editor iframe.
+var _ajaxErrorFired = false;
+(function() {
+    var origSend = XMLHttpRequest.prototype.send;
+    XMLHttpRequest.prototype.send = function() {
+        this.addEventListener('load', function() {
+            if (!_ajaxErrorFired && (this.status < 200 || this.status >= 300)) {
+                _ajaxErrorFired = true;
+                alert('Failed to load schema (HTTP ' + this.status + '). A network connection is required to edit configurations.');
+                window.parent.postMessage({ type: 'infinity-editor-done' }, window.location.origin);
+            }
+        });
+        this.addEventListener('error', function() {
+            if (!_ajaxErrorFired) {
+                _ajaxErrorFired = true;
+                alert('Network error while loading schema. Please check your internet connection and try again.');
+                window.parent.postMessage({ type: 'infinity-editor-done' }, window.location.origin);
+            }
+        });
+        return origSend.apply(this, arguments);
+    };
+})();
+
+// ─── Editor page logic ────────────────────────────────────────────────────────
+
+const USER_CONFIGS_KEY = 'infinity_user_configs';
+
+var _pluginVersion = sessionStorage.getItem('infinity_plugin_version') || '';
+function _schemaBase(pluginVersion) {
+    return 'https://documentation.anyline.com/cordova-plugin-component/' + pluginVersion + '/mobile-sdk-common/_attachments/json-schemas';
+}
+const SCHEMA_BASE = _schemaBase(_pluginVersion);
+
+let _editor = null;
+let _isSaving = false;
+
+// Read config passed from infinity.html via sessionStorage
+let _config = {};
+try { _config = JSON.parse(sessionStorage.getItem('infinity_edit_config') || '{}'); } catch (e) { /* invalid JSON — use defaults */ }
+
+const filenameInput = document.getElementById('filename-input');
+filenameInput.value = (_config.filename || '').replace(/\.json$/, '');
+
+// ─── Init editor with remote schema ─────────────────────────────────────────
+
+let startval = {};
+try { startval = JSON.parse(_config.configJson || '{}'); } catch (e) { /* invalid JSON — start empty */ }
+
+_editor = new JSONEditor(document.getElementById('editor-holder'), {
+    theme: 'spectre',
+    iconlib: 'spectre',
+    schema: { $ref: SCHEMA_BASE + '/sdk_config.schema.json' },
+    startval: startval,
+    ajax: true,
+    ajax_cache_responses: true,
+    disable_edit_json: true,
+    disable_properties: false,
+    disable_collapse: false,
+    no_additional_properties: false,
+    show_opt_in: false,
+    required_by_default: false,
+});
+
+// ─── Save ─────────────────────────────────────────────────────────────────────
+
+document.getElementById('btn-save').addEventListener('click', function () {
+    if (_isSaving) return;
+
+    const name = filenameInput.value.trim();
+    if (!name) {
+        _showError('Please enter a filename.');
+        return;
+    }
+
+    if (!_editor) {
+        _showError('Editor not ready yet — please wait.');
+        return;
+    }
+
+    const configJson = JSON.stringify(_editor.getValue());
+    try {
+        JSON.parse(configJson);
+    } catch (e) {
+        _showError('Invalid JSON — please fix syntax errors before saving.');
+        return;
+    }
+
+    _isSaving = true;
+    _showError(null);
+    document.getElementById('btn-save').textContent = 'Saving…';
+
+    try {
+        const filename = name.endsWith('.json') ? name : name + '.json';
+        const map = JSON.parse(localStorage.getItem(USER_CONFIGS_KEY) || '{}');
+        map[filename] = configJson;
+        localStorage.setItem(USER_CONFIGS_KEY, JSON.stringify(map));
+        window.parent.postMessage({ type: 'infinity-editor-done' }, window.location.origin);
+    } catch (e) {
+        _isSaving = false;
+        document.getElementById('btn-save').textContent = 'Save';
+        _showError('Save failed: ' + (e.message || e));
+    }
+});
+
+document.getElementById('btn-cancel').addEventListener('click', function () {
+    window.parent.postMessage({ type: 'infinity-editor-done' }, window.location.origin);
+});
+
+
+function _showError(msg) {
+    const el = document.getElementById('save-error');
+    if (msg) { el.textContent = msg; el.style.display = ''; }
+    else { el.style.display = 'none'; }
+}
+</script>
+</body>
+</html>

@@ -8,6 +8,10 @@
  */
 package io.anyline.cordova;
 
+/**
+ * @deprecated Use {@link AnylineInfinityPlugin} instead.
+ */
+@Deprecated
 public class ResultReporter {
 
     private static OnResultListener listener;
