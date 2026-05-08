@@ -16,6 +16,7 @@ const INFINITY_CONFIGS = [
     { filename: 'license_plate_africa_config.json', configJson: null, label: null, group: null },
     { filename: 'license_plate_canada_config.json', configJson: null, label: null, group: null },
     { filename: 'license_plate_config.json', configJson: null, label: null, group: null },
+    { filename: 'license_plate_continuous_config.json', configJson: null, label: null, group: null },
     { filename: 'license_plate_us_config.json', configJson: null, label: null, group: null },
     { filename: 'mrz_config.json', configJson: null, label: null, group: null },
     { filename: 'odometer_config.json', configJson: null, label: null, group: null },
