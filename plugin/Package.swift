@@ -22,7 +22,7 @@ let package = Package(
         // Anyline SDK dependency
         .package(
             url: "https://github.com/Anyline/anyline-ocr-spm-module.git",
-            from: "56.0.0"
+            from: "56.0.1"
         )
     ],
     targets: [
