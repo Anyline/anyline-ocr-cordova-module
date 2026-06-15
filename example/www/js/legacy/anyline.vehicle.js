@@ -58,8 +58,6 @@ anyline.vehicle = {
       config = this.tireSizeConfig;
     } else if (type == 'TIRE_MAKE') {
       config = this.tireMakeConfig;
-    } else if (type == 'ODOMETER') {
-      config = this.odometerConfig;
     } else if (type == 'VRC') {
       config = this.vrcConfig;
     }
@@ -72,6 +70,5 @@ anyline.vehicle = {
   tireSizeConfig: configLoader.loadJsonConfig('tireSizeConfig.json'),
   tireMakeConfig: configLoader.loadJsonConfig('tireMakeConfig.json'),
   vinConfig: configLoader.loadJsonConfig('vinConfig.json'),
-  odometerConfig: configLoader.loadJsonConfig('odometerConfig.json'),
   vrcConfig: configLoader.loadJsonConfig('vrcConfig.json')
 }
