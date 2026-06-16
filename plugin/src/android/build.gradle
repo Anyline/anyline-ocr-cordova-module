@@ -8,9 +8,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.anyline:anylinesdk:56.0.2'
+    implementation 'io.anyline:anylinesdk:56.1.0'
     implementation("com.google.android.material:material:1.4.0-rc01")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.2")
 }
 
 android {
@@ -21,7 +20,6 @@ android {
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -75,7 +73,6 @@ android {
 ext.postBuildExtras = {
     android {
         compileOptions {
-            coreLibraryDesugaringEnabled true
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
         }
