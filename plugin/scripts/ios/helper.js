@@ -17,11 +17,24 @@ module.exports = {
     },
 
     getXcodeProjectPath: function () {
-        return path.join("platforms", "ios", utilities.getAppName() + ".xcodeproj", "project.pbxproj");
+        var configNamePath = path.join("platforms", "ios", utilities.getAppName() + ".xcodeproj", "project.pbxproj");
+        if (fs.existsSync(configNamePath)) {
+            return configNamePath;
+        }
+
+        // Since cordova-ios 8.0.0 the generated Xcode project/target is always named "App",
+        // regardless of the <name> set in config.xml. Fall back to that when the
+        // config-name path doesn't exist.
+        return path.join("platforms", "ios", "App.xcodeproj", "project.pbxproj");
     },
 
     getShellScriptBuildPhasePath: function () {
-        return path.join("platforms", "ios", utilities.getAppName(), "remove-unneeded-assets.sh");
+        var configNamePath = path.join("platforms", "ios", utilities.getAppName());
+        if (fs.existsSync(configNamePath)) {
+            return path.join(configNamePath, "remove-unneeded-assets.sh");
+        }
+
+        return path.join("platforms", "ios", "App", "remove-unneeded-assets.sh");
     },
 
     addShellScriptBuildPhase: function (context, xcodeProjectPath) {
