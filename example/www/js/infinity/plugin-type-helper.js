@@ -43,10 +43,13 @@ function groupFromConfig(config) {
     return GROUPS.OTHERS;
 }
 
+// Prefers scanViewConfigDescription, then viewPluginCompositeConfig.id,
+// then viewPluginConfig.pluginConfig.id, then falls back to the filename.
 function labelFromConfig(config, fallbackFilename) {
+    const description = config.scanViewConfigDescription;
     const compositeId = config.viewPluginCompositeConfig?.id;
     const pluginId = config.viewPluginConfig?.pluginConfig?.id;
-    return compositeId || pluginId || fallbackFilename;
+    return description || compositeId || pluginId || fallbackFilename;
 }
 
 const _RESULT_LABELS = [

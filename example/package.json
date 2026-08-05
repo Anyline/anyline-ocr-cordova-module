@@ -1,13 +1,13 @@
 {
   "name": "anyline-cordova-example",
-  "version": "56.2.0",
+  "version": "56.3.0",
   "description": "Cordova plugin for implementing Anyline",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "addPlugins": "cordova plugin add cordova-plugin-android-permissions && cordova plugin add cordova-plugin-device && cordova plugin add ../plugin",
     "reinstall": "cordova platform remove android && (cordova plugin remove io-anyline-cordova || true) && cordova platform add android@latest && npm run addPlugins",
-    "reinstall-ios": "cordova platform remove ios; (cordova plugin remove io-anyline-cordova || true); pod repo update; cordova platform add ios@7.1.1; npm run addPlugins",
+    "reinstall-ios": "cordova platform remove ios; (cordova plugin remove io-anyline-cordova || true); cordova platform add ios@8.0.0; npm run addPlugins",
     "reinstall-win": "cordova platform remove windows && cordova plugin remove io-anyline-cordova && cordova platform add windows@latest && cordova plugin add ../plugin",
     "overwrite": "rm -R ../src/android/io && rm -R ../src/android/res && cp -R platforms/android/src/io ../src/android/ && cp -R platforms/android/res ../src/android",
     "overwrite-ios": "rm -R ../plugin/src/ios; cp -R platforms/ios/Anyline\\ Cordova\\ Example/Plugins/io-anyline-cordova ../plugin/src/ios",
@@ -33,8 +33,8 @@
     ]
   },
   "devDependencies": {
-    "cordova-android": "^15.0.0",
-    "cordova-ios": "^7.1.1",
+    "cordova-android": "^15.1.0",
+    "cordova-ios": "^8.0.0",
     "cordova-plugin-android-permissions": "^1.1.5",
     "cordova-plugin-device": "^2.1.0",
     "cordova-plugin-dialogs": "^2.0.2",

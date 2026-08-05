@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="56.2.0">
+    xmlns:android="http://schemas.android.com/apk/res/android" id="io-anyline-cordova" version="56.3.0">
 
     <name>AnylineSDK</name>
 
@@ -55,18 +55,19 @@
         <!-- Anyline Framework & Resource Bundle CocoaPods-->
         <!-- <framework src="Anyline" type="podspec" swift-version="4.2" spec="~> 47.0"/> -->
 
-        <!-- Cordova-iOS 8+ uses Swift Package Manager (SPM) for dependencies.
-             If you want to use Cordova-iOS 8+, then disable the following "podspec" block.
-             The Anyline SDK is then loaded via Package.swift instead of CocoaPods to avoid conflicts.
-             For Cordova-iOS < 8.0, keep this podspec block enabled. -->
-        <podspec>
+        <!-- The Anyline SDK is loaded via Swift Package Manager (SPM) through Package.swift
+             (Cordova-iOS 8+). The CocoaPods "podspec" block below is intentionally disabled:
+             CocoaPods Trunk goes read-only on 2026-12-02, so the wrapper no longer
+             depends on it. CocoaPods and SPM cannot coexist in the same Cordova project.
+             Only re-enable the podspec block if you must build with Cordova-iOS < 8.0. -->
+        <!-- <podspec>
             <config>
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
                 <pod name="Anyline" type="podspec" spec="56.2.0" />
             </pods>
-        </podspec>
+        </podspec> -->
 
 
         <!-- Frameworks/Libs needed by Anyline SDK for iOS -->

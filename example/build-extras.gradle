@@ -1,0 +1,42 @@
+// Google ML Kit is opt-in: the Anyline SDK declares it compileOnly and does not export it, so a
+// host app that uses face detection or native barcode detection has to add the module itself.
+//
+// Cordova gives an app no other place to declare an Android dependency. The plugin's own
+// build.gradle must stay clean, and platforms/android/ is generated and gitignored. config.xml
+// copies this file to platforms/android/app/build-extras.gradle, which cordova-android applies
+// automatically, so it survives `cordova platform add` from a clean checkout.
+//
+// None of the example scan view configs set faceDetectionEnabled, so this app does not need ML Kit.
+// The dependency is left commented to show integrators where it goes without adding it. Uncomment
+// the line below to enable face detection on Universal ID / MRZ.
+dependencies {
+//    implementation 'com.google.mlkit:face-detection:16.1.7'
+}
+
+// Minify the release build so R8 actually runs. cordova-android sets no
+// minifyEnabled anywhere, so without this a release build shrinks nothing and
+// the consumer ProGuard rules the Anyline SDK ships in its AAR are never
+// applied. Keeping them exercised here is the point: this app adds no ML Kit,
+// which is the configuration those rules exist for.
+//
+// A plain android block is safe at this point. The Android Gradle plugin is
+// applied near the top of the generated app/build.gradle, well before this file
+// is applied, and cordova's own release signingConfig block runs afterwards and
+// merges with this one.
+//
+// proguard-rules.pro is copied next to this file by the resource-file entry in
+// config.xml, so the relative name resolves against the app project.
+// Sign the release build with the debug key. The example has no
+// release-signing.properties, so cordova never creates a release signingConfig
+// and the output would be unsigned, which cannot be installed on a device or
+// accepted by Firebase App Distribution. The debug key also keeps the signing
+// identity the same as the previous debug builds, so testers upgrade in place.
+android {
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+    }
+}

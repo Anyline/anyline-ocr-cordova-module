@@ -199,6 +199,27 @@ print_success "CoreDevice ID: $SELECTED_COREDEVICE_ID"
 
 print_step "Step 3: Building app with xcodebuild"
 
+# Resolve the signing team from build.json. Cordova only applies build.json
+# signing during `cordova build`; this script drives xcodebuild directly, and
+# the cordova-ios 8 project template ships without a DEVELOPMENT_TEAM, so we
+# must pass it explicitly (see MSDK-1540).
+BUILD_JSON="build.json"
+DEVELOPMENT_TEAM=""
+if [[ -f "$BUILD_JSON" ]]; then
+    DEVELOPMENT_TEAM=$(python3 -c "import json; print(json.load(open('$BUILD_JSON'))['ios']['debug'].get('developmentTeam',''))" 2>/dev/null || true)
+fi
+
+# Pin the development identity explicitly: a prior `cordova build ios --release
+# --buildConfig=build.json` bakes "Apple Distribution" into the generated project,
+# which then conflicts with automatic development signing on this Debug deploy.
+SIGNING_ARGS=(-allowProvisioningUpdates CODE_SIGN_STYLE=Automatic CODE_SIGN_IDENTITY="Apple Development")
+if [[ -n "$DEVELOPMENT_TEAM" ]]; then
+    print_info "Using development team: $DEVELOPMENT_TEAM"
+    SIGNING_ARGS+=("DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM")
+else
+    print_info "No developmentTeam found in build.json; relying on project signing settings"
+fi
+
 cd platforms/ios
 
 BUILD_OUTPUT=$(mktemp)
@@ -206,6 +227,7 @@ if xcodebuild -workspace App.xcworkspace \
     -scheme App \
     -configuration Debug \
     -destination "platform=iOS,id=$XCODEBUILD_DEVICE_ID" \
+    "${SIGNING_ARGS[@]}" \
     build > "$BUILD_OUTPUT" 2>&1; then
     print_success "Build completed successfully"
 else

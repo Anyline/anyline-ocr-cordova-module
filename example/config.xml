@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.anyline.examples.cordova" ios-CFBundleVersion="1" version="56.2.0" xmlns="http://www.w3.org/ns/widgets">
+<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.anyline.examples.cordova" ios-CFBundleVersion="1" version="56.3.0" xmlns="http://www.w3.org/ns/widgets">
     <name>Anyline Cordova Example</name>
     <hook src="hooks/after_prepare/add_license_key.js" type="after_prepare" />
-    <preference name="deployment-target" value="12.0" />
+    <preference name="deployment-target" value="13.0" />
     <preference name="target-device" value="universal" />
     <preference name="SwiftVersion" value="4.2" />
     <preference name="BackupWebStorage" value="local" />
@@ -43,6 +43,12 @@
     <access origin="*" />
     <platform name="android">
         <icon src="www/img/ic_launcher.png" />
+        <!-- Opt in to Google ML Kit. cordova-android applies app/build-extras.gradle
+             automatically, so this survives a clean `cordova platform add`. -->
+        <resource-file src="build-extras.gradle" target="app/build-extras.gradle" />
+        <!-- Keep rules for the minified release build. build-extras.gradle names this
+             file relative to the app project, so it has to land next to it. -->
+        <resource-file src="proguard-rules.pro" target="app/proguard-rules.pro" />
         <!-- Disable the Android 13+ OnBackInvokedCallback API so Cordova's legacy
              onBackPressed() hook keeps working on targetSdkVersion >= 33. -->
         <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/activity[@android:name='MainActivity']" mode="merge">
