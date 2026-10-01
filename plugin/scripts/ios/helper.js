@@ -103,7 +103,7 @@ module.exports = {
 
             var nativeTarget = xcodeProject.hash.project.objects.PBXNativeTarget[nativeTargetId];
 
-            nativeTarget.buildPhases.push({
+            nativeTarget.buildPhases.splice(this.getBuildPhaseIndex(xcodeProject, nativeTarget.buildPhases), 0, {
                 value: id,
                 comment: comment
             });
@@ -111,6 +111,40 @@ module.exports = {
 
         // Finally, write the .pbxproj back out to disk.
         fs.writeFileSync(path.resolve(xcodeProjectPath), xcodeProject.writeSync());
+    },
+
+    /**
+     * Where the phase goes in a target's build phases: right after the last "Embed Frameworks"
+     * phase (the copy files phase whose destination is Frameworks, dstSubfolderSpec 10), never
+     * after a "Crashlytics" phase, and last only when the target has neither. Appending it
+     * instead puts it after any phase another plugin has already appended, and Firebase requires
+     * its "Crashlytics" phase to be the last one in the target, or the dSYMs are not uploaded.
+     * The position does NOT order the script after Anyline.framework is signed: on cordova-ios 8
+     * the Embed Frameworks phase is empty, because the framework comes from Swift Package Manager
+     * and Xcode embeds and signs it with tasks of its own. Xcode signs it before this phase in a
+     * clean build and after it in an incremental build that copies it again, which is why
+     * remove-unneeded-assets.sh re-signs it.
+     */
+    getBuildPhaseIndex: function (xcodeProject, buildPhases) {
+        var objects = xcodeProject.hash.project.objects;
+        var copyFilesPhases = objects.PBXCopyFilesBuildPhase || {};
+        var shellScriptPhases = objects.PBXShellScriptBuildPhase || {};
+        var index = buildPhases.length;
+        var crashlyticsIndex = -1;
+
+        buildPhases.forEach(function (buildPhase, position) {
+            var copyFilesPhase = copyFilesPhases[buildPhase.value];
+            if (copyFilesPhase && String(copyFilesPhase.dstSubfolderSpec) === "10") {
+                index = position + 1;
+            }
+            var shellScriptPhase = shellScriptPhases[buildPhase.value];
+            var name = shellScriptPhase && shellScriptPhase.name ? String(shellScriptPhase.name).replace(/"/g, '') : '';
+            if (crashlyticsIndex === -1 && name === "Crashlytics") {
+                crashlyticsIndex = position;
+            }
+        });
+
+        return crashlyticsIndex === -1 ? index : Math.min(index, crashlyticsIndex);
     },
 
     removeShellScriptBuildPhase: function (context, xcodeProjectPath) {
@@ -142,8 +176,9 @@ module.exports = {
             } else {
                 // Dealing with a comment block.
 
-                // If this is a comment block that matches ours, then we want to delete it.
-                shouldDelete = buildPhase === commentTest;
+                // If this is a comment block that matches ours, then we want to delete it. It is
+                // written with the quotes, so it reads back with them.
+                shouldDelete = buildPhase === comment || buildPhase === commentTest;
             }
 
             if (shouldDelete) {
@@ -165,8 +200,11 @@ module.exports = {
             var nativeTarget = nativeTargets[nativeTargetId];
 
             // We remove the reference to the block by filtering out the the ones that match.
+            // addShellScriptBuildPhase writes the reference with the QUOTED comment, and it reads
+            // back quoted, so comparing only against the unquoted name never matches: every run
+            // after the first left a reference to a phase it had just deleted. Compare both forms.
             nativeTarget.buildPhases = nativeTarget.buildPhases.filter(function (buildPhase) {
-                return buildPhase.comment !== commentTest;
+                return buildPhase.comment !== comment && buildPhase.comment !== commentTest;
             });
         }
 

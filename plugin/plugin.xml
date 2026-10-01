@@ -8,6 +8,20 @@
     <platform name="ios" package="swift">
         <hook type="before_plugin_uninstall" src="scripts/ios/before_plugin_uninstall.js" />
         <hook type="after_plugin_install" src="scripts/ios/after_plugin_install.js" />
+        <!-- Also after_prepare: the "Anyline: Remove unneeded assets" build phase is a write to
+             project.pbxproj, and cordova-ios discards such a write when it is made during plugin
+             installation. It caches the parsed project (lib/projectFile.js) and writes that stale
+             copy back after every later plugin install and again during prepare, so the phase is
+             gone before Xcode reads the project and every module ships, whatever
+             anyline-retain-assets-pattern says. Running after prepare puts the write last in
+             `cordova platform add` and `cordova prepare`. `cordova build` writes its cached copy
+             once more after this hook (build.js, to set the signing style when build.json asks for
+             automatic provisioning or a profile), and the phase survives that only because the
+             copy was parsed from a project an earlier run of this hook had already written:
+             cordova refuses to build before a platform is added, and adding one ends with this
+             hook. The script removes the phase before adding it, so it is safe to run on every
+             prepare. -->
+        <hook type="after_prepare" src="scripts/ios/after_plugin_install.js" />
 
         <js-module src="www/anyline.js" name="anyline">
             <clobbers target="window.Anyline" />
