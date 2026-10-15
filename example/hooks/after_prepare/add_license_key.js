@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
-module.exports = function (context) {
+module.exports = function addLicenseKey(context) {
     const configJsPath = path.join(context.opts.projectRoot, 'www/js/anyline.license.js');
     const licenseKey = process.env.ANYLINE_MOBILE_SDK_LICENSE_KEY;
 
