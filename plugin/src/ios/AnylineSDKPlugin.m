@@ -98,7 +98,7 @@ static NSString *_pluginVersion;
             ALWrapperSessionSDKInitializationResponseInitialized *sdkInitializationResponseInitialized = currentSdkInitializationResponse.succeedInfo;
             if (sdkInitializationResponseInitialized) {
                 CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                                  messageAsString:sdkInitializationResponseInitialized.expiryDate];
+                                                                  messageAsString:(NSString * _Nonnull) sdkInitializationResponseInitialized.expiryDate];
                 [weakSelf.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                 return;
             }
@@ -308,7 +308,7 @@ static NSString *_pluginVersion;
                 jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
             }
             CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                                          messageAsDictionary:jsonDict];
+                                                          messageAsDictionary:(NSDictionary * _Nonnull) jsonDict];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:self.wrapperSessionScanResponseCommand.callbackId];
         }
     }
@@ -328,12 +328,12 @@ static NSString *_pluginVersion;
         }
     } else if (scanResponse.status == ALWrapperSessionScanResponseStatus.scanFailed) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                                          messageAsString:scanResponse.failInfo.lastError];
+                                                          messageAsString:(NSString * _Nonnull) scanResponse.failInfo.lastError];
     } else if (scanResponse.status == ALWrapperSessionScanResponseStatus.scanAborted) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                                           messageAsString:@"Canceled"];
     }
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.wrapperSessionScanResponseCommand.callbackId];
+    [self.commandDelegate sendPluginResult:(CDVPluginResult * _Nonnull) pluginResult callbackId:self.wrapperSessionScanResponseCommand.callbackId];
 }
 
 - (void)onUIElementClicked:(nonnull ALWrapperSessionScanResultConfig *)scanResultConfig
@@ -349,11 +349,11 @@ static NSString *_pluginVersion;
     if (ucrReportResponse.status == ALWrapperSessionUCRReportResponseStatus.ucrReportSucceeded) {
         ALWrapperSessionUCRReportResponseSucceed *ucrReportSucceed = ucrReportResponse.succeedInfo;
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                         messageAsString:ucrReportSucceed.message];
+                                         messageAsString:(NSString * _Nonnull) ucrReportSucceed.message];
     } else {
         ALWrapperSessionUCRReportResponseFail *ucrReportFail = ucrReportResponse.failInfo;
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                         messageAsString:ucrReportFail.lastError];
+                                         messageAsString:(NSString * _Nonnull) ucrReportFail.lastError];
     }
     if (self.wrapperSessionReportCorrectedResultResponseCommand) {
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.wrapperSessionReportCorrectedResultResponseCommand.callbackId];
@@ -365,11 +365,11 @@ static NSString *_pluginVersion;
     if (exportCachedEventsResponse.status == ALWrapperSessionExportCachedEventsResponseStatus.exportSucceeded) {
         ALWrapperSessionExportCachedEventsResponseSucceed *exportCachedEventsSucceed = exportCachedEventsResponse.succeedInfo;
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                         messageAsString:exportCachedEventsSucceed.exportedFile];
+                                         messageAsString:(NSString * _Nonnull) exportCachedEventsSucceed.exportedFile];
     } else {
         ALWrapperSessionExportCachedEventsResponseFail *exportCachedEventsFail = exportCachedEventsResponse.failInfo;
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                         messageAsString:exportCachedEventsFail.lastError];
+                                         messageAsString:(NSString * _Nonnull) exportCachedEventsFail.lastError];
     }
     if (self.wrapperSessionExportCachedEventsResponseCommand) {
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.wrapperSessionExportCachedEventsResponseCommand.callbackId];
